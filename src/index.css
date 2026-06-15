@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #050816;
+    color: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+strong,
+a,
+button {
+    color: inherit;
+}
