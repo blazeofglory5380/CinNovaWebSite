@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { downloadResource } from "../data/resources.js";
+import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
 
 function ResourceEmailGate({ resource, onSubscribe, onClose }) {
     const [email, setEmail] = useState("");
@@ -7,14 +8,15 @@ function ResourceEmailGate({ resource, onSubscribe, onClose }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!email.trim() || !email.includes("@")) {
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
             setStatus("error");
             return;
         }
         setStatus("loading");
         onSubscribe?.({
-            email,
-            source: `Resource: ${resource.title}`,
+            email: normalizedEmail,
+            source: `Resource: ${sanitizeText(resource.title, 80)}`,
             tags: [resource.category, resource.product, "Resource Download"],
         });
         downloadResource(resource);
@@ -65,10 +67,11 @@ function ResourceEmailGate({ resource, onSubscribe, onClose }) {
                                     type="email"
                                     value={email}
                                     onChange={(e) => {
-                                        setEmail(e.target.value);
+                                        setEmail(e.target.value.slice(0, 254));
                                         setStatus("idle");
                                     }}
                                     placeholder="you@example.com"
+                                    maxLength={254}
                                     autoFocus
                                 />
                                 <button

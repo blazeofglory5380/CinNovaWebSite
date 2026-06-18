@@ -8,6 +8,7 @@ import {
     saveManagedPost,
     slugifyTitle,
 } from "../data/blogManagerService.js";
+import { sanitizeText } from "../utils/security.js";
 
 const emptyForm = {
     title: "",
@@ -43,19 +44,19 @@ function formToPost(form) {
     return {
         id: form.id,
         createdAt: form.createdAt,
-        title: form.title.trim(),
-        slug: form.slug.trim() || slugifyTitle(form.title),
+        title: sanitizeText(form.title, 160),
+        slug: sanitizeText(form.slug, 120) || slugifyTitle(form.title),
         category: form.category,
-        excerpt: form.excerpt.trim(),
-        date: form.date,
-        readTime: form.readTime,
+        excerpt: sanitizeText(form.excerpt, 320),
+        date: sanitizeText(form.date, 80),
+        readTime: sanitizeText(form.readTime, 40),
         author: form.author,
         status: form.status,
         featured: form.featured,
         content: [
             {
-                heading: firstLine?.trim() || form.sectionHeading || "Overview",
-                body: sectionBody || form.excerpt.trim(),
+                heading: sanitizeText(firstLine, 140) || sanitizeText(form.sectionHeading, 140) || "Overview",
+                body: sanitizeText(sectionBody, 6000) || sanitizeText(form.excerpt, 320),
             },
         ],
     };
@@ -80,10 +81,19 @@ function BlogManager({ posts, onPostsChange }) {
     }, [posts, searchTerm]);
 
     function updateField(field, value) {
+        const limits = {
+            title: 160,
+            slug: 120,
+            excerpt: 320,
+            date: 80,
+            readTime: 40,
+            sectionBody: 6000,
+        };
+        const safeValue = typeof value === "string" && limits[field] ? value.slice(0, limits[field]) : value;
         setForm((current) => ({
             ...current,
-            [field]: value,
-            slug: field === "title" && !current.id ? slugifyTitle(value) : current.slug,
+            [field]: safeValue,
+            slug: field === "title" && !current.id ? slugifyTitle(safeValue) : current.slug,
         }));
     }
 
@@ -121,7 +131,7 @@ function BlogManager({ posts, onPostsChange }) {
             <SEO
                 title="Blog Manager | Cin Nova"
                 description="Manage Cin Nova blog articles locally with drafts, publishing, categories, authors, and featured article controls."
-                url={`${siteUrl}/?page=blog-manager`}
+                url={`${siteUrl}/blog-admin`}
                 type="website"
             />
 
@@ -271,8 +281,9 @@ function BlogManager({ posts, onPostsChange }) {
                     <input
                         type="search"
                         value={searchTerm}
-                        onChange={(event) => setSearchTerm(event.target.value)}
+                        onChange={(event) => setSearchTerm(event.target.value.slice(0, 120))}
                         placeholder="Search title, category, author, status..."
+                        maxLength={120}
                     />
                 </label>
 

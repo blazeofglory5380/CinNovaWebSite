@@ -1,6 +1,8 @@
+import { useState } from "react";
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
 
 const contactCards = [
     {
@@ -91,9 +93,23 @@ const inquiryTypes = [
 ];
 
 function Contact() {
+    const [error, setError] = useState("");
+
     function handleSubmit(e) {
         e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const name = sanitizeText(formData.get("name"), 100);
+        const email = normalizeEmailInput(formData.get("email"));
+        const message = sanitizeText(formData.get("message"), 1500);
+
+        if (!name || !isValidEmail(email) || message.length < 10) {
+            setError("Please enter your name, a valid email, and a message of at least 10 characters.");
+            return;
+        }
+
+        setError("");
         alert("Thanks! Your message has been received.");
+        e.currentTarget.reset();
     }
 
     return (
@@ -154,18 +170,22 @@ function Contact() {
                             <div className="form-group">
                                 <label className="form-label">Full Name</label>
                                 <input
+                                    name="name"
                                     className="form-input"
                                     type="text"
                                     placeholder="Your full name"
+                                    maxLength={100}
                                     required
                                 />
                             </div>
                             <div className="form-group">
                                 <label className="form-label">Email Address</label>
                                 <input
+                                    name="email"
                                     className="form-input"
                                     type="email"
                                     placeholder="you@example.com"
+                                    maxLength={254}
                                     required
                                 />
                             </div>
@@ -173,7 +193,7 @@ function Contact() {
 
                         <div className="form-group">
                             <label className="form-label">Inquiry Type</label>
-                            <select className="form-input" defaultValue="">
+                            <select name="inquiryType" className="form-input" defaultValue="">
                                 <option value="" disabled>Select an inquiry type...</option>
                                 {inquiryTypes.map((type) => (
                                     <option key={type} value={type}>{type}</option>
@@ -184,13 +204,16 @@ function Contact() {
                         <div className="form-group">
                             <label className="form-label">Message</label>
                             <textarea
+                                name="message"
                                 className="form-input form-textarea"
                                 placeholder="Describe your question or inquiry in as much detail as you'd like..."
                                 rows={6}
+                                maxLength={1500}
                                 required
                             />
                         </div>
 
+                        {error && <p className="form-error">{error}</p>}
                         <button type="submit" className="primary-btn contact-submit">
                             Send Message
                         </button>

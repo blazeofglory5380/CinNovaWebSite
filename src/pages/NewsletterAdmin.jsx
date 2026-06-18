@@ -11,6 +11,7 @@ import {
     newsletterProviderConfig,
     saveSubscriber,
 } from "../data/newsletterService.js";
+import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
 function downloadFile(filename, content, type) {
     const blob = new Blob([content], { type });
@@ -72,8 +73,13 @@ function NewsletterAdmin() {
 
     function handleManualAdd(event) {
         event.preventDefault();
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
+            setStatusMessage("Please enter a valid email address.");
+            return;
+        }
         const result = saveSubscriber({
-            email,
+            email: normalizedEmail,
             source: "Newsletter Admin",
             tags: ["Manual Add"],
         });
@@ -181,8 +187,9 @@ function NewsletterAdmin() {
                             <input
                                 type="email"
                                 value={email}
-                                onChange={(event) => setEmail(event.target.value)}
+                                onChange={(event) => setEmail(event.target.value.slice(0, 254))}
                                 placeholder="subscriber@example.com"
+                                maxLength={254}
                                 required
                             />
                             <button type="submit">Add Subscriber</button>
@@ -223,8 +230,9 @@ function NewsletterAdmin() {
                     <input
                         type="search"
                         value={searchTerm}
-                        onChange={(event) => setSearchTerm(event.target.value)}
+                        onChange={(event) => setSearchTerm(event.target.value.slice(0, 120))}
                         placeholder="Search email, source, or tag..."
+                        maxLength={120}
                     />
                 </label>
 

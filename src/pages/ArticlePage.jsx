@@ -101,15 +101,19 @@ function RelatedSidebar({ articles, onOpenArticle }) {
             <p className="sidebar-widget-label">RELATED ARTICLES</p>
             <div className="related-sidebar-list">
                 {articles.map((item) => (
-                    <button
+                    <a
+                        href={`/blog/${item.slug}`}
                         key={item.id}
                         className="related-sidebar-item"
-                        onClick={() => onOpenArticle(item)}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            onOpenArticle(item);
+                        }}
                     >
                         <span>{item.category}</span>
                         <strong>{item.title}</strong>
                         <small>{item.readTime}</small>
-                    </button>
+                    </a>
                 ))}
             </div>
         </div>
@@ -309,7 +313,17 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, subscrib
                                 <span>{item.category}</span>
                                 <h3>{item.title}</h3>
                                 <p>{item.excerpt}</p>
-                                <button onClick={() => onOpenArticle(item)}>Read Article</button>
+                                <a
+                                    href={`/blog/${item.slug}`}
+                                    className="article-card-action"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        onOpenArticle(item);
+                                    }}
+                                >
+                                    Read Article
+                                </a>
                             </article>
                         ))}
                     </div>

@@ -166,7 +166,7 @@ const comparisons = [
     },
     {
         icon: "🏫",
-        audience: "Best for Schools &amp; Teams",
+        audience: "Best for Schools & Teams",
         product: "StudyNest + Kiddo",
         why: "Classroom tools, student progress dashboards, and curriculum-aligned learning from K–12.",
         plan: "School Plans — Coming Soon",
@@ -288,9 +288,7 @@ function Pricing() {
                     {comparisons.map((item) => (
                         <article className="product-card" key={item.audience}>
                             <div className="product-icon">{item.icon}</div>
-                            <p className="product-category"
-                                dangerouslySetInnerHTML={{ __html: item.audience }}
-                            />
+                            <p className="product-category">{item.audience}</p>
                             <h3>{item.product}</h3>
                             <p>{item.why}</p>
                             <div
@@ -304,8 +302,9 @@ function Pricing() {
                                     fontSize: "0.82rem",
                                     fontWeight: 700,
                                 }}
-                                dangerouslySetInnerHTML={{ __html: item.plan }}
-                            />
+                            >
+                                {item.plan}
+                            </div>
                         </article>
                     ))}
                 </div>

@@ -32,6 +32,8 @@ import {
 } from "./data/blogManagerService.js";
 import { getResourceBySlug, resources } from "./data/resources.js";
 import { getDisplaySubscriberCount, saveSubscriber } from "./data/newsletterService.js";
+import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
+import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 
 const products = [
     {
@@ -305,7 +307,7 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
-function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount }) {
+function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount, onGoBlog }) {
     const latestPosts = posts.slice(0, 3);
 
     function openProduct(page) {
@@ -328,7 +330,7 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount 
                         <a href="#products" className="primary-btn">
                             Explore Products
                         </a>
-                        <button className="secondary-btn" onClick={() => setPage("blog")}>
+                        <button className="secondary-btn" onClick={onGoBlog}>
                             Start Reading
                         </button>
                         <button className="secondary-btn" onClick={() => setPage("resources")}>
@@ -525,13 +527,23 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount 
                             <span>{post.category}</span>
                             <h3>{post.title}</h3>
                             <p>{post.excerpt}</p>
-                            <button onClick={() => onOpenArticle(post)}>Read Article</button>
+                            <a
+                                href={`/blog/${post.slug}`}
+                                className="article-card-action"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    onOpenArticle(post);
+                                }}
+                            >
+                                Read Article
+                            </a>
                         </article>
                     ))}
                 </div>
 
                 <div className="section-action">
-                    <button className="primary-btn" onClick={() => setPage("blog")}>
+                    <button className="primary-btn" onClick={onGoBlog}>
                         Start Reading
                     </button>
                 </div>
@@ -558,23 +570,44 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount 
 }
 
 function getRouteFromUrl(posts = getManagedPosts()) {
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
     const params = new URLSearchParams(window.location.search);
     const articleSlug = params.get("article");
     const resourceSlug = params.get("resource");
     const routedPage = params.get("page");
 
+    if (path === "/blog") {
+        return { page: "blog", article: null, resource: null, category: "All" };
+    }
+
+    if (path === "/blog-admin") {
+        return { page: "blog-manager", article: null, resource: null, category: null };
+    }
+
+    const categoryMatch = path.match(/^\/blog\/category\/([^/]+)$/);
+    if (categoryMatch) {
+        const category = getCategoryBySlug(decodeURIComponent(categoryMatch[1]));
+        return { page: "blog", article: null, resource: null, category: category || "All" };
+    }
+
+    const articleMatch = path.match(/^\/blog\/([^/]+)$/);
+    if (articleMatch) {
+        const post = getManagedPostBySlug(decodeURIComponent(articleMatch[1]), posts);
+        if (post) return { page: "article", article: post, resource: null, category: null };
+    }
+
     if (articleSlug) {
         const post = getManagedPostBySlug(articleSlug, posts);
-        if (post) return { page: "article", article: post, resource: null };
+        if (post) return { page: "article", article: post, resource: null, category: null };
     }
 
     if (resourceSlug) {
         const resource = getResourceBySlug(resourceSlug);
-        if (resource) return { page: "resource", article: null, resource };
+        if (resource) return { page: "resource", article: null, resource, category: null };
     }
 
-    if (routedPage) return { page: routedPage, article: null, resource: null };
-    return { page: "home", article: null, resource: null };
+    if (routedPage) return { page: routedPage, article: null, resource: null, category: null };
+    return { page: "home", article: null, resource: null, category: null };
 }
 
 const POPUP_KEY = "newsletterDismissed";
@@ -588,6 +621,7 @@ function App() {
     const [page, setPage] = useState(initialRoute.page);
     const [selectedArticle, setSelectedArticle] = useState(initialRoute.article);
     const [selectedResource, setSelectedResource] = useState(initialRoute.resource);
+    const [selectedCategory, setSelectedCategory] = useState(initialRoute.category || "All");
 
     // Lead capture state
     const [subscriberCount, setSubscriberCount] = useState(getDisplaySubscriberCount);
@@ -596,15 +630,15 @@ function App() {
     const [showGuideModal, setShowGuideModal] = useState(false);
     const [showStickyBar, setShowStickyBar] = useState(false);
     const [stickyDismissed, setStickyDismissed] = useState(
-        () => !!sessionStorage.getItem(STICKY_KEY)
+        () => safeGetSessionFlag(STICKY_KEY)
     );
 
     // Timed newsletter popup — fires once per session after 45 s
     useEffect(() => {
-        if (sessionStorage.getItem(POPUP_KEY)) return;
+        if (safeGetSessionFlag(POPUP_KEY)) return;
         const timer = setTimeout(() => {
             // Re-check at fire time in case the user dismissed via another trigger
-            if (!sessionStorage.getItem(POPUP_KEY)) {
+            if (!safeGetSessionFlag(POPUP_KEY)) {
                 setShowNewsletterPopup(true);
             }
         }, 45000);
@@ -613,10 +647,10 @@ function App() {
 
     // 50% scroll trigger — fires once, removes itself after triggering or dismissal
     useEffect(() => {
-        if (sessionStorage.getItem(POPUP_KEY)) return;
+        if (safeGetSessionFlag(POPUP_KEY)) return;
         function onScroll50() {
             // Check inside handler so it sees the key even after dismissal
-            if (sessionStorage.getItem(POPUP_KEY)) {
+            if (safeGetSessionFlag(POPUP_KEY)) {
                 window.removeEventListener("scroll", onScroll50);
                 return;
             }
@@ -636,7 +670,7 @@ function App() {
         function onMouseLeave(e) {
             if (
                 e.clientY <= 3 &&
-                !sessionStorage.getItem(EXIT_KEY) &&
+                !safeGetSessionFlag(EXIT_KEY) &&
                 !showNewsletterPopup &&
                 !showGuideModal
             ) {
@@ -666,6 +700,7 @@ function App() {
             setPage(route.page);
             setSelectedArticle(route.article);
             setSelectedResource(route.resource);
+            setSelectedCategory(route.category || "All");
             scrollTop();
         }
 
@@ -684,6 +719,7 @@ function App() {
     function goHome() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedCategory("All");
         setPage("home");
         pushRoute("/");
         scrollTop();
@@ -692,14 +728,25 @@ function App() {
     function goBlog() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedCategory("All");
         setPage("blog");
-        pushRoute("/?page=blog");
+        pushRoute("/blog");
+        scrollTop();
+    }
+
+    function goBlogCategory(category) {
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setSelectedCategory(category);
+        setPage("blog");
+        pushRoute(category === "All" ? "/blog" : `/blog/category/${slugifyCategory(category)}`);
         scrollTop();
     }
 
     function goResources() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedCategory("All");
         setPage("resources");
         pushRoute("/?page=resources");
         scrollTop();
@@ -708,14 +755,16 @@ function App() {
     function openArticle(post) {
         setSelectedArticle(post);
         setSelectedResource(null);
+        setSelectedCategory("All");
         setPage("article");
-        pushRoute(`/?article=${post.slug}`);
+        pushRoute(`/blog/${post.slug}`);
         scrollTop();
     }
 
     function openResource(resource) {
         setSelectedArticle(null);
         setSelectedResource(resource);
+        setSelectedCategory("All");
         setPage("resource");
         pushRoute(`/?resource=${resource.slug}`);
         scrollTop();
@@ -724,8 +773,15 @@ function App() {
     function openPage(nextPage) {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedCategory("All");
         setPage(nextPage);
-        pushRoute(`/?page=${nextPage}`);
+        pushRoute(
+            nextPage === "blog"
+                ? "/blog"
+                : nextPage === "blog-manager"
+                  ? "/blog-admin"
+                  : `/?page=${nextPage}`,
+        );
         scrollTop();
     }
 
@@ -737,18 +793,18 @@ function App() {
 
     function closeNewsletterPopup() {
         setShowNewsletterPopup(false);
-        sessionStorage.setItem(POPUP_KEY, "true");
+        safeSetSessionFlag(POPUP_KEY);
     }
 
     function closeExitPopup() {
         setShowExitPopup(false);
-        sessionStorage.setItem(EXIT_KEY, "1");
+        safeSetSessionFlag(EXIT_KEY);
     }
 
     function dismissStickyBar() {
         setShowStickyBar(false);
         setStickyDismissed(true);
-        sessionStorage.setItem(STICKY_KEY, "1");
+        safeSetSessionFlag(STICKY_KEY);
     }
 
     const isSuccessPage = page === "newsletter-success";
@@ -822,6 +878,7 @@ function App() {
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
                     subscriberCount={subscriberCount}
+                    onGoBlog={goBlog}
                 />
             )}
             {page === "blog" && (
@@ -832,6 +889,8 @@ function App() {
                     subscriberCount={subscriberCount}
                     onOpenGuide={() => setShowGuideModal(true)}
                     onNavigate={openPage}
+                    activeCategory={selectedCategory}
+                    onOpenCategory={goBlogCategory}
                 />
             )}
             {page === "blog-manager" && (

@@ -1,4 +1,5 @@
 import { blogPosts } from "./blogPosts.js";
+import { safeReadArray, safeWriteArray, sanitizeTags, sanitizeText } from "../utils/security.js";
 
 const STORAGE_KEY = "cinNovaManagedBlogPosts";
 
@@ -11,19 +12,29 @@ export function slugifyTitle(title) {
 }
 
 function withDefaults(post, index = 0) {
+    const content = Array.isArray(post.content) ? post.content : [];
     return {
         status: "published",
         featured: index === 0,
-        readTime: post.readTime || "5 min read",
-        date: post.date || new Date().toLocaleDateString("en-US", {
+        readTime: sanitizeText(post.readTime, 40) || "5 min read",
+        date: sanitizeText(post.date, 80) || new Date().toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
         }),
         ...post,
-        content: post.content?.length
-            ? post.content
-            : [{ heading: "Overview", body: post.excerpt || "Article content goes here." }],
+        title: sanitizeText(post.title, 160),
+        slug: sanitizeText(post.slug || slugifyTitle(post.title || ""), 120),
+        category: sanitizeText(post.category, 80),
+        excerpt: sanitizeText(post.excerpt, 320),
+        author: sanitizeText(post.author, 100) || "Cin Nova Team",
+        tags: sanitizeTags(post.tags),
+        content: content.length
+            ? content.slice(0, 12).map((section) => ({
+                  heading: sanitizeText(section.heading, 140) || "Overview",
+                  body: sanitizeText(section.body, 6000),
+              }))
+            : [{ heading: "Overview", body: sanitizeText(post.excerpt, 6000) || "Article content goes here." }],
     };
 }
 
@@ -34,16 +45,12 @@ function starterPosts() {
 function readPosts() {
     if (typeof window === "undefined") return starterPosts();
 
-    try {
-        const stored = window.localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : starterPosts();
-    } catch {
-        return starterPosts();
-    }
+    const stored = safeReadArray(STORAGE_KEY);
+    return stored.length ? stored.map((post, index) => withDefaults(post, index)) : starterPosts();
 }
 
 function writePosts(posts) {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    safeWriteArray(STORAGE_KEY, posts.slice(0, 250));
 }
 
 export function getManagedPosts() {
@@ -61,17 +68,30 @@ export function getManagedPostBySlug(slug, posts = getManagedPosts()) {
 export function saveManagedPost(postInput) {
     const posts = readPosts();
     const now = new Date().toISOString();
+    const title = sanitizeText(postInput.title, 160);
+    const excerpt = sanitizeText(postInput.excerpt, 320);
     const id = postInput.id || Date.now();
-    const slug = postInput.slug || slugifyTitle(postInput.title);
+    const slug = sanitizeText(postInput.slug || slugifyTitle(title), 120);
     const normalizedPost = {
         ...postInput,
         id,
         slug,
+        title,
+        excerpt,
+        category: sanitizeText(postInput.category, 80),
+        date: sanitizeText(postInput.date, 80),
+        readTime: sanitizeText(postInput.readTime, 40),
+        author: sanitizeText(postInput.author, 100),
+        status: postInput.status === "published" ? "published" : "draft",
+        tags: sanitizeTags(postInput.tags),
         updatedAt: now,
         createdAt: postInput.createdAt || now,
         content: postInput.content?.length
-            ? postInput.content
-            : [{ heading: "Overview", body: postInput.excerpt }],
+            ? postInput.content.slice(0, 12).map((section) => ({
+                  heading: sanitizeText(section.heading, 140) || "Overview",
+                  body: sanitizeText(section.body, 6000),
+              }))
+            : [{ heading: "Overview", body: excerpt }],
     };
 
     let nextPosts = posts.some((post) => post.id === id)

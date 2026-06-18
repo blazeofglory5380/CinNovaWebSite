@@ -1,5 +1,12 @@
 import { writeFile } from "node:fs/promises";
-import { blogPosts, getArticleUrl, getBlogUrl, siteUrl } from "../src/data/blogPosts.js";
+import {
+    blogCategories,
+    blogPosts,
+    getArticleUrl,
+    getBlogUrl,
+    getCategoryUrl,
+    siteUrl,
+} from "../src/data/blogPosts.js";
 import { resources, getResourceUrl } from "../src/data/resources.js";
 
 function toIsoDate(date) {
@@ -19,6 +26,12 @@ const urls = [
         changefreq: "daily",
         priority: "0.9",
     },
+    ...blogCategories.map((category) => ({
+        loc: getCategoryUrl(category),
+        lastmod: "2026-06-17",
+        changefreq: "weekly",
+        priority: "0.8",
+    })),
     {
         loc: `${siteUrl}/?page=resources`,
         lastmod: "2026-06-17",

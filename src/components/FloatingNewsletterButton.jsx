@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { isValidEmail, normalizeEmailInput, safeGetSessionFlag, safeSetSessionFlag } from "../utils/security.js";
 
 const SESSION_KEY = "cn_float_btn_dismissed";
 
 function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
-    const [dismissed] = useState(() => !!sessionStorage.getItem(SESSION_KEY));
+    const [dismissed] = useState(() => safeGetSessionFlag(SESSION_KEY));
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState("idle"); // idle | loading | success | error
@@ -11,21 +12,22 @@ function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
     if (dismissed) return null;
 
     function handleDismiss() {
-        sessionStorage.setItem(SESSION_KEY, "1");
+        safeSetSessionFlag(SESSION_KEY);
         setOpen(false);
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (!email.trim() || !email.includes("@")) {
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
             setStatus("error");
             return;
         }
         setStatus("loading");
-        onSubscribe?.({ email, source: "Floating Button", tags: ["Float Button"] });
+        onSubscribe?.({ email: normalizedEmail, source: "Floating Button", tags: ["Float Button"] });
         setStatus("success");
         setTimeout(() => {
-            sessionStorage.setItem(SESSION_KEY, "1");
+            safeSetSessionFlag(SESSION_KEY);
             setOpen(false);
         }, 2200);
     }
@@ -64,10 +66,11 @@ function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
                                     type="email"
                                     value={email}
                                     onChange={(e) => {
-                                        setEmail(e.target.value);
+                                        setEmail(e.target.value.slice(0, 254));
                                         setStatus("idle");
                                     }}
                                     placeholder="you@example.com"
+                                    maxLength={254}
                                     aria-label="Email address"
                                     autoFocus
                                 />

@@ -1,11 +1,18 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import AdSlot from "../components/AdSlot.jsx";
-import { blogCategories, getBlogUrl, postMetrics, siteUrl } from "../data/blogPosts.js";
+import {
+    blogCategories,
+    getBlogUrl,
+    getCategoryUrl,
+    postMetrics,
+    slugifyCategory,
+    siteUrl,
+} from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 
-const categoryConfig = {
+const legacyCategoryConfig = {
     "AI & Technology": { icon: "🤖", desc: "AI tools and software innovation" },
     "Education": { icon: "📚", desc: "Learning tools and study strategies" },
     "Real Estate": { icon: "🏠", desc: "Property analysis and market intelligence" },
@@ -15,9 +22,35 @@ const categoryConfig = {
     "Entrepreneurship": { icon: "💡", desc: "Building software and companies" },
 };
 
-function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpenGuide, onNavigate }) {
-    const [activeCategory, setActiveCategory] = useState("All");
+const categoryConfig = {
+    "Artificial Intelligence": { icon: "AI", desc: "AI tools, assistants, safety, and workflows" },
+    "Real Estate Technology": { icon: "RE", desc: "Property analysis, investing, and market intelligence" },
+    "Education Technology": { icon: "ED", desc: "Study tools, tutoring, learning analytics, and Kiddo" },
+    "Healthcare Technology": { icon: "HT", desc: "Family safety, poison prevention, and responsible health UX" },
+    "Construction Technology": { icon: "CT", desc: "Contractor tools, estimating, documentation, and jobsites" },
+    "Data Centers & Databases": { icon: "DB", desc: "Infrastructure, data design, privacy, and performance" },
+    "Robotics & Automation": { icon: "RA", desc: "Robotics, automation strategy, and workflow systems" },
+    "Future Technology": { icon: "FT", desc: "Emerging technology trends and practical future software" },
+    "Business & Entrepreneurship": { icon: "BE", desc: "Founder lessons, product strategy, content, and growth" },
+    "CinNova Updates": { icon: "CN", desc: "Product roadmaps, launch plans, and ecosystem updates" },
+};
+
+function Blog({
+    posts,
+    onOpenArticle,
+    onSubscribe,
+    subscriberCount = 1247,
+    onOpenGuide,
+    onNavigate,
+    activeCategory: routedCategory = "All",
+    onOpenCategory,
+}) {
+    const [activeCategory, setActiveCategory] = useState(routedCategory);
     const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        setActiveCategory(routedCategory || "All");
+    }, [routedCategory]);
 
     const featuredPost = posts.find((post) => post.featured) || posts[0];
 
@@ -56,11 +89,12 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
         activeCategory === "All"
             ? "Read Cin Nova articles about AI software, education, real estate, safety, parenting, product updates, and building useful app businesses."
             : `Read Cin Nova ${activeCategory} articles from the company blog and app ecosystem.`;
+    const pageUrl = activeCategory === "All" ? getBlogUrl() : getCategoryUrl(activeCategory);
     const blogSchema = {
         "@context": "https://schema.org",
         "@type": "Blog",
         name: "Cin Nova Blog",
-        url: getBlogUrl(),
+        url: pageUrl,
         description: seoDescription,
         publisher: {
             "@type": "Organization",
@@ -78,9 +112,20 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
         })),
     };
 
-    function jumpToArticles(cat) {
+    function openCategory(cat) {
         setActiveCategory(cat);
+        onOpenCategory?.(cat);
+    }
+
+    function jumpToArticles(cat) {
+        openCategory(cat);
         document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function handleArticleLink(event, post) {
+        event.preventDefault();
+        event.stopPropagation();
+        onOpenArticle(post);
     }
 
     return (
@@ -88,7 +133,7 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
             <SEO
                 title={seoTitle}
                 description={seoDescription}
-                url={getBlogUrl()}
+                url={pageUrl}
                 type="website"
                 schema={blogSchema}
             />
@@ -119,12 +164,13 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
                                 <span>{featuredPost.readTime}</span>
                                 <span>{featuredPost.author}</span>
                             </div>
-                            <button
+                            <a
+                                href={`/blog/${featuredPost.slug}`}
                                 className="primary-btn"
-                                onClick={() => onOpenArticle(featuredPost)}
+                                onClick={(event) => handleArticleLink(event, featuredPost)}
                             >
                                 Read Featured Article
-                            </button>
+                            </a>
                         </div>
                         <div className="blog-featured-panel">
                             <p className="product-category">ARTICLE DETAILS</p>
@@ -169,7 +215,13 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
                                     <small>{post.date}</small>
                                     <small>{post.readTime}</small>
                                 </div>
-                                <button onClick={() => onOpenArticle(post)}>Read Article</button>
+                                <a
+                                    href={`/blog/${post.slug}`}
+                                    className="article-card-action"
+                                    onClick={(event) => handleArticleLink(event, post)}
+                                >
+                                    Read Article
+                                </a>
                             </article>
                         ))}
                     </div>
@@ -183,21 +235,26 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
                         <input
                             type="search"
                             value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
+                            onChange={(event) => setSearchTerm(event.target.value.slice(0, 120))}
                             placeholder="Search AI, education, real estate..."
+                            maxLength={120}
                         />
                     </label>
                     <div className="blog-categories">
                         {["All", ...blogCategories].map((category) => (
-                            <button
+                            <a
+                                href={category === "All" ? "/blog" : `/blog/category/${slugifyCategory(category)}`}
                                 className={`blog-category-pill ${
                                     activeCategory === category ? "active" : ""
                                 }`}
                                 key={category}
-                                onClick={() => setActiveCategory(category)}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    openCategory(category);
+                                }}
                             >
                                 {category}
-                            </button>
+                            </a>
                         ))}
                     </div>
                 </div>
@@ -252,16 +309,20 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
                         const config = categoryConfig[cat] || { icon: "📄", desc: "" };
                         const count = posts.filter((p) => p.category === cat).length;
                         return (
-                            <button
+                            <a
+                                href={`/blog/category/${slugifyCategory(cat)}`}
                                 className="category-card"
                                 key={cat}
-                                onClick={() => jumpToArticles(cat)}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    jumpToArticles(cat);
+                                }}
                             >
                                 <span className="category-icon">{config.icon}</span>
                                 <strong>{cat}</strong>
                                 <p>{config.desc}</p>
                                 <small>{count} {count === 1 ? "article" : "articles"}</small>
-                            </button>
+                            </a>
                         );
                     })}
                 </div>
@@ -298,7 +359,13 @@ function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpe
                                 <small>{post.date}</small>
                                 <small>{post.readTime}</small>
                             </div>
-                            <button onClick={() => onOpenArticle(post)}>Read More</button>
+                            <a
+                                href={`/blog/${post.slug}`}
+                                className="article-card-action"
+                                onClick={(event) => handleArticleLink(event, post)}
+                            >
+                                Read More
+                            </a>
                         </article>
                     ))}
                 </div>

@@ -1,3 +1,12 @@
+import {
+    isValidEmail,
+    normalizeEmailInput,
+    safeReadArray,
+    safeWriteArray,
+    sanitizeTags,
+    sanitizeText,
+} from "../utils/security.js";
+
 const STORAGE_KEY = "cinNovaNewsletterSubscribers";
 
 // Represents the real subscriber count from the email provider (update when connected).
@@ -21,22 +30,29 @@ export const newsletterProviderConfig = {
 };
 
 function readSubscribers() {
-    if (typeof window === "undefined") return [];
-
-    try {
-        const stored = window.localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
-    } catch {
-        return [];
-    }
+    return safeReadArray(STORAGE_KEY)
+        .filter((subscriber) => subscriber && isValidEmail(subscriber.email))
+        .map((subscriber) => ({
+            id: sanitizeText(subscriber.id, 80) || crypto.randomUUID(),
+            email: normalizeEmailInput(subscriber.email),
+            status: sanitizeText(subscriber.status, 40) || "subscribed",
+            source: sanitizeText(subscriber.source, 100) || "Website",
+            sources: Array.isArray(subscriber.sources)
+                ? subscriber.sources.map((source) => sanitizeText(source, 100)).filter(Boolean).slice(0, 20)
+                : [],
+            tags: sanitizeTags(subscriber.tags),
+            providerStatus: sanitizeText(subscriber.providerStatus, 60) || "ready-to-sync",
+            createdAt: sanitizeText(subscriber.createdAt, 40) || new Date().toISOString(),
+            lastSeenAt: sanitizeText(subscriber.lastSeenAt, 40) || new Date().toISOString(),
+        }));
 }
 
 function writeSubscribers(subscribers) {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(subscribers));
+    safeWriteArray(STORAGE_KEY, subscribers.slice(0, 5000));
 }
 
 export function normalizeEmail(email) {
-    return email.trim().toLowerCase();
+    return normalizeEmailInput(email);
 }
 
 export function getSubscribers() {
@@ -45,6 +61,11 @@ export function getSubscribers() {
 
 export function saveSubscriber({ email, source = "Website", tags = [] }) {
     const normalizedEmail = normalizeEmail(email);
+    if (!isValidEmail(normalizedEmail)) {
+        return { status: "invalid", subscriber: null };
+    }
+    const safeSource = sanitizeText(source, 100) || "Website";
+    const safeTags = sanitizeTags(tags);
     const subscribers = readSubscribers();
     const existing = subscribers.find((subscriber) => subscriber.email === normalizedEmail);
     const now = new Date().toISOString();
@@ -55,8 +76,8 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
                 ? {
                       ...subscriber,
                       lastSeenAt: now,
-                      sources: Array.from(new Set([...(subscriber.sources || []), source])),
-                      tags: Array.from(new Set([...(subscriber.tags || []), ...tags])),
+                      sources: Array.from(new Set([...(subscriber.sources || []), safeSource])).slice(0, 20),
+                      tags: Array.from(new Set([...(subscriber.tags || []), ...safeTags])).slice(0, 20),
                   }
                 : subscriber,
         );
@@ -69,9 +90,9 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
         id: crypto.randomUUID(),
         email: normalizedEmail,
         status: "subscribed",
-        source,
-        sources: [source],
-        tags,
+        source: safeSource,
+        sources: [safeSource],
+        tags: safeTags,
         providerStatus: "ready-to-sync",
         createdAt: now,
         lastSeenAt: now,

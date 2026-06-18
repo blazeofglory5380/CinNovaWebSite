@@ -82,7 +82,7 @@ const values = [
 const roadmap = [
     {
         phase: "01",
-        title: "Build Product Pages &amp; Brand Website",
+        title: "Build Product Pages & Brand Website",
         status: "In Progress",
         statusColor: "#38bdf8",
         description:
@@ -98,7 +98,7 @@ const roadmap = [
     },
     {
         phase: "03",
-        title: "Grow Blog &amp; Newsletter",
+        title: "Grow Blog & Newsletter",
         status: "Planned",
         statusColor: "#64748b",
         description:
@@ -106,7 +106,7 @@ const roadmap = [
     },
     {
         phase: "04",
-        title: "Add Subscriptions &amp; Premium Tools",
+        title: "Add Subscriptions & Premium Tools",
         status: "Planned",
         statusColor: "#64748b",
         description:
@@ -114,7 +114,7 @@ const roadmap = [
     },
     {
         phase: "05",
-        title: "Expand to Business, School &amp; Enterprise",
+        title: "Expand to Business, School & Enterprise",
         status: "Future",
         statusColor: "#334155",
         description:
@@ -351,10 +351,7 @@ function About() {
                                 {step.status}
                             </div>
 
-                            <h3
-                                dangerouslySetInnerHTML={{ __html: step.title }}
-                                style={{ marginBottom: "10px" }}
-                            />
+                            <h3 style={{ marginBottom: "10px" }}>{step.title}</h3>
                             <p>{step.description}</p>
                         </article>
                     ))}

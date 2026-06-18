@@ -82,13 +82,16 @@ const productCTAContent = {
 };
 
 const categoryToProduct = {
-    "Education": "studynest",
-    "Parenting": "kiddo",
-    "Safety": "poisonguard",
-    "AI & Technology": "techmate",
-    "Real Estate": "real-estate",
-    "Product Updates": "studynest",
-    "Entrepreneurship": "studynest",
+    "Artificial Intelligence": "techmate",
+    "Real Estate Technology": "real-estate",
+    "Education Technology": "studynest",
+    "Healthcare Technology": "poisonguard",
+    "Construction Technology": "techmate",
+    "Data Centers & Databases": "techmate",
+    "Robotics & Automation": "techmate",
+    "Future Technology": "techmate",
+    "Business & Entrepreneurship": "studynest",
+    "CinNova Updates": "studynest",
 };
 
 function BlogProductCTA({ category, onNavigate }) {

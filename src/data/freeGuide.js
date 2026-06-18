@@ -106,7 +106,7 @@ The Cin Nova product ecosystem includes:
   - Real Estate   AI-powered property analysis and deal evaluation
 
 Visit the website:  https://cin-nova-web-site.vercel.app
-Read the blog:      https://cin-nova-web-site.vercel.app/?page=blog
+Read the blog:      https://cin-nova-web-site.vercel.app/blog
 
 This guide is a free resource from Cin Nova. Share it freely.
 Last updated: June 2026.

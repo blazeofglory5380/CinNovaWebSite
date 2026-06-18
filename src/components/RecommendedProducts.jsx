@@ -1,11 +1,14 @@
 const categoryProductMap = {
-    "Education": ["studynest"],
-    "Parenting": ["kiddo", "poisonguard"],
-    "Safety": ["poisonguard"],
-    "AI & Technology": ["techmate", "studynest"],
-    "Real Estate": ["real-estate"],
-    "Product Updates": ["studynest", "poisonguard"],
-    "Entrepreneurship": ["studynest", "techmate"],
+    "Artificial Intelligence": ["techmate", "studynest"],
+    "Real Estate Technology": ["real-estate"],
+    "Education Technology": ["studynest", "kiddo"],
+    "Healthcare Technology": ["poisonguard"],
+    "Construction Technology": ["techmate", "real-estate"],
+    "Data Centers & Databases": ["techmate"],
+    "Robotics & Automation": ["techmate"],
+    "Future Technology": ["techmate", "studynest"],
+    "Business & Entrepreneurship": ["studynest", "techmate"],
+    "CinNova Updates": ["studynest", "poisonguard"],
 };
 
 const productDetails = {

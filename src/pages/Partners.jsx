@@ -3,6 +3,13 @@ import "../App.css";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import {
+    isValidEmail,
+    normalizeEmailInput,
+    safeReadArray,
+    safeWriteArray,
+    sanitizeText,
+} from "../utils/security.js";
 
 const partnerTypes = [
     {
@@ -107,7 +114,7 @@ function Partners({ onSubscribe }) {
     function validate() {
         const e = {};
         if (!form.name.trim()) e.name = "Name is required";
-        if (!form.email.trim() || !form.email.includes("@")) e.email = "Valid email is required";
+        if (!isValidEmail(form.email)) e.email = "Valid email is required";
         if (!form.company.trim()) e.company = "Company or channel name is required";
         return e;
     }
@@ -119,14 +126,23 @@ function Partners({ onSubscribe }) {
             setErrors(errs);
             return;
         }
-        const applications = JSON.parse(localStorage.getItem("cn_partner_applications") || "[]");
-        applications.push({ ...form, submittedAt: new Date().toISOString() });
-        localStorage.setItem("cn_partner_applications", JSON.stringify(applications));
+        const applications = safeReadArray("cn_partner_applications");
+        applications.push({
+            name: sanitizeText(form.name, 100),
+            email: normalizeEmailInput(form.email),
+            company: sanitizeText(form.company, 140),
+            website: sanitizeText(form.website, 240),
+            type: partnerTypeOptions.includes(form.type) ? form.type : "Affiliate Partner",
+            message: sanitizeText(form.message, 1500),
+            submittedAt: new Date().toISOString(),
+        });
+        safeWriteArray("cn_partner_applications", applications.slice(-500));
         setSubmitted(true);
     }
 
     function update(field, value) {
-        setForm((prev) => ({ ...prev, [field]: value }));
+        const limits = { name: 100, email: 254, company: 140, website: 240, message: 1500 };
+        setForm((prev) => ({ ...prev, [field]: limits[field] ? value.slice(0, limits[field]) : value }));
         if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
 
@@ -267,6 +283,7 @@ function Partners({ onSubscribe }) {
                                     value={form.name}
                                     onChange={(e) => update("name", e.target.value)}
                                     placeholder="Jane Smith"
+                                    maxLength={100}
                                 />
                                 {errors.name && <span className="form-error">{errors.name}</span>}
                             </div>
@@ -278,6 +295,7 @@ function Partners({ onSubscribe }) {
                                     value={form.email}
                                     onChange={(e) => update("email", e.target.value)}
                                     placeholder="jane@example.com"
+                                    maxLength={254}
                                 />
                                 {errors.email && <span className="form-error">{errors.email}</span>}
                             </div>
@@ -291,6 +309,7 @@ function Partners({ onSubscribe }) {
                                     value={form.company}
                                     onChange={(e) => update("company", e.target.value)}
                                     placeholder="Acme Corp or YouTube/Blog name"
+                                    maxLength={140}
                                 />
                                 {errors.company && <span className="form-error">{errors.company}</span>}
                             </div>
@@ -302,6 +321,7 @@ function Partners({ onSubscribe }) {
                                     value={form.website}
                                     onChange={(e) => update("website", e.target.value)}
                                     placeholder="https://yoursite.com"
+                                    maxLength={240}
                                 />
                             </div>
                         </div>
@@ -325,6 +345,7 @@ function Partners({ onSubscribe }) {
                                 value={form.message}
                                 onChange={(e) => update("message", e.target.value)}
                                 placeholder="Describe your audience, goals, and how you'd like to work with Cin Nova..."
+                                maxLength={1500}
                             />
                         </div>
                         <button type="submit" className="primary-btn">

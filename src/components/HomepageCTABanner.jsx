@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
 function HomepageCTABanner({ subscriberCount = 1247, onSubscribe }) {
     const [email, setEmail] = useState("");
@@ -6,12 +7,13 @@ function HomepageCTABanner({ subscriberCount = 1247, onSubscribe }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!email.trim() || !email.includes("@")) {
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
             setStatus("error");
             return;
         }
         setStatus("loading");
-        onSubscribe?.({ email, source: "Homepage CTA Banner", tags: ["Homepage Banner"] });
+        onSubscribe?.({ email: normalizedEmail, source: "Homepage CTA Banner", tags: ["Homepage Banner"] });
         setStatus("success");
     }
 
@@ -61,10 +63,11 @@ function HomepageCTABanner({ subscriberCount = 1247, onSubscribe }) {
                                 type="email"
                                 value={email}
                                 onChange={(e) => {
-                                    setEmail(e.target.value);
+                                    setEmail(e.target.value.slice(0, 254));
                                     setStatus("idle");
                                 }}
                                 placeholder="your@email.com"
+                                maxLength={254}
                                 aria-label="Email address"
                             />
                             {status === "error" && (

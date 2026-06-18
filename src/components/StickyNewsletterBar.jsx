@@ -1,13 +1,20 @@
 import { useState } from "react";
+import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import "../App.css";
 
 function StickyNewsletterBar({ onSubscribe, onDismiss, subscriberCount }) {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
+    const [error, setError] = useState("");
 
     function handleSubmit(e) {
         e.preventDefault();
-        onSubscribe({ email, source: "Sticky Bar", tags: ["Sticky Bar"] });
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
+            setError("Enter a valid email.");
+            return;
+        }
+        onSubscribe({ email: normalizedEmail, source: "Sticky Bar", tags: ["Sticky Bar"] });
         setSubscribed(true);
         setEmail("");
     }
@@ -36,8 +43,12 @@ function StickyNewsletterBar({ onSubscribe, onDismiss, subscriberCount }) {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value.slice(0, 254));
+                                setError("");
+                            }}
                             placeholder="Your email address"
+                            maxLength={254}
                             required
                             aria-label="Email address"
                         />
@@ -45,6 +56,7 @@ function StickyNewsletterBar({ onSubscribe, onDismiss, subscriberCount }) {
                             Subscribe
                         </button>
                     </form>
+                    {error && <span className="form-error">{error}</span>}
                     <button className="sticky-bar-close" onClick={onDismiss} aria-label="Dismiss">
                         ✕
                     </button>

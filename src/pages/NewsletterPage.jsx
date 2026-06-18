@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
 const benefits = [
     {
@@ -97,12 +98,13 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!email.trim() || !email.includes("@")) {
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
             setStatus("error");
             return;
         }
         setStatus("loading");
-        onSubscribe?.({ email, source: "Newsletter Landing Page", tags: ["Newsletter Landing Page"] });
+        onSubscribe?.({ email: normalizedEmail, source: "Newsletter Landing Page", tags: ["Newsletter Landing Page"] });
         setStatus("success");
     }
 
@@ -172,10 +174,11 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
                                         type="email"
                                         value={email}
                                         onChange={(e) => {
-                                            setEmail(e.target.value);
+                                            setEmail(e.target.value.slice(0, 254));
                                             setStatus("idle");
                                         }}
                                         placeholder="your@email.com"
+                                        maxLength={254}
                                         aria-label="Email address"
                                     />
                                     {status === "error" && (
@@ -291,10 +294,11 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
                                 type="email"
                                 value={email}
                                 onChange={(e) => {
-                                    setEmail(e.target.value);
+                                    setEmail(e.target.value.slice(0, 254));
                                     setStatus("idle");
                                 }}
                                 placeholder="your@email.com"
+                                maxLength={254}
                             />
                             <button
                                 type="submit"

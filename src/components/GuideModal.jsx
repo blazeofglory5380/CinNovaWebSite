@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { downloadFreeGuide, freeGuideTitle } from "../data/freeGuide.js";
+import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import "../App.css";
 
 function GuideModal({ onSubscribe, onClose }) {
     const [email, setEmail] = useState("");
     const [downloaded, setDownloaded] = useState(false);
+    const [error, setError] = useState("");
 
     function handleSubmit(e) {
         e.preventDefault();
+        const normalizedEmail = normalizeEmailInput(email);
+        if (!isValidEmail(normalizedEmail)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
         onSubscribe({
-            email,
+            email: normalizedEmail,
             source: "Free Guide Download",
             tags: ["Guide Download", "Free Resource"],
         });
@@ -62,8 +69,12 @@ function GuideModal({ onSubscribe, onClose }) {
                             <input
                                 type="email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value.slice(0, 254));
+                                    setError("");
+                                }}
                                 placeholder="Your email address"
+                                maxLength={254}
                                 required
                                 autoFocus
                             />
@@ -71,6 +82,7 @@ function GuideModal({ onSubscribe, onClose }) {
                                 Get the Free Guide →
                             </button>
                         </form>
+                        {error && <p className="popup-fine-print">{error}</p>}
                         <p className="popup-fine-print">
                             Instant download. We'll also add you to the Cin Nova newsletter.
                         </p>

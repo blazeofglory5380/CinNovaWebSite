@@ -2,6 +2,13 @@ import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import {
+    isValidEmail,
+    normalizeEmailInput,
+    safeReadArray,
+    safeWriteArray,
+    sanitizeText,
+} from "../utils/security.js";
 
 const audienceStats = [
     { value: "1,247+", label: "Newsletter Subscribers", icon: "📧" },
@@ -246,7 +253,7 @@ function MediaKit({ onNavigate }) {
     function validateContact() {
         const e = {};
         if (!contactForm.name.trim()) e.name = "Name is required";
-        if (!contactForm.email.trim() || !contactForm.email.includes("@")) e.email = "Valid email required";
+        if (!isValidEmail(contactForm.email)) e.email = "Valid email required";
         if (!contactForm.company.trim()) e.company = "Company is required";
         return e;
     }
@@ -255,14 +262,22 @@ function MediaKit({ onNavigate }) {
         e.preventDefault();
         const errs = validateContact();
         if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-        const inquiries = JSON.parse(localStorage.getItem("cn_media_inquiries") || "[]");
-        inquiries.push({ ...contactForm, submittedAt: new Date().toISOString() });
-        localStorage.setItem("cn_media_inquiries", JSON.stringify(inquiries));
+        const inquiries = safeReadArray("cn_media_inquiries");
+        inquiries.push({
+            name: sanitizeText(contactForm.name, 100),
+            email: normalizeEmailInput(contactForm.email),
+            company: sanitizeText(contactForm.company, 140),
+            placement: sanitizeText(contactForm.placement, 120),
+            message: sanitizeText(contactForm.message, 1500),
+            submittedAt: new Date().toISOString(),
+        });
+        safeWriteArray("cn_media_inquiries", inquiries.slice(-500));
         setContactSent(true);
     }
 
     function updateContact(field, value) {
-        setContactForm((prev) => ({ ...prev, [field]: value }));
+        const limits = { name: 100, email: 254, company: 140, placement: 120, message: 1500 };
+        setContactForm((prev) => ({ ...prev, [field]: limits[field] ? value.slice(0, limits[field]) : value }));
         if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
 
@@ -452,6 +467,7 @@ function MediaKit({ onNavigate }) {
                                     value={contactForm.name}
                                     onChange={(e) => updateContact("name", e.target.value)}
                                     placeholder="Jane Smith"
+                                    maxLength={100}
                                 />
                                 {errors.name && <span className="form-error">{errors.name}</span>}
                             </div>
@@ -463,6 +479,7 @@ function MediaKit({ onNavigate }) {
                                     value={contactForm.email}
                                     onChange={(e) => updateContact("email", e.target.value)}
                                     placeholder="jane@example.com"
+                                    maxLength={254}
                                 />
                                 {errors.email && <span className="form-error">{errors.email}</span>}
                             </div>
@@ -476,6 +493,7 @@ function MediaKit({ onNavigate }) {
                                     value={contactForm.company}
                                     onChange={(e) => updateContact("company", e.target.value)}
                                     placeholder="Acme Corp"
+                                    maxLength={140}
                                 />
                                 {errors.company && <span className="form-error">{errors.company}</span>}
                             </div>
@@ -502,6 +520,7 @@ function MediaKit({ onNavigate }) {
                                 value={contactForm.message}
                                 onChange={(e) => updateContact("message", e.target.value)}
                                 placeholder="Tell us about your product, target audience, and campaign goals..."
+                                maxLength={1500}
                             />
                         </div>
                         <button type="submit" className="primary-btn">
