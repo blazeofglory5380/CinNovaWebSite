@@ -1,10 +1,31 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
+
+const poisonguardSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "PoisonGuard",
+    applicationCategory: "HealthApplication",
+    description: "Household chemical and poison safety assistant for families, pets, and schools. Scan products for hazards and get emergency guidance.",
+    operatingSystem: "Web",
+    url: `${siteUrl}/?page=poisonguard`,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
 
 function PoisonGuard() {
     return (
         <div className="product-page">
+            <SEO
+                title="PoisonGuard | Household Chemical Safety App — Cin Nova"
+                description="PoisonGuard scans household chemicals for hazard information, provides pet-safe warnings, and delivers emergency guidance. In development by Cin Nova."
+                url={`${siteUrl}/?page=poisonguard`}
+                type="website"
+                schema={poisonguardSchema}
+            />
             <section className="studynest-hero">
                 <div>
                     <p className="eyebrow">POISONGUARD</p>

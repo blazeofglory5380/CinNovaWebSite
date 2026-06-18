@@ -1,6 +1,8 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
 
 const products = [
     {
@@ -122,9 +124,25 @@ const roadmap = [
     },
 ];
 
+const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "About Cin Nova",
+    description: "Learn about Cin Nova — the company building practical AI software products for education, safety, real estate, tech support, and early childhood learning.",
+    url: `${siteUrl}/?page=about`,
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
+
 function About() {
     return (
         <div className="product-page">
+            <SEO
+                title="About Cin Nova | Practical AI Software Company"
+                description="Cin Nova builds AI-powered products for learning, safety, real estate, tech support, and early childhood education. Learn about our products, values, and roadmap."
+                url={`${siteUrl}/?page=about`}
+                type="website"
+                schema={aboutSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="section" style={{ paddingBottom: "48px" }}>

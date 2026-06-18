@@ -33,7 +33,9 @@ import {
 import { getResourceBySlug, resources } from "./data/resources.js";
 import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
-import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
+import { getCategoryBySlug, slugifyCategory, siteUrl } from "./data/blogPosts.js";
+import SEO from "./components/SEO.jsx";
+import { trackPageView } from "./utils/analytics.js";
 
 const products = [
     {
@@ -307,6 +309,33 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
+const homeSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            "@id": `${siteUrl}/#organization`,
+            name: "Cin Nova",
+            url: siteUrl,
+            description:
+                "Cin Nova builds practical AI software products for education, safety, real estate, and everyday decision-making.",
+            sameAs: [`${siteUrl}/blog`, `${siteUrl}/?page=newsletter`],
+        },
+        {
+            "@type": "WebSite",
+            "@id": `${siteUrl}/#website`,
+            url: siteUrl,
+            name: "Cin Nova",
+            publisher: { "@id": `${siteUrl}/#organization` },
+            potentialAction: {
+                "@type": "SearchAction",
+                target: `${siteUrl}/blog?q={search_term_string}`,
+                "query-input": "required name=search_term_string",
+            },
+        },
+    ],
+};
+
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
     const latestPosts = posts.slice(0, 3);
 
@@ -317,6 +346,13 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
 
     return (
         <main>
+            <SEO
+                title="Cin Nova | AI Software, Apps, and Technology Blog"
+                description="Cin Nova builds practical AI products for learning, safety, real estate, and everyday decision-making. Explore StudyNest, PoisonGuard, TechMate AI, Kiddo, and Cin Nova Real Estate."
+                url={siteUrl}
+                type="website"
+                schema={homeSchema}
+            />
             <section className="hero">
                 <div>
                     <p className="eyebrow">SOFTWARE - AI - EDUCATION - SAFETY - REAL ESTATE</p>
@@ -715,6 +751,7 @@ function App() {
 
     function pushRoute(url) {
         window.history.pushState({}, "", url);
+        trackPageView(url);
     }
 
     function goHome() {

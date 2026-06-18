@@ -1,10 +1,31 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
+
+const techmateSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "TechMate AI",
+    applicationCategory: "UtilitiesApplication",
+    description: "AI-powered tech support and troubleshooting for devices, software, networks, and error codes — no wait times or hold music.",
+    operatingSystem: "Web",
+    url: `${siteUrl}/?page=techmate`,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
 
 function TechMateAI() {
     return (
         <div className="product-page">
+            <SEO
+                title="TechMate AI | AI Tech Support for Every Device — Cin Nova"
+                description="TechMate AI gives instant AI-powered troubleshooting for devices, software, networks, and error codes. No hold music, no wait times. In development by Cin Nova."
+                url={`${siteUrl}/?page=techmate`}
+                type="website"
+                schema={techmateSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="studynest-hero">

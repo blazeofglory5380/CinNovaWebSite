@@ -1,10 +1,31 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
+
+const kiddoSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Kiddo",
+    applicationCategory: "EducationApplication",
+    description: "Interactive early learning app for children ages 3–8 with reading, writing, counting, math games, stories, and a parent dashboard.",
+    operatingSystem: "Web",
+    url: `${siteUrl}/?page=kiddo`,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
 
 function Kiddo() {
     return (
         <div className="product-page">
+            <SEO
+                title="Kiddo | Early Learning App for Kids Ages 3–8 — Cin Nova"
+                description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 3–8, with a parent dashboard to track progress. In development by Cin Nova."
+                url={`${siteUrl}/?page=kiddo`}
+                type="website"
+                schema={kiddoSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="studynest-hero">

@@ -3,6 +3,8 @@ import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
 
 const contactCards = [
     {
@@ -92,6 +94,15 @@ const inquiryTypes = [
     "Other",
 ];
 
+const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact Cin Nova",
+    description: "Contact Cin Nova for product questions, partnerships, school and business plans, media inquiries, and support.",
+    url: `${siteUrl}/?page=contact`,
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
+
 function Contact() {
     const [error, setError] = useState("");
 
@@ -114,6 +125,13 @@ function Contact() {
 
     return (
         <div className="product-page">
+            <SEO
+                title="Contact Cin Nova | Get in Touch"
+                description="Contact Cin Nova for product questions, partnership inquiries, school and business plans, media collaborations, or technical support."
+                url={`${siteUrl}/?page=contact`}
+                type="website"
+                schema={contactSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="section" style={{ paddingBottom: "48px" }}>

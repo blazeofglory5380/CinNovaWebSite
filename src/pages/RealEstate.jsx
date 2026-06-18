@@ -1,10 +1,31 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
+
+const realestateSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Cin Nova Real Estate",
+    applicationCategory: "FinanceApplication",
+    description: "AI-powered real estate investment tools for deal analysis, cash flow modeling, mortgage calculators, and market intelligence.",
+    operatingSystem: "Web",
+    url: `${siteUrl}/?page=real-estate`,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
 
 function RealEstate() {
     return (
         <div className="product-page">
+            <SEO
+                title="Cin Nova Real Estate | AI Investment Tools — Cin Nova"
+                description="Analyze deals, model cash flow, calculate mortgages, and get AI guidance on real estate investments. Cin Nova Real Estate is in development."
+                url={`${siteUrl}/?page=real-estate`}
+                type="website"
+                schema={realestateSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="studynest-hero">

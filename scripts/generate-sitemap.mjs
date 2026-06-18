@@ -38,6 +38,19 @@ const urls = [
         changefreq: "weekly",
         priority: "0.8",
     },
+    // Product pages
+    { loc: `${siteUrl}/?page=studynest`,    lastmod: "2026-06-18", changefreq: "monthly", priority: "0.8" },
+    { loc: `${siteUrl}/?page=poisonguard`,  lastmod: "2026-06-18", changefreq: "monthly", priority: "0.8" },
+    { loc: `${siteUrl}/?page=real-estate`,  lastmod: "2026-06-18", changefreq: "monthly", priority: "0.8" },
+    { loc: `${siteUrl}/?page=techmate`,     lastmod: "2026-06-18", changefreq: "monthly", priority: "0.8" },
+    { loc: `${siteUrl}/?page=kiddo`,        lastmod: "2026-06-18", changefreq: "monthly", priority: "0.8" },
+    // Static pages
+    { loc: `${siteUrl}/?page=about`,        lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=contact`,      lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=pricing`,      lastmod: "2026-06-18", changefreq: "monthly", priority: "0.7" },
+    { loc: `${siteUrl}/?page=partners`,     lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=newsletter`,   lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=media-kit`,    lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
     ...blogPosts.map((post) => ({
         loc: getArticleUrl(post),
         lastmod: toIsoDate(post.date),

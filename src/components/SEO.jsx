@@ -38,7 +38,7 @@ function upsertStructuredData(schema) {
     document.head.appendChild(script);
 }
 
-function SEO({ title, description, url, type = "website", schema }) {
+function SEO({ title, description, url, type = "website", image, schema }) {
     useEffect(() => {
         document.title = title;
 
@@ -48,12 +48,15 @@ function SEO({ title, description, url, type = "website", schema }) {
         upsertMeta("property", "og:type", type);
         upsertMeta("property", "og:url", url);
         upsertMeta("property", "og:site_name", "Cin Nova");
-        upsertMeta("name", "twitter:card", "summary_large_image");
+        if (image) upsertMeta("property", "og:image", image);
+        upsertMeta("name", "twitter:card", image ? "summary_large_image" : "summary");
         upsertMeta("name", "twitter:title", title);
         upsertMeta("name", "twitter:description", description);
+        upsertMeta("name", "twitter:site", "@CinNova");
+        if (image) upsertMeta("name", "twitter:image", image);
         upsertCanonical(url);
         upsertStructuredData(schema);
-    }, [title, description, url, type, schema]);
+    }, [title, description, url, type, image, schema]);
 
     return null;
 }

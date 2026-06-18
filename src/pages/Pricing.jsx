@@ -1,6 +1,8 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/blogPosts.js";
 
 const products = [
     {
@@ -173,9 +175,25 @@ const comparisons = [
     },
 ];
 
+const pricingSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Cin Nova Pricing",
+    description: "Pricing plans for all Cin Nova products: StudyNest, PoisonGuard, TechMate AI, Kiddo, and Cin Nova Real Estate.",
+    url: `${siteUrl}/?page=pricing`,
+    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+};
+
 function Pricing() {
     return (
         <div className="product-page">
+            <SEO
+                title="Pricing | Cin Nova AI Products — Plans and Tiers"
+                description="Compare free and paid plans for StudyNest, PoisonGuard, TechMate AI, Kiddo, and Cin Nova Real Estate. Find the right plan for students, families, investors, and teams."
+                url={`${siteUrl}/?page=pricing`}
+                type="website"
+                schema={pricingSchema}
+            />
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="section" style={{ paddingBottom: "40px" }}>
