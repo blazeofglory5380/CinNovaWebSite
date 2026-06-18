@@ -2,7 +2,7 @@ import { useState } from "react";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import "../App.css";
 
-function NewsletterPopup({ onSubscribe, onClose, subscriberCount }) {
+function NewsletterPopup({ onSubscribe, onClose }) {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
     const [error, setError] = useState("");
@@ -42,11 +42,7 @@ function NewsletterPopup({ onSubscribe, onClose, subscriberCount }) {
                         <p className="eyebrow">CIN NOVA NEWSLETTER</p>
                         <h2>Build smarter with AI.</h2>
                         <p className="popup-body">
-                            Join{" "}
-                            <strong style={{ color: "#38bdf8" }}>
-                                {subscriberCount.toLocaleString()}+ readers
-                            </strong>{" "}
-                            getting practical articles on AI, education, real estate, family
+                            Get practical articles on AI, education, real estate, family
                             safety, and the Cin Nova product ecosystem.
                         </p>
                         <form className="popup-form" onSubmit={handleSubmit}>

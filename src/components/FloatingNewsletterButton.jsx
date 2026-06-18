@@ -3,7 +3,7 @@ import { isValidEmail, normalizeEmailInput, safeGetSessionFlag, safeSetSessionFl
 
 const SESSION_KEY = "cn_float_btn_dismissed";
 
-function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
+function FloatingNewsletterButton({ onSubscribe }) {
     const [dismissed] = useState(() => safeGetSessionFlag(SESSION_KEY));
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
@@ -55,12 +55,7 @@ function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
                             <strong className="float-nl-headline">
                                 Get product updates and free guides.
                             </strong>
-                            <p className="float-nl-sub">
-                                Join{" "}
-                                <span className="float-nl-count">
-                                    {subscriberCount.toLocaleString()}+ readers
-                                </span>
-                            </p>
+                            <p className="float-nl-sub">Fresh product updates, guides, and launch notes.</p>
                             <form onSubmit={handleSubmit} className="float-nl-form">
                                 <input
                                     type="email"

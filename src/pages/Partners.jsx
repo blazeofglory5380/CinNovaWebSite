@@ -65,7 +65,7 @@ const partnerTypes = [
         description:
             "Place your brand in front of a targeted audience through newsletter sponsorships, article co-branding, or resource placements. View the Media Kit for specs and current availability.",
         benefits: [
-            "Newsletter send sponsorship (1,247+ direct opens)",
+            "Newsletter send sponsorship for the Cin Nova audience",
             "Sponsored article placement on the blog",
             "Resource page co-brand and download credit",
             "Audience-matched placement targeting",
@@ -175,8 +175,8 @@ function Partners({ onSubscribe }) {
                         to partner — from content collaboration to full sponsorships.
                     </p>
                     <div className="resources-hero-stats">
-                        <span>📧 1,247+ newsletter subscribers</span>
-                        <span>⬇️ 4,280+ resource downloads</span>
+                        <span>📧 Growing newsletter audience</span>
+                        <span>⬇️ Live resource downloads</span>
                         <span>📚 7 article categories</span>
                     </div>
                 </div>

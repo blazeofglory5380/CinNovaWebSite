@@ -338,15 +338,15 @@ function TechMateAI() {
                             </p>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                                 {[
-                                    ["🖥️", "Fix Windows 11 Update Stuck at 35%", "14.2k views"],
-                                    ["📱", "iPhone Battery Draining Fast — iOS 17", "11.8k views"],
-                                    ["📡", "Starlink Connection Drops Fix", "9.4k views"],
-                                    ["💿", "macOS Sonoma Slow Performance", "7.7k views"],
-                                    ["🖨️", "HP Printer Offline on Wi-Fi — All Models", "6.1k views"],
-                                ].map(([icon, title, views]) => (
+                                    ["🖥️", "Fix Windows 11 Update Stuck at 35%", "Guide"],
+                                    ["📱", "iPhone Battery Draining Fast — iOS 17", "Guide"],
+                                    ["📡", "Starlink Connection Drops Fix", "Guide"],
+                                    ["💿", "macOS Sonoma Slow Performance", "Guide"],
+                                    ["🖨️", "HP Printer Offline on Wi-Fi — All Models", "Guide"],
+                                ].map(([icon, title, status]) => (
                                     <div key={title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                                         <span style={{ color: "#e2e8f0", fontSize: "0.88rem" }}>{icon} {title}</span>
-                                        <span style={{ color: "#64748b", fontSize: "0.78rem", whiteSpace: "nowrap", marginLeft: "12px" }}>{views}</span>
+                                        <span style={{ color: "#64748b", fontSize: "0.78rem", whiteSpace: "nowrap", marginLeft: "12px" }}>{status}</span>
                                     </div>
                                 ))}
                             </div>

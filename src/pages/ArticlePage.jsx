@@ -8,7 +8,7 @@ import SponsoredDisclosure from "../components/SponsoredDisclosure.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
 import BlogProductCTA from "../components/BlogProductCTA.jsx";
-import { getArticleUrl, getAuthorProfile, siteUrl } from "../data/blogPosts.js";
+import { getArticleUrl, getAuthorProfile, siteUrl, slugifyCategory } from "../data/blogPosts.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
 
 function ReadingProgressBar() {
@@ -146,7 +146,20 @@ function PrevNextNav({ prev, next, onOpenArticle }) {
     );
 }
 
-function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, subscriberCount = 1247, onNavigate }) {
+function ArticleHeroVisual({ post }) {
+    return (
+        <div
+            className="article-thumb article-thumb-hero"
+            data-category={slugifyCategory(post.category)}
+            aria-label={`${post.category} article thumbnail`}
+        >
+            <span>{post.thumbnail?.label || post.category.slice(0, 2).toUpperCase()}</span>
+            <strong>{post.thumbnail?.title || post.category}</strong>
+        </div>
+    );
+}
+
+function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNavigate }) {
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
 
@@ -217,6 +230,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, subscrib
                 <div className="article-author-hero">
                     <AuthorProfile author={author} variant="compact" />
                 </div>
+                <ArticleHeroVisual post={post} />
             </section>
 
             <section className="section article-content-section">
@@ -229,7 +243,6 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, subscrib
                                 {i === 1 && (
                                     <ArticleCTA
                                         onSubscribe={onSubscribe}
-                                        subscriberCount={subscriberCount}
                                     />
                                 )}
                             </section>

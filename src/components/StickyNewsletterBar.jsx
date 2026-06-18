@@ -2,7 +2,7 @@ import { useState } from "react";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import "../App.css";
 
-function StickyNewsletterBar({ onSubscribe, onDismiss, subscriberCount }) {
+function StickyNewsletterBar({ onSubscribe, onDismiss }) {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
     const [error, setError] = useState("");
@@ -36,7 +36,7 @@ function StickyNewsletterBar({ onSubscribe, onDismiss, subscriberCount }) {
                         <span className="sticky-bar-mark">CN</span>
                     </div>
                     <div className="sticky-bar-copy">
-                        <strong>Join {subscriberCount.toLocaleString()}+ readers</strong>
+                        <strong>Join the Cin Nova newsletter</strong>
                         <span>Get AI, education, real estate, and app updates.</span>
                     </div>
                     <form className="sticky-bar-form" onSubmit={handleSubmit}>

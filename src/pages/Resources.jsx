@@ -136,7 +136,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                     <div className="resources-hero-stats">
                         <span>📚 {resources.length} resources</span>
                         <span>📂 6 categories</span>
-                        <span>⬇️ 4,280+ downloads</span>
+                        <span>⬇️ Download center live</span>
                     </div>
                 </div>
             </section>

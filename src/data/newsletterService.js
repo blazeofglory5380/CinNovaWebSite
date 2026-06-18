@@ -9,8 +9,7 @@ import {
 
 const STORAGE_KEY = "cinNovaNewsletterSubscribers";
 
-// Represents the real subscriber count from the email provider (update when connected).
-export const SUBSCRIBER_BASE_COUNT = 1247;
+export const SUBSCRIBER_BASE_COUNT = 0;
 
 export function getDisplaySubscriberCount() {
     return SUBSCRIBER_BASE_COUNT + readSubscribers().length;

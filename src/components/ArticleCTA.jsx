@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../App.css";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
-function ArticleCTA({ onSubscribe, subscriberCount }) {
+function ArticleCTA({ onSubscribe }) {
     const [email, setEmail] = useState("");
     const [subscribed, setSubscribed] = useState(false);
     const [error, setError] = useState("");
@@ -24,11 +24,7 @@ function ArticleCTA({ onSubscribe, subscriberCount }) {
             <p className="article-cta-eyebrow">STAY IN THE LOOP</p>
             <h3>Enjoying this article?</h3>
             <p>
-                Join{" "}
-                <strong style={{ color: "#38bdf8" }}>
-                    {subscriberCount.toLocaleString()}+ readers
-                </strong>{" "}
-                getting new Cin Nova articles and app updates straight to their inbox.
+                Get new Cin Nova articles and app updates straight to your inbox.
             </p>
 
             {subscribed ? (

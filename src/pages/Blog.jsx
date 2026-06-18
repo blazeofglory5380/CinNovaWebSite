@@ -39,7 +39,6 @@ function Blog({
     posts,
     onOpenArticle,
     onSubscribe,
-    subscriberCount = 1247,
     onOpenGuide,
     onNavigate,
     activeCategory: routedCategory = "All",
@@ -60,10 +59,7 @@ function Blog({
     );
 
     const popularPosts = useMemo(
-        () =>
-            [...posts]
-                .sort((a, b) => (postMetrics[b.id]?.views || 0) - (postMetrics[a.id]?.views || 0))
-                .slice(0, 5),
+        () => posts.filter((post) => post.popular).slice(0, 5),
         [posts]
     );
 
@@ -128,6 +124,20 @@ function Blog({
         onOpenArticle(post);
     }
 
+    function ArticleVisual({ post, variant = "card" }) {
+        const config = categoryConfig[post.category] || { icon: "CN", desc: "" };
+        return (
+            <div
+                className={`article-thumb article-thumb-${variant}`}
+                data-category={slugifyCategory(post.category)}
+                aria-label={`${post.category} article thumbnail`}
+            >
+                <span>{post.thumbnail?.label || config.icon}</span>
+                <strong>{post.thumbnail?.title || post.category}</strong>
+            </div>
+        );
+    }
+
     return (
         <main className="product-page blog-page">
             <SEO
@@ -140,9 +150,6 @@ function Blog({
 
             <section className="section blog-hero-section">
                 <div className="section-heading blog-hero-copy">
-                    <div className="subscriber-count-badge">
-                        {subscriberCount.toLocaleString()}+ subscribers
-                    </div>
                     <p className="eyebrow">CIN NOVA BLOG</p>
                     <h2>Ideas for building, learning, safety, and smarter software.</h2>
                     <p>
@@ -156,6 +163,7 @@ function Blog({
                 <section className="section blog-featured-section">
                     <div className="blog-featured blog-featured-clickable">
                         <div>
+                            <ArticleVisual post={featuredPost} variant="featured" />
                             <p className="eyebrow">{featuredPost.category.toUpperCase()}</p>
                             <h2>{featuredPost.title}</h2>
                             <p>{featuredPost.excerpt}</p>
@@ -173,15 +181,12 @@ function Blog({
                             </a>
                         </div>
                         <div className="blog-featured-panel">
-                            <p className="product-category">ARTICLE DETAILS</p>
+                            <ArticleVisual post={featuredPost} variant="panel" />
+                            <p className="product-category">FEATURED ARTICLE</p>
                             <strong>{featuredPost.category}</strong>
                             <span>{featuredPost.readTime}</span>
                             <span>{featuredPost.date}</span>
-                            <div className="featured-mini-bars">
-                                <i />
-                                <i />
-                                <i />
-                            </div>
+                            <span>By {featuredPost.author}</span>
                         </div>
                     </div>
                 </section>
@@ -209,9 +214,11 @@ function Blog({
                                     <span className="trending-badge">Trending</span>
                                     {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
                                 </div>
+                                <ArticleVisual post={post} />
                                 <h3>{post.title}</h3>
                                 <p>{post.excerpt}</p>
                                 <div className="article-card-meta">
+                                    <small>{post.author}</small>
                                     <small>{post.date}</small>
                                     <small>{post.readTime}</small>
                                 </div>
@@ -353,9 +360,11 @@ function Blog({
                                 <span>{post.category}</span>
                                 {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
                             </div>
+                            <ArticleVisual post={post} />
                             <h3>{post.title}</h3>
                             <p>{post.excerpt}</p>
                             <div className="article-card-meta">
+                                <small>{post.author}</small>
                                 <small>{post.date}</small>
                                 <small>{post.readTime}</small>
                             </div>
@@ -373,9 +382,9 @@ function Blog({
 
             <section className="section popular-section">
                 <div className="section-heading">
-                    <p className="eyebrow">MOST POPULAR</p>
-                    <h2>The articles readers love most.</h2>
-                    <p>Ranked by total reads across the Cin Nova blog.</p>
+                    <p className="eyebrow">EDITOR PICKS</p>
+                    <h2>Start with these practical reads.</h2>
+                    <p>Selected articles that introduce the core CinNova product lanes and technology themes.</p>
                 </div>
                 <div className="popular-articles-list">
                     {popularPosts.map((post, i) => (
@@ -395,10 +404,8 @@ function Blog({
                                 <h3>{post.title}</h3>
                                 <p>{post.excerpt}</p>
                                 <div className="article-card-meta">
+                                    <small>{post.author}</small>
                                     <small>{post.readTime}</small>
-                                    <small>
-                                        {(postMetrics[post.id]?.views || 0).toLocaleString()} reads
-                                    </small>
                                 </div>
                             </div>
                         </article>
@@ -411,11 +418,7 @@ function Blog({
                     <p className="eyebrow">STAY IN THE LOOP</p>
                     <h2>Get new articles and product updates in your inbox.</h2>
                     <p className="newsletter-copy">
-                        Join{" "}
-                        <strong style={{ color: "#38bdf8" }}>
-                            {subscriberCount.toLocaleString()}+ readers
-                        </strong>{" "}
-                        getting launch notes, article drops, and behind-the-scenes updates as
+                        Get launch notes, article drops, and behind-the-scenes updates as
                         Cin Nova builds its app ecosystem.
                     </p>
                     <NewsletterSignup

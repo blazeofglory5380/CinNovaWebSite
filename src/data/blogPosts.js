@@ -1028,7 +1028,6 @@ export const postMetrics = Object.fromEntries(
     blogPosts.map((post) => [
         post.id,
         {
-            views: post.status === "planned" ? 0 : 1200 + post.id * 185,
             trending: Boolean(post.trending),
             popular: Boolean(post.popular),
         },

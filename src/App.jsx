@@ -31,7 +31,7 @@ import {
     getPublishedPosts,
 } from "./data/blogManagerService.js";
 import { getResourceBySlug, resources } from "./data/resources.js";
-import { getDisplaySubscriberCount, saveSubscriber } from "./data/newsletterService.js";
+import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 
@@ -307,7 +307,7 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
-function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount, onGoBlog }) {
+function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
     const latestPosts = posts.slice(0, 3);
 
     function openProduct(page) {
@@ -550,7 +550,6 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount,
             </section>
 
             <HomepageCTABanner
-                subscriberCount={subscriberCount}
                 onSubscribe={onSubscribe}
             />
 
@@ -624,7 +623,6 @@ function App() {
     const [selectedCategory, setSelectedCategory] = useState(initialRoute.category || "All");
 
     // Lead capture state
-    const [subscriberCount, setSubscriberCount] = useState(getDisplaySubscriberCount);
     const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
     const [showExitPopup, setShowExitPopup] = useState(false);
     const [showGuideModal, setShowGuideModal] = useState(false);
@@ -787,7 +785,6 @@ function App() {
 
     function showNewsletterAlert(payload) {
         const result = saveSubscriber(payload);
-        setSubscriberCount(getDisplaySubscriberCount());
         return result;
     }
 
@@ -816,7 +813,6 @@ function App() {
                 <NewsletterPopup
                     onSubscribe={showNewsletterAlert}
                     onClose={closeNewsletterPopup}
-                    subscriberCount={subscriberCount}
                 />
             )}
             {showExitPopup && !isSuccessPage && (
@@ -835,13 +831,11 @@ function App() {
                 <StickyNewsletterBar
                     onSubscribe={showNewsletterAlert}
                     onDismiss={dismissStickyBar}
-                    subscriberCount={subscriberCount}
                 />
             )}
             {!isSuccessPage && (
                 <FloatingNewsletterButton
                     onSubscribe={showNewsletterAlert}
-                    subscriberCount={subscriberCount}
                 />
             )}
 
@@ -877,7 +871,6 @@ function App() {
                     setPage={openPage}
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
-                    subscriberCount={subscriberCount}
                     onGoBlog={goBlog}
                 />
             )}
@@ -886,7 +879,6 @@ function App() {
                     posts={publishedPosts}
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
-                    subscriberCount={subscriberCount}
                     onOpenGuide={() => setShowGuideModal(true)}
                     onNavigate={openPage}
                     activeCategory={selectedCategory}
@@ -906,7 +898,6 @@ function App() {
                     onBack={goBlog}
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
-                    subscriberCount={subscriberCount}
                     onNavigate={openPage}
                 />
             )}
@@ -927,7 +918,6 @@ function App() {
             {page === "newsletter" && (
                 <NewsletterPage
                     onSubscribe={showNewsletterAlert}
-                    subscriberCount={subscriberCount}
                 />
             )}
             {page === "newsletter-admin" && <NewsletterAdmin />}
@@ -991,7 +981,7 @@ function App() {
                         Cin Nova software ecosystem.
                     </p>
                     <p className="footer-subscriber-count">
-                        {subscriberCount.toLocaleString()}+ subscribers and counting.
+                        Product updates, guides, and launch notes in one place.
                     </p>
                 </div>
 

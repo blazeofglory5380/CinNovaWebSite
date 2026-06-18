@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
-function HomepageCTABanner({ subscriberCount = 1247, onSubscribe }) {
+function HomepageCTABanner({ onSubscribe }) {
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState("idle"); // idle | loading | success | error
 
@@ -23,7 +23,7 @@ function HomepageCTABanner({ subscriberCount = 1247, onSubscribe }) {
                 <div className="homepage-cta-copy">
                     <p className="homepage-cta-eyebrow">
                         <span className="homepage-cta-pulse" />
-                        {subscriberCount.toLocaleString()}+ readers subscribed
+                        Cin Nova product updates
                     </p>
                     <h2 className="homepage-cta-headline">
                         Get Cin Nova updates before anyone else.

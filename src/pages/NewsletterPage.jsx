@@ -91,7 +91,7 @@ const recentTopics = [
     },
 ];
 
-function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
+function NewsletterPage({ onSubscribe }) {
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState("idle");
     const [openFaqIndex, setOpenFaqIndex] = useState(null);
@@ -120,7 +120,7 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
         <main className="product-page newsletter-landing-page">
             <SEO
                 title="Cin Nova Newsletter — Free Product Updates, Guides, and Early Access"
-                description="Join 1,247+ readers getting Cin Nova product launches, free downloadable guides, behind-the-scenes builds, and early access to new features."
+                description="Join the Cin Nova newsletter for product launches, free downloadable guides, behind-the-scenes builds, and early access to new features."
                 url={`${siteUrl}/?page=newsletter`}
                 type="website"
                 schema={nlSchema}
@@ -132,7 +132,7 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
                     <div className="nl-hero-copy">
                         <div className="nl-hero-badge">
                             <span className="nl-pulse-dot" />
-                            {subscriberCount.toLocaleString()}+ readers and growing
+                            Product updates and free guides
                         </div>
                         <p className="eyebrow">CIN NOVA NEWSLETTER</p>
                         <h1 className="nl-hero-headline">
@@ -201,7 +201,7 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
                                             <div key={initials} className="nl-avatar">{initials}</div>
                                         ))}
                                     </div>
-                                    <span>Joined by {subscriberCount.toLocaleString()}+ readers</span>
+                                    <span>Built for readers following the Cin Nova ecosystem</span>
                                 </div>
                             </>
                         )}
@@ -279,7 +279,7 @@ function NewsletterPage({ onSubscribe, subscriberCount = 1247 }) {
                         The worst that happens is you unsubscribe in one click.
                     </h2>
                     <p>
-                        Join {subscriberCount.toLocaleString()}+ readers who get practical Cin Nova
+                        Get practical Cin Nova
                         content — free guides, product updates, and launch announcements.
                     </p>
                     {status === "success" ? (
