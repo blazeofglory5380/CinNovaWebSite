@@ -17,6 +17,9 @@ import NewsletterSuccess from "./pages/NewsletterSuccess.jsx";
 import BlogManager from "./pages/BlogManager.jsx";
 import Partners from "./pages/Partners.jsx";
 import MediaKit from "./pages/MediaKit.jsx";
+import NewsletterPage from "./pages/NewsletterPage.jsx";
+import FloatingNewsletterButton from "./components/FloatingNewsletterButton.jsx";
+import HomepageCTABanner from "./components/HomepageCTABanner.jsx";
 import NewsletterSignup from "./components/NewsletterSignup.jsx";
 import NewsletterPopup from "./components/NewsletterPopup.jsx";
 import ExitIntentPopup from "./components/ExitIntentPopup.jsx";
@@ -302,7 +305,7 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
-function HomePage({ posts, setPage, onOpenArticle, onSubscribe }) {
+function HomePage({ posts, setPage, onOpenArticle, onSubscribe, subscriberCount }) {
     const latestPosts = posts.slice(0, 3);
 
     function openProduct(page) {
@@ -534,6 +537,11 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe }) {
                 </div>
             </section>
 
+            <HomepageCTABanner
+                subscriberCount={subscriberCount}
+                onSubscribe={onSubscribe}
+            />
+
             <section className="section" id="newsletter">
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE NEWSLETTER</p>
@@ -591,11 +599,24 @@ function App() {
         () => !!sessionStorage.getItem(STICKY_KEY)
     );
 
-    // Timed newsletter popup — after 8 s, once per session
+    // Timed newsletter popup — after 45 s, once per session
     useEffect(() => {
         if (sessionStorage.getItem(POPUP_KEY)) return;
-        const timer = setTimeout(() => setShowNewsletterPopup(true), 8000);
+        const timer = setTimeout(() => setShowNewsletterPopup(true), 45000);
         return () => clearTimeout(timer);
+    }, []);
+
+    // 50% scroll trigger for newsletter popup
+    useEffect(() => {
+        if (sessionStorage.getItem(POPUP_KEY)) return;
+        function onScroll50() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight > 0 && window.scrollY / docHeight >= 0.5) {
+                setShowNewsletterPopup(true);
+            }
+        }
+        window.addEventListener("scroll", onScroll50, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll50);
     }, []);
 
     // Exit-intent popup — mouse leaves viewport through the top
@@ -749,6 +770,12 @@ function App() {
                     subscriberCount={subscriberCount}
                 />
             )}
+            {!isSuccessPage && (
+                <FloatingNewsletterButton
+                    onSubscribe={showNewsletterAlert}
+                    subscriberCount={subscriberCount}
+                />
+            )}
 
             <nav className="navbar">
                 <button className="brand" onClick={goHome}>
@@ -765,19 +792,10 @@ function App() {
                     <button onClick={() => openPage("pricing")}>Pricing</button>
                     <button onClick={() => openPage("about")}>About</button>
                     <button onClick={() => openPage("contact")}>Contact</button>
+                    <button onClick={() => openPage("newsletter")}>Newsletter</button>
                     <button onClick={() => openPage("partners")}>Partners</button>
                     <button onClick={() => openPage("media-kit")}>Media Kit</button>
                     <button onClick={() => openPage("newsletter-admin")}>Admin</button>
-                    <button
-                        onClick={() => {
-                            goHome();
-                            setTimeout(() => {
-                                document.getElementById("newsletter")?.scrollIntoView();
-                            }, 0);
-                        }}
-                    >
-                        Newsletter
-                    </button>
                 </div>
 
                 <button className="nav-cta" onClick={() => openPage("pricing")}>
@@ -791,6 +809,7 @@ function App() {
                     setPage={openPage}
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
+                    subscriberCount={subscriberCount}
                 />
             )}
             {page === "blog" && (
@@ -806,7 +825,9 @@ function App() {
             {page === "blog-manager" && (
                 <BlogManager posts={managedPosts} onPostsChange={setManagedPosts} />
             )}
-            {page === "resources" && <Resources onOpenResource={openResource} />}
+            {page === "resources" && (
+                <Resources onOpenResource={openResource} onSubscribe={showNewsletterAlert} />
+            )}
             {page === "article" && selectedArticle && (
                 <ArticlePage
                     post={selectedArticle}
@@ -832,6 +853,12 @@ function App() {
             {page === "contact" && <Contact />}
             {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
             {page === "media-kit" && <MediaKit onNavigate={openPage} />}
+            {page === "newsletter" && (
+                <NewsletterPage
+                    onSubscribe={showNewsletterAlert}
+                    subscriberCount={subscriberCount}
+                />
+            )}
             {page === "newsletter-admin" && <NewsletterAdmin />}
             {page === "newsletter-success" && (
                 <NewsletterSuccess onGoHome={goHome} onGoBlog={goBlog} />
@@ -905,19 +932,10 @@ function App() {
                     <button onClick={() => openPage("pricing")}>Pricing</button>
                     <button onClick={() => openPage("about")}>About</button>
                     <button onClick={() => openPage("contact")}>Contact</button>
+                    <button onClick={() => openPage("newsletter")}>Newsletter</button>
                     <button onClick={() => openPage("partners")}>Partners</button>
                     <button onClick={() => openPage("media-kit")}>Media Kit</button>
                     <button onClick={() => openPage("newsletter-admin")}>Newsletter Admin</button>
-                    <button
-                        onClick={() => {
-                            goHome();
-                            setTimeout(() => {
-                                document.getElementById("newsletter")?.scrollIntoView();
-                            }, 0);
-                        }}
-                    >
-                        Newsletter
-                    </button>
                 </div>
 
                 <p className="footer-bottom">(c) 2026 Cin Nova. All Rights Reserved.</p>

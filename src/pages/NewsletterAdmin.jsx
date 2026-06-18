@@ -41,6 +41,18 @@ function NewsletterAdmin() {
         );
     }, [searchTerm, subscribers]);
 
+    const sourceBreakdown = useMemo(() => {
+        const counts = {};
+        subscribers.forEach((sub) => {
+            const group = (sub.source || "Unknown").split(":")[0].trim();
+            counts[group] = (counts[group] || 0) + 1;
+        });
+        const total = subscribers.length || 1;
+        return Object.entries(counts)
+            .map(([label, count]) => ({ label, count, pct: Math.round((count / total) * 100) }))
+            .sort((a, b) => b.count - a.count);
+    }, [subscribers]);
+
     const providerPreview = subscribers[0]
         ? buildProviderPayload(subscribers[0], "mailchimp")
         : buildProviderPayload(
@@ -131,6 +143,34 @@ function NewsletterAdmin() {
                     </article>
                 </div>
             </section>
+
+            {sourceBreakdown.length > 0 && (
+                <section className="section">
+                    <div className="section-heading">
+                        <p className="eyebrow">SIGNUP SOURCES</p>
+                        <h2>Where subscribers come from</h2>
+                        <p>Grouped by signup source — shows which growth channels are working.</p>
+                    </div>
+                    <div className="source-breakdown-list">
+                        {sourceBreakdown.map(({ label, count, pct }) => (
+                            <div key={label} className="source-breakdown-row">
+                                <div className="source-breakdown-meta">
+                                    <span className="source-breakdown-label">{label}</span>
+                                    <span className="source-breakdown-count">
+                                        {count} {count === 1 ? "subscriber" : "subscribers"} · {pct}%
+                                    </span>
+                                </div>
+                                <div className="source-breakdown-track">
+                                    <div
+                                        className="source-breakdown-fill"
+                                        style={{ width: `${pct}%` }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             <section className="section showcase-section">
                 <div className="newsletter-dashboard-layout">

@@ -1,0 +1,102 @@
+import { useState } from "react";
+
+const SESSION_KEY = "cn_float_btn_dismissed";
+
+function FloatingNewsletterButton({ onSubscribe, subscriberCount = 1247 }) {
+    const [dismissed] = useState(() => !!sessionStorage.getItem(SESSION_KEY));
+    const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
+    if (dismissed) return null;
+
+    function handleDismiss() {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        setOpen(false);
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        if (!email.trim() || !email.includes("@")) {
+            setStatus("error");
+            return;
+        }
+        setStatus("loading");
+        onSubscribe?.({ email, source: "Floating Button", tags: ["Float Button"] });
+        setStatus("success");
+        setTimeout(() => {
+            sessionStorage.setItem(SESSION_KEY, "1");
+            setOpen(false);
+        }, 2200);
+    }
+
+    return (
+        <div className="float-nl-wrap" aria-live="polite">
+            {open && (
+                <div className="float-nl-modal" role="dialog" aria-label="Newsletter signup">
+                    <button
+                        className="float-nl-close"
+                        onClick={() => setOpen(false)}
+                        aria-label="Close"
+                    >
+                        ×
+                    </button>
+                    {status === "success" ? (
+                        <div className="float-nl-success">
+                            <span className="float-nl-success-icon">✓</span>
+                            <strong>You're in!</strong>
+                            <p>Welcome to the Cin Nova newsletter.</p>
+                        </div>
+                    ) : (
+                        <>
+                            <p className="float-nl-eyebrow">CIN NOVA NEWSLETTER</p>
+                            <strong className="float-nl-headline">
+                                Get product updates and free guides.
+                            </strong>
+                            <p className="float-nl-sub">
+                                Join{" "}
+                                <span className="float-nl-count">
+                                    {subscriberCount.toLocaleString()}+ readers
+                                </span>
+                            </p>
+                            <form onSubmit={handleSubmit} className="float-nl-form">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        setStatus("idle");
+                                    }}
+                                    placeholder="you@example.com"
+                                    aria-label="Email address"
+                                    autoFocus
+                                />
+                                {status === "error" && (
+                                    <p className="float-nl-error">Enter a valid email.</p>
+                                )}
+                                <button type="submit" disabled={status === "loading"}>
+                                    {status === "loading" ? "Subscribing…" : "Subscribe →"}
+                                </button>
+                            </form>
+                            <button className="float-nl-dismiss" onClick={handleDismiss}>
+                                No thanks
+                            </button>
+                        </>
+                    )}
+                </div>
+            )}
+
+            <button
+                className={`float-nl-btn${open ? " float-nl-btn-open" : ""}`}
+                onClick={() => setOpen((prev) => !prev)}
+                aria-label="Open newsletter signup"
+                aria-expanded={open}
+            >
+                <span className="float-nl-icon">📧</span>
+                <span className="float-nl-label">Newsletter</span>
+            </button>
+        </div>
+    );
+}
+
+export default FloatingNewsletterButton;

@@ -1,16 +1,18 @@
+import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ResourceThumbnail from "../components/ResourceThumbnail.jsx";
+import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
 import {
     getResourceUrl,
     resources,
-    downloadResource,
     resourceCategoryConfig,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
 
 function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
+    const [gatedResource, setGatedResource] = useState(null);
     const relatedResources = resources
         .filter((item) => item.id !== resource.id && item.category === resource.category)
         .slice(0, 3);
@@ -60,7 +62,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                         </div>
                         <button
                             className="primary-btn"
-                            onClick={() => downloadResource(resource)}
+                            onClick={() => setGatedResource(resource)}
                         >
                             ↓ {resource.downloadLabel}
                         </button>
@@ -97,7 +99,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                             </div>
                             <button
                                 className="primary-btn resource-dw-btn"
-                                onClick={() => downloadResource(resource)}
+                                onClick={() => setGatedResource(resource)}
                             >
                                 ↓ {resource.downloadLabel}
                             </button>
@@ -131,6 +133,14 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                     </aside>
                 </div>
             </section>
+
+            {gatedResource && (
+                <ResourceEmailGate
+                    resource={gatedResource}
+                    onSubscribe={onSubscribe}
+                    onClose={() => setGatedResource(null)}
+                />
+            )}
 
             <section className="section" id="newsletter">
                 <div className="newsletter-card">

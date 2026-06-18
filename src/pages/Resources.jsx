@@ -2,16 +2,16 @@ import { useMemo, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import ResourceThumbnail from "../components/ResourceThumbnail.jsx";
+import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
 import {
     resourceCategories,
     resourceCategoryConfig,
     resources,
     getResourceUrl,
-    downloadResource,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
 
-function ResourceCard({ resource, onOpenResource }) {
+function ResourceCard({ resource, onOpenResource, onDownload }) {
     const catConfig = resourceCategoryConfig[resource.category];
     return (
         <article
@@ -52,7 +52,7 @@ function ResourceCard({ resource, onOpenResource }) {
                     className="resource-dl-btn"
                     onClick={(e) => {
                         e.stopPropagation();
-                        downloadResource(resource);
+                        onDownload?.(resource);
                     }}
                 >
                     ↓ {resource.downloadLabel}
@@ -62,9 +62,10 @@ function ResourceCard({ resource, onOpenResource }) {
     );
 }
 
-function Resources({ onOpenResource }) {
+function Resources({ onOpenResource, onSubscribe }) {
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
+    const [gatedResource, setGatedResource] = useState(null);
 
     const featuredResource = resources.find((r) => r.featured) || resources[0];
 
@@ -162,7 +163,7 @@ function Resources({ onOpenResource }) {
                             </button>
                             <button
                                 className="secondary-btn"
-                                onClick={() => downloadResource(featuredResource)}
+                                onClick={() => setGatedResource(featuredResource)}
                             >
                                 ↓ {featuredResource.downloadLabel}
                             </button>
@@ -248,11 +249,20 @@ function Resources({ onOpenResource }) {
                                     key={resource.id}
                                     resource={resource}
                                     onOpenResource={onOpenResource}
+                                    onDownload={setGatedResource}
                                 />
                             ))}
                         </div>
                     </section>
                 ))
+            )}
+
+            {gatedResource && (
+                <ResourceEmailGate
+                    resource={gatedResource}
+                    onSubscribe={onSubscribe}
+                    onClose={() => setGatedResource(null)}
+                />
             )}
         </main>
     );

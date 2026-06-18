@@ -7,6 +7,7 @@ import SEO from "../components/SEO.jsx";
 import SponsoredDisclosure from "../components/SponsoredDisclosure.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
+import BlogProductCTA from "../components/BlogProductCTA.jsx";
 import { getArticleUrl, getAuthorProfile, siteUrl } from "../data/blogPosts.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
 
@@ -239,6 +240,8 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, subscrib
                     </aside>
                 </div>
             </section>
+
+            <BlogProductCTA category={post.category} onNavigate={onNavigate} />
 
             {affiliateLinks.length > 0 && (
                 <section className="section affiliate-section">
