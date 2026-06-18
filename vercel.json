@@ -28,7 +28,7 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/)(?!favicon\\.svg)(?!icons\\.svg)(?!robots\\.txt)(?!sitemap\\.xml).*)",
       "destination": "/index.html"
     }
   ]
