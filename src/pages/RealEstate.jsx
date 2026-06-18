@@ -1,4 +1,6 @@
 import "../App.css";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { saveSubscriber } from "../data/newsletterService.js";
 
 function RealEstate() {
     return (
@@ -405,10 +407,12 @@ function RealEstate() {
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE WAITLIST</p>
                     <h2>Be first to access Cin Nova Real Estate when it launches.</h2>
-                    <div className="signup-form">
-                        <input type="email" placeholder="Enter your email address" />
-                        <button>Join Waitlist</button>
-                    </div>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="Real Estate Waitlist"
+                        tags={["Real Estate", "Waitlist"]}
+                        buttonLabel="Join Waitlist"
+                    />
                 </div>
             </section>
 

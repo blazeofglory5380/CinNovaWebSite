@@ -1,4 +1,6 @@
 import "../App.css";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { saveSubscriber } from "../data/newsletterService.js";
 
 const products = [
     {
@@ -359,10 +361,12 @@ function Pricing() {
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE CIN NOVA WAITLIST</p>
                     <h2>Get early access to every product before public launch.</h2>
-                    <div className="signup-form">
-                        <input type="email" placeholder="Enter your email address" />
-                        <button>Get Early Access</button>
-                    </div>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="Pricing Waitlist"
+                        tags={["Pricing", "Early Access"]}
+                        buttonLabel="Get Early Access"
+                    />
                 </div>
             </section>
 

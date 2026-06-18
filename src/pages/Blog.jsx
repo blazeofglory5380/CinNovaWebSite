@@ -1,16 +1,42 @@
 import { useMemo, useState } from "react";
 import "../App.css";
-import { blogCategories, blogPosts } from "../data/blogPosts.js";
+import SEO from "../components/SEO.jsx";
+import AdSlot from "../components/AdSlot.jsx";
+import { blogCategories, getBlogUrl, postMetrics, siteUrl } from "../data/blogPosts.js";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
 
-function Blog({ onOpenArticle, onSubscribe }) {
+const categoryConfig = {
+    "AI & Technology": { icon: "🤖", desc: "AI tools and software innovation" },
+    "Education": { icon: "📚", desc: "Learning tools and study strategies" },
+    "Real Estate": { icon: "🏠", desc: "Property analysis and market intelligence" },
+    "Safety": { icon: "🛡️", desc: "Home safety and hazard protection" },
+    "Parenting": { icon: "👨‍👩‍👧", desc: "Family learning and child development" },
+    "Product Updates": { icon: "🚀", desc: "App launches and company news" },
+    "Entrepreneurship": { icon: "💡", desc: "Building software and companies" },
+};
+
+function Blog({ posts, onOpenArticle, onSubscribe, subscriberCount = 1247, onOpenGuide, onNavigate }) {
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
 
-    const featuredPost = blogPosts[0];
+    const featuredPost = posts.find((post) => post.featured) || posts[0];
+
+    const trendingPosts = useMemo(
+        () => posts.filter((p) => postMetrics[p.id]?.trending).slice(0, 4),
+        [posts]
+    );
+
+    const popularPosts = useMemo(
+        () =>
+            [...posts]
+                .sort((a, b) => (postMetrics[b.id]?.views || 0) - (postMetrics[a.id]?.views || 0))
+                .slice(0, 5),
+        [posts]
+    );
+
     const filteredPosts = useMemo(() => {
         const normalizedSearch = searchTerm.trim().toLowerCase();
-
-        return blogPosts.filter((post) => {
+        return posts.filter((post) => {
             const matchesCategory =
                 activeCategory === "All" || post.category === activeCategory;
             const matchesSearch =
@@ -18,20 +44,60 @@ function Blog({ onOpenArticle, onSubscribe }) {
                 post.title.toLowerCase().includes(normalizedSearch) ||
                 post.excerpt.toLowerCase().includes(normalizedSearch) ||
                 post.category.toLowerCase().includes(normalizedSearch);
-
             return matchesCategory && matchesSearch;
         });
-    }, [activeCategory, searchTerm]);
+    }, [activeCategory, searchTerm, posts]);
 
-    function handleNewsletterSubmit(event) {
-        event.preventDefault();
-        onSubscribe();
+    const seoTitle =
+        activeCategory === "All"
+            ? "Cin Nova Blog | AI, Apps, Education, Safety, and Real Estate"
+            : `${activeCategory} Articles | Cin Nova Blog`;
+    const seoDescription =
+        activeCategory === "All"
+            ? "Read Cin Nova articles about AI software, education, real estate, safety, parenting, product updates, and building useful app businesses."
+            : `Read Cin Nova ${activeCategory} articles from the company blog and app ecosystem.`;
+    const blogSchema = {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        name: "Cin Nova Blog",
+        url: getBlogUrl(),
+        description: seoDescription,
+        publisher: {
+            "@type": "Organization",
+            name: "Cin Nova",
+            url: siteUrl,
+        },
+        blogPost: posts.map((post) => ({
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            author: {
+                "@type": "Organization",
+                name: post.author,
+            },
+        })),
+    };
+
+    function jumpToArticles(cat) {
+        setActiveCategory(cat);
+        document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
     }
 
     return (
         <main className="product-page blog-page">
+            <SEO
+                title={seoTitle}
+                description={seoDescription}
+                url={getBlogUrl()}
+                type="website"
+                schema={blogSchema}
+            />
+
             <section className="section blog-hero-section">
                 <div className="section-heading blog-hero-copy">
+                    <div className="subscriber-count-badge">
+                        {subscriberCount.toLocaleString()}+ subscribers
+                    </div>
                     <p className="eyebrow">CIN NOVA BLOG</p>
                     <h2>Ideas for building, learning, safety, and smarter software.</h2>
                     <p>
@@ -41,38 +107,74 @@ function Blog({ onOpenArticle, onSubscribe }) {
                 </div>
             </section>
 
-            <section className="section blog-featured-section">
-                <div className="blog-featured blog-featured-clickable">
-                    <div>
-                        <p className="eyebrow">{featuredPost.category.toUpperCase()}</p>
-                        <h2>{featuredPost.title}</h2>
-                        <p>{featuredPost.excerpt}</p>
-                        <div className="article-meta-row">
-                            <span>{featuredPost.date}</span>
+            {featuredPost && (
+                <section className="section blog-featured-section">
+                    <div className="blog-featured blog-featured-clickable">
+                        <div>
+                            <p className="eyebrow">{featuredPost.category.toUpperCase()}</p>
+                            <h2>{featuredPost.title}</h2>
+                            <p>{featuredPost.excerpt}</p>
+                            <div className="article-meta-row">
+                                <span>{featuredPost.date}</span>
+                                <span>{featuredPost.readTime}</span>
+                                <span>{featuredPost.author}</span>
+                            </div>
+                            <button
+                                className="primary-btn"
+                                onClick={() => onOpenArticle(featuredPost)}
+                            >
+                                Read Featured Article
+                            </button>
+                        </div>
+                        <div className="blog-featured-panel">
+                            <p className="product-category">ARTICLE DETAILS</p>
+                            <strong>{featuredPost.category}</strong>
                             <span>{featuredPost.readTime}</span>
-                            <span>{featuredPost.author}</span>
+                            <span>{featuredPost.date}</span>
+                            <div className="featured-mini-bars">
+                                <i />
+                                <i />
+                                <i />
+                            </div>
                         </div>
-                        <button
-                            className="primary-btn"
-                            onClick={() => onOpenArticle(featuredPost)}
-                        >
-                            Read Featured Article
-                        </button>
                     </div>
+                </section>
+            )}
 
-                    <div className="blog-featured-panel">
-                        <p className="product-category">ARTICLE DETAILS</p>
-                        <strong>{featuredPost.category}</strong>
-                        <span>{featuredPost.readTime}</span>
-                        <span>{featuredPost.date}</span>
-                        <div className="featured-mini-bars">
-                            <i />
-                            <i />
-                            <i />
-                        </div>
+            {trendingPosts.length > 0 && (
+                <section className="section trending-section">
+                    <div className="section-heading">
+                        <p className="eyebrow">WHAT'S TRENDING</p>
+                        <h2>Articles people are reading now.</h2>
+                        <p>The articles getting the most attention across the Cin Nova blog this week.</p>
                     </div>
-                </div>
-            </section>
+                    <div className="article-grid">
+                        {trendingPosts.map((post) => (
+                            <article
+                                className="article-card article-card-clickable"
+                                key={post.id}
+                                onClick={() => onOpenArticle(post)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
+                            >
+                                <div className="trending-badge-row">
+                                    <span>{post.category}</span>
+                                    <span className="trending-badge">Trending</span>
+                                    {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
+                                </div>
+                                <h3>{post.title}</h3>
+                                <p>{post.excerpt}</p>
+                                <div className="article-card-meta">
+                                    <small>{post.date}</small>
+                                    <small>{post.readTime}</small>
+                                </div>
+                                <button onClick={() => onOpenArticle(post)}>Read Article</button>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             <section className="section blog-tools-section">
                 <div className="blog-tools">
@@ -85,7 +187,6 @@ function Blog({ onOpenArticle, onSubscribe }) {
                             placeholder="Search AI, education, real estate..."
                         />
                     </label>
-
                     <div className="blog-categories">
                         {["All", ...blogCategories].map((category) => (
                             <button
@@ -102,16 +203,79 @@ function Blog({ onOpenArticle, onSubscribe }) {
                 </div>
             </section>
 
+            <section className="section guide-cta-section">
+                <div className="guide-cta-card">
+                    <div className="guide-cta-cover">
+                        <span>CN</span>
+                        <small>Free Guide</small>
+                    </div>
+                    <div className="guide-cta-copy">
+                        <p className="eyebrow">FREE DOWNLOAD</p>
+                        <h2>Get the Cin Nova AI Guide — free.</h2>
+                        <p>
+                            A practical breakdown of five ways AI is changing education, home
+                            safety, real estate, tech support, and early learning. Enter your
+                            email and the guide downloads instantly.
+                        </p>
+                        <div className="guide-cta-bullets">
+                            <span>AI in Education</span>
+                            <span>AI in Safety</span>
+                            <span>AI in Real Estate</span>
+                            <span>AI in Tech</span>
+                            <span>AI in Early Learning</span>
+                        </div>
+                        <button
+                            className="primary-btn guide-cta-btn"
+                            onClick={onOpenGuide}
+                        >
+                            Download Free Guide →
+                        </button>
+                        <p className="guide-cta-note">
+                            Free download. No credit card. Subscribes you to the Cin Nova newsletter.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section blog-ad-section">
+                <AdSlot placement="banner" onNavigate={onNavigate} />
+            </section>
+
+            <section className="section categories-section">
+                <div className="section-heading">
+                    <p className="eyebrow">BROWSE BY TOPIC</p>
+                    <h2>Featured Categories.</h2>
+                    <p>Find articles by the topics that matter most to you.</p>
+                </div>
+                <div className="categories-grid">
+                    {blogCategories.map((cat) => {
+                        const config = categoryConfig[cat] || { icon: "📄", desc: "" };
+                        const count = posts.filter((p) => p.category === cat).length;
+                        return (
+                            <button
+                                className="category-card"
+                                key={cat}
+                                onClick={() => jumpToArticles(cat)}
+                            >
+                                <span className="category-icon">{config.icon}</span>
+                                <strong>{cat}</strong>
+                                <p>{config.desc}</p>
+                                <small>{count} {count === 1 ? "article" : "articles"}</small>
+                            </button>
+                        );
+                    })}
+                </div>
+            </section>
+
             <section className="section showcase-section" id="articles">
                 <div className="section-heading">
                     <p className="eyebrow">LATEST ARTICLES</p>
                     <h2>Fresh from the Cin Nova blog.</h2>
                     <p>
-                        Browse starter articles ready to grow into a full publishing engine
-                        for the company site.
+                        Browse articles covering AI, education, real estate, safety, parenting,
+                        product updates, and entrepreneurship.
                     </p>
                 </div>
-
                 <div className="article-grid">
                     {filteredPosts.map((post) => (
                         <article
@@ -124,7 +288,10 @@ function Blog({ onOpenArticle, onSubscribe }) {
                                 if (event.key === "Enter") onOpenArticle(post);
                             }}
                         >
-                            <span>{post.category}</span>
+                            <div className="article-card-top-row">
+                                <span>{post.category}</span>
+                                {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
+                            </div>
                             <h3>{post.title}</h3>
                             <p>{post.excerpt}</p>
                             <div className="article-card-meta">
@@ -137,18 +304,58 @@ function Blog({ onOpenArticle, onSubscribe }) {
                 </div>
             </section>
 
+            <section className="section popular-section">
+                <div className="section-heading">
+                    <p className="eyebrow">MOST POPULAR</p>
+                    <h2>The articles readers love most.</h2>
+                    <p>Ranked by total reads across the Cin Nova blog.</p>
+                </div>
+                <div className="popular-articles-list">
+                    {popularPosts.map((post, i) => (
+                        <article
+                            className="popular-article-item"
+                            key={post.id}
+                            onClick={() => onOpenArticle(post)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
+                        >
+                            <span className="popular-rank">
+                                {String(i + 1).padStart(2, "0")}
+                            </span>
+                            <div className="popular-info">
+                                <span>{post.category}</span>
+                                <h3>{post.title}</h3>
+                                <p>{post.excerpt}</p>
+                                <div className="article-card-meta">
+                                    <small>{post.readTime}</small>
+                                    <small>
+                                        {(postMetrics[post.id]?.views || 0).toLocaleString()} reads
+                                    </small>
+                                </div>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
             <section className="section" id="newsletter">
                 <div className="newsletter-card">
                     <p className="eyebrow">STAY IN THE LOOP</p>
                     <h2>Get new articles and product updates in your inbox.</h2>
                     <p className="newsletter-copy">
-                        Subscribe for launch notes, article drops, and behind-the-scenes
-                        updates as Cin Nova builds its app ecosystem.
+                        Join{" "}
+                        <strong style={{ color: "#38bdf8" }}>
+                            {subscriberCount.toLocaleString()}+ readers
+                        </strong>{" "}
+                        getting launch notes, article drops, and behind-the-scenes updates as
+                        Cin Nova builds its app ecosystem.
                     </p>
-                    <form className="signup-form" onSubmit={handleNewsletterSubmit}>
-                        <input type="email" placeholder="Enter your email address" required />
-                        <button type="submit">Subscribe</button>
-                    </form>
+                    <NewsletterSignup
+                        onSubscribe={onSubscribe}
+                        source="Blog"
+                        tags={["Blog Reader"]}
+                    />
                 </div>
             </section>
         </main>

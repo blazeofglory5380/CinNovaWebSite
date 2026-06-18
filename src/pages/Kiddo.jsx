@@ -1,4 +1,6 @@
 import "../App.css";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { saveSubscriber } from "../data/newsletterService.js";
 
 function Kiddo() {
     return (
@@ -433,10 +435,12 @@ function Kiddo() {
                 <div className="newsletter-card">
                     <p className="eyebrow">EARLY ACCESS</p>
                     <h2>Give your child a head start — join the Kiddo waitlist today.</h2>
-                    <div className="signup-form">
-                        <input type="email" placeholder="Enter your email address" />
-                        <button>Get Early Access</button>
-                    </div>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="Kiddo Waitlist"
+                        tags={["Kiddo", "Early Access"]}
+                        buttonLabel="Get Early Access"
+                    />
                 </div>
             </section>
 

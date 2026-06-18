@@ -1,4 +1,6 @@
 import "../App.css";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { saveSubscriber } from "../data/newsletterService.js";
 
 const contactCards = [
     {
@@ -227,10 +229,11 @@ function Contact() {
                         Get product updates, early access announcements, and behind-the-scenes
                         content delivered to your inbox.
                     </p>
-                    <div className="signup-form">
-                        <input type="email" placeholder="Enter your email address" />
-                        <button>Subscribe</button>
-                    </div>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="Contact Page"
+                        tags={["Contact Page"]}
+                    />
                 </div>
             </section>
 

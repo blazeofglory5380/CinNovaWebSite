@@ -8,12 +8,42 @@ export const blogCategories = [
     "Entrepreneurship",
 ];
 
+export const siteUrl = "https://cin-nova-web-site.vercel.app";
+
+export function getBlogUrl() {
+    return `${siteUrl}/?page=blog`;
+}
+
+export function getArticleUrl(post) {
+    return `${siteUrl}/?article=${post.slug}`;
+}
+
+export const blogAuthors = {
+    "Cin Nova Team": {
+        name: "Cin Nova Team",
+        role: "Editorial Team",
+        avatarInitials: "CN",
+        bio:
+            "The Cin Nova Team writes about AI software, education technology, family safety, real estate tools, product building, and the ideas behind the Cin Nova ecosystem.",
+        socials: [
+            { label: "Website", url: "https://cin-nova-web-site.vercel.app" },
+            { label: "Blog", url: "https://cin-nova-web-site.vercel.app" },
+            { label: "Newsletter", url: "#newsletter" },
+        ],
+    },
+};
+
+export function getAuthorProfile(authorName = "Cin Nova Team") {
+    return blogAuthors[authorName] || blogAuthors["Cin Nova Team"];
+}
+
 export const blogPosts = [
     {
         id: 1,
         title: "How AI Is Changing Education",
         slug: "how-ai-is-changing-education",
         category: "Education",
+        affiliateIds: [1, 3, 6],
         excerpt:
             "AI tools are giving students faster feedback, better study plans, and more personal ways to understand difficult topics.",
         date: "June 17, 2026",
@@ -42,6 +72,13 @@ export const blogPosts = [
         title: "Best Study Tools for Students",
         slug: "best-study-tools-for-students",
         category: "Education",
+        sponsored: true,
+        sponsor: {
+            name: "Skillshare",
+            url: "https://www.skillshare.com",
+            description: "Online learning community with thousands of courses in design, business, technology, and creative skills",
+        },
+        affiliateIds: [1, 2, 3],
         excerpt:
             "A practical look at notes, flashcards, planners, quizzes, and AI tutoring tools that help students stay organized.",
         date: "June 16, 2026",
@@ -70,6 +107,7 @@ export const blogPosts = [
         title: "The Future of Real Estate AI",
         slug: "the-future-of-real-estate-ai",
         category: "Real Estate",
+        affiliateIds: [4, 5],
         excerpt:
             "Real estate software is moving toward faster property search, smarter deal analysis, and clearer market intelligence.",
         date: "June 15, 2026",
@@ -350,3 +388,18 @@ export const blogPosts = [
 export function getPostBySlug(slug) {
     return blogPosts.find((post) => post.slug === slug);
 }
+
+export const postMetrics = {
+    1: { views: 3420, trending: true },
+    2: { views: 2870, trending: false },
+    3: { views: 4100, trending: true },
+    4: { views: 1980, trending: false },
+    5: { views: 2650, trending: true },
+    6: { views: 1540, trending: false },
+    7: { views: 3800, trending: true },
+    8: { views: 2200, trending: false },
+    9: { views: 1760, trending: false },
+    10: { views: 3150, trending: true },
+    11: { views: 1430, trending: false },
+    12: { views: 2090, trending: false },
+};

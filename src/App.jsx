@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import StudyNest from "./pages/StudyNest.jsx";
 import PoisonGuard from "./pages/PoisonGuard.jsx";
@@ -10,7 +10,25 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Blog from "./pages/Blog.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
-import { blogPosts } from "./data/blogPosts.js";
+import Resources from "./pages/Resources.jsx";
+import ResourcePage from "./pages/ResourcePage.jsx";
+import NewsletterAdmin from "./pages/NewsletterAdmin.jsx";
+import NewsletterSuccess from "./pages/NewsletterSuccess.jsx";
+import BlogManager from "./pages/BlogManager.jsx";
+import Partners from "./pages/Partners.jsx";
+import MediaKit from "./pages/MediaKit.jsx";
+import NewsletterSignup from "./components/NewsletterSignup.jsx";
+import NewsletterPopup from "./components/NewsletterPopup.jsx";
+import ExitIntentPopup from "./components/ExitIntentPopup.jsx";
+import GuideModal from "./components/GuideModal.jsx";
+import StickyNewsletterBar from "./components/StickyNewsletterBar.jsx";
+import {
+    getManagedPostBySlug,
+    getManagedPosts,
+    getPublishedPosts,
+} from "./data/blogManagerService.js";
+import { getResourceBySlug, resources } from "./data/resources.js";
+import { getDisplaySubscriberCount, saveSubscriber } from "./data/newsletterService.js";
 
 const products = [
     {
@@ -284,17 +302,12 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
-function HomePage({ setPage, onOpenArticle, onSubscribe }) {
-    const latestPosts = blogPosts.slice(0, 3);
+function HomePage({ posts, setPage, onOpenArticle, onSubscribe }) {
+    const latestPosts = posts.slice(0, 3);
 
     function openProduct(page) {
         setPage(page);
         window.scrollTo(0, 0);
-    }
-
-    function handleNewsletterSubmit(event) {
-        event.preventDefault();
-        onSubscribe();
     }
 
     return (
@@ -314,6 +327,9 @@ function HomePage({ setPage, onOpenArticle, onSubscribe }) {
                         </a>
                         <button className="secondary-btn" onClick={() => setPage("blog")}>
                             Start Reading
+                        </button>
+                        <button className="secondary-btn" onClick={() => setPage("resources")}>
+                            View Resources
                         </button>
                         <button className="secondary-btn" onClick={() => openProduct("pricing")}>
                             View Pricing
@@ -522,54 +538,218 @@ function HomePage({ setPage, onOpenArticle, onSubscribe }) {
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE NEWSLETTER</p>
                     <h2>Get product updates, blog posts, and launch announcements.</h2>
-                    <form className="signup-form" onSubmit={handleNewsletterSubmit}>
-                        <input type="email" placeholder="Enter your email address" required />
-                        <button type="submit">Subscribe</button>
-                    </form>
+                    <NewsletterSignup
+                        onSubscribe={onSubscribe}
+                        source="Homepage"
+                        tags={["Homepage", "Product Updates"]}
+                    />
                 </div>
             </section>
         </main>
     );
 }
 
+function getRouteFromUrl(posts = getManagedPosts()) {
+    const params = new URLSearchParams(window.location.search);
+    const articleSlug = params.get("article");
+    const resourceSlug = params.get("resource");
+    const routedPage = params.get("page");
+
+    if (articleSlug) {
+        const post = getManagedPostBySlug(articleSlug, posts);
+        if (post) return { page: "article", article: post, resource: null };
+    }
+
+    if (resourceSlug) {
+        const resource = getResourceBySlug(resourceSlug);
+        if (resource) return { page: "resource", article: null, resource };
+    }
+
+    if (routedPage) return { page: routedPage, article: null, resource: null };
+    return { page: "home", article: null, resource: null };
+}
+
+const POPUP_KEY = "cn_popup_dismissed";
+const EXIT_KEY = "cn_exit_popup_dismissed";
+const STICKY_KEY = "cn_sticky_dismissed";
+
 function App() {
-    const [page, setPage] = useState("home");
-    const [selectedArticle, setSelectedArticle] = useState(null);
+    const [managedPosts, setManagedPosts] = useState(getManagedPosts());
+    const publishedPosts = getPublishedPosts(managedPosts);
+    const initialRoute = getRouteFromUrl(managedPosts);
+    const [page, setPage] = useState(initialRoute.page);
+    const [selectedArticle, setSelectedArticle] = useState(initialRoute.article);
+    const [selectedResource, setSelectedResource] = useState(initialRoute.resource);
+
+    // Lead capture state
+    const [subscriberCount, setSubscriberCount] = useState(getDisplaySubscriberCount);
+    const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
+    const [showExitPopup, setShowExitPopup] = useState(false);
+    const [showGuideModal, setShowGuideModal] = useState(false);
+    const [showStickyBar, setShowStickyBar] = useState(false);
+    const [stickyDismissed, setStickyDismissed] = useState(
+        () => !!sessionStorage.getItem(STICKY_KEY)
+    );
+
+    // Timed newsletter popup — after 8 s, once per session
+    useEffect(() => {
+        if (sessionStorage.getItem(POPUP_KEY)) return;
+        const timer = setTimeout(() => setShowNewsletterPopup(true), 8000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Exit-intent popup — mouse leaves viewport through the top
+    useEffect(() => {
+        function onMouseLeave(e) {
+            if (
+                e.clientY <= 3 &&
+                !sessionStorage.getItem(EXIT_KEY) &&
+                !showNewsletterPopup &&
+                !showGuideModal
+            ) {
+                setShowExitPopup(true);
+            }
+        }
+        document.addEventListener("mouseleave", onMouseLeave);
+        return () => document.removeEventListener("mouseleave", onMouseLeave);
+    }, [showNewsletterPopup, showGuideModal]);
+
+    // Sticky bar — appears after 40 % scroll, once per session
+    useEffect(() => {
+        if (stickyDismissed) return;
+        function onScroll() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight > 0 && window.scrollY / docHeight > 0.4) {
+                setShowStickyBar(true);
+            }
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [stickyDismissed]);
+
+    useEffect(() => {
+        function handlePopState() {
+            const route = getRouteFromUrl(managedPosts);
+            setPage(route.page);
+            setSelectedArticle(route.article);
+            setSelectedResource(route.resource);
+            scrollTop();
+        }
+
+        window.addEventListener("popstate", handlePopState);
+        return () => window.removeEventListener("popstate", handlePopState);
+    }, [managedPosts]);
 
     function scrollTop() {
         window.scrollTo(0, 0);
     }
 
+    function pushRoute(url) {
+        window.history.pushState({}, "", url);
+    }
+
     function goHome() {
         setSelectedArticle(null);
+        setSelectedResource(null);
         setPage("home");
+        pushRoute("/");
         scrollTop();
     }
 
     function goBlog() {
         setSelectedArticle(null);
+        setSelectedResource(null);
         setPage("blog");
+        pushRoute("/?page=blog");
+        scrollTop();
+    }
+
+    function goResources() {
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setPage("resources");
+        pushRoute("/?page=resources");
         scrollTop();
     }
 
     function openArticle(post) {
         setSelectedArticle(post);
+        setSelectedResource(null);
         setPage("article");
+        pushRoute(`/?article=${post.slug}`);
+        scrollTop();
+    }
+
+    function openResource(resource) {
+        setSelectedArticle(null);
+        setSelectedResource(resource);
+        setPage("resource");
+        pushRoute(`/?resource=${resource.slug}`);
         scrollTop();
     }
 
     function openPage(nextPage) {
         setSelectedArticle(null);
+        setSelectedResource(null);
         setPage(nextPage);
+        pushRoute(`/?page=${nextPage}`);
         scrollTop();
     }
 
-    function showNewsletterAlert() {
-        alert("Thanks for subscribing to the Cin Nova newsletter.");
+    function showNewsletterAlert(payload) {
+        const result = saveSubscriber(payload);
+        setSubscriberCount(getDisplaySubscriberCount());
+        return result;
     }
+
+    function closeNewsletterPopup() {
+        setShowNewsletterPopup(false);
+        sessionStorage.setItem(POPUP_KEY, "1");
+    }
+
+    function closeExitPopup() {
+        setShowExitPopup(false);
+        sessionStorage.setItem(EXIT_KEY, "1");
+    }
+
+    function dismissStickyBar() {
+        setShowStickyBar(false);
+        setStickyDismissed(true);
+        sessionStorage.setItem(STICKY_KEY, "1");
+    }
+
+    const isSuccessPage = page === "newsletter-success";
 
     return (
         <div className="site">
+            {/* ── Lead capture overlays ───────────────────────── */}
+            {showNewsletterPopup && !isSuccessPage && (
+                <NewsletterPopup
+                    onSubscribe={showNewsletterAlert}
+                    onClose={closeNewsletterPopup}
+                    subscriberCount={subscriberCount}
+                />
+            )}
+            {showExitPopup && !isSuccessPage && (
+                <ExitIntentPopup
+                    onSubscribe={showNewsletterAlert}
+                    onClose={closeExitPopup}
+                />
+            )}
+            {showGuideModal && (
+                <GuideModal
+                    onSubscribe={showNewsletterAlert}
+                    onClose={() => setShowGuideModal(false)}
+                />
+            )}
+            {showStickyBar && !stickyDismissed && !isSuccessPage && (
+                <StickyNewsletterBar
+                    onSubscribe={showNewsletterAlert}
+                    onDismiss={dismissStickyBar}
+                    subscriberCount={subscriberCount}
+                />
+            )}
+
             <nav className="navbar">
                 <button className="brand" onClick={goHome}>
                     <span className="brand-mark">CN</span>
@@ -580,9 +760,14 @@ function App() {
                     <button onClick={goHome}>Home</button>
                     <button onClick={goHome}>Products</button>
                     <button onClick={goBlog}>Blog</button>
+                    <button onClick={goResources}>Resources</button>
+                    <button onClick={() => openPage("blog-manager")}>Blog Admin</button>
                     <button onClick={() => openPage("pricing")}>Pricing</button>
                     <button onClick={() => openPage("about")}>About</button>
                     <button onClick={() => openPage("contact")}>Contact</button>
+                    <button onClick={() => openPage("partners")}>Partners</button>
+                    <button onClick={() => openPage("media-kit")}>Media Kit</button>
+                    <button onClick={() => openPage("newsletter-admin")}>Admin</button>
                     <button
                         onClick={() => {
                             goHome();
@@ -602,26 +787,55 @@ function App() {
 
             {page === "home" && (
                 <HomePage
+                    posts={publishedPosts}
                     setPage={openPage}
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
                 />
             )}
             {page === "blog" && (
-                <Blog onOpenArticle={openArticle} onSubscribe={showNewsletterAlert} />
+                <Blog
+                    posts={publishedPosts}
+                    onOpenArticle={openArticle}
+                    onSubscribe={showNewsletterAlert}
+                    subscriberCount={subscriberCount}
+                    onOpenGuide={() => setShowGuideModal(true)}
+                    onNavigate={openPage}
+                />
             )}
+            {page === "blog-manager" && (
+                <BlogManager posts={managedPosts} onPostsChange={setManagedPosts} />
+            )}
+            {page === "resources" && <Resources onOpenResource={openResource} />}
             {page === "article" && selectedArticle && (
                 <ArticlePage
                     post={selectedArticle}
-                    posts={blogPosts}
+                    posts={publishedPosts}
                     onBack={goBlog}
                     onOpenArticle={openArticle}
+                    onSubscribe={showNewsletterAlert}
+                    subscriberCount={subscriberCount}
+                    onNavigate={openPage}
+                />
+            )}
+            {page === "resource" && selectedResource && (
+                <ResourcePage
+                    resource={selectedResource}
+                    resources={resources}
+                    onBack={goResources}
+                    onOpenResource={openResource}
                     onSubscribe={showNewsletterAlert}
                 />
             )}
             {page === "pricing" && <Pricing />}
             {page === "about" && <About />}
             {page === "contact" && <Contact />}
+            {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
+            {page === "media-kit" && <MediaKit onNavigate={openPage} />}
+            {page === "newsletter-admin" && <NewsletterAdmin />}
+            {page === "newsletter-success" && (
+                <NewsletterSuccess onGoHome={goHome} onGoBlog={goBlog} />
+            )}
 
             {page === "studynest" && (
                 <>
@@ -678,15 +892,22 @@ function App() {
                         Public company website, app hub, and technology blog for the
                         Cin Nova software ecosystem.
                     </p>
-                    <p>Live site: https://cin-nova-web-site.vercel.app</p>
+                    <p className="footer-subscriber-count">
+                        {subscriberCount.toLocaleString()}+ subscribers and counting.
+                    </p>
                 </div>
 
                 <div className="footer-links">
                     <button onClick={goHome}>Products</button>
                     <button onClick={goBlog}>Blog</button>
+                    <button onClick={goResources}>Resources</button>
+                    <button onClick={() => openPage("blog-manager")}>Blog Admin</button>
                     <button onClick={() => openPage("pricing")}>Pricing</button>
                     <button onClick={() => openPage("about")}>About</button>
                     <button onClick={() => openPage("contact")}>Contact</button>
+                    <button onClick={() => openPage("partners")}>Partners</button>
+                    <button onClick={() => openPage("media-kit")}>Media Kit</button>
+                    <button onClick={() => openPage("newsletter-admin")}>Newsletter Admin</button>
                     <button
                         onClick={() => {
                             goHome();

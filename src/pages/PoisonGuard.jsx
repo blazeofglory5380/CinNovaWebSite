@@ -1,4 +1,6 @@
 import "../App.css";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { saveSubscriber } from "../data/newsletterService.js";
 
 function PoisonGuard() {
     return (
@@ -121,10 +123,12 @@ function PoisonGuard() {
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE WAITLIST</p>
                     <h2>Be first to try PoisonGuard when it launches.</h2>
-                    <div className="signup-form">
-                        <input type="email" placeholder="Enter your email address" />
-                        <button>Join Waitlist</button>
-                    </div>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="PoisonGuard Waitlist"
+                        tags={["PoisonGuard", "Waitlist"]}
+                        buttonLabel="Join Waitlist"
+                    />
                 </div>
             </section>
         </div>
