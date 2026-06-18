@@ -622,6 +622,9 @@ function App() {
     const [selectedResource, setSelectedResource] = useState(initialRoute.resource);
     const [selectedCategory, setSelectedCategory] = useState(initialRoute.category || "All");
 
+    // Mobile nav state
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
     // Lead capture state
     const [showNewsletterPopup, setShowNewsletterPopup] = useState(false);
     const [showExitPopup, setShowExitPopup] = useState(false);
@@ -839,30 +842,61 @@ function App() {
                 />
             )}
 
+            {mobileMenuOpen && (
+                <div
+                    className="nav-mobile-overlay"
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+
             <nav className="navbar">
-                <button className="brand" onClick={goHome}>
+                <button
+                    className="brand"
+                    onClick={() => { goHome(); setMobileMenuOpen(false); }}
+                >
                     <span className="brand-mark">CN</span>
                     <span>Cin Nova</span>
                 </button>
 
-                <div className="nav-links">
-                    <button onClick={goHome}>Home</button>
-                    <button onClick={goHome}>Products</button>
-                    <button onClick={goBlog}>Blog</button>
-                    <button onClick={goResources}>Resources</button>
-                    <button onClick={() => openPage("blog-manager")}>Blog Admin</button>
-                    <button onClick={() => openPage("pricing")}>Pricing</button>
-                    <button onClick={() => openPage("about")}>About</button>
-                    <button onClick={() => openPage("contact")}>Contact</button>
-                    <button onClick={() => openPage("newsletter")}>Newsletter</button>
-                    <button onClick={() => openPage("partners")}>Partners</button>
-                    <button onClick={() => openPage("media-kit")}>Media Kit</button>
-                    <button onClick={() => openPage("newsletter-admin")}>Admin</button>
+                <div className={`nav-links${mobileMenuOpen ? " nav-mobile-open" : ""}`}>
+                    <button
+                        className="nav-mobile-close"
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-label="Close menu"
+                    >
+                        ✕
+                    </button>
+                    <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
+                    <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Products</button>
+                    <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
+                    <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
+                    <button onClick={() => { openPage("blog-manager");       setMobileMenuOpen(false); }}>Blog Admin</button>
+                    <button onClick={() => { openPage("pricing");            setMobileMenuOpen(false); }}>Pricing</button>
+                    <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
+                    <button onClick={() => { openPage("contact");            setMobileMenuOpen(false); }}>Contact</button>
+                    <button onClick={() => { openPage("newsletter");         setMobileMenuOpen(false); }}>Newsletter</button>
+                    <button onClick={() => { openPage("partners");           setMobileMenuOpen(false); }}>Partners</button>
+                    <button onClick={() => { openPage("media-kit");          setMobileMenuOpen(false); }}>Media Kit</button>
+                    <button onClick={() => { openPage("newsletter-admin");   setMobileMenuOpen(false); }}>Admin</button>
                 </div>
 
-                <button className="nav-cta" onClick={() => openPage("pricing")}>
-                    See Plans
-                </button>
+                <div className="nav-right">
+                    <button className="nav-cta" onClick={() => { openPage("pricing"); setMobileMenuOpen(false); }}>
+                        See Plans
+                    </button>
+                    <button
+                        className="hamburger-btn"
+                        onClick={() => setMobileMenuOpen((prev) => !prev)}
+                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileMenuOpen}
+                        aria-controls="nav-links"
+                    >
+                        <span className={`ham-bar${mobileMenuOpen ? " ham-open" : ""}`} />
+                        <span className={`ham-bar${mobileMenuOpen ? " ham-open" : ""}`} />
+                        <span className={`ham-bar${mobileMenuOpen ? " ham-open" : ""}`} />
+                    </button>
+                </div>
             </nav>
 
             {page === "home" && (

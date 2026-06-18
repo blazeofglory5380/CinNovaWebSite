@@ -4,6 +4,7 @@
 
 .site {
     min-height: 100vh;
+    overflow-x: hidden;
     background-color: #050816;
     background-image: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18) 0%, transparent 38%), radial-gradient(circle at top right, rgba(124, 58, 237, 0.2) 0%, transparent 38%);
 }
@@ -72,6 +73,54 @@
     font-weight: 800;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     cursor: pointer;
+}
+
+/* Groups nav-cta + hamburger on the right */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* Hamburger button — hidden on desktop */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.ham-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
+    transform-origin: center;
+}
+
+/* X animation for open state */
+.ham-bar.ham-open:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ham-bar.ham-open:nth-child(2) { opacity: 0; }
+.ham-bar.ham-open:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile close button inside drawer — hidden on desktop */
+.nav-mobile-close {
+    display: none;
+}
+
+/* Mobile overlay */
+.nav-mobile-overlay {
+    display: none;
 }
 
 .back-bar {
@@ -759,9 +808,84 @@ a {
     .blog-featured {
         grid-template-columns: 1fr;
     }
+    /* Nav links hidden by default on mobile — shown as drawer via .nav-mobile-open */
     .nav-links {
         display: none;
     }
+
+    .nav-links.nav-mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(300px, 82vw);
+        height: 100dvh;
+        background: rgba(5, 8, 22, 0.98);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 400;
+        padding: 24px 20px 40px;
+        overflow-y: auto;
+        gap: 4px;
+        animation: mobileNavIn 0.22s ease;
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+    }
+
+    @keyframes mobileNavIn {
+        from { transform: translateX(100%); opacity: 0.6; }
+        to   { transform: translateX(0);    opacity: 1; }
+    }
+
+    .nav-links.nav-mobile-open button {
+        width: 100%;
+        text-align: left;
+        padding: 13px 16px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #cbd5e1;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-links.nav-mobile-open button:hover {
+        background: rgba(56, 189, 248, 0.1);
+        color: #38bdf8;
+    }
+
+    .nav-mobile-close {
+        display: flex !important;
+        align-self: flex-end;
+        width: 32px !important;
+        height: 32px;
+        padding: 0 !important;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50% !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1rem;
+        cursor: pointer;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+
+    .hamburger-btn {
+        display: flex;
+    }
+
+    .nav-mobile-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 399;
+        background: rgba(0, 0, 0, 0.55);
+    }
+
     .signup-form {
         flex-direction: column;
     }
@@ -3205,6 +3329,71 @@ a {
 
     .sticky-bar-brand {
         display: none;
+    }
+}
+
+/* ── Sticky bar — collapsed on mobile, expand on tap ──── */
+
+/* The collapsed pill tap-target */
+.sticky-bar-collapsed-cta {
+    display: none; /* hidden on desktop */
+}
+
+/* The full form section */
+.sticky-bar-full {
+    display: contents; /* passes flex layout through on desktop */
+}
+
+@media (max-width: 900px) {
+    /* Collapsed state: show only the pill CTA */
+    .sticky-newsletter-bar {
+        padding: 10px 5%;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .sticky-bar-collapsed-cta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: left;
+        padding: 0;
+    }
+
+    .sticky-bar-collapsed-cta .sticky-bar-mark {
+        flex-shrink: 0;
+    }
+
+    /* Hide the full form when collapsed */
+    .sticky-bar-full {
+        display: none;
+    }
+
+    /* Expanded state: hide pill, show full form */
+    .sticky-bar-expanded .sticky-bar-collapsed-cta {
+        display: none;
+    }
+
+    .sticky-bar-expanded .sticky-bar-full {
+        display: contents;
+    }
+
+    .sticky-bar-expanded {
+        flex-wrap: wrap;
+        padding: 14px 5%;
+        gap: 12px;
+    }
+
+    .sticky-bar-expanded .sticky-bar-form {
+        flex: 0 0 100%;
+        order: 10;
     }
 }
 
