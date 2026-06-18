@@ -577,7 +577,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     return { page: "home", article: null, resource: null };
 }
 
-const POPUP_KEY = "cn_popup_dismissed";
+const POPUP_KEY = "newsletterDismissed";
 const EXIT_KEY = "cn_exit_popup_dismissed";
 const STICKY_KEY = "cn_sticky_dismissed";
 
@@ -599,20 +599,32 @@ function App() {
         () => !!sessionStorage.getItem(STICKY_KEY)
     );
 
-    // Timed newsletter popup — after 45 s, once per session
+    // Timed newsletter popup — fires once per session after 45 s
     useEffect(() => {
         if (sessionStorage.getItem(POPUP_KEY)) return;
-        const timer = setTimeout(() => setShowNewsletterPopup(true), 45000);
+        const timer = setTimeout(() => {
+            // Re-check at fire time in case the user dismissed via another trigger
+            if (!sessionStorage.getItem(POPUP_KEY)) {
+                setShowNewsletterPopup(true);
+            }
+        }, 45000);
         return () => clearTimeout(timer);
     }, []);
 
-    // 50% scroll trigger for newsletter popup
+    // 50% scroll trigger — fires once, removes itself after triggering or dismissal
     useEffect(() => {
         if (sessionStorage.getItem(POPUP_KEY)) return;
         function onScroll50() {
+            // Check inside handler so it sees the key even after dismissal
+            if (sessionStorage.getItem(POPUP_KEY)) {
+                window.removeEventListener("scroll", onScroll50);
+                return;
+            }
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             if (docHeight > 0 && window.scrollY / docHeight >= 0.5) {
                 setShowNewsletterPopup(true);
+                // Remove immediately so further scrolling cannot re-trigger
+                window.removeEventListener("scroll", onScroll50);
             }
         }
         window.addEventListener("scroll", onScroll50, { passive: true });
@@ -725,7 +737,7 @@ function App() {
 
     function closeNewsletterPopup() {
         setShowNewsletterPopup(false);
-        sessionStorage.setItem(POPUP_KEY, "1");
+        sessionStorage.setItem(POPUP_KEY, "true");
     }
 
     function closeExitPopup() {
