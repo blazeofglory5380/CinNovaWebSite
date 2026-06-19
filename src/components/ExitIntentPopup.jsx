@@ -51,7 +51,7 @@ function ExitIntentPopup({ onSubscribe, onClose }) {
                         <h2>Wait — grab the free guide first.</h2>
                         <p className="popup-body">
                             Download{" "}
-                            <em style={{ color: "#e2e8f0" }}>"{freeGuideTitle}"</em> — free, no
+                            <em style={{ color: "#334155" }}>"{freeGuideTitle}"</em> — free, no
                             credit card, no catch. Plus we'll send new Cin Nova articles straight
                             to your inbox.
                         </p>

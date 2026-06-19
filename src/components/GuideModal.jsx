@@ -38,7 +38,7 @@ function GuideModal({ onSubscribe, onClose }) {
                         <h3>Downloading now!</h3>
                         <p>
                             Your copy of{" "}
-                            <em style={{ color: "#e2e8f0" }}>"{freeGuideTitle}"</em> is on its
+                            <em style={{ color: "#334155" }}>"{freeGuideTitle}"</em> is on its
                             way. You're also subscribed to the Cin Nova newsletter.
                         </p>
                         <button className="primary-btn popup-submit-btn" onClick={onClose}>

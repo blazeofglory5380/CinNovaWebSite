@@ -120,6 +120,32 @@ function RelatedSidebar({ articles, onOpenArticle }) {
     );
 }
 
+function RelatedReadingBlock({ articles, onOpenArticle }) {
+    if (!articles.length) return null;
+    return (
+        <aside className="related-reading-block" aria-label="Related reading">
+            <p className="sidebar-widget-label">RELATED READING</p>
+            <div className="related-reading-grid">
+                {articles.map((item) => (
+                    <a
+                        href={`/blog/${item.slug}`}
+                        key={item.id}
+                        className="related-reading-card"
+                        onClick={(event) => {
+                            event.preventDefault();
+                            onOpenArticle(item);
+                        }}
+                    >
+                        <span>{item.category}</span>
+                        <strong>{item.title}</strong>
+                        <small>{item.readTime}</small>
+                    </a>
+                ))}
+            </div>
+        </aside>
+    );
+}
+
 function PrevNextNav({ prev, next, onOpenArticle }) {
     if (!prev && !next) return null;
     return (
@@ -163,11 +189,20 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
 
+    const relatedBySlug = (post.relatedReading || [])
+        .map((slug) => posts.find((item) => item.slug === slug))
+        .filter(Boolean);
     const relatedArticles = posts
         .filter((item) => item.id !== post.id && item.category === post.category)
         .slice(0, 3);
-    const fallbackRelated = posts.filter((item) => item.id !== post.id).slice(0, 3);
-    const articlesToShow = relatedArticles.length ? relatedArticles : fallbackRelated;
+    const fallbackRelated = posts
+        .filter((item) => item.id !== post.id && item.cornerstone)
+        .slice(0, 3);
+    const articlesToShow = relatedBySlug.length
+        ? relatedBySlug
+        : relatedArticles.length
+          ? relatedArticles
+          : fallbackRelated;
 
     const moreFromAuthor = posts
         .filter((item) => item.id !== post.id && item.author === post.author)
@@ -247,6 +282,10 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                                 )}
                             </section>
                         ))}
+                        <RelatedReadingBlock
+                            articles={articlesToShow}
+                            onOpenArticle={onOpenArticle}
+                        />
                     </article>
 
                     <aside className="article-sidebar">

@@ -274,11 +274,11 @@ function Pricing() {
                                             borderRadius: "14px",
                                             border: tier.highlight
                                                 ? "none"
-                                                : "1px solid rgba(255,255,255,0.12)",
+                                                : "1px solid #cbd5e1",
                                             background: tier.highlight
                                                 ? "linear-gradient(135deg, #2563eb, #7c3aed)"
-                                                : "rgba(255,255,255,0.08)",
-                                            color: "#ffffff",
+                                                : "#ffffff",
+                                            color: tier.highlight ? "#ffffff" : "#334155",
                                             fontWeight: 900,
                                             fontSize: "0.9rem",
                                             cursor: tier.price === "Coming Soon" ? "default" : "pointer",

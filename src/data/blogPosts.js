@@ -912,6 +912,222 @@ const fullArticles = [
     },
 ];
 
+const cornerstoneRelated = {
+    1: [
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        "ai-productivity-tools-every-student-should-know",
+        "how-ai-changes-property-search",
+    ],
+    2: [
+        "why-data-centers-are-becoming-the-new-gold-rush",
+        "can-americas-power-grid-handle-ai",
+        "database-basics-for-product-founders",
+    ],
+    3: [
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        "can-americas-power-grid-handle-ai",
+        "why-data-centers-matter-to-everyday-apps",
+    ],
+    4: [
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        "what-small-businesses-should-know-about-ai-assistants",
+        "building-a-software-company-with-multiple-products",
+    ],
+    5: [
+        "why-data-centers-are-becoming-the-new-gold-rush",
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        "why-data-centers-matter-to-everyday-apps",
+    ],
+    6: [
+        "how-ai-is-transforming-education",
+        "student-dashboards-that-actually-help",
+        "ai-productivity-tools-every-student-should-know",
+    ],
+    7: [
+        "the-companies-building-the-ai-economy",
+        "how-founders-can-validate-multiple-app-ideas",
+        "beginner-guide-to-real-estate-deal-analysis",
+    ],
+    8: [
+        "the-companies-building-the-ai-economy",
+        "building-a-software-company-with-multiple-products",
+        "how-founders-can-validate-multiple-app-ideas",
+    ],
+    9: [
+        "how-ai-changes-property-search",
+        "the-companies-building-the-ai-economy",
+        "database-basics-for-product-founders",
+    ],
+    10: [
+        "how-ai-is-transforming-education",
+        "how-kids-learn-abcs-and-numbers",
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+    ],
+};
+
+const cornerstoneOverrides = {
+    1: {
+        title: "How AI Is Transforming Education",
+        slug: "how-ai-is-transforming-education",
+        excerpt:
+            "AI is reshaping tutoring, study planning, feedback, and classroom support while making human guidance more important.",
+        tags: ["AI tutoring", "study tools", "personalized learning", "education AI"],
+        seoKeywords: ["AI transforming education", "AI in education", "education technology"],
+        thumbnail: { label: "ED", title: "AI Education Systems" },
+        content: [
+            {
+                heading: "Learning is becoming more personal",
+                body:
+                    "Traditional education often gives every student the same worksheet, lecture, and review schedule. AI can help students move at a pace that fits their current understanding, then suggest the next useful step when they get stuck. The practical takeaway is simple: better learning tools should meet students where they are, not where a generic syllabus assumes they should be.",
+            },
+            {
+                heading: "Study tools are becoming connected",
+                body:
+                    "Notes, flashcards, quizzes, study planners, and tutoring should not live in separate silos. A connected workspace lets students turn class material into review activities faster, then use performance data to decide what to study next. That is the heart of StudyNest: notes become flashcards, weak spots become practice sessions, and planning becomes less stressful.",
+            },
+            {
+                heading: "Teachers still matter",
+                body:
+                    "The strongest education AI does not replace teachers, tutors, or student effort. It helps people see where practice is needed, explains concepts in more than one way, and makes review easier to repeat. Good tools should support motivation, not pretend learning can be skipped.",
+            },
+        ],
+    },
+    2: {
+        title: "The Hidden Infrastructure Behind ChatGPT and AI",
+        slug: "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        category: "Artificial Intelligence",
+        excerpt:
+            "AI products feel instant on the surface, but they rely on data centers, chips, databases, networks, and power behind the scenes.",
+        date: "June 16, 2026",
+        readTime: "7 min read",
+        tags: ["AI infrastructure", "ChatGPT", "data centers", "cloud computing"],
+        seoKeywords: ["AI infrastructure", "ChatGPT infrastructure", "data centers for AI"],
+        thumbnail: { label: "AI", title: "AI Infrastructure Stack" },
+        content: [
+            {
+                heading: "AI depends on physical infrastructure",
+                body:
+                    "Chatbots and AI assistants can feel like pure software, but every answer runs through a physical chain of chips, servers, networking equipment, storage, and cooling systems. The visible product is only the final layer of a much larger infrastructure stack.",
+            },
+            {
+                heading: "Data centers turn models into products",
+                body:
+                    "Training and running AI models requires reliable compute capacity. Data centers provide the environment where that compute can operate at scale, while databases and cloud systems keep product data organized and available for real users.",
+            },
+            {
+                heading: "The constraint is no longer only code",
+                body:
+                    "AI companies compete on models, product design, distribution, data access, compute supply, and energy strategy. Builders who understand the hidden infrastructure can make better decisions about cost, reliability, and where the AI economy is heading.",
+            },
+        ],
+    },
+    3: {
+        title: "Why Data Centers Are Becoming the New Gold Rush",
+        slug: "why-data-centers-are-becoming-the-new-gold-rush",
+        category: "Data Centers & Databases",
+        excerpt:
+            "AI demand is turning data centers into strategic assets for technology companies, energy providers, investors, and local markets.",
+        date: "June 15, 2026",
+        readTime: "7 min read",
+        tags: ["data centers", "AI infrastructure", "cloud", "power demand"],
+        seoKeywords: ["data center gold rush", "AI data centers", "data center demand"],
+        thumbnail: { label: "DC", title: "Data Center Expansion" },
+        content: [
+            {
+                heading: "AI changed the demand curve",
+                body:
+                    "Traditional cloud apps already needed large data centers, but AI workloads add a new level of demand. Model training, inference, storage, and constant product usage all increase the need for specialized facilities with serious compute capacity.",
+            },
+            {
+                heading: "Location and power matter",
+                body:
+                    "A data center is not useful without land, permitting, fiber connectivity, cooling, and dependable electricity. That is why infrastructure conversations now include utilities, real estate, local governments, and long-term power planning.",
+            },
+            {
+                heading: "The opportunity reaches beyond big tech",
+                body:
+                    "The data center boom affects construction, commercial real estate, energy, hardware, software, and local economic development. For founders and investors, the lesson is to look at the infrastructure layer behind every fast-growing AI product.",
+            },
+        ],
+    },
+    4: {
+        title: "The Companies Building the AI Economy",
+        slug: "the-companies-building-the-ai-economy",
+        category: "Artificial Intelligence",
+        excerpt:
+            "The AI economy is being built by model labs, chipmakers, cloud providers, app companies, infrastructure firms, and specialized software teams.",
+        date: "June 14, 2026",
+        readTime: "6 min read",
+        tags: ["AI economy", "AI companies", "software business", "infrastructure"],
+        seoKeywords: ["companies building AI economy", "AI economy", "AI software companies"],
+        thumbnail: { label: "EC", title: "AI Economy Map" },
+        content: [
+            {
+                heading: "The AI economy has many layers",
+                body:
+                    "AI is not one industry. It includes foundation model labs, chip designers, cloud platforms, data center operators, app builders, safety teams, workflow software, and businesses that use AI to improve specific jobs.",
+            },
+            {
+                heading: "Application companies turn capability into value",
+                body:
+                    "A powerful model only becomes useful when it is placed inside a workflow people understand. Education tools, real estate analyzers, support assistants, safety products, and business dashboards are examples of how AI becomes practical software.",
+            },
+            {
+                heading: "Infrastructure and distribution decide winners",
+                body:
+                    "The companies that shape the AI economy will combine technical capability with reliable infrastructure, trusted brands, useful data, and clear distribution. CinNova's product lanes follow that same pattern at a focused app-company scale.",
+            },
+        ],
+    },
+    5: {
+        title: "Can America's Power Grid Handle AI?",
+        slug: "can-americas-power-grid-handle-ai",
+        category: "Data Centers & Databases",
+        excerpt:
+            "AI growth is increasing electricity demand, forcing tougher questions about data centers, utilities, grid upgrades, and energy planning.",
+        date: "June 13, 2026",
+        readTime: "7 min read",
+        tags: ["AI power demand", "power grid", "data centers", "energy"],
+        seoKeywords: ["AI power grid", "AI electricity demand", "data center power"],
+        thumbnail: { label: "PG", title: "AI Power Demand" },
+        content: [
+            {
+                heading: "AI makes electricity a product issue",
+                body:
+                    "AI systems need large amounts of compute, and compute needs power. As more companies run AI products at scale, electricity availability becomes part of the product roadmap, not just a utility bill in the background.",
+            },
+            {
+                heading: "Data centers create local pressure",
+                body:
+                    "Large AI data centers can concentrate demand in specific regions. That creates planning challenges for utilities, transmission lines, substations, cooling systems, and communities that want growth without unreliable service or unmanaged costs.",
+            },
+            {
+                heading: "The answer is planning, not panic",
+                body:
+                    "The grid can adapt when capacity, permitting, efficiency, storage, and generation are handled seriously. For software builders, the practical takeaway is to understand that AI scale depends on energy strategy as much as model quality.",
+            },
+        ],
+    },
+};
+
+const enrichedFullArticles = fullArticles.map((post) => {
+    const cornerstone = post.id <= 10;
+    const override = cornerstoneOverrides[post.id] || {};
+    return {
+        ...post,
+        ...override,
+        cornerstone,
+        featured: post.id <= 5,
+        trending: cornerstone || post.trending,
+        popular: cornerstone || post.popular,
+        thumbnail: override.thumbnail || post.thumbnail || {
+            label: post.category.slice(0, 2).toUpperCase(),
+            title: post.category,
+        },
+        relatedReading: cornerstoneRelated[post.id] || post.relatedReading || [],
+    };
+});
+
 const plannedBlueprints = [
     ["Artificial Intelligence", "AI Agents for Everyday Workflows", "A practical guide to where AI agents can help with scheduling, research, support, and documentation.", ["AI agents", "workflow automation", "productivity"], ["AI agents", "AI workflow tools", "business automation"], ["Define what an agent should do", "Show safe use cases", "Explain when human review matters"]],
     ["Artificial Intelligence", "Prompt Engineering for Non-Technical Teams", "How teams can write clearer prompts without turning prompt writing into a separate job.", ["prompt engineering", "team workflows", "AI training"], ["prompt engineering for teams", "AI prompts", "business AI"], ["Start with context", "Add examples and constraints", "Build a reusable prompt library"]],
@@ -1018,7 +1234,7 @@ const plannedArticles = plannedBlueprints.map(
     }),
 );
 
-export const blogPosts = [...fullArticles, ...plannedArticles];
+export const blogPosts = [...enrichedFullArticles, ...plannedArticles];
 
 export function getPostBySlug(slug) {
     return blogPosts.find((post) => post.slug === slug);

@@ -46,7 +46,15 @@ function readPosts() {
     if (typeof window === "undefined") return starterPosts();
 
     const stored = safeReadArray(STORAGE_KEY);
-    return stored.length ? stored.map((post, index) => withDefaults(post, index)) : starterPosts();
+    if (!stored.length) return starterPosts();
+
+    const starters = starterPosts();
+    const starterIds = new Set(starters.map((post) => post.id));
+    const customStoredPosts = stored
+        .filter((post) => !starterIds.has(post.id))
+        .map((post, index) => withDefaults(post, starters.length + index));
+
+    return [...starters, ...customStoredPosts];
 }
 
 function writePosts(posts) {

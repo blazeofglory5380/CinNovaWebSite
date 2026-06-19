@@ -196,7 +196,7 @@ function RealEstate() {
                                 30-YEAR FIXED @ 7.1%
                             </p>
                             <strong style={{ fontSize: "1.8rem", display: "block", marginBottom: "4px" }}>$2,574/mo</strong>
-                            <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "10px" }}>
+                            <p style={{ color: "#64748b", fontSize: "0.85rem", marginTop: "10px" }}>
                                 Loan: $308,000 &nbsp;|&nbsp; Down: 20% ($77K)
                                 <br />Principal + Interest: $2,068 &nbsp;|&nbsp; Taxes + Insurance: $506
                             </p>
@@ -206,7 +206,7 @@ function RealEstate() {
                                 15-YEAR FIXED @ 6.6%
                             </p>
                             <strong style={{ fontSize: "1.4rem", display: "block" }}>$3,218/mo</strong>
-                            <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "6px" }}>
+                            <p style={{ color: "#64748b", fontSize: "0.85rem", marginTop: "6px" }}>
                                 Save $187,400 in interest over life of loan
                             </p>
                         </div>

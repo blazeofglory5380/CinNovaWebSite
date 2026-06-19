@@ -281,12 +281,12 @@ function TechMateAI() {
                             <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
                                 MacBook Pro — Keyboard Not Responding
                             </p>
-                            <p style={{ color: "#e2e8f0", marginBottom: "8px" }}>
+                            <p style={{ color: "#334155", marginBottom: "8px" }}>
                                 <strong>Step 1 of 5</strong> — Soft Reset
                             </p>
-                            <p style={{ color: "#94a3b8", lineHeight: "1.6", fontSize: "0.9rem" }}>
-                                Hold <strong style={{ color: "#ffffff" }}>Ctrl + Option + Shift</strong> for 7 seconds,
-                                then hold <strong style={{ color: "#ffffff" }}>Power</strong> for 7 more seconds.
+                            <p style={{ color: "#64748b", lineHeight: "1.6", fontSize: "0.9rem" }}>
+                                Hold <strong style={{ color: "#0f172a" }}>Ctrl + Option + Shift</strong> for 7 seconds,
+                                then hold <strong style={{ color: "#0f172a" }}>Power</strong> for 7 more seconds.
                                 Release all keys. Wait 5 seconds, then power on normally.
                                 This resets the SMC and resolves keyboard freeze in ~60% of cases.
                             </p>
@@ -295,8 +295,8 @@ function TechMateAI() {
                             <p style={{ color: "#7c3aed", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "6px" }}>
                                 Step 2 of 5 — NVRAM Reset
                             </p>
-                            <p style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: "1.6" }}>
-                                Restart and immediately hold <strong style={{ color: "#ffffff" }}>Option + Cmd + P + R</strong> for
+                            <p style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: "1.6" }}>
+                                Restart and immediately hold <strong style={{ color: "#0f172a" }}>Option + Cmd + P + R</strong> for
                                 20 seconds. Releases on second startup chime. Clears stored input device settings.
                             </p>
                         </div>
@@ -365,8 +365,8 @@ function TechMateAI() {
                                     ["💿", "macOS Sonoma Slow Performance", "Guide"],
                                     ["🖨️", "HP Printer Offline on Wi-Fi — All Models", "Guide"],
                                 ].map(([icon, title, status]) => (
-                                    <div key={title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                                        <span style={{ color: "#e2e8f0", fontSize: "0.88rem" }}>{icon} {title}</span>
+                                    <div key={title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #e2e8f0" }}>
+                                        <span style={{ color: "#334155", fontSize: "0.88rem" }}>{icon} {title}</span>
                                         <span style={{ color: "#64748b", fontSize: "0.78rem", whiteSpace: "nowrap", marginLeft: "12px" }}>{status}</span>
                                     </div>
                                 ))}

@@ -266,7 +266,7 @@ function Contact() {
                 <div className="newsletter-card">
                     <p className="eyebrow">STAY IN THE LOOP</p>
                     <h2>Join the Cin Nova newsletter.</h2>
-                    <p style={{ color: "#94a3b8", maxWidth: "500px", margin: "0 auto 8px", lineHeight: "1.8" }}>
+                    <p style={{ color: "#64748b", maxWidth: "500px", margin: "0 auto 8px", lineHeight: "1.8" }}>
                         Get product updates, early access announcements, and behind-the-scenes
                         content delivered to your inbox.
                     </p>

@@ -201,8 +201,8 @@ function About() {
                             ].map(([icon, who, desc]) => (
                                 <div key={who} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                                     <span style={{ fontSize: "1.2rem", marginTop: "2px" }}>{icon}</span>
-                                    <p style={{ color: "#cbd5e1", lineHeight: "1.6", margin: 0 }}>
-                                        <strong style={{ color: "#ffffff" }}>{who}</strong> — {desc}
+                                    <p style={{ color: "#334155", lineHeight: "1.6", margin: 0 }}>
+                                        <strong style={{ color: "#0f172a" }}>{who}</strong> — {desc}
                                     </p>
                                 </div>
                             ))}
@@ -250,20 +250,20 @@ function About() {
                         "Cin Nova is being built as a real software company — not a side project."
                     </h2>
 
-                    <p style={{ color: "#cbd5e1", lineHeight: "1.9", marginBottom: "18px" }}>
+                    <p style={{ color: "#334155", lineHeight: "1.9", marginBottom: "18px" }}>
                         The goal is straightforward: identify categories where people genuinely
                         need better tools, build clean and useful software, and grow an audience
                         through honest content and product quality. That is how sustainable
                         technology businesses are built.
                     </p>
-                    <p style={{ color: "#cbd5e1", lineHeight: "1.9", marginBottom: "18px" }}>
+                    <p style={{ color: "#334155", lineHeight: "1.9", marginBottom: "18px" }}>
                         Each product under the Cin Nova brand is designed to stand on its own —
                         to be useful to someone on day one, not just after a long onboarding
                         process. The five initial products cover education, safety, tech support,
                         early childhood learning, and real estate because these are underserved
                         markets where AI can make a meaningful difference today.
                     </p>
-                    <p style={{ color: "#cbd5e1", lineHeight: "1.9" }}>
+                    <p style={{ color: "#334155", lineHeight: "1.9" }}>
                         The roadmap is clear: ship great products, create content that helps
                         people, build an email list, launch subscriptions, and keep improving.
                         No shortcuts. No pivots. Just the work.
@@ -273,7 +273,7 @@ function About() {
                         style={{
                             marginTop: "28px",
                             paddingTop: "24px",
-                            borderTop: "1px solid rgba(255,255,255,0.08)",
+                            borderTop: "1px solid #e2e8f0",
                             display: "flex",
                             alignItems: "center",
                             gap: "14px",
@@ -296,7 +296,7 @@ function About() {
                             CN
                         </div>
                         <div>
-                            <strong style={{ display: "block", color: "#ffffff" }}>Cin Nova</strong>
+                            <strong style={{ display: "block", color: "#0f172a" }}>Cin Nova</strong>
                             <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Founder &amp; Builder</span>
                         </div>
                     </div>
@@ -381,7 +381,7 @@ function About() {
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE COMMUNITY</p>
                     <h2>Join the Cin Nova community and follow the build.</h2>
-                    <p style={{ color: "#94a3b8", maxWidth: "520px", margin: "0 auto 8px", lineHeight: "1.8" }}>
+                    <p style={{ color: "#64748b", maxWidth: "520px", margin: "0 auto 8px", lineHeight: "1.8" }}>
                         Get product updates, early access announcements, and behind-the-scenes
                         content delivered to your inbox.
                     </p>

@@ -51,10 +51,18 @@ function Blog({
         setActiveCategory(routedCategory || "All");
     }, [routedCategory]);
 
-    const featuredPost = posts.find((post) => post.featured) || posts[0];
+    const featuredPosts = useMemo(
+        () => posts.filter((post) => post.featured || post.cornerstone).slice(0, 10),
+        [posts]
+    );
+    const featuredPost = featuredPosts[0] || posts[0];
+    const secondaryFeaturedPosts = featuredPosts.filter((post) => post.id !== featuredPost?.id).slice(0, 9);
 
     const trendingPosts = useMemo(
-        () => posts.filter((p) => postMetrics[p.id]?.trending).slice(0, 4),
+        () =>
+            posts
+                .filter((post) => post.cornerstone || postMetrics[post.id]?.trending || post.trending)
+                .slice(0, 10),
         [posts]
     );
 
@@ -189,6 +197,23 @@ function Blog({
                             <span>By {featuredPost.author}</span>
                         </div>
                     </div>
+                    {secondaryFeaturedPosts.length > 0 && (
+                        <div className="featured-article-strip">
+                            {secondaryFeaturedPosts.map((post) => (
+                                <a
+                                    href={`/blog/${post.slug}`}
+                                    className="featured-strip-item"
+                                    key={post.id}
+                                    onClick={(event) => handleArticleLink(event, post)}
+                                >
+                                    <ArticleVisual post={post} />
+                                    <span>{post.category}</span>
+                                    <strong>{post.title}</strong>
+                                    <small>{post.readTime}</small>
+                                </a>
+                            ))}
+                        </div>
+                    )}
                 </section>
             )}
 

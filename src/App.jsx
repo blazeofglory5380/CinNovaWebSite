@@ -337,11 +337,25 @@ const homeSchema = {
 };
 
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
-    const latestPosts = posts.slice(0, 3);
+    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 10);
+    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 10);
 
     function openProduct(page) {
         setPage(page);
         window.scrollTo(0, 0);
+    }
+
+    function ArticleVisual({ post }) {
+        return (
+            <div
+                className="article-thumb article-thumb-card"
+                data-category={slugifyCategory(post.category)}
+                aria-label={`${post.category} article thumbnail`}
+            >
+                <span>{post.thumbnail?.label || post.category.slice(0, 2).toUpperCase()}</span>
+                <strong>{post.thumbnail?.title || post.category}</strong>
+            </div>
+        );
     }
 
     return (
@@ -540,16 +554,16 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
 
             <section className="section blog-section" id="blog">
                 <div className="section-heading">
-                    <p className="eyebrow">LATEST ARTICLES</p>
-                    <h2>Read the newest Cin Nova articles.</h2>
+                    <p className="eyebrow">CORNERSTONE ARTICLES</p>
+                    <h2>Start with the core Cin Nova reads.</h2>
                     <p>
-                        Guides and ideas that promote the apps, grow traffic, and build a
-                        useful public knowledge base around the company.
+                        The launch collection covering AI, data centers, education,
+                        real estate, and the infrastructure behind modern software.
                     </p>
                 </div>
 
                 <div className="article-grid">
-                    {latestPosts.map((post) => (
+                    {featuredPosts.map((post) => (
                         <article
                             className="article-card article-card-clickable"
                             key={post.id}
@@ -561,6 +575,7 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                             }}
                         >
                             <span>{post.category}</span>
+                            <ArticleVisual post={post} />
                             <h3>{post.title}</h3>
                             <p>{post.excerpt}</p>
                             <a

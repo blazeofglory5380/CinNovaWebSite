@@ -230,11 +230,11 @@ function Kiddo() {
                             <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
                                 COUNTING CHALLENGE — LEVEL 2
                             </p>
-                            <p style={{ color: "#e2e8f0", fontSize: "1.1rem", marginBottom: "10px" }}>
+                            <p style={{ color: "#334155", fontSize: "1.1rem", marginBottom: "10px" }}>
                                 🍎 🍎 🍎 + 🍎 🍎 = ?
                             </p>
                             <strong style={{ fontSize: "1.6rem", display: "block", marginBottom: "6px" }}>3 + 2 = 5 ✅</strong>
-                            <p style={{ color: "#94a3b8", fontSize: "0.88rem", lineHeight: "1.6" }}>
+                            <p style={{ color: "#64748b", fontSize: "0.88rem", lineHeight: "1.6" }}>
                                 Noah counted the apples one by one and got it right!
                                 Score: 7/8 correct. Next: subtraction with stars ⭐
                             </p>
@@ -254,7 +254,7 @@ function Kiddo() {
                     <div className="showcase-card">
                         <h3>Interactive Story — The Lost Star</h3>
                         <div className="chat-ai">
-                            <em style={{ color: "#94a3b8" }}>
+                            <em style={{ color: "#64748b" }}>
                                 Luna the bunny found a glowing star in the meadow. It was lost
                                 and wanted to go home to the sky. Luna needed to cross the
                                 Whispering Forest to find the rainbow bridge...
@@ -394,10 +394,10 @@ function Kiddo() {
                                     ["🔢", "Number Ninja", "Counted to 50 without help"],
                                     ["🎨", "Color Master", "All 12 colors identified"],
                                 ].map(([icon, badge, desc]) => (
-                                    <div key={badge} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                                    <div key={badge} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 0", borderBottom: "1px solid #e2e8f0" }}>
                                         <span style={{ fontSize: "1.4rem" }}>{icon}</span>
                                         <div>
-                                            <strong style={{ display: "block", color: "#ffffff", fontSize: "0.88rem" }}>{badge}</strong>
+                                            <strong style={{ display: "block", color: "#0f172a", fontSize: "0.88rem" }}>{badge}</strong>
                                             <span style={{ color: "#64748b", fontSize: "0.78rem" }}>{desc}</span>
                                         </div>
                                     </div>
