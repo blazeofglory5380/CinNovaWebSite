@@ -4,6 +4,7 @@ import SEO from "../components/SEO.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import {
     blogCategories,
+    estimateArticleReadingTime,
     getBlogUrl,
     getCategoryUrl,
     postMetrics,
@@ -132,17 +133,41 @@ function Blog({
         onOpenArticle(post);
     }
 
+    function getReadTime(post) {
+        return estimateArticleReadingTime(post);
+    }
+
     function ArticleVisual({ post, variant = "card" }) {
         const config = categoryConfig[post.category] || { icon: "CN", desc: "" };
+        const cover = post.coverImage || {
+            label: post.thumbnail?.label || config.icon,
+            kicker: post.category,
+            title: post.thumbnail?.title || post.category,
+            accent: "blue",
+            alt: `${post.title} article cover`,
+        };
+
         return (
-            <div
-                className={`article-thumb article-thumb-${variant}`}
+            <figure
+                className={`article-cover article-cover-${variant}`}
                 data-category={slugifyCategory(post.category)}
-                aria-label={`${post.category} article thumbnail`}
+                data-accent={cover.accent || "blue"}
+                aria-label={cover.alt}
             >
-                <span>{post.thumbnail?.label || config.icon}</span>
-                <strong>{post.thumbnail?.title || post.category}</strong>
-            </div>
+                <div className="article-cover-grid" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </div>
+                <div className="article-cover-mark">
+                    <span>{cover.label}</span>
+                </div>
+                <figcaption>
+                    <small>{cover.kicker}</small>
+                    <strong>{cover.title}</strong>
+                </figcaption>
+            </figure>
         );
     }
 
@@ -177,7 +202,7 @@ function Blog({
                             <p>{featuredPost.excerpt}</p>
                             <div className="article-meta-row">
                                 <span>{featuredPost.date}</span>
-                                <span>{featuredPost.readTime}</span>
+                                <span>{getReadTime(featuredPost)}</span>
                                 <span>{featuredPost.author}</span>
                             </div>
                             <a
@@ -192,7 +217,7 @@ function Blog({
                             <ArticleVisual post={featuredPost} variant="panel" />
                             <p className="product-category">FEATURED ARTICLE</p>
                             <strong>{featuredPost.category}</strong>
-                            <span>{featuredPost.readTime}</span>
+                            <span>{getReadTime(featuredPost)}</span>
                             <span>{featuredPost.date}</span>
                             <span>By {featuredPost.author}</span>
                         </div>
@@ -209,7 +234,7 @@ function Blog({
                                     <ArticleVisual post={post} />
                                     <span>{post.category}</span>
                                     <strong>{post.title}</strong>
-                                    <small>{post.readTime}</small>
+                                    <small>{getReadTime(post)}</small>
                                 </a>
                             ))}
                         </div>
@@ -245,7 +270,7 @@ function Blog({
                                 <div className="article-card-meta">
                                     <small>{post.author}</small>
                                     <small>{post.date}</small>
-                                    <small>{post.readTime}</small>
+                                    <small>{getReadTime(post)}</small>
                                 </div>
                                 <a
                                     href={`/blog/${post.slug}`}
@@ -391,7 +416,7 @@ function Blog({
                             <div className="article-card-meta">
                                 <small>{post.author}</small>
                                 <small>{post.date}</small>
-                                <small>{post.readTime}</small>
+                                <small>{getReadTime(post)}</small>
                             </div>
                             <a
                                 href={`/blog/${post.slug}`}
@@ -430,7 +455,7 @@ function Blog({
                                 <p>{post.excerpt}</p>
                                 <div className="article-card-meta">
                                     <small>{post.author}</small>
-                                    <small>{post.readTime}</small>
+                                    <small>{getReadTime(post)}</small>
                                 </div>
                             </div>
                         </article>

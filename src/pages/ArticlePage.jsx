@@ -8,7 +8,13 @@ import SponsoredDisclosure from "../components/SponsoredDisclosure.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
 import BlogProductCTA from "../components/BlogProductCTA.jsx";
-import { getArticleUrl, getAuthorProfile, siteUrl, slugifyCategory } from "../data/blogPosts.js";
+import {
+    estimateArticleReadingTime,
+    getArticleUrl,
+    getAuthorProfile,
+    siteUrl,
+    slugifyCategory,
+} from "../data/blogPosts.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
 
 function ReadingProgressBar() {
@@ -173,14 +179,61 @@ function PrevNextNav({ prev, next, onOpenArticle }) {
 }
 
 function ArticleHeroVisual({ post }) {
+    const cover = post.coverImage || {
+        label: post.thumbnail?.label || post.category.slice(0, 2).toUpperCase(),
+        kicker: post.category,
+        title: post.thumbnail?.title || post.category,
+        alt: `${post.title} hero illustration`,
+    };
+
     return (
-        <div
-            className="article-thumb article-thumb-hero"
+        <figure
+            className="article-cover article-cover-hero"
             data-category={slugifyCategory(post.category)}
-            aria-label={`${post.category} article thumbnail`}
+            data-accent={cover.accent || "blue"}
+            aria-label={cover.alt}
         >
-            <span>{post.thumbnail?.label || post.category.slice(0, 2).toUpperCase()}</span>
-            <strong>{post.thumbnail?.title || post.category}</strong>
+            <div className="article-cover-grid" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+                <span />
+            </div>
+            <div className="article-cover-mark">
+                <span>{cover.label}</span>
+            </div>
+            <figcaption>
+                <small>{cover.kicker}</small>
+                <strong>{cover.title}</strong>
+                <span>Cin Nova Editorial</span>
+            </figcaption>
+        </figure>
+    );
+}
+
+function ArticlePublicationMeta({ post, author, readingTime }) {
+    const byline = post.editorialByline || author.name;
+    const topics = post.coverageTopics || [post.category];
+
+    return (
+        <div className="article-publication-meta" aria-label="Article publication details">
+            <div className="article-byline-lockup">
+                <AuthorProfile author={author} variant="compact" />
+                <div>
+                    <span>By {byline}</span>
+                    <small>{author.role}</small>
+                </div>
+            </div>
+            <div className="article-date-stack">
+                <span>{post.publishedLabel || `Published: ${post.date}`}</span>
+                <span>{post.updatedLabel || `Updated: ${post.date}`}</span>
+                <span>{readingTime}</span>
+            </div>
+            <div className="article-topic-strip" aria-label="Coverage topics">
+                {topics.map((topic) => (
+                    <span key={topic}>{topic}</span>
+                ))}
+            </div>
         </div>
     );
 }
@@ -188,6 +241,7 @@ function ArticleHeroVisual({ post }) {
 function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNavigate }) {
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
+    const readingTime = estimateArticleReadingTime(post);
 
     const relatedBySlug = (post.relatedReading || [])
         .map((slug) => posts.find((item) => item.slug === slug))
@@ -258,13 +312,11 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 <h1>{post.title}</h1>
                 <p className="article-excerpt">{post.excerpt}</p>
                 <div className="article-meta-row">
-                    <span>{post.date}</span>
-                    <span>⏱ {post.readTime}</span>
-                    <span>{post.author}</span>
+                    <span>{post.publishedLabel || post.date}</span>
+                    <span>{readingTime}</span>
+                    <span>By {post.editorialByline || author.name}</span>
                 </div>
-                <div className="article-author-hero">
-                    <AuthorProfile author={author} variant="compact" />
-                </div>
+                <ArticlePublicationMeta post={post} author={author} readingTime={readingTime} />
                 <ArticleHeroVisual post={post} />
             </section>
 
@@ -272,7 +324,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 <div className="article-body-layout">
                     <article className="article-content-card">
                         {post.content.map((section, i) => (
-                            <section key={section.heading} id={`section-${i}`}>
+                            <section className="article-section" key={section.heading} id={`section-${i}`}>
                                 <h2>{section.heading}</h2>
                                 <p>{section.body}</p>
                                 {i === 1 && (
@@ -383,9 +435,12 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
             )}
 
             <section className="section" id="newsletter">
-                <div className="newsletter-card">
+                <div className="newsletter-card article-end-newsletter">
                     <p className="eyebrow">JOIN THE NEWSLETTER</p>
-                    <h2>Get future Cin Nova articles and app updates.</h2>
+                    <h2>Join the Cin Nova Newsletter.</h2>
+                    <p className="newsletter-copy">
+                        Get AI, Education, Real Estate, and Technology insights in your inbox.
+                    </p>
                     <NewsletterSignup
                         onSubscribe={onSubscribe}
                         source={`Article: ${post.title}`}

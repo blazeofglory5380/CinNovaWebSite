@@ -410,13 +410,19 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                 <div className="hero-panel">
                     <h3>Cin Nova Ecosystem</h3>
                     {products.map((product) => (
-                        <div className="ecosystem-item" key={product.name}>
-                            <span>{product.icon}</span>
-                            <div>
+                        <button
+                            className="ecosystem-item"
+                            key={product.name}
+                            onClick={() => openProduct(product.page)}
+                            aria-label={`Open ${product.name}`}
+                        >
+                            <span className="ecosystem-item-badge">{product.icon}</span>
+                            <div className="ecosystem-item-info">
                                 <strong>{product.name}</strong>
-                                <p>{product.category}</p>
+                                <span>{product.category}</span>
                             </div>
-                        </div>
+                            <span className="ecosystem-item-arrow" aria-hidden="true">→</span>
+                        </button>
                     ))}
                 </div>
             </section>

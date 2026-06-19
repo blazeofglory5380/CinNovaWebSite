@@ -1110,10 +1110,119 @@ const cornerstoneOverrides = {
     },
 };
 
+const editorialCoverageTopics = [
+    "AI",
+    "Education",
+    "Real Estate",
+    "Safety Technology",
+    "Emerging Tech",
+];
+
+const categoryCoverDetails = {
+    "Artificial Intelligence": {
+        label: "AI",
+        kicker: "Artificial Intelligence",
+        title: "AI Systems & Software",
+        accent: "blue",
+    },
+    "Data Centers & Databases": {
+        label: "DC",
+        kicker: "Infrastructure",
+        title: "Compute, Power & Data",
+        accent: "cyan",
+    },
+    "Education Technology": {
+        label: "ED",
+        kicker: "Education Technology",
+        title: "Learning Systems",
+        accent: "violet",
+    },
+    "Real Estate Technology": {
+        label: "RE",
+        kicker: "Real Estate Technology",
+        title: "Markets & Property Data",
+        accent: "emerald",
+    },
+    "Healthcare Technology": {
+        label: "HX",
+        kicker: "Safety Technology",
+        title: "Home Safety Intelligence",
+        accent: "rose",
+    },
+};
+
+function getCoverImage(post) {
+    const categoryCover = categoryCoverDetails[post.category] || {
+        label: post.category.slice(0, 2).toUpperCase(),
+        kicker: post.category,
+        title: post.thumbnail?.title || post.category,
+        accent: "blue",
+    };
+
+    return {
+        ...categoryCover,
+        label: post.thumbnail?.label || categoryCover.label,
+        title: post.thumbnail?.title || categoryCover.title,
+        alt: `${post.title} hero illustration`,
+    };
+}
+
+function buildCornerstoneContent(post) {
+    const [first, second, third] = post.content || [];
+    const topicLabel = post.category.replace(" Technology", "").replace("Data Centers & Databases", "AI infrastructure");
+
+    return [
+        {
+            heading: "Introduction",
+            body:
+                `${post.excerpt} This Cin Nova cornerstone article frames the topic for readers who want a practical view of how ${topicLabel.toLowerCase()} is changing products, markets, and everyday decisions.`,
+        },
+        {
+            heading: "Why It Matters",
+            body:
+                first?.body ||
+                "The most important technology shifts rarely stay isolated. They change workflows, infrastructure needs, business models, and the expectations people bring to the tools they use every day.",
+        },
+        {
+            heading: "Industry Trends",
+            body:
+                second?.body ||
+                "Across the industry, software is becoming more connected, more data-aware, and more dependent on reliable infrastructure. The strongest products combine useful automation with clear user control.",
+        },
+        {
+            heading: "Future Outlook",
+            body:
+                third?.body ||
+                "The next phase will reward companies that turn complex systems into trustworthy experiences. That means better interfaces, stronger data practices, reliable performance, and practical product design.",
+        },
+        {
+            heading: "Key Takeaways",
+            body:
+                "The durable lesson is to look beyond the headline technology. The winners will connect infrastructure, product design, useful data, and human judgment into tools that are easier to trust and easier to use.",
+        },
+    ];
+}
+
+export function estimateArticleReadingTime(post = {}) {
+    const sections = Array.isArray(post.content) ? post.content : [];
+    const text = [
+        post.title,
+        post.excerpt,
+        ...(post.tags || []),
+        ...sections.flatMap((section) => [section.heading, section.body]),
+    ]
+        .filter(Boolean)
+        .join(" ");
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const estimatedMinutes = Math.ceil(words / 200);
+    const floor = post.cornerstone ? 8 : 4;
+    return `${Math.max(floor, estimatedMinutes)} min read`;
+}
+
 const enrichedFullArticles = fullArticles.map((post) => {
     const cornerstone = post.id <= 10;
     const override = cornerstoneOverrides[post.id] || {};
-    return {
+    const mergedPost = {
         ...post,
         ...override,
         cornerstone,
@@ -1125,6 +1234,20 @@ const enrichedFullArticles = fullArticles.map((post) => {
             title: post.category,
         },
         relatedReading: cornerstoneRelated[post.id] || post.relatedReading || [],
+    };
+    const professionalPost = {
+        ...mergedPost,
+        content: cornerstone ? buildCornerstoneContent(mergedPost) : mergedPost.content,
+        coverImage: getCoverImage(mergedPost),
+        editorialByline: cornerstone ? "Cin Nova Editorial Team" : mergedPost.author,
+        publishedLabel: cornerstone ? "Published: June 2026" : `Published: ${mergedPost.date}`,
+        updatedLabel: cornerstone ? "Updated: June 2026" : `Updated: ${mergedPost.date}`,
+        coverageTopics: editorialCoverageTopics,
+    };
+
+    return {
+        ...professionalPost,
+        readTime: estimateArticleReadingTime(professionalPost),
     };
 });
 

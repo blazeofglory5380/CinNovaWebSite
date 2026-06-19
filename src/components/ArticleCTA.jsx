@@ -24,7 +24,8 @@ function ArticleCTA({ onSubscribe }) {
             <p className="article-cta-eyebrow">STAY IN THE LOOP</p>
             <h3>Enjoying this article?</h3>
             <p>
-                Get new Cin Nova articles and app updates straight to your inbox.
+                Join the Cin Nova Newsletter for AI, Education, Real Estate,
+                and Technology insights.
             </p>
 
             {subscribed ? (
@@ -45,7 +46,7 @@ function ArticleCTA({ onSubscribe }) {
                         required
                     />
                     <button type="submit" className="primary-btn">
-                        Subscribe Free
+                        Join the Newsletter
                     </button>
                     {error && <p className="newsletter-success">{error}</p>}
                 </form>
