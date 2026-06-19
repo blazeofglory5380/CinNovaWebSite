@@ -316,7 +316,7 @@ function Pricing() {
                                     borderRadius: "10px",
                                     background: "rgba(56, 189, 248, 0.08)",
                                     border: "1px solid rgba(56, 189, 248, 0.2)",
-                                    color: "#38bdf8",
+                                    color: "#1d4ed8",
                                     fontSize: "0.82rem",
                                     fontWeight: 700,
                                 }}

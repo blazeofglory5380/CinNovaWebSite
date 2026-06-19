@@ -192,7 +192,7 @@ function RealEstate() {
                     <div className="showcase-card">
                         <h3>Mortgage Calculator</h3>
                         <div className="flashcard-preview">
-                            <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
+                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
                                 30-YEAR FIXED @ 7.1%
                             </p>
                             <strong style={{ fontSize: "1.8rem", display: "block", marginBottom: "4px" }}>$2,574/mo</strong>

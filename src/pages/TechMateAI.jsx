@@ -278,7 +278,7 @@ function TechMateAI() {
                     <div className="showcase-card">
                         <h3>Step-by-Step Repair Guide</h3>
                         <div className="flashcard-preview">
-                            <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
+                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
                                 MacBook Pro — Keyboard Not Responding
                             </p>
                             <p style={{ color: "#334155", marginBottom: "8px" }}>
@@ -354,7 +354,7 @@ function TechMateAI() {
                     <div className="showcase-card">
                         <h3>Top Searched Guides This Week</h3>
                         <div className="flashcard-preview">
-                            <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
+                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
                                 TRENDING GUIDES
                             </p>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

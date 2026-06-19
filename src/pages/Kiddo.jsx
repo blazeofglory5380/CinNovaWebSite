@@ -227,7 +227,7 @@ function Kiddo() {
                     <div className="showcase-card">
                         <h3>Counting &amp; Math Game</h3>
                         <div className="flashcard-preview">
-                            <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
+                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
                                 COUNTING CHALLENGE — LEVEL 2
                             </p>
                             <p style={{ color: "#334155", fontSize: "1.1rem", marginBottom: "10px" }}>
@@ -383,7 +383,7 @@ function Kiddo() {
                     <div className="showcase-card">
                         <h3>Achievement Milestones</h3>
                         <div className="flashcard-preview">
-                            <p style={{ color: "#38bdf8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
+                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
                                 BADGES EARNED THIS MONTH
                             </p>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

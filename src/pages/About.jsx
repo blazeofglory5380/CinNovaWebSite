@@ -86,7 +86,7 @@ const roadmap = [
         phase: "01",
         title: "Build Product Pages & Brand Website",
         status: "In Progress",
-        statusColor: "#38bdf8",
+        statusColor: "#1d4ed8",
         description:
             "Establish the Cin Nova brand identity, product pages, and a professional web presence that represents the full product ecosystem.",
     },
@@ -345,7 +345,7 @@ function About() {
                                     background: "rgba(56,189,248,0.10)",
                                     fontSize: "1rem",
                                     fontWeight: 900,
-                                    color: "#38bdf8",
+                                    color: "#1d4ed8",
                                     letterSpacing: "1px",
                                 }}
                             >

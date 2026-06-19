@@ -6881,6 +6881,151 @@ code {
     color: #1e293b;
 }
 
+/* Phase 8.1: AA contrast tightening for light surfaces */
+:root {
+    --cn-text-muted: #334155;
+    --cn-text-soft: #475569;
+    --cn-blue: #1d4ed8;
+    --cn-link: #1e40af;
+}
+
+.eyebrow,
+.product-category,
+.article-card span,
+.trending-badge-row span,
+.sidebar-widget-label,
+.popular-info span,
+.category-card small,
+.resource-card-format,
+.resource-related-copy small,
+.nl-stat-label,
+.nl-topic-tag,
+.source-breakdown-count,
+.related-sidebar-item span,
+.related-reading-card span,
+.featured-strip-item span,
+.ad-slot-label,
+.bpc-kicker,
+.rp-eyebrow,
+.pw-eyebrow,
+.partner-type-kicker,
+.mk-placement-type,
+.resource-card-kicker {
+    color: var(--cn-blue) !important;
+}
+
+.article-meta-row span,
+.article-card-meta small,
+.related-sidebar-item small,
+.related-reading-card small,
+.featured-strip-item small,
+.blog-featured-panel span,
+.mockup-sidebar span,
+.mockup-metric-card p,
+.mockup-activity-card p,
+.mockup-bar-row span,
+.preview-note p,
+.preview-note span,
+.preview-grid span,
+.dashboard-stats p,
+.footer-bottom,
+.homepage-cta-disclaimer,
+.nl-form-note,
+.popup-fine-print,
+.guide-cta-note,
+.source-breakdown-count,
+.resource-related-copy small,
+.newsletter-admin-page :is(small, .subscriber-meta),
+.blog-manager-page :is(small, .subscriber-meta),
+.media-kit-page :is(small, .subscriber-meta),
+.partners-page :is(small, .subscriber-meta),
+.newsletter-landing-page :is(small, .subscriber-meta),
+.resources-page :is(small, .subscriber-meta),
+.resource-detail-page :is(small, .subscriber-meta) {
+    color: var(--cn-text-soft) !important;
+}
+
+.footer-links button,
+.sidebar-widget a,
+.related-sidebar-item,
+.share-btn,
+.blog-category-pill,
+.resource-filter-pill,
+.guide-cta-bullets span,
+.partner-stat,
+.media-kit-pill,
+.nl-tag,
+.nl-preview-chip,
+.source-breakdown-label,
+.secondary-btn,
+.blog-manager-toggle,
+.newsletter-admin-actions button,
+.blog-manager-table-actions button {
+    color: var(--cn-text-muted) !important;
+}
+
+.footer-links button:hover,
+.sidebar-widget a:hover,
+.related-sidebar-item:hover,
+.share-btn:hover,
+.blog-category-pill.active,
+.blog-category-pill:hover,
+.resource-filter-pill.active,
+.resource-filter-pill:hover {
+    color: var(--cn-link) !important;
+}
+
+.newsletter-card input::placeholder,
+.newsletter-form input::placeholder,
+.popup-form input::placeholder,
+.homepage-cta-form input::placeholder,
+.nl-form input::placeholder,
+.nl-inline-form input::placeholder,
+.sticky-bar-form input::placeholder,
+.blog-search input::placeholder,
+.form-input::placeholder,
+textarea::placeholder {
+    color: #64748b;
+}
+
+.resource-card,
+.resource-related-item,
+.rp-card,
+.pw-card,
+.bpc-cta,
+.ad-slot,
+.partner-type-card,
+.mk-placement-card,
+.mk-audience-card {
+    color: var(--cn-text);
+}
+
+.resource-card :is(p, span, small),
+.resource-related-item :is(p, span, small),
+.rp-card :is(p, span, small),
+.pw-card :is(p, span, small),
+.bpc-cta :is(p, span, small),
+.ad-slot :is(p, span, small),
+.partner-type-card :is(p, span, small),
+.mk-placement-card :is(p, span, small),
+.mk-audience-card :is(p, span, small) {
+    color: var(--cn-text-muted);
+}
+
+.primary-btn,
+.nav-cta,
+.preview-header button,
+.app-preview button,
+.newsletter-card button[type="submit"],
+.popup-form button,
+.nl-submit-btn,
+.homepage-cta-submit,
+.sticky-bar-btn,
+.product-card button,
+.resource-download-button {
+    color: #ffffff !important;
+}
+
 .newsletter-admin-page,
 .newsletter-admin-section,
 .newsletter-admin-panel,
