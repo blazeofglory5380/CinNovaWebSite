@@ -970,25 +970,90 @@ const cornerstoneOverrides = {
         title: "How AI Is Transforming Education",
         slug: "how-ai-is-transforming-education",
         excerpt:
-            "AI is reshaping tutoring, study planning, feedback, and classroom support while making human guidance more important.",
+            "AI is reshaping tutoring, study planning, feedback, and classroom support while making human guidance more important than ever.",
         tags: ["AI tutoring", "study tools", "personalized learning", "education AI"],
         seoKeywords: ["AI transforming education", "AI in education", "education technology"],
         thumbnail: { label: "ED", title: "AI Education Systems" },
         content: [
             {
-                heading: "Learning is becoming more personal",
+                heading: "The classroom is changing faster than most realize",
                 body:
-                    "Traditional education often gives every student the same worksheet, lecture, and review schedule. AI can help students move at a pace that fits their current understanding, then suggest the next useful step when they get stuck. The practical takeaway is simple: better learning tools should meet students where they are, not where a generic syllabus assumes they should be.",
+                    "AI is entering schools, study apps, tutoring platforms, and learning management systems at a pace that few educators anticipated. What started with grammar checkers and automated grading has expanded into adaptive learning engines, personalized study planners, AI tutors available around the clock, and systems that track comprehension in real time. The practical result is that students now have access to tools that can explain a difficult concept several different ways until one of them connects. Traditional classrooms cannot realistically provide that level of personalized repetition for every student simultaneously. This article breaks down what AI education technology is actually doing, how students and teachers can use it effectively, and what to watch out for as these tools become standard.",
             },
             {
-                heading: "Study tools are becoming connected",
+                heading: "How AI personalizes the learning experience",
                 body:
-                    "Notes, flashcards, quizzes, study planners, and tutoring should not live in separate silos. A connected workspace lets students turn class material into review activities faster, then use performance data to decide what to study next. That is the heart of StudyNest: notes become flashcards, weak spots become practice sessions, and planning becomes less stressful.",
+                    "Personalization in education has been a goal for decades. AI makes it more achievable by tracking what each student understands, where they slow down, and which review sequences lead to better retention. Modern adaptive learning platforms adjust question difficulty automatically, surface material a student has struggled with, and suggest when to move forward. The key difference from a static textbook is that the feedback loop is immediate. A student who misses three related questions receives additional practice before advancing to the next topic, rather than carrying a gap forward into a test. The best platforms present this as guidance, not surveillance.",
+                list: [
+                    "Adaptive difficulty adjusts to each student's real-time performance, not a fixed syllabus pace",
+                    "Spaced repetition surfaces the right material at the right review interval for maximum retention",
+                    "Comprehension gaps are flagged before exam week, not discovered after a failing grade",
+                    "Study recommendations replace generic advice like 'review your notes before the test'",
+                    "Progress tracking measures actual mastery over time, not just time spent in the app",
+                ],
             },
             {
-                heading: "Teachers still matter",
+                heading: "Connected study tools: from notes to mastery",
                 body:
-                    "The strongest education AI does not replace teachers, tutors, or student effort. It helps people see where practice is needed, explains concepts in more than one way, and makes review easier to repeat. Good tools should support motivation, not pretend learning can be skipped.",
+                    "One of the biggest inefficiencies in student study habits is the gap between taking notes and actually using them. Students write down information in class, then review it passively the night before an exam. AI tools are closing that gap by converting notes into flashcards, quiz questions, and study guides automatically. The value is not in automation for its own sake — it is in giving students more time to practice recall rather than reformatting notes manually. A connected study workspace that links notes, flashcards, quizzes, and a study planner creates a system where effort compounds. StudyNest is built around this workflow: the note becomes the flashcard, the flashcard becomes the quiz, and quiz performance drives the study plan.",
+            },
+            {
+                heading: "Teachers still matter — and AI should help them",
+                body:
+                    "There is a concern in education circles that AI will diminish the role of teachers. The evidence so far points in the opposite direction. Teachers are most valuable when they spend time on explanation, motivation, mentorship, and adaptive instruction — not when they spend hours grading routine assignments or creating review materials from scratch. AI handles the lower-level repetitive tasks, which gives teachers more time for the work that requires human judgment. A teacher who can see which students struggled with a concept before class arrives — because an AI system tracked their practice session the night before — can use that class time far more effectively.",
+                list: [
+                    "AI grades routine assessments automatically, freeing teachers for discussion and deeper feedback",
+                    "Comprehension heatmaps show which concepts the whole class is collectively struggling with",
+                    "Lesson planning tools draft starter materials that teachers then customize and approve",
+                    "Students get immediate feedback outside class hours without waiting for teacher review",
+                    "AI flags students who may be disengaged or falling behind so teachers can follow up early",
+                ],
+            },
+            {
+                heading: "Practical examples: AI education tools in use today",
+                body:
+                    "AI education tools are no longer experimental. Several categories have reached practical maturity and are in use at scale across universities, high schools, and self-directed learning platforms.",
+                numberedList: [
+                    "Adaptive tutoring systems like Khan Academy's Khanmigo explain concepts through guided dialogue instead of simply providing answers",
+                    "Writing feedback tools analyze essay structure, argumentation, and clarity in real time as students draft their work",
+                    "AI flashcard generators convert uploaded notes or syllabi into practice sets within seconds, ready for active recall sessions",
+                    "Study planners with AI recommendations distribute review sessions across a calendar based on exam dates and current performance data",
+                    "Language learning apps adjust pronunciation correction, vocabulary, and grammar practice based on each learner's individual error patterns",
+                ],
+            },
+            {
+                heading: "What separates effective AI education tools from gimmicks",
+                body:
+                    "Not every tool that puts 'AI' in its name makes students better learners. The distinction between effective education AI and a gimmick comes down to specific design choices. Good tools create active recall and retrieval practice — they do not let students passively scroll through material and feel productive. They provide targeted feedback that identifies why an answer was wrong, not just that it was wrong. And they measure actual retention over time, not just session completion. A chatbot interface, a points system, or a voice feature is not a proxy for learning effectiveness.",
+                list: [
+                    "Active recall over passive review — effective tools force retrieval, not re-reading",
+                    "Specific feedback explains errors rather than just marking them incorrect",
+                    "Spaced repetition is built into the system, not left to student scheduling discipline",
+                    "Progress tracks retention and mastery, not just time logged in the app",
+                    "Escalation paths exist so the tool knows when to refer a student back to a human teacher",
+                ],
+            },
+            {
+                heading: "Challenges: access, equity, and distraction",
+                body:
+                    "AI education tools are not equally available to all students. Schools in under-resourced communities often lack the devices, internet access, or institutional support to deploy these tools at scale. When only some students have access to AI-powered study assistance outside the classroom, it can widen the gaps that education is meant to close. There is also the distraction challenge. AI tools live on the same devices as social media and games. Effective product design must create experiences that are engaging enough to use consistently but focused enough to avoid becoming another source of avoidance behavior. These are solvable problems — but they require intentional design and sustained policy commitment.",
+            },
+            {
+                heading: "Frequently asked questions about AI in education",
+                body:
+                    "Educators, parents, and students often ask the same questions when AI education tools enter their schools or routines. Here are straightforward answers.",
+                list: [
+                    "Does AI replace studying? No. AI makes the time students invest in studying more effective. The effort must still be real. Tools that allow students to passively browse material without retrieval practice are not improving learning outcomes.",
+                    "Can AI cheating detection keep up with AI writing tools? Partially. Detection technology is improving but the more durable approach is designing assessments that require personal reasoning, documented process, or oral explanation that AI cannot substitute.",
+                    "Is AI tutoring as good as a human tutor? For concept explanation and practice repetition, AI tutors are highly effective and available on demand. For motivation, mentorship, and complex reasoning support, human tutors remain more valuable.",
+                    "Will teachers lose jobs to AI? Evidence suggests AI changes the tasks teachers perform more than it eliminates teaching roles. Schools that attempt to fully automate instruction with AI typically see worse student outcomes.",
+                    "What age is appropriate for AI study tools? Most well-designed platforms work well from middle school onward. Early learning apps for ages 4-8 also benefit from AI personalization when the design is age-appropriate.",
+                ],
+            },
+            {
+                heading: "Key Takeaways",
+                body:
+                    "AI is making education more personal, more connected, and more responsive to how each student actually learns. The strongest tools support active recall, integrate across a complete study workflow, and give teachers better visibility into student comprehension. Challenges around access and distraction are real but addressable with thoughtful product design and policy. For students, the practical move is to find tools that force retrieval practice — not ones that create the feeling of productivity while delivering passive review.",
             },
         ],
     },
@@ -997,27 +1062,100 @@ const cornerstoneOverrides = {
         slug: "the-hidden-infrastructure-behind-chatgpt-and-ai",
         category: "Artificial Intelligence",
         excerpt:
-            "AI products feel instant on the surface, but they rely on data centers, chips, databases, networks, and power behind the scenes.",
+            "AI products feel instant on the surface, but they rely on data centers, chips, databases, networks, and power systems working together behind every response.",
         date: "June 16, 2026",
-        readTime: "7 min read",
+        readTime: "9 min read",
         tags: ["AI infrastructure", "ChatGPT", "data centers", "cloud computing"],
         seoKeywords: ["AI infrastructure", "ChatGPT infrastructure", "data centers for AI"],
         thumbnail: { label: "AI", title: "AI Infrastructure Stack" },
         content: [
             {
-                heading: "AI depends on physical infrastructure",
+                heading: "What you see is not what powers it",
                 body:
-                    "Chatbots and AI assistants can feel like pure software, but every answer runs through a physical chain of chips, servers, networking equipment, storage, and cooling systems. The visible product is only the final layer of a much larger infrastructure stack.",
+                    "When you send a message to ChatGPT or ask an AI assistant a question, the experience feels immediate, clean, and software-like. A text box, a response, a cursor blinking. What that interface hides is an enormous physical and computational chain that stretches across geography, consumes significant electricity, and involves hardware and software systems most users never think about. Understanding that chain matters for anyone building with AI, investing in AI companies, or trying to understand why AI products behave the way they do. This article traces the infrastructure stack that makes AI products possible — from the chips that run the models to the databases that store user data to the power systems that keep the servers running.",
             },
             {
-                heading: "Data centers turn models into products",
+                heading: "The physical layer: chips, servers, and compute",
                 body:
-                    "Training and running AI models requires reliable compute capacity. Data centers provide the environment where that compute can operate at scale, while databases and cloud systems keep product data organized and available for real users.",
+                    "At the bottom of the AI infrastructure stack are chips — specifically the graphics processing units (GPUs) and AI accelerators that run the matrix calculations involved in model training and inference. NVIDIA's H100 and A100 chips are the dominant hardware for large model training. A single training run for a frontier AI model can require thousands of these chips running in parallel for weeks or months. These chips live inside servers physically located in data centers — large, purpose-built facilities with controlled temperature, redundant power supplies, and high-bandwidth networking. Without reliable access to this physical compute layer, no AI company can train or run a model at scale.",
+                list: [
+                    "GPUs and AI accelerators perform the matrix math that powers both model training and inference",
+                    "Data centers house servers in temperature-controlled, secure, and redundant facilities",
+                    "Power systems provide electricity measured in megawatts — far beyond what ordinary offices consume",
+                    "High-speed networking (InfiniBand, NVLink) connects compute nodes so training runs can span thousands of chips",
+                    "Cooling systems — air, water, or liquid-cooled racks — prevent chips from thermal throttling under sustained load",
+                    "Storage systems hold training datasets, model weights, checkpoints, and inference results",
+                ],
             },
             {
-                heading: "The constraint is no longer only code",
+                heading: "How data centers turn models into products",
                 body:
-                    "AI companies compete on models, product design, distribution, data access, compute supply, and energy strategy. Builders who understand the hidden infrastructure can make better decisions about cost, reliability, and where the AI economy is heading.",
+                    "Training a model is only half the engineering challenge. Running it for millions of users simultaneously is a different problem entirely. When ChatGPT generates a response, the model weights — which can be hundreds of gigabytes — must be loaded into GPU memory, and the inference computation must complete fast enough that users do not wait more than a few seconds. Doing this at scale requires load balancing across multiple servers, caching frequently-requested computations, and managing request queues during traffic spikes. The data center is not just a building full of computers — it is an operating environment engineered specifically to make model inference reliable and fast enough for real products used by real people.",
+            },
+            {
+                heading: "Networking: the invisible backbone",
+                body:
+                    "The chips that run AI models need to communicate with each other at extraordinary speed. Inside a data center, networking between GPUs during training runs at hundreds of gigabits per second over specialized connections. Outside the data center, the internet connects users around the world through fiber optic lines, submarine cables, content delivery networks, and edge servers. The bandwidth and latency of this network infrastructure directly affects product quality. An AI coding assistant that takes 30 seconds to respond is not competitive with one that responds in under three. Network performance is where physical infrastructure meets the user experience.",
+            },
+            {
+                heading: "Databases and data storage",
+                body:
+                    "AI products store an enormous amount of data: conversation histories, user preferences, vector embeddings for semantic search, model checkpoints, training datasets, and usage logs. Managing that data requires multiple types of storage and database systems working together. Relational databases handle structured product data. Vector databases power semantic search and retrieval-augmented generation (RAG) by storing embeddings that represent meaning rather than just keywords. Object storage holds large files like model weights and training datasets. The choice of database architecture — and how well it performs at scale — affects how fast an AI product responds and how accurately it retrieves the right information.",
+                list: [
+                    "Relational databases (PostgreSQL, MySQL) manage user accounts, subscriptions, and transaction records",
+                    "Vector databases (Pinecone, Weaviate, pgvector) power semantic search and RAG systems by storing meaning-encoded embeddings",
+                    "Object storage (S3, GCS, Azure Blob) holds model weights, large datasets, and generated artifacts",
+                    "Caching layers (Redis, Memcached) reduce inference latency for repeated or predictable queries",
+                    "Time-series databases track usage metrics, model performance, and system health over time",
+                ],
+            },
+            {
+                heading: "Tracing a single AI query from your keyboard to the response",
+                body:
+                    "It helps to make the infrastructure concrete. Here is what happens between the moment you press send on a question and the moment text appears on your screen.",
+                numberedList: [
+                    "Your browser sends an HTTPS request to the AI product's API endpoint, routed through a load balancer to the nearest available data center region",
+                    "The load balancer identifies an available inference server with the model weights already loaded in GPU memory",
+                    "The request passes through safety classifiers that check for policy violations before the model ever processes your input",
+                    "The model weights receive your tokenized input and generate output tokens sequentially — each token is a small piece of the response",
+                    "Each token streams back through the API to your browser as it is generated, which is why responses appear word-by-word rather than all at once",
+                    "Usage logs are written to a database for billing, monitoring, abuse detection, and safety review",
+                    "The full response arrives in under five seconds when infrastructure is healthy — and noticeably longer when servers are overloaded at peak traffic",
+                ],
+            },
+            {
+                heading: "Why infrastructure shapes AI competitive strategy",
+                body:
+                    "Understanding the infrastructure layer changes how you evaluate AI companies and their competitive positions. A company with better access to GPUs can train larger, more capable models faster. A company with better data center locations can offer lower latency to users in those regions. A company with superior database architecture can offer more personalized, context-aware experiences. These infrastructure advantages are not easily copied — they take years of capital investment, engineering talent, and operational experience to build. This is why the largest AI companies are investing heavily in proprietary data centers, custom chips, and power agreements rather than relying entirely on commodity cloud services.",
+            },
+            {
+                heading: "What founders and product builders should know",
+                body:
+                    "Most AI product builders will not build their own infrastructure. They will use API access to foundation models and rely on cloud providers for hosting and databases. But understanding the infrastructure stack still matters for practical product decisions — it explains why AI API costs vary by model size and request length, why latency differs across regions, why some capabilities require more compute than others, and why reliability incidents at a cloud provider can affect your product even when your own code is working correctly.",
+                list: [
+                    "Latency increases with model size — larger models produce better outputs but slower responses",
+                    "Long context windows and unoptimized prompts can increase API costs significantly per request",
+                    "Regional data center location affects response latency for international users — check where your provider routes requests",
+                    "Reliability depends on upstream providers — API outages are outside your direct control",
+                    "Caching common or predictable responses reduces cost and latency for high-traffic patterns",
+                ],
+            },
+            {
+                heading: "Frequently asked questions about AI infrastructure",
+                body:
+                    "Common questions from builders and readers trying to understand what sits behind the AI products they use every day.",
+                list: [
+                    "Do AI companies own their own data centers? The largest do. OpenAI (via Microsoft partnership), Google, and Amazon operate owned or closely partnered infrastructure. Most application builders rely entirely on public cloud providers.",
+                    "Why does ChatGPT sometimes run slowly? Peak traffic pushes inference servers to capacity. The model itself has not changed — the available compute at that moment is the constraint.",
+                    "What is a GPU and why does AI need one? A GPU is designed for parallel math operations. That same property that makes GPUs efficient at graphics rendering also makes them fast at the matrix calculations AI models require. Standard CPUs are too sequential for efficient AI training or inference at scale.",
+                    "How much electricity does a single AI query use? Roughly 10 times the electricity of a standard Google search. At the scale of hundreds of millions of queries per day, aggregate consumption is significant.",
+                    "Can frontier AI models run on a regular laptop? Small, quantized models can run locally on modern laptops. Full-scale frontier models (GPT-4 class) require data center infrastructure to operate at acceptable speed.",
+                ],
+            },
+            {
+                heading: "Key Takeaways",
+                body:
+                    "AI products are physical systems that depend on chips, servers, networking, databases, and power — none of which are visible in the product interface. Every product decision a builder makes — model choice, prompt length, region selection — has infrastructure implications that affect cost, latency, and reliability. Understanding the stack makes you a more effective builder and a better-informed observer of where AI competition is actually being decided.",
             },
         ],
     },
@@ -1026,27 +1164,95 @@ const cornerstoneOverrides = {
         slug: "why-data-centers-are-becoming-the-new-gold-rush",
         category: "Data Centers & Databases",
         excerpt:
-            "AI demand is turning data centers into strategic assets for technology companies, energy providers, investors, and local markets.",
+            "AI demand is turning data centers into strategic assets that technology companies, energy providers, real estate investors, and local governments are actively competing to control.",
         date: "June 15, 2026",
-        readTime: "7 min read",
+        readTime: "9 min read",
         tags: ["data centers", "AI infrastructure", "cloud", "power demand"],
         seoKeywords: ["data center gold rush", "AI data centers", "data center demand"],
         thumbnail: { label: "DC", title: "Data Center Expansion" },
         content: [
             {
-                heading: "AI changed the demand curve",
+                heading: "A new kind of infrastructure race",
                 body:
-                    "Traditional cloud apps already needed large data centers, but AI workloads add a new level of demand. Model training, inference, storage, and constant product usage all increase the need for specialized facilities with serious compute capacity.",
+                    "For most of the internet era, data centers were unglamorous facilities — large, windowless buildings that companies built in tax-friendly locations to run servers cheaply. That image has changed completely. AI has made data centers into strategic assets that technology giants, utilities, real estate investors, sovereign funds, and local governments are competing to control. The scale of investment is unprecedented: Microsoft, Google, Amazon, and Meta collectively announced more than $300 billion in data center capital expenditure plans in 2024 and 2025 alone. New facilities are breaking ground in locations chosen specifically for power availability and grid stability. The gold rush analogy is accurate — not because everyone will profit equally, but because a new resource has become suddenly critical, and the race to control it is reshaping entire industries simultaneously.",
             },
             {
-                heading: "Location and power matter",
+                heading: "How AI changed the demand curve",
                 body:
-                    "A data center is not useful without land, permitting, fiber connectivity, cooling, and dependable electricity. That is why infrastructure conversations now include utilities, real estate, local governments, and long-term power planning.",
+                    "Traditional cloud computing already required substantial data center capacity. A web application serving millions of users needs reliable servers, storage, and networking at scale. But AI workloads are categorically more demanding. Training a frontier AI model can require running thousands of specialized GPUs continuously for months. Running that model for users — inference — requires keeping model weights loaded in GPU memory at all times and processing millions of queries per day with low latency. The energy and compute intensity of these workloads is orders of magnitude higher than hosting a typical web application. When you multiply that across the number of AI products now reaching commercial scale simultaneously, the result is a demand surge that the existing data center industry was not built to absorb.",
+                list: [
+                    "AI training runs require thousands of GPUs operating continuously for weeks or months per training job",
+                    "Inference keeps large model weights in GPU memory permanently, requiring dedicated and persistent capacity",
+                    "AI workloads are compute-dense and power-dense, not merely storage-heavy like traditional cloud applications",
+                    "Multiple competing AI companies are scaling simultaneously, multiplying total market demand",
+                    "Usage spikes require elastic capacity — infrastructure must handle peak traffic, not just average load",
+                ],
             },
             {
-                heading: "The opportunity reaches beyond big tech",
+                heading: "The location and power equation",
                 body:
-                    "The data center boom affects construction, commercial real estate, energy, hardware, software, and local economic development. For founders and investors, the lesson is to look at the infrastructure layer behind every fast-growing AI product.",
+                    "A data center is not just a building. It is a system that requires specific ingredients to function at hyperscale: land, electrical power, water or cooling systems, fiber connectivity, permitting, and workforce proximity. AI data centers have elevated power availability above all other site selection factors. A single large AI facility can draw 100 to 500 megawatts of continuous electricity — enough to power a mid-sized city. That requirement makes the relationship between data center operators and electric utilities one of the most important business partnerships in the AI economy. Locations near cheap, reliable, large-scale power — hydroelectric dams, wind corridors, nuclear plants — have become high-value destinations almost overnight.",
+                list: [
+                    "Electrical power availability (100–500 MW per hyperscale facility) is now the primary site selection constraint",
+                    "Water availability for cooling is a critical secondary constraint in many arid regions",
+                    "Fiber connectivity to major internet exchange points affects latency for both users and inter-facility communication",
+                    "Land permitting and zoning timelines add years to development schedules in many jurisdictions",
+                    "Tax incentives and utility rate structures determine long-term total cost of ownership for operators",
+                    "Proximity to skilled workforce for maintenance, networking, and facilities engineering",
+                ],
+            },
+            {
+                heading: "Who is building and investing",
+                body:
+                    "The data center construction boom spans multiple categories of participant, each occupying a different position in the value chain. Technology hyperscalers are building owned facilities at a pace not seen since the early cloud era. Specialized data center REITs are expanding colocation capacity to serve AI customers directly. Independent power producers are building new generation capacity targeted specifically at data center demand contracts. Commercial real estate developers are converting industrial properties or acquiring land near power substations. Infrastructure investment funds have allocated billions to data center development globally. And a growing ecosystem of construction, cooling, and hardware companies are scaling alongside all of them.",
+                list: [
+                    "Hyperscalers (Microsoft, Google, Amazon, Meta) building owned campuses at unprecedented capital scale",
+                    "Data center REITs (Equinix, Digital Realty) expanding colocation and wholesale leasing capacity",
+                    "Independent power producers building dedicated generation for long-term data center contracts",
+                    "Commercial real estate developers and infrastructure funds acquiring strategic land near substations",
+                    "Cooling technology companies (liquid cooling, immersion cooling) seeing record demand for next-generation systems",
+                    "Specialized construction and engineering firms growing rapidly alongside data center development",
+                ],
+            },
+            {
+                heading: "Cities and regions competing for data center investment",
+                body:
+                    "The competition for data center investment has become a measurable economic development race. Virginia's Loudoun County, nicknamed 'Data Center Alley,' hosts the world's highest concentration of data centers — over 35 million square feet — built on proximity to major internet exchange points and early power agreements with Dominion Energy. Texas has attracted hyperscaler investment through its deregulated energy market and available land. Nevada, Georgia, and the Pacific Northwest have each pursued strategies based on renewable energy availability, tax incentives, or transmission capacity. Internationally, Ireland, Singapore, and the UAE have made data center attraction central to their digital economy strategies, competing on energy cost, regulatory environment, and submarine cable connectivity.",
+            },
+            {
+                heading: "The environmental conversation",
+                body:
+                    "The scale of data center power and water consumption has opened a serious environmental debate that the industry cannot dismiss. Environmental groups point out that large AI facilities can consume as much water and electricity as manufacturing plants, yet often receive preferential permitting as technology companies. On the other side, major technology companies have made significant commitments to renewable energy purchasing, on-site generation, water recycling, and efficiency improvements measured in power usage effectiveness (PUE). The honest assessment is that both perspectives are partially correct. AI does increase energy and water demand substantially. Technology companies are also investing in clean energy at scale. The policy question is whether those investments are keeping pace with demand growth.",
+            },
+            {
+                heading: "Opportunities for founders, investors, and builders",
+                body:
+                    "Not every opportunity in the data center economy requires building a hyperscale facility. The ecosystem around data center growth creates viable opportunities at many different scales.",
+                numberedList: [
+                    "Energy infrastructure: power transmission equipment, grid-scale battery storage, and generation technology that supports data center density in constrained regions",
+                    "Cooling innovation: liquid cooling, immersion cooling, and AI-driven HVAC optimization that reduce power usage and increase facility density",
+                    "Site development and construction: specialized contractors, modular data center construction, and rapid deployment systems for greenfield builds",
+                    "Software for data center management: resource scheduling, cooling optimization, capacity planning, and energy management platforms",
+                    "Real estate adjacent to data center campuses: logistics facilities, housing, and commercial development that follows the construction workforce and permanent staff",
+                    "Services: physical security, maintenance contracts, fiber installation, and compliance consulting for data center operators",
+                ],
+            },
+            {
+                heading: "Frequently asked questions about the data center economy",
+                body:
+                    "Questions from investors, founders, and readers trying to understand where the data center gold rush is heading.",
+                list: [
+                    "How much does a hyperscale data center cost to build? Large facilities range from $500 million to $5 billion or more per campus depending on scale, power capacity, and location. Individual buildings within a campus typically cost $200-500 million each.",
+                    "Are data center REITs a sound investment in the AI era? They have performed strongly as AI demand has grown. Key risks include power availability constraints in existing markets, hyperscaler competition from owned campuses, and interest rate sensitivity given their capital intensity.",
+                    "Will AI demand for data centers keep growing? The analyst consensus is yes, for at least the next five to ten years. Model size growth, product proliferation, and global AI adoption all point toward sustained demand expansion.",
+                    "Do data centers harm local communities? Impacts vary significantly. Data centers bring construction employment and tax revenue but can strain water and electrical resources while generating relatively few permanent jobs. Community planning and utility coordination matter a great deal.",
+                    "Can smaller companies build data centers profitably? Smaller colocation facilities serving regional customers are viable businesses. However, hyperscale AI workloads require the power capacity and specialized infrastructure that only large operators can economically provide.",
+                ],
+            },
+            {
+                heading: "Key Takeaways",
+                body:
+                    "AI demand has transformed data centers from commodity infrastructure into strategic assets. The race to build, power, and operate these facilities is reshaping commercial real estate, energy markets, government economic development policy, and the competitive landscape for AI companies globally. For builders and investors, the infrastructure layer behind AI products is where enormous value is being created — and where the real constraints on AI scale are being decided.",
             },
         ],
     },
@@ -1055,27 +1261,89 @@ const cornerstoneOverrides = {
         slug: "the-companies-building-the-ai-economy",
         category: "Artificial Intelligence",
         excerpt:
-            "The AI economy is being built by model labs, chipmakers, cloud providers, app companies, infrastructure firms, and specialized software teams.",
+            "The AI economy is a layered system built by model labs, chipmakers, cloud platforms, infrastructure firms, and application companies each occupying a distinct position in the value chain.",
         date: "June 14, 2026",
-        readTime: "6 min read",
+        readTime: "9 min read",
         tags: ["AI economy", "AI companies", "software business", "infrastructure"],
         seoKeywords: ["companies building AI economy", "AI economy", "AI software companies"],
         thumbnail: { label: "EC", title: "AI Economy Map" },
         content: [
             {
-                heading: "The AI economy has many layers",
+                heading: "A new economic layer is forming",
                 body:
-                    "AI is not one industry. It includes foundation model labs, chip designers, cloud platforms, data center operators, app builders, safety teams, workflow software, and businesses that use AI to improve specific jobs.",
+                    "The AI economy is not a single industry — it is a layered system of companies each occupying a different position in a value chain that runs from raw compute to finished products. At the foundation are the researchers and labs that create the models. Above them are the chip designers and hardware manufacturers that make the compute possible. Cloud platforms and data center operators provide the infrastructure on which everything runs. Application companies turn model capability into products people can actually use. And across all of these layers, specialized service companies, data providers, safety teams, and distribution channels hold the system together. Understanding how these layers interact is essential for anyone building in AI, investing in AI companies, or predicting where value will concentrate over the next decade.",
             },
             {
-                heading: "Application companies turn capability into value",
+                heading: "Layer 1: Foundation model labs",
                 body:
-                    "A powerful model only becomes useful when it is placed inside a workflow people understand. Education tools, real estate analyzers, support assistants, safety products, and business dashboards are examples of how AI becomes practical software.",
+                    "Foundation model labs develop the large language models, vision models, and multimodal systems that power most AI products today. These companies are the source of the core capability that the rest of the stack builds on. The competitive dynamic among them is partly technical — which model performs best on capability benchmarks — and partly strategic: which model has the best distribution, the most trusted safety record, and the most favorable API economics for builders. Foundation model labs require massive capital investment. Frontier model training runs cost tens to hundreds of millions of dollars per run, and the compute requirements grow with each generation.",
+                list: [
+                    "OpenAI: GPT-4o, o1, and o3 — the most widely deployed foundation models via ChatGPT and API",
+                    "Anthropic: Claude model family — safety-focused approach with strong enterprise and developer adoption",
+                    "Google DeepMind: Gemini — deeply integrated with Google Search, Workspace, and Cloud Platform",
+                    "Meta AI: Llama open-weight models — powering a broad open-source ecosystem and Meta's own products",
+                    "Mistral: European open-weight models with strong performance-to-cost ratios for cost-sensitive builders",
+                    "xAI: Grok — integrated with X (Twitter), differentiated by real-time information access",
+                ],
             },
             {
-                heading: "Infrastructure and distribution decide winners",
+                heading: "Layer 2: Chip designers and hardware manufacturers",
                 body:
-                    "The companies that shape the AI economy will combine technical capability with reliable infrastructure, trusted brands, useful data, and clear distribution. CinNova's product lanes follow that same pattern at a focused app-company scale.",
+                    "Foundation models cannot train or run without specialized compute. The chip layer is dominated by NVIDIA, whose GPU architecture has become the de facto standard for AI training and inference. AMD is competing with its MI300 accelerator series, Intel with Gaudi chips, and hyperscalers including Google (TPUs), Amazon (Trainium), and Microsoft (Maia) are developing proprietary silicon to reduce dependence on NVIDIA and lower their own compute costs. The chip layer is critically important because GPU availability directly constrains how quickly model labs can train new models and how cheaply application companies can run inference. When NVIDIA's H100 chips carried a year-plus backlog in 2023 and 2024, it directly slowed AI product development across the entire industry.",
+            },
+            {
+                heading: "Layer 3: Cloud platforms and infrastructure",
+                body:
+                    "Cloud platforms — primarily Amazon Web Services (AWS), Google Cloud, and Microsoft Azure — provide the managed infrastructure on which most AI workloads operate. These platforms offer not just raw compute but integrated databases, networking, security, monitoring, and AI-specific services including managed training, inference APIs, and vector stores. This is the layer where most application builders operate: they access foundation model APIs and cloud infrastructure without owning any hardware directly. This model creates meaningful dependencies between application companies and cloud providers, which is a growing concern for companies trying to avoid vendor lock-in or manage costs as they scale toward larger usage.",
+            },
+            {
+                heading: "Layer 4: Application builders turning capability into value",
+                body:
+                    "Application companies take foundation model APIs, cloud infrastructure, and domain-specific data, then build products that solve specific problems for real users. This is the most accessible layer of the AI economy for founders: capital requirements are dramatically lower than building a model or a chip, and competition is more often about product design, distribution, and domain expertise than raw AI capability. The range of application categories is enormous and growing.",
+                list: [
+                    "Education: adaptive tutoring, flashcard generators, writing feedback, personalized study planning",
+                    "Healthcare: clinical documentation, medical imaging analysis, patient triage, drug interaction lookup",
+                    "Legal: contract review, case research, compliance monitoring, document summarization",
+                    "Real estate: property deal analysis, market intelligence, investment screening, comps research",
+                    "Customer support: ticket routing, reply suggestion, self-service FAQ agents, escalation triage",
+                    "Software development: code generation, debugging assistance, documentation, test writing",
+                    "Finance: risk modeling, portfolio analysis, fraud detection, earnings summarization",
+                ],
+            },
+            {
+                heading: "What application companies need to build durable positions",
+                body:
+                    "Building an AI application is significantly easier today than it was three years ago, which means competition within application categories is intensifying rapidly. The companies that maintain durable market positions will not be the ones that simply wrap an API first — they are the ones that accumulate defensible advantages over time through specific strategic choices.",
+                numberedList: [
+                    "Domain data: proprietary datasets that make their product meaningfully better than a generic model — medical records, legal case histories, real estate transactions, student performance data",
+                    "Distribution: existing trusted relationships with buyers in sensitive workflows where switching costs are high",
+                    "Workflow integration: deep embedding in how users actually work, so that the product becomes hard to remove without disrupting daily operations",
+                    "Brand trust: particularly critical in high-stakes categories like health, finance, legal, and education where users need confidence that AI outputs are reliable",
+                    "Feedback loops: user interactions that generate training signal to continuously improve the product over time",
+                    "Specialization: narrow focus on one domain done exceptionally well, rather than broad competition with foundation model providers directly",
+                ],
+            },
+            {
+                heading: "Where application-layer companies fit in the broader economy",
+                body:
+                    "CinNova operates at the application layer with focused products in underserved but high-value domains: AI study tools for students (StudyNest), poison and chemical safety for families (PoisonGuard), early learning for young children (Kiddo), tech support assistance (TechMate AI), and real estate analysis for investors (Cin Nova Real Estate AI). Each product targets a domain where accurate, trustworthy, well-designed AI can improve real decisions and reduce real friction. The strategy is to build deep domain expertise in specific categories rather than competing broadly with general-purpose AI assistants that have the resources of trillion-dollar companies behind them.",
+            },
+            {
+                heading: "Frequently asked questions about the AI economy",
+                body:
+                    "Questions that founders, investors, and curious readers commonly ask about the structure and competitive dynamics of the AI economy.",
+                list: [
+                    "Who has the strongest competitive position in the AI economy? Infrastructure layers (chips, cloud, data centers) and foundation model labs with strong distribution have the most defensible positions today. The application layer offers the most open opportunity but faces intensifying competition.",
+                    "Can small companies compete in AI? Yes, at the application layer. Domain expertise and distribution relationships often matter more than model quality for focused application companies. Capital requirements are reasonable and the market is large.",
+                    "Will foundation models become commodities? Mid-tier model capabilities are commoditizing. Frontier model performance, safety records, and specialized capabilities continue to show meaningful differentiation for high-stakes use cases.",
+                    "Is the AI economy in a speculative bubble? Infrastructure investment is real and demand is genuine. The risk is that some application categories will see too many entrants with too little differentiation, compressing margins sharply. Infrastructure and model layers are less susceptible to that dynamic.",
+                    "What role does regulation play? AI regulation is actively evolving. The EU AI Act, US executive orders, and state-level legislation all shape what AI companies must document, test, and disclose. Application companies in health, legal, and finance categories face the most immediate compliance requirements.",
+                ],
+            },
+            {
+                heading: "Key Takeaways",
+                body:
+                    "The AI economy is a layered system — chips, compute, foundation models, infrastructure, and applications — each with distinct capital requirements, competitive dynamics, and risk profiles. Value is being created at every layer but the nature of that value differs significantly by position. For builders, the application layer offers the most accessible entry point. For investors, understanding which layer a company occupies is the starting point for evaluating its defensibility. For everyone following the space, the stack tells you where AI development is heading next.",
             },
         ],
     },
@@ -1084,27 +1352,91 @@ const cornerstoneOverrides = {
         slug: "can-americas-power-grid-handle-ai",
         category: "Data Centers & Databases",
         excerpt:
-            "AI growth is increasing electricity demand, forcing tougher questions about data centers, utilities, grid upgrades, and energy planning.",
+            "AI growth is concentrating unprecedented electricity demand in specific regions, forcing hard questions about data center siting, utility planning, grid investment, and the pace of energy infrastructure expansion.",
         date: "June 13, 2026",
-        readTime: "7 min read",
+        readTime: "9 min read",
         tags: ["AI power demand", "power grid", "data centers", "energy"],
         seoKeywords: ["AI power grid", "AI electricity demand", "data center power"],
         thumbnail: { label: "PG", title: "AI Power Demand" },
         content: [
             {
-                heading: "AI makes electricity a product issue",
+                heading: "The grid was not built for this",
                 body:
-                    "AI systems need large amounts of compute, and compute needs power. As more companies run AI products at scale, electricity availability becomes part of the product roadmap, not just a utility bill in the background.",
+                    "The United States power grid is a mid-20th century system that has been incrementally upgraded over decades. It was designed to serve homes, factories, offices, and commercial spaces with reasonably predictable demand patterns spread across broad geographic areas. AI data centers represent something the grid was not designed for: facilities that consume electricity at industrial scale, can appear in locations without existing transmission capacity, and demand power quality and reliability standards that standard grid infrastructure sometimes cannot meet consistently. Grid planners, utilities, energy regulators, and data center developers are actively grappling with this challenge. The answer involves timelines, capital investments, and policy tradeoffs that will shape AI development for the next decade.",
             },
             {
-                heading: "Data centers create local pressure",
+                heading: "How much power does AI actually need?",
                 body:
-                    "Large AI data centers can concentrate demand in specific regions. That creates planning challenges for utilities, transmission lines, substations, cooling systems, and communities that want growth without unreliable service or unmanaged costs.",
+                    "The numbers are substantial and growing quickly. A single large AI data center can draw 100 to 500 megawatts of continuous power. For context, 100 megawatts is enough to power approximately 80,000 average US households. When multiple hyperscale facilities are planned for the same transmission region, the cumulative demand can rival the entire load of a mid-sized city. The International Energy Agency projected in 2024 that global data center electricity consumption could more than double by 2026, driven primarily by AI workloads. Individual AI queries are not catastrophic on their own — a single ChatGPT response uses roughly ten times the electricity of a standard web search — but at the scale of hundreds of millions of queries per day, aggregate consumption becomes a serious grid planning factor.",
+                list: [
+                    "A large hyperscale AI data center uses 100–500 MW continuously — comparable to the power draw of a mid-sized city",
+                    "Global data center electricity consumption could exceed 1,000 terawatt-hours annually by 2026 according to IEA projections",
+                    "A single AI query uses approximately 10x the electricity of a standard web search at comparable model scale",
+                    "Frontier model training runs can consume millions of kilowatt-hours per training job for a single model version",
+                    "Cooling systems account for roughly 30–40% of a data center's total power consumption under normal operating conditions",
+                ],
             },
             {
-                heading: "The answer is planning, not panic",
+                heading: "The strain on local grids",
                 body:
-                    "The grid can adapt when capacity, permitting, efficiency, storage, and generation are handled seriously. For software builders, the practical takeaway is to understand that AI scale depends on energy strategy as much as model quality.",
+                    "The challenge is not only total national energy consumption — it is geographic concentration. When a cluster of large data centers targets a specific region for siting, local transmission infrastructure often cannot immediately support the new demand. Substations must be upgraded, transmission lines extended or replaced, and generation capacity added or rerouted from other areas. These projects take years, not months. The result is that data center developers sometimes cannot obtain power interconnection approval for three to five years after planning a facility, even in states that actively court data center investment with tax incentives. Northern Virginia, which hosts the world's largest concentration of data centers, has already faced these constraints severely, pushing development into adjacent counties and neighboring states.",
+            },
+            {
+                heading: "What utilities and regulators are doing",
+                body:
+                    "Utilities and grid operators are responding, but the timelines of energy infrastructure are long compared to the pace of AI growth. Primary responses include fast-tracking interconnection applications for large industrial customers, accelerating substation upgrades in data center corridors, signing long-term power purchase agreements that provide demand signals for new generation investment, and working with data center developers on demand flexibility programs where facilities agree to curtail some loads during peak grid stress periods in exchange for rate advantages. Federal regulators at FERC have updated interconnection rules to reduce the backlog of renewable energy projects waiting for grid access, which also accelerates new generation coming online.",
+            },
+            {
+                heading: "States navigating the data center power challenge",
+                body:
+                    "Different states are approaching the power and data center challenge in distinctly different ways, and those strategic choices are directly influencing where AI infrastructure gets built and where it does not.",
+                list: [
+                    "Virginia: highest data center density in the world but facing transmission constraints that have already pushed new development into western Virginia and neighboring states; major grid expansion is underway",
+                    "Texas: deregulated energy market enables direct power purchase agreements; large land availability attracts hyperscalers; grid reliability concerns under ERCOT remain a real risk factor for operators",
+                    "Washington State: abundant and cheap hydroelectric power attracted early data center investment; supply is now constrained and utilities are managing competing demands from data centers, EV charging, and residential growth",
+                    "Georgia: growing alternative to Northern Virginia with favorable utility rates, improving permitting, and proximity to southeast markets",
+                    "Nevada: desert heat creates cooling challenges but abundant land, strong tax incentives, and renewable energy potential attract continued data center investment",
+                ],
+            },
+            {
+                heading: "The role of renewable energy and new generation",
+                body:
+                    "Most major technology companies have committed to matching or exceeding their electricity consumption with renewable energy sources. In practice, this means purchasing renewable energy certificates (RECs) or signing long-term power purchase agreements directly with wind, solar, and hydroelectric generators. The reality is more nuanced than the commitments suggest: renewable energy is variable and the grid requires firm power — available on demand, not dependent on weather conditions. Nuclear energy is gaining serious interest precisely because it provides firm, zero-carbon power at the scale AI data centers need. Microsoft, Google, and Amazon have all signed agreements with nuclear operators or made investments in advanced reactor development.",
+                numberedList: [
+                    "Power Purchase Agreements (PPAs): long-term contracts with renewable generators that fund project construction while providing cost predictability for data centers",
+                    "Renewable Energy Certificates (RECs): tradeable credits representing renewable generation used to match grid electricity consumed with renewable production",
+                    "Nuclear power agreements: direct contracts with existing nuclear plants or investments in new reactor designs that provide firm zero-carbon power at scale",
+                    "On-site generation: solar arrays, fuel cells, and backup generation at data center campuses to reduce grid dependence and improve reliability during outages",
+                    "Demand flexibility programs: agreements with utilities to reduce consumption during peak grid stress in exchange for favorable power rates",
+                    "Grid-scale battery storage: large battery systems that charge during low-demand periods and discharge during peaks, reducing stress on transmission infrastructure",
+                ],
+            },
+            {
+                heading: "What this means for AI product builders",
+                body:
+                    "For founders and product builders, the power grid story might seem like a distant infrastructure problem. It is not. Power constraints are one of the factors that limit compute availability, which affects the pace of model development and the cost of compute access. Power costs are a meaningful component of AI API pricing — when electricity is more expensive or less reliable, those costs flow through to API customers in pricing and availability. And the geographic concentration of data center capacity means that API latency and reliability depend partly on where power infrastructure is strongest. Builders making decisions about cloud providers and deployment regions are, indirectly, making decisions that connect back to power grid capacity.",
+            },
+            {
+                heading: "Policy, planning, and the long view",
+                body:
+                    "The power grid challenge is solvable, but it requires sustained investment and smart policy decisions made well ahead of demand. The US has adapted its infrastructure to major demand shifts before — rural electrification in the 1930s, interstate highway construction in the 1950s, and natural gas pipeline expansion in the 1980s are all historical examples. The current situation is different in that AI growth is faster and more geographically concentrated than those precedents. But the policy tools exist: transmission permitting reform, long-term utility planning requirements, incentives for grid-scale storage, and structured coordination between data center developers and utility planners. The question is whether political will and regulatory capacity are sufficient to match the pace of demand.",
+            },
+            {
+                heading: "Frequently asked questions about AI and the power grid",
+                body:
+                    "Common questions from readers trying to understand the practical connection between AI growth and electricity infrastructure.",
+                list: [
+                    "Will AI cause power outages? AI demand is a contributing stress factor on grids but not the sole cause of outages. Grid reliability depends on weather, maintenance, generation mix, and transmission adequacy. AI demand does increase the urgency and scale of required grid investment.",
+                    "Is the US grid uniquely vulnerable compared to other countries? The US grid is fragmented across three main interconnections and thousands of jurisdictions, which makes coordinated planning harder. Europe and parts of Asia have more centralized planning authority. The US is competitive on energy cost but slower on permitting and large-scale transmission expansion.",
+                    "What happens if AI companies cannot get the power they need? They slow expansion plans, shift investment to power-rich regions, invest heavily in energy efficiency technology, and negotiate for dedicated utility supply contracts. Power availability has already become a constraint on the frontier model training race.",
+                    "Will AI data centers drive up electricity prices for regular consumers? In regions with high data center concentration, there is documented evidence of upward pressure on rates. Utilities frequently negotiate favorable industrial rates for large customers while standard residential and commercial rates absorb a larger share of system costs. This is an active regulatory and public policy debate.",
+                    "Could AI help solve the power grid problem itself? Yes — AI is being applied to grid optimization, demand forecasting, outage prediction, renewable energy integration, and transmission planning. The energy sector is one of the more mature AI application domains and the tools are already in use at major utilities.",
+                ],
+            },
+            {
+                heading: "Key Takeaways",
+                body:
+                    "America's power grid faces real and measurable stress from AI demand, but it is a planning and investment challenge rather than an insurmountable crisis. Grid infrastructure expansion, renewable energy procurement, nuclear power agreements, and demand flexibility programs are all active responses that are already changing the landscape. For AI builders, the grid is not just background context — it shapes compute availability, API costs, and the geographic distribution of infrastructure that your products depend on. Understanding energy strategy is becoming part of understanding AI strategy.",
             },
         ],
     },
@@ -1168,7 +1500,11 @@ function getCoverImage(post) {
 }
 
 function buildCornerstoneContent(post) {
-    const [first, second, third] = post.content || [];
+    const sections = post.content || [];
+    if (sections.length >= 5) {
+        return sections;
+    }
+    const [first, second, third] = sections;
     const topicLabel = post.category.replace(" Technology", "").replace("Data Centers & Databases", "AI infrastructure");
 
     return [

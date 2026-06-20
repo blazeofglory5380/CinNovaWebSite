@@ -357,7 +357,21 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                             return (
                                 <section className={sectionClass} key={section.heading} id={`section-${i}`}>
                                     <h2>{section.heading}</h2>
-                                    <p>{section.body}</p>
+                                    {section.body && <p>{section.body}</p>}
+                                    {Array.isArray(section.list) && (
+                                        <ul>
+                                            {section.list.map((item, idx) => (
+                                                <li key={idx}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                    {Array.isArray(section.numberedList) && (
+                                        <ol>
+                                            {section.numberedList.map((item, idx) => (
+                                                <li key={idx}>{item}</li>
+                                            ))}
+                                        </ol>
+                                    )}
                                     {pullQuote && (
                                         <blockquote className="article-pullquote" aria-label="Key insight">
                                             {pullQuote}

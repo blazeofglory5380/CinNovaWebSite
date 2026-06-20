@@ -33,6 +33,8 @@ function withDefaults(post, index = 0) {
             ? content.slice(0, 12).map((section) => ({
                   heading: sanitizeText(section.heading, 140) || "Overview",
                   body: sanitizeText(section.body, 6000),
+                  ...(Array.isArray(section.list) && { list: section.list }),
+                  ...(Array.isArray(section.numberedList) && { numberedList: section.numberedList }),
               }))
             : [{ heading: "Overview", body: sanitizeText(post.excerpt, 6000) || "Article content goes here." }],
     };
