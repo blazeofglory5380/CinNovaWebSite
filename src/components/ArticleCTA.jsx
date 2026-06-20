@@ -48,7 +48,7 @@ function ArticleCTA({ onSubscribe }) {
                     <button type="submit" className="primary-btn">
                         Join the Newsletter
                     </button>
-                    {error && <p className="newsletter-success">{error}</p>}
+                    {error && <p className="newsletter-error">{error}</p>}
                 </form>
             )}
         </div>

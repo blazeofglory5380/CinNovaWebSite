@@ -13,16 +13,6 @@ import {
 } from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 
-const legacyCategoryConfig = {
-    "AI & Technology": { icon: "🤖", desc: "AI tools and software innovation" },
-    "Education": { icon: "📚", desc: "Learning tools and study strategies" },
-    "Real Estate": { icon: "🏠", desc: "Property analysis and market intelligence" },
-    "Safety": { icon: "🛡️", desc: "Home safety and hazard protection" },
-    "Parenting": { icon: "👨‍👩‍👧", desc: "Family learning and child development" },
-    "Product Updates": { icon: "🚀", desc: "App launches and company news" },
-    "Entrepreneurship": { icon: "💡", desc: "Building software and companies" },
-};
-
 const categoryConfig = {
     "Artificial Intelligence": { icon: "AI", desc: "AI tools, assistants, safety, and workflows" },
     "Real Estate Technology": { icon: "RE", desc: "Property analysis, investing, and market intelligence" },

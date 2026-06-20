@@ -301,6 +301,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 description={post.excerpt}
                 url={articleUrl}
                 type="article"
+                image={post.ogImage || `${siteUrl}/og-image.png`}
                 schema={articleSchema}
             />
 
@@ -311,11 +312,6 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 <p className="eyebrow">{post.category.toUpperCase()}</p>
                 <h1>{post.title}</h1>
                 <p className="article-excerpt">{post.excerpt}</p>
-                <div className="article-meta-row">
-                    <span>{post.publishedLabel || post.date}</span>
-                    <span>{readingTime}</span>
-                    <span>By {post.editorialByline || author.name}</span>
-                </div>
                 <ArticlePublicationMeta post={post} author={author} readingTime={readingTime} />
                 <ArticleHeroVisual post={post} />
             </section>
