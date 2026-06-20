@@ -4480,7 +4480,7 @@ a {
 
 /* ---- Recommended Products ---- */
 .recommended-products-section {
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid #e2e8f0;
 }
 
 .recommended-products-grid {
@@ -4493,33 +4493,35 @@ a {
 
 .rec-product-card {
     --rp-accent: #38bdf8;
-    background: rgba(15, 23, 42, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-top: 3px solid var(--rp-accent);
     border-radius: 16px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 14px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 .rec-product-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.10);
+    border-color: #bfdbfe;
 }
 
 .rec-product-icon {
     width: 52px;
     height: 52px;
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.06);
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
     display: grid;
     place-items: center;
     font-size: 0.95rem;
     font-weight: 900;
-    color: var(--rp-accent);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: #0f172a;
 }
 
 .rec-product-body {
@@ -4531,49 +4533,50 @@ a {
 
 .rec-product-category {
     font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--rp-accent);
-    letter-spacing: 0.5px;
+    font-weight: 800;
+    color: #1d4ed8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     margin: 0;
 }
 
 .rec-product-body h3 {
     font-size: 1.1rem;
     font-weight: 900;
-    color: #334155;
+    color: #0f172a;
     margin: 0;
 }
 
 .rec-product-body p {
     font-size: 0.83rem;
     color: #64748b;
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0;
 }
 
 .rec-product-status {
     font-size: 0.7rem;
-    color: #475569;
+    color: #64748b;
     font-weight: 600;
 }
 
 .rec-product-cta {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
-    color: var(--rp-accent);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1.5px solid var(--rp-accent);
     border-radius: 9px;
     padding: 10px 18px;
     cursor: pointer;
     text-align: center;
-    transition: background 0.18s, border-color 0.18s;
+    transition: background 0.18s, box-shadow 0.18s;
     align-self: flex-start;
 }
 
 .rec-product-cta:hover {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: var(--rp-accent);
+    background: color-mix(in srgb, var(--rp-accent) 10%, #ffffff);
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--rp-accent) 28%, transparent);
 }
 
 /* ---- Partner Page ---- */
@@ -5715,7 +5718,7 @@ a {
     display: block;
     font-size: 1.1rem;
     font-weight: 900;
-    color: #fff;
+    color: #0f172a;
     margin-bottom: 6px;
 }
 
@@ -6529,7 +6532,6 @@ body,
 .mk-placement-card,
 .mk-audience-card,
 .ad-slot,
-.blog-product-cta,
 .recommended-products-block,
 .product-widget,
 .sponsored-disclosure,
@@ -6937,7 +6939,6 @@ textarea::placeholder {
     color: var(--cn-text);
 }
 
-.bpc-cta,
 .rp-card,
 .pw-card {
     background: #ffffff;
@@ -7062,7 +7063,6 @@ textarea::placeholder {
 .resource-related-item,
 .rp-card,
 .pw-card,
-.bpc-cta,
 .ad-slot,
 .partner-type-card,
 .mk-placement-card,
@@ -7074,7 +7074,6 @@ textarea::placeholder {
 .resource-related-item :is(p, span, small),
 .rp-card :is(p, span, small),
 .pw-card :is(p, span, small),
-.bpc-cta :is(p, span, small),
 .ad-slot :is(p, span, small),
 .partner-type-card :is(p, span, small),
 .mk-placement-card :is(p, span, small),
@@ -7098,7 +7097,6 @@ textarea::placeholder {
 
 /* Phase 8.2: strict readability fixes for chips, mockups, helpers, and metadata */
 .showcase-feature-list span,
-.bpc-features li,
 .mk-segment-tag,
 .resource-cat-pill,
 .resource-product-pill,
@@ -7120,7 +7118,6 @@ textarea::placeholder {
 }
 
 .showcase-feature-list span:nth-child(2n),
-.bpc-features li:nth-child(2n),
 .mk-segment-tag:nth-child(2n),
 .resource-cat-pill:nth-child(2n),
 .guide-cta-bullets span:nth-child(2n) {
@@ -7486,6 +7483,7 @@ select {
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.18);
     border: 1px solid rgba(255, 255, 255, 0.34);
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
 }
 
@@ -8424,4 +8422,71 @@ select {
     .article-cover-newspaper {
         min-height: 260px;
     }
+}
+
+/* ===== BLOG PRODUCT CTA — LIGHT THEME LOCK-IN =====
+   These rules come last to win specificity over any generic
+   surface/color overrides from the Phase 8 light-theme migration. */
+
+.blog-product-cta {
+    background: var(--bpc-bg, rgba(56, 189, 248, 0.07));
+    border: 1.5px solid var(--bpc-accent, #38bdf8);
+    box-shadow: 0 2px 16px rgba(15, 23, 42, 0.06);
+}
+
+.bpc-icon {
+    background: var(--bpc-accent, #38bdf8);
+    color: #0f172a;
+}
+
+.bpc-category {
+    color: var(--bpc-accent, #38bdf8);
+}
+
+.bpc-name {
+    color: #0f172a;
+}
+
+.bpc-headline {
+    color: #334155;
+}
+
+.bpc-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+.bpc-features li {
+    background: none !important;
+    border: none !important;
+    color: #334155 !important;
+    font-weight: 500 !important;
+    font-size: 0.82rem;
+    padding-left: 14px;
+    position: relative;
+}
+
+.bpc-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--bpc-accent, #38bdf8);
+    font-size: 0.7rem;
+    font-weight: 900;
+    background: none !important;
+    border: none !important;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+}
+
+.bpc-status {
+    color: #64748b;
+}
+
+.bpc-cta {
+    background: var(--bpc-accent, #38bdf8) !important;
+    color: #0f172a !important;
+    border: none !important;
 }
