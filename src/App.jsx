@@ -922,15 +922,14 @@ function App() {
                 />
             )}
 
-            {mobileMenuOpen && (
-                <div
-                    className="nav-mobile-overlay"
-                    onClick={() => setMobileMenuOpen(false)}
-                    aria-hidden="true"
-                />
-            )}
-
             <nav className="navbar">
+                {mobileMenuOpen && (
+                    <div
+                        className="nav-mobile-overlay"
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-hidden="true"
+                    />
+                )}
                 <button
                     className="brand"
                     onClick={() => { goHome(); setMobileMenuOpen(false); }}
