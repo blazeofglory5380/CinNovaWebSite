@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import "./App.css";
 import StudyNest from "./pages/StudyNest.jsx";
 import PoisonGuard from "./pages/PoisonGuard.jsx";
@@ -36,6 +36,28 @@ import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory, siteUrl } from "./data/blogPosts.js";
 import SEO from "./components/SEO.jsx";
 import { trackPageView } from "./utils/analytics.js";
+
+class ArticleErrorBoundary extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+    componentDidCatch(error) {
+        console.error("[ArticlePage render error]", error);
+    }
+    componentDidUpdate(_, prevState) {
+        if (this.state.hasError && !prevState.hasError) {
+            this.props.onBack?.();
+        }
+    }
+    render() {
+        if (this.state.hasError) return null;
+        return this.props.children;
+    }
+}
 
 const products = [
     {
@@ -984,14 +1006,16 @@ function App() {
                 <Resources onOpenResource={openResource} onSubscribe={showNewsletterAlert} />
             )}
             {page === "article" && selectedArticle && (
-                <ArticlePage
-                    post={selectedArticle}
-                    posts={publishedPosts}
-                    onBack={goBlog}
-                    onOpenArticle={openArticle}
-                    onSubscribe={showNewsletterAlert}
-                    onNavigate={openPage}
-                />
+                <ArticleErrorBoundary onBack={goBlog}>
+                    <ArticlePage
+                        post={selectedArticle}
+                        posts={publishedPosts}
+                        onBack={goBlog}
+                        onOpenArticle={openArticle}
+                        onSubscribe={showNewsletterAlert}
+                        onNavigate={openPage}
+                    />
+                </ArticleErrorBoundary>
             )}
             {page === "resource" && selectedResource && (
                 <ResourcePage

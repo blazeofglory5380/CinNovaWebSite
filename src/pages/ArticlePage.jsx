@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import AuthorProfile from "../components/AuthorProfile.jsx";
@@ -35,6 +35,16 @@ function ReadingProgressBar() {
         <div className="reading-progress-track" aria-hidden="true">
             <div className="reading-progress-fill" style={{ width: `${progress}%` }} />
         </div>
+    );
+}
+
+function extractPullQuote(body = "") {
+    const sentences = body.match(/[^.!?]+[.!?]+/g) || [];
+    return (
+        sentences.find((s) => {
+            const t = s.trim();
+            return t.length >= 90 && t.length <= 210;
+        })?.trim() || null
     );
 }
 
@@ -267,28 +277,40 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
     const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
     const articleUrl = getArticleUrl(post);
-    const articleSchema = {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        headline: post.title,
-        description: post.excerpt,
-        url: articleUrl,
-        mainEntityOfPage: articleUrl,
-        datePublished: new Date(post.date).toISOString(),
-        dateModified: new Date(post.date).toISOString(),
-        articleSection: post.category,
-        articleBody: post.content.map((s) => `${s.heading}: ${s.body}`).join("\n\n"),
-        author: {
-            "@type": "Organization",
-            name: author.name,
-            url: siteUrl,
-        },
-        publisher: {
-            "@type": "Organization",
-            name: "Cin Nova",
-            url: siteUrl,
-        },
-    };
+
+    const articleSchema = useMemo(() => {
+        const safeDate = (raw) => {
+            try {
+                const d = new Date(raw);
+                return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+            } catch {
+                return new Date().toISOString();
+            }
+        };
+        const sections = Array.isArray(post.content) ? post.content : [];
+        return {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title || "",
+            description: post.excerpt || "",
+            url: articleUrl,
+            mainEntityOfPage: articleUrl,
+            datePublished: safeDate(post.date),
+            dateModified: safeDate(post.date),
+            articleSection: post.category || "",
+            articleBody: sections.map((s) => `${s.heading || ""}: ${s.body || ""}`).join("\n\n"),
+            author: {
+                "@type": "Organization",
+                name: author.name,
+                url: siteUrl,
+            },
+            publisher: {
+                "@type": "Organization",
+                name: "Cin Nova",
+                url: siteUrl,
+            },
+        };
+    }, [post.id, articleUrl, author.name]);
 
     return (
         <main className="product-page article-page">
@@ -318,18 +340,33 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
 
             <section className="section article-content-section">
                 <div className="article-body-layout">
-                    <article className="article-content-card">
-                        {post.content.map((section, i) => (
-                            <section className="article-section" key={section.heading} id={`section-${i}`}>
-                                <h2>{section.heading}</h2>
-                                <p>{section.body}</p>
-                                {i === 1 && (
-                                    <ArticleCTA
-                                        onSubscribe={onSubscribe}
-                                    />
-                                )}
-                            </section>
-                        ))}
+                    <article className="article-content-card article-body-counter">
+                        {(Array.isArray(post.content) ? post.content : []).map((section, i, arr) => {
+                            const isIntro = i === 0;
+                            const isCallout = /takeaway|key point|conclusion|summary/i.test(section.heading);
+                            const midpoint = Math.ceil(arr.length / 2);
+                            const pullQuote = !isIntro && !isCallout && i === midpoint
+                                ? extractPullQuote(section.body)
+                                : null;
+                            const sectionClass = [
+                                "article-section",
+                                isIntro ? "article-section-intro" : "",
+                                isCallout ? "article-section-callout" : "",
+                            ].filter(Boolean).join(" ");
+
+                            return (
+                                <section className={sectionClass} key={section.heading} id={`section-${i}`}>
+                                    <h2>{section.heading}</h2>
+                                    <p>{section.body}</p>
+                                    {pullQuote && (
+                                        <blockquote className="article-pullquote" aria-label="Key insight">
+                                            {pullQuote}
+                                        </blockquote>
+                                    )}
+                                    {i === 1 && <ArticleCTA onSubscribe={onSubscribe} />}
+                                </section>
+                            );
+                        })}
                         <RelatedReadingBlock
                             articles={articlesToShow}
                             onOpenArticle={onOpenArticle}
@@ -337,7 +374,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                     </article>
 
                     <aside className="article-sidebar">
-                        <TableOfContents sections={post.content} />
+                        <TableOfContents sections={Array.isArray(post.content) ? post.content : []} />
                         <ShareButtons url={articleUrl} title={post.title} />
                         <RelatedSidebar articles={articlesToShow} onOpenArticle={onOpenArticle} />
                         <AdSlot placement="sidebar" onNavigate={onNavigate} />

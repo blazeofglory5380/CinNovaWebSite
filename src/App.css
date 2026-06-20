@@ -7813,3 +7813,436 @@ select {
         font-size: 0.96rem;
     }
 }
+
+/* ============================================================
+   Phase 10: Professional Editorial Layout
+   ============================================================ */
+
+/* ── Hero: more breathing room, stronger eyebrow ─────────── */
+
+.article-hero {
+    padding-top: 64px;
+    padding-bottom: 0;
+}
+
+.article-hero .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: #2563eb;
+    margin-bottom: 18px;
+    font-weight: 900;
+}
+
+.article-hero h1 {
+    font-size: clamp(2.4rem, 5.5vw, 5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: #0f172a;
+    margin-bottom: 24px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-excerpt {
+    font-size: 1.13rem;
+    line-height: 1.88;
+    color: #334155;
+    max-width: 680px;
+    margin-bottom: 34px;
+}
+
+.article-publication-meta {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-cover-hero {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 44px;
+    margin-bottom: 0;
+}
+
+/* ── Body layout: wider content, narrower sidebar gap ─────── */
+
+.article-content-section {
+    padding-top: 56px;
+    padding-bottom: 0;
+}
+
+.article-body-layout {
+    grid-template-columns: 1fr 268px;
+    gap: 52px;
+    max-width: 1180px;
+    align-items: start;
+}
+
+/* ── Content card: editorial, open, generous ──────────────── */
+
+.article-content-card {
+    padding: clamp(32px, 5vw, 60px) clamp(28px, 4.5vw, 56px);
+    border-radius: 6px;
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.8);
+}
+
+/* ── Typography hierarchy ─────────────────────────────────── */
+
+.article-content-card h2 {
+    font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+    font-weight: 900;
+    letter-spacing: -0.028em;
+    line-height: 1.15;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.article-content-card p {
+    font-size: 1.09rem;
+    line-height: 2.0;
+    color: #1e293b;
+    max-width: 70ch;
+    margin-bottom: 0;
+}
+
+/* ── Section spacing and CSS counter ─────────────────────── */
+
+.article-body-counter {
+    counter-reset: article-section;
+}
+
+.article-section {
+    padding: 44px 0;
+}
+
+.article-content-card .article-section + .article-section {
+    margin-top: 0;
+    padding-top: 44px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.article-content-card section + section {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+/* Section number prefix on h2 (all except intro and callout) */
+.article-body-counter
+    .article-section:not(.article-section-intro):not(.article-section-callout)
+    h2 {
+    counter-increment: article-section;
+}
+
+.article-body-counter
+    .article-section:not(.article-section-intro):not(.article-section-callout)
+    h2::before {
+    content: counter(article-section, decimal-leading-zero);
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 900;
+    color: #93c5fd;
+    letter-spacing: 0.12em;
+    vertical-align: middle;
+    margin-right: 12px;
+    line-height: 1;
+    position: relative;
+    top: -2px;
+}
+
+/* ── Intro section: no number, blue underline, larger lead ── */
+
+.article-content-card .article-section-intro {
+    padding-top: 0;
+    border-top: none;
+}
+
+.article-content-card .article-section-intro h2 {
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    color: #0f172a;
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #dbeafe;
+}
+
+.article-content-card .article-section-intro p {
+    font-size: 1.12rem;
+    line-height: 2.06;
+    color: #1e293b;
+    max-width: 70ch;
+}
+
+/* ── Callout box: key takeaways, conclusions ─────────────── */
+
+.article-content-card .article-section-callout {
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 50%, #eff6ff 100%);
+    border-left: 4px solid #2563eb;
+    border-top: none;
+    border-radius: 0 20px 20px 0;
+    padding: 32px 38px;
+    margin-top: 8px;
+}
+
+.article-content-card .article-section-callout h2 {
+    color: #1d4ed8;
+    font-size: 0.76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 16px;
+    counter-increment: none;
+}
+
+.article-content-card .article-section-callout h2::before {
+    content: none;
+}
+
+.article-content-card .article-section-callout p {
+    color: #1e3a5f;
+    font-size: 1.08rem;
+    line-height: 1.92;
+    max-width: none;
+    font-weight: 600;
+}
+
+/* ── Pull quote ───────────────────────────────────────────── */
+
+.article-pullquote {
+    margin: 30px 0 10px;
+    padding: 22px 0 22px 28px;
+    border-left: 3px solid #2563eb;
+    font-size: clamp(1.12rem, 2vw, 1.38rem);
+    font-style: italic;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.56;
+    letter-spacing: -0.01em;
+    background: none;
+    quotes: none;
+}
+
+/* ── Editorial list styling ───────────────────────────────── */
+
+.article-content-card ul,
+.article-content-card ol {
+    margin: 20px 0 24px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.article-content-card ul li,
+.article-content-card ol li {
+    padding-left: 26px;
+    position: relative;
+    color: #1e293b;
+    font-size: 1.06rem;
+    line-height: 1.84;
+}
+
+.article-content-card ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2563eb;
+}
+
+.article-content-card ol {
+    counter-reset: editorial-ol;
+}
+
+.article-content-card ol li::before {
+    counter-increment: editorial-ol;
+    content: counter(editorial-ol) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #2563eb;
+    font-size: 0.82rem;
+    font-weight: 900;
+    line-height: 1.84;
+}
+
+/* ── Related reading block: editorial ─────────────────────── */
+
+.related-reading-block {
+    margin-top: 52px;
+    padding-top: 36px;
+    border-top: 2px solid #dbeafe;
+}
+
+.related-reading-block .sidebar-widget-label {
+    color: #2563eb !important;
+    margin-bottom: 18px;
+}
+
+.related-reading-grid {
+    gap: 18px;
+}
+
+.related-reading-card {
+    border-radius: 16px;
+    border-color: #e2e8f0;
+    padding: 18px 20px;
+    transition: border-color 0.18s, box-shadow 0.18s, transform 0.14s;
+}
+
+.related-reading-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.09);
+    transform: translateY(-2px);
+}
+
+/* ── Sidebar refinements ──────────────────────────────────── */
+
+.article-sidebar {
+    gap: 20px;
+}
+
+.sidebar-widget {
+    border-radius: 18px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+}
+
+.article-toc .toc-list {
+    gap: 4px;
+}
+
+.toc-link {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    padding: 5px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+    transition: border-color 0.15s, color 0.15s;
+    display: block;
+}
+
+.toc-link:hover {
+    border-left-color: #2563eb;
+    padding-left: 14px;
+    transition: border-color 0.15s, color 0.15s, padding-left 0.15s;
+}
+
+/* ── Prev/next nav: editorial ─────────────────────────────── */
+
+.article-nav-section {
+    padding-top: 24px;
+    padding-bottom: 64px;
+}
+
+/* ── Author card spacing ──────────────────────────────────── */
+
+.article-author-section {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.article-author-card {
+    border-top: 2px solid #e2e8f0;
+    padding-top: 48px;
+    padding-bottom: 0;
+    max-width: 1180px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .article-body-layout {
+        grid-template-columns: 1fr 245px;
+        gap: 36px;
+    }
+}
+
+@media (max-width: 900px) {
+    .article-hero {
+        padding-top: 44px;
+    }
+
+    .article-content-section {
+        padding-top: 36px;
+    }
+
+    .article-body-layout {
+        gap: 0;
+    }
+
+    .article-section {
+        padding: 36px 0;
+    }
+
+    .article-content-card .article-section-callout {
+        padding: 24px 26px;
+        border-radius: 0 16px 16px 0;
+    }
+
+    .article-pullquote {
+        font-size: 1.1rem;
+        padding-left: 20px;
+    }
+
+    .article-author-card {
+        max-width: 100%;
+    }
+
+    .article-cover-hero {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .article-hero h1 {
+        letter-spacing: -0.02em;
+    }
+
+    .article-content-card {
+        padding: 24px 20px;
+        border-radius: 12px;
+    }
+
+    .article-section {
+        padding: 28px 0;
+    }
+
+    .article-content-card h2 {
+        font-size: clamp(1.35rem, 5vw, 1.7rem);
+    }
+
+    .article-content-card p {
+        font-size: 1.02rem;
+        line-height: 1.86;
+    }
+
+    .article-content-card .article-section-callout {
+        padding: 20px 18px;
+        border-radius: 0 12px 12px 0;
+    }
+
+    .article-content-card .article-section-callout h2 {
+        font-size: 0.7rem;
+    }
+
+    .article-pullquote {
+        font-size: 1.05rem;
+        padding-left: 16px;
+        margin: 22px 0 8px;
+    }
+
+    .article-author-card {
+        padding-top: 36px;
+        border-top: 1px solid #e2e8f0;
+    }
+}
