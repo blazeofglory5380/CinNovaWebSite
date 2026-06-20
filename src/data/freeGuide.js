@@ -1,3 +1,5 @@
+import { trackResourceDownload } from "../utils/analytics.js";
+
 export const freeGuideTitle = "The Cin Nova AI Guide: 5 Ways AI Is Changing Everyday Life";
 export const freeGuideFilename = "cin-nova-ai-guide.txt";
 
@@ -115,6 +117,14 @@ Last updated: June 2026.
 `;
 
 export function downloadFreeGuide() {
+    trackResourceDownload({
+        id: "free-ai-guide",
+        slug: "cin-nova-ai-guide",
+        title: freeGuideTitle,
+        category: "Free Guides",
+        product: "Cin Nova",
+        format: "Guide",
+    });
     const blob = new Blob([freeGuideContent], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

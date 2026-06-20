@@ -16,6 +16,7 @@ import {
     slugifyCategory,
 } from "../data/blogPosts.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
+import { trackArticleView } from "../utils/analytics.js";
 
 function ReadingProgressBar() {
     const [progress, setProgress] = useState(0);
@@ -252,6 +253,10 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
     const readingTime = estimateArticleReadingTime(post);
+
+    useEffect(() => {
+        trackArticleView(post);
+    }, [post.slug]);
 
     const relatedBySlug = (post.relatedReading || [])
         .map((slug) => posts.find((item) => item.slug === slug))

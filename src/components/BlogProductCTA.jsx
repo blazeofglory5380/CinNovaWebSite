@@ -1,3 +1,5 @@
+import { trackProductCtaClick } from "../utils/analytics.js";
+
 const productCTAContent = {
     studynest: {
         icon: "SN",
@@ -120,7 +122,14 @@ function BlogProductCTA({ category, onNavigate }) {
             </div>
             <button
                 className="bpc-cta"
-                onClick={() => onNavigate?.(product.page)}
+                onClick={() => {
+                    trackProductCtaClick({
+                        product: product.name,
+                        category,
+                        location: "blog_product_cta",
+                    });
+                    onNavigate?.(product.page);
+                }}
             >
                 {product.cta} →
             </button>

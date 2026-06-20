@@ -1,6 +1,7 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { trackSponsorCtaClick } from "../utils/analytics.js";
 
 const partnerGroups = [
     {
@@ -76,6 +77,11 @@ const partnerSchema = {
 };
 
 function PartnerWithUs({ onNavigate }) {
+    function handleSponsorCta(cta, target) {
+        trackSponsorCtaClick({ page: "partner-with-us", cta, target });
+        onNavigate?.(target);
+    }
+
     return (
         <main className="product-page partners-page">
             <SEO
@@ -164,7 +170,7 @@ function PartnerWithUs({ onNavigate }) {
                         Share your company, audience, proposed partnership type, and what you
                         think Cin Nova readers would gain from the collaboration.
                     </p>
-                    <button className="primary-btn" onClick={() => onNavigate?.("contact")}>
+                    <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
                         Contact Cin Nova
                     </button>
                 </div>

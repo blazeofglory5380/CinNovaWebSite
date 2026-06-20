@@ -1,6 +1,7 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { trackSponsorCtaClick } from "../utils/analytics.js";
 
 const audienceTypes = [
     {
@@ -64,6 +65,11 @@ const newsletterSponsorSchema = {
 };
 
 function SponsorNewsletter({ onNavigate }) {
+    function handleSponsorCta(cta, target) {
+        trackSponsorCtaClick({ page: "sponsor-newsletter", cta, target });
+        onNavigate?.(target);
+    }
+
     return (
         <main className="product-page newsletter-landing-page">
             <SEO
@@ -100,7 +106,7 @@ function SponsorNewsletter({ onNavigate }) {
                             <li>Real estate software, data, and investor education</li>
                             <li>Useful resources for builders, students, and professionals</li>
                         </ul>
-                        <button className="primary-btn nl-submit-btn" onClick={() => onNavigate?.("contact")}>
+                        <button className="primary-btn nl-submit-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
                             Contact Cin Nova
                         </button>
                     </div>
@@ -155,7 +161,7 @@ function SponsorNewsletter({ onNavigate }) {
                         sponsorship format. Cin Nova will review fit and respond with current
                         availability.
                     </p>
-                    <button className="primary-btn" onClick={() => onNavigate?.("contact")}>
+                    <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
                         Contact Cin Nova
                     </button>
                 </div>

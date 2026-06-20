@@ -1,4 +1,5 @@
 import { siteUrl } from "./blogPosts.js";
+import { trackResourceDownload } from "../utils/analytics.js";
 
 export const resourceCategories = [
     "All",
@@ -450,6 +451,7 @@ export function generateResourceContent(resource) {
 }
 
 export function downloadResource(resource) {
+    trackResourceDownload(resource);
     const content = generateResourceContent(resource);
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);

@@ -6,6 +6,7 @@ import {
     sanitizeTags,
     sanitizeText,
 } from "../utils/security.js";
+import { trackNewsletterSignup } from "../utils/analytics.js";
 
 const STORAGE_KEY = "cinNovaNewsletterSubscribers";
 
@@ -82,6 +83,7 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
         );
 
         writeSubscribers(updatedSubscribers);
+        trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "existing" });
         return { status: "existing", subscriber: updatedSubscribers.find((item) => item.email === normalizedEmail) };
     }
 
@@ -98,6 +100,7 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
     };
 
     writeSubscribers([subscriber, ...subscribers]);
+    trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "created" });
     return { status: "created", subscriber };
 }
 

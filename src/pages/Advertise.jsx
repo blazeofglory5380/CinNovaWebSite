@@ -1,6 +1,7 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { trackSponsorCtaClick } from "../utils/analytics.js";
 
 const audienceSegments = [
     {
@@ -61,6 +62,11 @@ const advertiseSchema = {
 };
 
 function Advertise({ onNavigate }) {
+    function handleSponsorCta(cta, target) {
+        trackSponsorCtaClick({ page: "advertise", cta, target });
+        onNavigate?.(target);
+    }
+
     return (
         <main className="product-page media-kit-page">
             <SEO
@@ -82,10 +88,10 @@ function Advertise({ onNavigate }) {
                         placement protects reader trust and fits the surrounding content.
                     </p>
                     <div className="media-kit-hero-actions">
-                        <button className="primary-btn" onClick={() => onNavigate?.("contact")}>
+                        <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
                             Contact Cin Nova
                         </button>
-                        <button className="secondary-btn" onClick={() => onNavigate?.("media-kit")}>
+                        <button className="secondary-btn" onClick={() => handleSponsorCta("View Media Kit", "media-kit")}>
                             View Media Kit
                         </button>
                     </div>
@@ -179,7 +185,7 @@ function Advertise({ onNavigate }) {
                         Tell us about your product, audience, campaign goal, budget range, and
                         preferred timing. We will review fit and respond with availability.
                     </p>
-                    <button className="primary-btn" onClick={() => onNavigate?.("contact")}>
+                    <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
                         Contact Cin Nova
                     </button>
                 </div>
