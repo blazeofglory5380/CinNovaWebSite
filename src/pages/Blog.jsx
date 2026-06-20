@@ -43,11 +43,11 @@ function Blog({
     }, [routedCategory]);
 
     const featuredPosts = useMemo(
-        () => posts.filter((post) => post.featured || post.cornerstone).slice(0, 10),
+        () => posts.filter((post) => post.featured || post.cornerstone).slice(0, 15),
         [posts]
     );
     const featuredPost = featuredPosts[0] || posts[0];
-    const secondaryFeaturedPosts = featuredPosts.filter((post) => post.id !== featuredPost?.id).slice(0, 9);
+    const secondaryFeaturedPosts = featuredPosts.filter((post) => post.id !== featuredPost?.id).slice(0, 14);
     const cornerstonePost = useMemo(
         () => posts.find((p) => p.cornerstone) || featuredPost,
         [posts, featuredPost]
@@ -57,7 +57,7 @@ function Blog({
         () =>
             posts
                 .filter((post) => post.cornerstone || postMetrics[post.id]?.trending || post.trending)
-                .slice(0, 10),
+                .slice(0, 15),
         [posts]
     );
 

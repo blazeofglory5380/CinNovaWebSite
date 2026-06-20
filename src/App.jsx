@@ -359,8 +359,8 @@ const homeSchema = {
 };
 
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
-    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 10);
-    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 10);
+    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 15);
+    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 15);
 
     function openProduct(page) {
         setPage(page);
