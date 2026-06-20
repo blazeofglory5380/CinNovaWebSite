@@ -48,6 +48,10 @@ function Blog({
     );
     const featuredPost = featuredPosts[0] || posts[0];
     const secondaryFeaturedPosts = featuredPosts.filter((post) => post.id !== featuredPost?.id).slice(0, 9);
+    const cornerstonePost = useMemo(
+        () => posts.find((p) => p.cornerstone) || featuredPost,
+        [posts, featuredPost]
+    );
 
     const trendingPosts = useMemo(
         () =>
@@ -181,6 +185,38 @@ function Blog({
                     </p>
                 </div>
             </section>
+
+            {cornerstonePost && (
+                <section className="section newspaper-featured-section">
+                    <div className="newspaper-featured-inner">
+                        <div className="newspaper-featured-header">
+                            <span className="newspaper-featured-label">Featured Story</span>
+                        </div>
+                        <div className="newspaper-featured-body">
+                            <div className="newspaper-featured-visual">
+                                <ArticleVisual post={cornerstonePost} variant="newspaper" />
+                            </div>
+                            <div className="newspaper-featured-text">
+                                <div className="newspaper-meta-row">
+                                    <span className="newspaper-category">{cornerstonePost.category}</span>
+                                    <span className="newspaper-date">{cornerstonePost.date}</span>
+                                    <span className="newspaper-readtime">{getReadTime(cornerstonePost)}</span>
+                                </div>
+                                <h2 className="newspaper-headline">{cornerstonePost.title}</h2>
+                                <p className="newspaper-summary">{cornerstonePost.excerpt}</p>
+                                <div className="newspaper-byline">By {cornerstonePost.author}</div>
+                                <a
+                                    href={`/blog/${cornerstonePost.slug}`}
+                                    className="primary-btn newspaper-cta"
+                                    onClick={(event) => handleArticleLink(event, cornerstonePost)}
+                                >
+                                    Read Article →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {featuredPost && (
                 <section className="section blog-featured-section">
