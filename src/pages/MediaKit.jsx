@@ -319,6 +319,12 @@ function MediaKit({ onNavigate }) {
                         <a href="#contact" className="secondary-btn">
                             Contact for Rates →
                         </a>
+                        <button
+                            className="secondary-btn"
+                            onClick={() => onNavigate?.("advertise")}
+                        >
+                            Advertise With Us
+                        </button>
                     </div>
                 </div>
             </section>
@@ -395,6 +401,20 @@ function MediaKit({ onNavigate }) {
                     All rates are estimated. Final pricing depends on campaign scope, duration, and current availability.
                     Custom packages are available — use the contact form below for a quote.
                 </p>
+                <div className="media-kit-hero-actions" style={{ justifyContent: "center", marginTop: "18px" }}>
+                    <button
+                        className="secondary-btn"
+                        onClick={() => onNavigate?.("sponsor-newsletter")}
+                    >
+                        Sponsor the Newsletter
+                    </button>
+                    <button
+                        className="secondary-btn"
+                        onClick={() => onNavigate?.("partner-with-us")}
+                    >
+                        Partner With Us
+                    </button>
+                </div>
             </section>
 
             <section className="section">

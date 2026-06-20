@@ -51,6 +51,9 @@ const urls = [
     { loc: `${siteUrl}/?page=partners`,     lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=newsletter`,   lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=media-kit`,    lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=advertise`,    lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=partner-with-us`, lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=sponsor-newsletter`, lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
     ...blogPosts.map((post) => ({
         loc: getArticleUrl(post),
         lastmod: toIsoDate(post.date),

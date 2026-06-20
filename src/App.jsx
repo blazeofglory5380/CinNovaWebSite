@@ -18,6 +18,9 @@ import BlogManager from "./pages/BlogManager.jsx";
 import Partners from "./pages/Partners.jsx";
 import MediaKit from "./pages/MediaKit.jsx";
 import NewsletterPage from "./pages/NewsletterPage.jsx";
+import Advertise from "./pages/Advertise.jsx";
+import PartnerWithUs from "./pages/PartnerWithUs.jsx";
+import SponsorNewsletter from "./pages/SponsorNewsletter.jsx";
 import FloatingNewsletterButton from "./components/FloatingNewsletterButton.jsx";
 import HomepageCTABanner from "./components/HomepageCTABanner.jsx";
 import NewsletterSignup from "./components/NewsletterSignup.jsx";
@@ -1030,6 +1033,9 @@ function App() {
             {page === "contact" && <Contact />}
             {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
             {page === "media-kit" && <MediaKit onNavigate={openPage} />}
+            {page === "advertise" && <Advertise onNavigate={openPage} />}
+            {page === "partner-with-us" && <PartnerWithUs onNavigate={openPage} />}
+            {page === "sponsor-newsletter" && <SponsorNewsletter onNavigate={openPage} />}
             {page === "newsletter" && (
                 <NewsletterPage
                     onSubscribe={showNewsletterAlert}
@@ -1111,6 +1117,9 @@ function App() {
                     <button onClick={() => openPage("newsletter")}>Newsletter</button>
                     <button onClick={() => openPage("partners")}>Partners</button>
                     <button onClick={() => openPage("media-kit")}>Media Kit</button>
+                    <button onClick={() => openPage("advertise")}>Advertise With Us</button>
+                    <button onClick={() => openPage("partner-with-us")}>Partner With Us</button>
+                    <button onClick={() => openPage("sponsor-newsletter")}>Sponsor the Newsletter</button>
                     <button onClick={() => openPage("newsletter-admin")}>Newsletter Admin</button>
                 </div>
 
