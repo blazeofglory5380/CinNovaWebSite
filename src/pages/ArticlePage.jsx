@@ -191,17 +191,6 @@ function PrevNextNav({ prev, next, onOpenArticle }) {
 }
 
 function ArticleHeroVisual({ post }) {
-    if (post.heroImage) {
-        return (
-            <ArticleImage
-                src={post.heroImage}
-                alt={post.heroImageAlt || post.title}
-                caption={post.heroImageCaption || ""}
-                className="article-hero-image"
-            />
-        );
-    }
-
     const cover = post.coverImage || {
         label: post.thumbnail?.label || post.category.slice(0, 2).toUpperCase(),
         kicker: post.category,
@@ -352,7 +341,16 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 <h1>{post.title}</h1>
                 <p className="article-excerpt">{post.excerpt}</p>
                 <ArticlePublicationMeta post={post} author={author} readingTime={readingTime} />
-                <ArticleHeroVisual post={post} />
+                {post.heroImage ? (
+                    <ArticleImage
+                        src={post.heroImage}
+                        alt={post.heroImageAlt || post.title}
+                        caption={post.heroImageCaption || ""}
+                        className="article-hero-image"
+                    />
+                ) : (
+                    <ArticleHeroVisual post={post} />
+                )}
             </section>
 
             <section className="section article-content-section">
