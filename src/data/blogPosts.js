@@ -1546,6 +1546,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI transforming education", "AI in education", "education technology"],
         thumbnail: { label: "ED", title: "AI Education Systems" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        heroImage: "/images/education/ai-transforming-education-classroom.jpg",
+        heroImageAlt: "Students and a teacher using AI tools in a modern classroom",
+        heroImageCaption: "AI is reshaping how students learn and how teachers deliver instruction.",
         content: [
             {
                 heading: "The classroom is changing faster than most realize",
@@ -1641,6 +1644,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI infrastructure", "ChatGPT infrastructure", "data centers for AI"],
         thumbnail: { label: "AI", title: "AI Infrastructure Stack" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-ai.png",
+        heroImage: "/images/ai/chatgpt-infrastructure-data-center.jpg",
+        heroImageAlt: "Server racks inside a large AI data center facility",
+        heroImageCaption: "Behind every AI response is a vast physical infrastructure of chips, servers, and power systems.",
         content: [
             {
                 heading: "What you see is not what powers it",
@@ -1744,6 +1750,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["data center gold rush", "AI data centers", "data center demand"],
         thumbnail: { label: "DC", title: "Data Center Expansion" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-data-centers.png",
+        heroImage: "/images/datacenters/data-center-gold-rush-facility.jpg",
+        heroImageAlt: "Rows of server racks inside a modern hyperscale data center",
+        heroImageCaption: "Data centers have become strategic assets as AI demand for compute accelerates.",
         content: [
             {
                 heading: "A new kind of infrastructure race",
@@ -1842,6 +1851,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["companies building AI economy", "AI economy", "AI software companies"],
         thumbnail: { label: "EC", title: "AI Economy Map" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-ai.png",
+        heroImage: "/images/ai/ai-economy-companies-tech-stack.jpg",
+        heroImageAlt: "Layered diagram showing the companies and sectors building the AI economy",
+        heroImageCaption: "The AI economy spans chip manufacturers, model labs, cloud platforms, and application developers.",
         content: [
             {
                 heading: "A new economic layer is forming",
@@ -1934,6 +1946,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI power grid", "AI electricity demand", "data center power"],
         thumbnail: { label: "PG", title: "AI Power Demand" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-data-centers.png",
+        heroImage: "/images/datacenters/power-grid-ai-electricity-demand.jpg",
+        heroImageAlt: "High-voltage power transmission lines supplying electricity to AI data centers",
+        heroImageCaption: "AI data centers are drawing unprecedented electricity demand from regional power grids.",
         content: [
             {
                 heading: "The grid was not built for this",
@@ -2028,6 +2043,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI tutors", "personalized learning technology", "AI tutoring app"],
         thumbnail: { label: "AT", title: "AI Tutoring Systems" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        heroImage: "/images/education/ai-tutor-personalized-learning-dashboard.jpg",
+        heroImageAlt: "Student using an AI tutoring dashboard on a laptop at their desk",
+        heroImageCaption: "AI tutors adapt to each student's pace and learning gaps in real time.",
         content: [
             {
                 heading: "AI tutoring is no longer experimental",
@@ -2116,6 +2134,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI real estate investing", "AI deal analysis", "real estate investment software"],
         thumbnail: { label: "RI", title: "AI Real Estate Analysis" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-real-estate.png",
+        heroImage: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg",
+        heroImageAlt: "Real estate investor reviewing AI-powered deal analysis on a laptop screen",
+        heroImageCaption: "AI tools are helping real estate investors analyze deals faster and with greater confidence.",
         content: [
             {
                 heading: "The way investors evaluate deals is changing",
@@ -2200,6 +2221,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["AI in construction", "construction technology AI", "AI estimating software"],
         thumbnail: { label: "CE", title: "Construction & Engineering AI" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-construction.png",
+        heroImage: "/images/construction/ai-construction-engineering-jobsite.jpg",
+        heroImageAlt: "Construction site with digital planning tools and AI-powered monitoring equipment",
+        heroImageCaption: "AI is entering construction through estimating, jobsite safety monitoring, and project management.",
         content: [
             {
                 heading: "Construction is catching up to digital",
@@ -2282,6 +2306,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["robotics and automation 2026", "business automation", "warehouse robotics"],
         thumbnail: { label: "RA", title: "Robotics & Automation" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-robotics.png",
+        heroImage: "/images/robotics/robotics-automation-warehouse-2026.jpg",
+        heroImageAlt: "Automated warehouse robots moving inventory alongside human workers",
+        heroImageCaption: "Robotics and automation are becoming practical for a wider range of industries in 2026.",
         content: [
             {
                 heading: "Automation is entering more business categories than ever before",
@@ -2364,6 +2391,9 @@ const cornerstoneOverrides = {
         seoKeywords: ["technology trends next decade", "future technology", "AI technology trends 2026"],
         thumbnail: { label: "TT", title: "Technology Decade Ahead" },
         ogImage: "https://cin-nova-web-site.vercel.app/og-future-tech.png",
+        heroImage: "/images/future-tech/technology-trends-next-decade-overview.jpg",
+        heroImageAlt: "Abstract visualization of converging technology trends including AI, clean energy, and robotics",
+        heroImageCaption: "The technology trends shaping the next decade are already in early commercial deployment today.",
         content: [
             {
                 heading: "The decade ahead will be defined by practical, embedded technology",
@@ -2434,6 +2464,31 @@ const cornerstoneOverrides = {
                     "The technology trends that will shape the next decade are already in early commercial deployment and creating measurable value — they are not waiting for fundamental breakthroughs. AI becoming embedded infrastructure, clean energy expansion, physical-digital integration, and biological-computational convergence are each durable because real economic problems are being solved at real scale today. The practical move for builders is to find specific workflows at the intersection of these trends and build tools that solve clearly defined problems for clearly defined users. For investors, the infrastructure layer and focused domain experts will outperform both general AI plays and traditional industries that fail to adapt.",
             },
         ],
+    },
+    11: {
+        heroImage: "/images/education/ai-tutor-teacher-classroom-partnership.jpg",
+        heroImageAlt: "Teacher working alongside students using AI tutoring tools in a classroom",
+        heroImageCaption: "AI tutors and human teachers are most powerful when they work together rather than compete.",
+    },
+    12: {
+        heroImage: "/images/education/spaced-repetition-flashcard-study-schedule.jpg",
+        heroImageAlt: "Student reviewing flashcards with a spaced repetition study schedule visible on screen",
+        heroImageCaption: "Spaced repetition works by surfacing review material at the moment memory begins to fade.",
+    },
+    13: {
+        heroImage: "/images/education/student-studying-smarter-ai-tools.jpg",
+        heroImageAlt: "College student using AI study tools on a laptop surrounded by notes and flashcards",
+        heroImageCaption: "AI study tools help students organize material, practice recall, and identify weak spots before exams.",
+    },
+    14: {
+        heroImage: "/images/education/online-education-platform-adaptive-learning.jpg",
+        heroImageAlt: "Student using an adaptive online learning platform on a tablet",
+        heroImageCaption: "The next generation of online learning platforms will combine AI tutoring, analytics, and adaptive review.",
+    },
+    15: {
+        heroImage: "/images/education/studynest-connected-learning-workspace.jpg",
+        heroImageAlt: "StudyNest dashboard showing notes, flashcards, and a study planner in one connected workspace",
+        heroImageCaption: "StudyNest connects notes, flashcards, AI tutoring, and planning into a single learning workflow.",
     },
 };
 

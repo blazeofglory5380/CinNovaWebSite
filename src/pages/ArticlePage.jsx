@@ -8,6 +8,7 @@ import SponsoredDisclosure from "../components/SponsoredDisclosure.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
 import BlogProductCTA from "../components/BlogProductCTA.jsx";
+import ArticleImage from "../components/ArticleImage.jsx";
 import {
     estimateArticleReadingTime,
     getArticleUrl,
@@ -190,6 +191,17 @@ function PrevNextNav({ prev, next, onOpenArticle }) {
 }
 
 function ArticleHeroVisual({ post }) {
+    if (post.heroImage) {
+        return (
+            <ArticleImage
+                src={post.heroImage}
+                alt={post.heroImageAlt || post.title}
+                caption={post.heroImageCaption || ""}
+                className="article-hero-image"
+            />
+        );
+    }
+
     const cover = post.coverImage || {
         label: post.thumbnail?.label || post.category.slice(0, 2).toUpperCase(),
         kicker: post.category,
@@ -381,6 +393,13 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                                         <blockquote className="article-pullquote" aria-label="Key insight">
                                             {pullQuote}
                                         </blockquote>
+                                    )}
+                                    {section.image && (
+                                        <ArticleImage
+                                            src={section.image}
+                                            alt={section.imageAlt || section.heading}
+                                            caption={section.imageCaption || ""}
+                                        />
                                     )}
                                     {i === 1 && <ArticleCTA onSubscribe={onSubscribe} />}
                                 </section>

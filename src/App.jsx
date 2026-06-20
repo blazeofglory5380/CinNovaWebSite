@@ -785,6 +785,7 @@ function App() {
             setSelectedResource(route.resource);
             setSelectedCategory(route.category || "All");
             scrollTop();
+            trackPageView(window.location.pathname + window.location.search);
         }
 
         window.addEventListener("popstate", handlePopState);

@@ -35,6 +35,9 @@ function withDefaults(post, index = 0) {
                   body: sanitizeText(section.body, 6000),
                   ...(Array.isArray(section.list) && { list: section.list }),
                   ...(Array.isArray(section.numberedList) && { numberedList: section.numberedList }),
+                  ...(section.image && { image: section.image }),
+                  ...(section.imageAlt && { imageAlt: section.imageAlt }),
+                  ...(section.imageCaption && { imageCaption: section.imageCaption }),
               }))
             : [{ heading: "Overview", body: sanitizeText(post.excerpt, 6000) || "Article content goes here." }],
     };
