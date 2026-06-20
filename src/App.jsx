@@ -71,6 +71,8 @@ const products = [
         description:
             "AI-powered study tools with notes, flashcards, quizzes, study guides, tutoring, planner support, and future stylus note-taking.",
         page: "studynest",
+        image: "/images/products/studynest-student-learning.jpg",
+        imageAlt: "Student writing organized notes in a study checklist — the foundation of effective learning",
     },
     {
         name: "PoisonGuard",
@@ -80,6 +82,8 @@ const products = [
         description:
             "A poison and chemical safety assistant for families, pets, schools, and future public safety use.",
         page: "poisonguard",
+        image: "/images/products/poisonguard-pet-family-safety.jpg",
+        imageAlt: "Happy dog outdoors — PoisonGuard helps protect pets and families from household hazards",
     },
     {
         name: "Kiddo",
@@ -89,6 +93,8 @@ const products = [
         description:
             "A playful early-learning platform for ABCs, reading, writing, counting, math, characters, levels, and rewards.",
         page: "kiddo",
+        image: "/images/products/kiddo-child-learning.jpg",
+        imageAlt: "Joyful child covered in colorful paint — Kiddo makes early learning fun and playful",
     },
     {
         name: "TechMate AI",
@@ -98,6 +104,8 @@ const products = [
         description:
             "An AI troubleshooting assistant for phones, computers, software, apps, smart devices, and everyday tech problems.",
         page: "techmate",
+        image: "/images/products/techmate-ai-device-support.jpg",
+        imageAlt: "MacBook with code editor open on a clean home office desk — TechMate AI guides device troubleshooting",
     },
     {
         name: "Cin Nova Real Estate",
@@ -107,6 +115,8 @@ const products = [
         description:
             "AI tools for property analysis, deal evaluation, mortgage estimates, cash flow, commercial real estate, land, and development intelligence.",
         page: "real-estate",
+        image: "/images/products/cinnova-real-estate-property.jpg",
+        imageAlt: "Classic white colonial house with a green lawn — Cin Nova Real Estate AI for property analysis",
     },
 ];
 
@@ -371,6 +381,18 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
     }
 
     function ArticleVisual({ post }) {
+        if (post.heroImage) {
+            return (
+                <div className="article-thumb-photo">
+                    <img
+                        src={post.heroImage}
+                        alt={post.heroImageAlt || post.title}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </div>
+            );
+        }
         return (
             <div
                 className="article-thumb article-thumb-card"
@@ -452,6 +474,16 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                 </div>
             </section>
 
+            <div className="home-hero-visual-wrap">
+                <img
+                    src="/images/home/homepage-hero-innovation.jpg"
+                    alt="Software developers collaborating around laptops — the team approach behind Cin Nova products"
+                    loading="eager"
+                    decoding="async"
+                    className="home-hero-visual-img"
+                />
+            </div>
+
             <section className="section" id="products">
                 <div className="section-heading">
                     <p className="eyebrow">PRODUCT SHOWCASE</p>
@@ -465,6 +497,16 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                 <div className="product-grid">
                     {products.map((product) => (
                         <article className="product-card" key={product.name}>
+                            {product.image && (
+                                <div className="product-card-image">
+                                    <img
+                                        src={product.image}
+                                        alt={product.imageAlt}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                </div>
+                            )}
                             <div className="product-icon">{product.icon}</div>
                             <p className="product-category">{product.category}</p>
                             <h3>{product.name}</h3>
