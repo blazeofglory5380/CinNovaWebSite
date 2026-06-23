@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from "react";
+import { Component, useEffect, useRef, useState } from "react";
 import "./App.css";
 import StudyNest from "./pages/StudyNest.jsx";
 import PoisonGuard from "./pages/PoisonGuard.jsx";
@@ -344,6 +344,343 @@ function EcosystemShowcase({ showcase, index }) {
     );
 }
 
+// ── Phase 19B: Homepage Enhancement Components ──────────────
+
+const homeStats = [
+    { target: 60,  suffix: "+", label: "Articles Published",     detail: "Cornerstone and research content covering AI, education, and real estate" },
+    { target: 5,   suffix: "",  label: "Products in Development", detail: "Across AI, education, safety, real estate, and tech support" },
+    { target: 100, suffix: "+", label: "Planned Features",        detail: "Combined across all five Cin Nova platforms" },
+    { target: 12,  suffix: "",  label: "Free Resources",          detail: "Guides, checklists, and templates — free to download" },
+];
+
+function AnimatedCount({ target, suffix, triggered }) {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        if (!triggered) return;
+        const duration = 1600;
+        const start = performance.now();
+        let rafId;
+        function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 4);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) rafId = requestAnimationFrame(tick);
+            else setCount(target);
+        }
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
+    }, [target, triggered]);
+    return <>{count}{suffix}</>;
+}
+
+function StatsSection() {
+    const [triggered, setTriggered] = useState(false);
+    const ref = useRef(null);
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) setTriggered(true); },
+            { threshold: 0.2 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+    return (
+        <div className="home-stats-band" ref={ref}>
+            {homeStats.map((stat) => (
+                <div key={stat.label} className="home-stat-card">
+                    <strong>
+                        <AnimatedCount target={stat.target} suffix={stat.suffix} triggered={triggered} />
+                    </strong>
+                    <span>{stat.label}</span>
+                    <p>{stat.detail}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+const featureCategories = [
+    { id: "ai",         label: "Artificial Intelligence", desc: "Smart models that learn, adapt, and assist in real time" },
+    { id: "education",  label: "Education Tech",          desc: "Study tools, tutors, and learning analytics for every level" },
+    { id: "safety",     label: "Safety Technology",       desc: "Protecting families, pets, and homes from everyday hazards" },
+    { id: "realestate", label: "Real Estate AI",          desc: "Deal analysis, mortgage tools, and property intelligence" },
+    { id: "technology", label: "Tech Support AI",         desc: "Device diagnostics, repair guides, and troubleshooting help" },
+    { id: "analytics",  label: "Analytics",               desc: "Data-driven insights built into every platform dashboard" },
+];
+
+function FeatureIconSVG({ id }) {
+    const paths = {
+        ai:         <><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>,
+        education:  <><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>,
+        safety:     <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></>,
+        realestate: <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></>,
+        technology: <><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></>,
+        analytics:  <><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></>,
+    };
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            {paths[id]}
+        </svg>
+    );
+}
+
+function FeatureIconsSection() {
+    return (
+        <section className="section feature-icons-section" aria-label="Platform capabilities">
+            <div className="section-heading">
+                <p className="eyebrow">WHAT WE BUILD</p>
+                <h2>AI-powered tools across every major domain</h2>
+                <p>Six core capability areas — every Cin Nova product is built on one or more of these foundations.</p>
+            </div>
+            <div className="feature-icons-grid">
+                {featureCategories.map((cat) => (
+                    <div key={cat.id} className="feature-icon-card">
+                        <div className="feature-icon-wrap">
+                            <FeatureIconSVG id={cat.id} />
+                        </div>
+                        <strong>{cat.label}</strong>
+                        <p>{cat.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+const diagramNodes = [
+    { name: "StudyNest",      abbr: "SN", color: "#0ea5e9", angle: -90  },
+    { name: "PoisonGuard",    abbr: "PG", color: "#10b981", angle: -18  },
+    { name: "Kiddo",          abbr: "KD", color: "#f59e0b", angle:  54  },
+    { name: "TechMate AI",    abbr: "TM", color: "#8b5cf6", angle: 126  },
+    { name: "Real Estate AI", abbr: "RE", color: "#2563eb", angle: 198  },
+];
+
+function EcosystemDiagramSection() {
+    const cx = 320, cy = 240, r = 155;
+    return (
+        <section className="section ecosystem-diagram-section" aria-label="Cin Nova ecosystem diagram">
+            <div className="section-heading">
+                <p className="eyebrow">THE ECOSYSTEM</p>
+                <h2>Five products. One connected AI platform.</h2>
+                <p>Each product solves a unique real-world problem while sharing a unified AI foundation, design language, and roadmap.</p>
+            </div>
+            <div className="ecosystem-diagram-outer">
+                <svg
+                    viewBox="0 0 640 480"
+                    className="ecosystem-diagram-svg"
+                    role="img"
+                    aria-label="Pentagon diagram showing five Cin Nova products connected to a central Cin Nova hub"
+                >
+                    <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(99,102,241,0.15)" strokeWidth="1" strokeDasharray="6 5"/>
+                    {diagramNodes.map((node, i) => {
+                        const rad = (node.angle * Math.PI) / 180;
+                        return (
+                            <line key={i}
+                                x1={cx} y1={cy}
+                                x2={cx + r * Math.cos(rad)} y2={cy + r * Math.sin(rad)}
+                                stroke={node.color} strokeWidth="1.2" opacity="0.35" strokeDasharray="5 5"/>
+                        );
+                    })}
+                    <circle cx={cx} cy={cy} r={64} fill="rgba(99,102,241,0.07)" stroke="rgba(99,102,241,0.3)" strokeWidth="1.5"/>
+                    <circle cx={cx} cy={cy} r={46} fill="rgba(99,102,241,0.05)" stroke="rgba(99,102,241,0.18)" strokeWidth="1"/>
+                    <text x={cx} y={cy - 10} textAnchor="middle" fontSize="13" fontWeight="800" fill="#1e1b4b" letterSpacing="1.5">CIN NOVA</text>
+                    <text x={cx} y={cy + 9}  textAnchor="middle" fontSize="10" fill="#6366f1" letterSpacing="0.8">AI ECOSYSTEM</text>
+                    {diagramNodes.map((node, i) => {
+                        const rad = (node.angle * Math.PI) / 180;
+                        const nx = cx + r * Math.cos(rad);
+                        const ny = cy + r * Math.sin(rad);
+                        return (
+                            <g key={i}>
+                                <circle cx={nx} cy={ny} r={42} fill={node.color + "18"} stroke={node.color} strokeWidth="1.5"/>
+                                <text x={nx} y={ny - 5} textAnchor="middle" fontSize="12" fontWeight="900" fill={node.color}>{node.abbr}</text>
+                                <text x={nx} y={ny + 11} textAnchor="middle" fontSize="9" fontWeight="600" fill="#334155">{node.name}</text>
+                            </g>
+                        );
+                    })}
+                </svg>
+                <div className="ecosystem-diagram-legend">
+                    {diagramNodes.map((node) => (
+                        <div key={node.name} className="diagram-legend-item">
+                            <span style={{ background: node.color + "20", color: node.color, border: `1px solid ${node.color}44` }}>
+                                {node.abbr}
+                            </span>
+                            {node.name}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+const platformPreviews = [
+    {
+        name: "StudyNest",
+        category: "Education AI",
+        accentColor: "#0ea5e9",
+        desc: "Smart notes, spaced-repetition flashcards, AI tutoring, and a study planner — all in one connected workspace.",
+        page: "studynest",
+        mockupLines: ["Notes → 32 flashcards generated", "AI Tutor: Biology session ready", "Planner: 3 tasks due tomorrow"],
+    },
+    {
+        name: "PoisonGuard",
+        category: "Safety Technology",
+        accentColor: "#10b981",
+        desc: "Scan household products, detect chemical risk levels, and get emergency guidance for pets and families instantly.",
+        page: "poisonguard",
+        mockupLines: ["Hazard Scanner: Ready to scan", "Risk Level: Low ✓", "Pet Safety: 2 items flagged"],
+    },
+    {
+        name: "Kiddo",
+        category: "Early Learning",
+        accentColor: "#f59e0b",
+        desc: "Playful ABCs, counting games, reading activities, a parent dashboard, and a rewards system for young learners.",
+        page: "kiddo",
+        mockupLines: ["Today: Letter B + Counting", "⭐ 12 Stars Earned Today", "Parent: Progress Report Ready"],
+    },
+    {
+        name: "TechMate AI",
+        category: "Tech Support AI",
+        accentColor: "#8b5cf6",
+        desc: "Diagnose devices, look up error codes, troubleshoot Wi-Fi, and follow guided repair steps — no technician needed.",
+        page: "techmate",
+        mockupLines: ["Device Health: 98% ✓", "Wi-Fi Troubleshooter: Active", "Error Code Lookup: Resolved"],
+    },
+    {
+        name: "Real Estate AI",
+        category: "Real Estate AI",
+        accentColor: "#2563eb",
+        desc: "Analyze investment deals, estimate mortgage payments, review cash flow, and score properties against your goals.",
+        page: "real-estate",
+        mockupLines: ["Deal Score: A- (Strong Buy)", "Cap Rate: 8.1% | Cash Flow: +$645", "Market Intelligence: Rising ↑"],
+    },
+];
+
+function PlatformScreenshotCard({ preview, onNavigate }) {
+    return (
+        <article className="platform-card">
+            <div className="platform-browser">
+                <div className="platform-browser-bar">
+                    <span className="dot-red"/><span className="dot-yellow"/><span className="dot-green"/>
+                    <div className="platform-browser-url">cin-nova.app/{preview.page}</div>
+                </div>
+                <div className="platform-browser-screen">
+                    <div className="platform-screen-header" style={{ background: preview.accentColor + "12" }}>
+                        <span style={{ color: preview.accentColor }}>{preview.category.toUpperCase()}</span>
+                        <strong>{preview.name}</strong>
+                    </div>
+                    <div className="platform-screen-rows">
+                        {preview.mockupLines.map((line) => (
+                            <div key={line} className="platform-screen-row">
+                                <i style={{ background: preview.accentColor }}/>
+                                {line}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="platform-card-body">
+                <p className="product-category">{preview.category}</p>
+                <h3>{preview.name}</h3>
+                <p>{preview.desc}</p>
+                <button
+                    className="platform-learn-btn"
+                    style={{ borderColor: preview.accentColor + "66", color: preview.accentColor }}
+                    onClick={() => onNavigate(preview.page)}
+                >
+                    Explore {preview.name} →
+                </button>
+            </div>
+        </article>
+    );
+}
+
+function PlatformSection({ onNavigate }) {
+    return (
+        <section className="section platform-section" aria-label="Inside the platform">
+            <div className="section-heading">
+                <p className="eyebrow">INSIDE THE PLATFORM</p>
+                <h2>A closer look at each product</h2>
+                <p>Explore what each Cin Nova product does and how it fits into your everyday life or workflow.</p>
+            </div>
+            <div className="platform-grid">
+                {platformPreviews.map((preview) => (
+                    <PlatformScreenshotCard key={preview.name} preview={preview} onNavigate={onNavigate}/>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+const trustPillars = [
+    { id: "privacy",  title: "Privacy First",     desc: "Your data stays yours. We collect only what products need to function and never sell personal information.", accent: "#10b981" },
+    { id: "ai",       title: "AI Powered",        desc: "Every product uses modern AI to deliver real intelligence — not keyword matching or static lookup tables.", accent: "#6366f1" },
+    { id: "human",    title: "Human Focused",     desc: "AI should support people, not replace them. Every Cin Nova design keeps the human in control of every decision.", accent: "#f59e0b" },
+    { id: "everyday", title: "Built for Everyone", desc: "No technical background required. Products are built so everyday people can use them confidently from day one.", accent: "#0ea5e9" },
+];
+
+function TrustSVG({ id }) {
+    const icons = {
+        privacy:  <><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></>,
+        ai:       <><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></>,
+        human:    <><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></>,
+        everyday: <><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></>,
+    };
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            {icons[id]}
+        </svg>
+    );
+}
+
+function TrustSection() {
+    return (
+        <section className="section trust-section" aria-label="Our commitments">
+            <div className="section-heading">
+                <p className="eyebrow">OUR COMMITMENTS</p>
+                <h2>Built on principles, not just features</h2>
+                <p>These four pillars guide every product decision we make at Cin Nova.</p>
+            </div>
+            <div className="trust-grid">
+                {trustPillars.map((pillar) => (
+                    <div key={pillar.id} className="trust-card">
+                        <div className="trust-icon" style={{ background: pillar.accent + "16", color: pillar.accent }}>
+                            <TrustSVG id={pillar.id}/>
+                        </div>
+                        <h3>{pillar.title}</h3>
+                        <p>{pillar.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+function HomeFinalCTA({ onGoBlog, onSubscribe }) {
+    return (
+        <section className="home-final-cta" aria-label="Get started with Cin Nova">
+            <div className="home-final-cta-inner">
+                <p className="eyebrow" style={{ color: "rgba(255,255,255,0.65)" }}>GET STARTED</p>
+                <h2>Ready to see what practical AI looks like?</h2>
+                <p>Explore the products, read the research, or join the newsletter to follow along as we build.</p>
+                <div className="home-final-cta-actions">
+                    <a href="#products" className="primary-btn home-cta-btn-primary">
+                        Explore Products
+                    </a>
+                    <button className="secondary-btn home-cta-btn-outline" onClick={onGoBlog}>
+                        Read the Blog
+                    </button>
+                    <button className="secondary-btn home-cta-btn-outline" onClick={onSubscribe}>
+                        Join Newsletter
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+}
+
 const homeSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -372,8 +709,8 @@ const homeSchema = {
 };
 
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
-    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 15);
-    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 15);
+    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 16);
+    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 16);
 
     function openProduct(page) {
         setPage(page);
@@ -484,6 +821,8 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                 />
             </div>
 
+            <StatsSection />
+
             <section className="section" id="products">
                 <div className="section-heading">
                     <p className="eyebrow">PRODUCT SHOWCASE</p>
@@ -520,6 +859,10 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                 </div>
             </section>
 
+            <FeatureIconsSection />
+
+            <EcosystemDiagramSection />
+
             <section className="section ecosystem-showcase-section">
                 <div className="section-heading">
                     <p className="eyebrow">PRODUCT SHOWCASE</p>
@@ -540,6 +883,8 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                     ))}
                 </div>
             </section>
+
+            <PlatformSection onNavigate={openProduct} />
 
             <section className="section showcase-section">
                 <div className="section-heading">
@@ -601,6 +946,8 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                     />
                 </div>
             </section>
+
+            <TrustSection />
 
             <section className="section">
                 <div className="section-heading">
@@ -672,6 +1019,8 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                     </button>
                 </div>
             </section>
+
+            <HomeFinalCTA onGoBlog={onGoBlog} onSubscribe={onSubscribe} />
 
             <HomepageCTABanner
                 onSubscribe={onSubscribe}

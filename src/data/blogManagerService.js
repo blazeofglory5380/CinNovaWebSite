@@ -30,7 +30,7 @@ function withDefaults(post, index = 0) {
         author: sanitizeText(post.author, 100) || "Cin Nova Team",
         tags: sanitizeTags(post.tags),
         content: content.length
-            ? content.slice(0, 12).map((section) => ({
+            ? content.slice(0, 15).map((section) => ({
                   heading: sanitizeText(section.heading, 140) || "Overview",
                   body: sanitizeText(section.body, 6000),
                   ...(Array.isArray(section.list) && { list: section.list }),

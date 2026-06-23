@@ -230,6 +230,17 @@ export const imageCredits = [
         attributionRequired: false,
         dateAdded: "2026-06-20",
     },
+    {
+        filename: "ai-complete-guide-2026.jpg",
+        localPath: "/images/ai/ai-complete-guide-2026.jpg",
+        pageOrArticle: "The Complete Guide to Artificial Intelligence in 2026 (ID 31)",
+        source: "Unsplash",
+        originalUrl: "https://unsplash.com/photos/1677442135703-1787eea5ce01",
+        creatorName: "Steve Johnson",
+        license: "Unsplash License — Free for commercial use, no attribution required",
+        attributionRequired: false,
+        dateAdded: "2026-06-23",
+    },
 ];
 
 export function getImageCredit(filename) {
