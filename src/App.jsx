@@ -38,7 +38,7 @@ import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory, siteUrl } from "./data/blogPosts.js";
 import SEO from "./components/SEO.jsx";
-import { trackPageView } from "./utils/analytics.js";
+import { initAnalytics, trackPageView } from "./utils/analytics.js";
 
 class ArticleErrorBoundary extends Component {
     constructor(props) {
@@ -709,8 +709,8 @@ const homeSchema = {
 };
 
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
-    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 16);
-    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 16);
+    const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 17);
+    const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 17);
 
     function openProduct(page) {
         setPage(page);
@@ -1106,6 +1106,12 @@ function App() {
     const [stickyDismissed, setStickyDismissed] = useState(
         () => safeGetSessionFlag(STICKY_KEY)
     );
+
+    // Boot GA4: inject gtag script and fire the initial page_view
+    useEffect(() => {
+        initAnalytics();
+        trackPageView(window.location.pathname + window.location.search);
+    }, []);
 
     // Timed newsletter popup — fires once per session after 45 s
     useEffect(() => {
