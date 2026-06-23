@@ -241,6 +241,17 @@ export const imageCredits = [
         attributionRequired: false,
         dateAdded: "2026-06-23",
     },
+    {
+        filename: "ai-education-guide-2026.jpg",
+        localPath: "/images/education/ai-education-guide-2026.jpg",
+        pageOrArticle: "The Complete Guide to AI in Education (2026) (ID 32)",
+        source: "Unsplash",
+        originalUrl: "https://unsplash.com/photos/1580582932707-520aed937b7b",
+        creatorName: "Marvin Meyer",
+        license: "Unsplash License — Free for commercial use, no attribution required",
+        attributionRequired: false,
+        dateAdded: "2026-06-23",
+    },
 ];
 
 export function getImageCredit(filename) {
