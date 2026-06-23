@@ -251,6 +251,34 @@ const timeline = [
     },
 ];
 
+const productDetails = {
+    studynest: {
+        whoFor: ["High school and college students", "Self-directed learners", "Exam preppers and certification seekers"],
+        problem: "Students spend hours rereading notes without retaining anything. StudyNest converts notes into active recall tools — flashcards, quizzes, and AI-guided sessions — so studying actually sticks.",
+        features: ["AI-powered flashcard generation", "Smart quiz builder", "Note summarization", "Spaced repetition engine", "Study planner", "AI tutor chat", "Progress dashboard", "Future stylus note-taking"],
+    },
+    poisonguard: {
+        whoFor: ["Pet owners and families", "Parents of young children", "Schools and daycare centers"],
+        problem: "Most families don't know which household products, plants, or foods are toxic to their pets or kids. PoisonGuard puts instant hazard lookup and emergency guidance in your pocket.",
+        features: ["Product barcode scanner", "Ingredient toxicity lookup", "Pet-specific safety database", "Plant hazard identification", "Emergency first-aid guidance", "Poison Control integration", "Scan history log", "Multi-pet support"],
+    },
+    kiddo: {
+        whoFor: ["Parents of children ages 2–7", "Early childhood educators", "Homeschool families"],
+        problem: "Early learning apps are either too passive or too complex. Kiddo uses characters, levels, and rewards to make ABCs, reading, and counting genuinely fun while giving parents a clear view of progress.",
+        features: ["ABC and phonics lessons", "Interactive reading games", "Counting and number activities", "Reward badges and stars", "Character companions", "Parent progress dashboard", "Age-adaptive difficulty", "No ads, no in-app purchases"],
+    },
+    techmate: {
+        whoFor: ["Non-technical users and families", "Small business owners", "Students and remote workers"],
+        problem: "Tech issues send most people to YouTube rabbit holes or expensive repair shops. TechMate AI diagnoses the problem, explains it in plain English, and walks you through the fix step by step.",
+        features: ["Conversational AI assistant", "Device health diagnostics", "Error code lookup", "Network troubleshooting", "Step-by-step repair guides", "Software and app help", "Smart device support", "Available 24/7"],
+    },
+    "real-estate": {
+        whoFor: ["Real estate investors", "First-time homebuyers", "Agents and wholesalers"],
+        problem: "Evaluating a property deal means pulling data from dozens of sources and running complex calculations by hand. Cin Nova Real Estate AI automates the analysis so decisions are faster and more confident.",
+        features: ["AI deal analyzer", "Cash flow calculator", "Cap rate and ROI estimator", "Mortgage and financing tools", "Market trend intelligence", "Property comparables", "Commercial real estate analysis", "Land and development scoring"],
+    },
+};
+
 function getButtonLabel(page) {
     if (page === "studynest") return "Explore StudyNest";
     if (page === "poisonguard") return "Explore PoisonGuard";
@@ -258,29 +286,6 @@ function getButtonLabel(page) {
     if (page === "techmate") return "Explore TechMate AI";
     if (page === "kiddo") return "Explore Kiddo";
     return "Coming Soon";
-}
-
-function DashboardCard({ icon, title, tag, stats }) {
-    return (
-        <div className="dashboard-card">
-            <div className="dashboard-header">
-                <h3>
-                    <span className="dashboard-icon">{icon}</span>
-                    {title}
-                </h3>
-                <span>{tag}</span>
-            </div>
-
-            <div className="dashboard-stats">
-                {stats.map((stat) => (
-                    <div key={stat.label}>
-                        <strong>{stat.value}</strong>
-                        <p>{stat.label}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
 }
 
 function EcosystemShowcase({ showcase, index }) {
@@ -708,6 +713,176 @@ const homeSchema = {
     ],
 };
 
+function ProductDetailSection({ product, index, onNavigate }) {
+    const detail = productDetails[product.page];
+    const isEven = index % 2 === 0;
+    const badgeClass =
+        product.status === "Active Build" ? "badge-green" :
+        product.status === "In Development" ? "badge-blue" : "badge-gray";
+    return (
+        <section
+            id={product.page}
+            className={`section product-detail-section${isEven ? "" : " product-detail-flip"}`}
+            aria-label={product.name}
+        >
+            <div className="product-detail-grid">
+                <div className="product-detail-visual">
+                    {product.image && (
+                        <img
+                            src={product.image}
+                            alt={product.imageAlt}
+                            loading="lazy"
+                            decoding="async"
+                            className="product-detail-img"
+                        />
+                    )}
+                    <div className="product-detail-icon-badge">{product.icon}</div>
+                </div>
+                <div className="product-detail-content">
+                    <div className="product-detail-meta-row">
+                        <span className={`product-status-badge ${badgeClass}`}>{product.status}</span>
+                        <span className="product-category">{product.category}</span>
+                    </div>
+                    <h2 className="product-detail-name">{product.name}</h2>
+                    <p className="product-detail-lead">{product.description}</p>
+                    {detail && (
+                        <>
+                            <div className="product-detail-blocks">
+                                <div className="product-meta-block">
+                                    <strong>Who it&rsquo;s for</strong>
+                                    <ul>
+                                        {detail.whoFor.map((who) => (
+                                            <li key={who}>{who}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="product-meta-block">
+                                    <strong>What it solves</strong>
+                                    <p>{detail.problem}</p>
+                                </div>
+                            </div>
+                            <ul className="product-features-list">
+                                {detail.features.map((f) => (
+                                    <li key={f}>
+                                        <span className="feature-check" aria-hidden="true">✓</span>
+                                        {f}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                    <button className="primary-btn" onClick={() => onNavigate(product.page)}>
+                        {getButtonLabel(product.page)}
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function ProductsPage({ onNavigate, onSubscribe }) {
+    return (
+        <main>
+            <SEO
+                title="Products | Cin Nova AI Software Ecosystem"
+                description="Explore the Cin Nova product catalog: StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI. Five platforms solving real-world problems."
+                url={`${siteUrl}/?page=products`}
+                type="website"
+            />
+
+            <section className="products-hero">
+                <div className="products-hero-content">
+                    <p className="eyebrow">PRODUCT CATALOG</p>
+                    <h1>Five platforms. One connected AI ecosystem.</h1>
+                    <p className="hero-text">
+                        Every Cin Nova product solves a specific real-world problem — and each one is built to
+                        work together as a unified AI platform.
+                    </p>
+                    <div className="hero-actions">
+                        <a href="#studynest" className="primary-btn">Browse Products</a>
+                        <button className="secondary-btn" onClick={() => onNavigate("pricing")}>
+                            View Pricing
+                        </button>
+                    </div>
+                </div>
+                <div className="products-hero-pills">
+                    {products.map((p) => (
+                        <a href={`#${p.page}`} key={p.name} className="product-hero-pill">
+                            <span className="product-hero-pill-icon">{p.icon}</span>
+                            <span>{p.name}</span>
+                        </a>
+                    ))}
+                </div>
+            </section>
+
+            {products.map((product, i) => (
+                <ProductDetailSection
+                    key={product.name}
+                    product={product}
+                    index={i}
+                    onNavigate={onNavigate}
+                />
+            ))}
+
+            <EcosystemDiagramSection />
+
+            <FeatureIconsSection />
+
+            <section className="section ecosystem-showcase-section">
+                <div className="section-heading">
+                    <p className="eyebrow">PRODUCT PREVIEWS</p>
+                    <h2>Inside the Cin Nova Ecosystem</h2>
+                    <p>
+                        Dashboard-style previews of how each product can feel as part of one connected
+                        AI software family.
+                    </p>
+                </div>
+                <div className="ecosystem-showcase-stack">
+                    {ecosystemShowcases.map((showcase, index) => (
+                        <EcosystemShowcase key={showcase.name} showcase={showcase} index={index} />
+                    ))}
+                </div>
+            </section>
+
+            <PlatformSection onNavigate={onNavigate} />
+
+            <section className="section">
+                <div className="section-heading">
+                    <p className="eyebrow">ROADMAP</p>
+                    <h2>The future of the Cin Nova ecosystem</h2>
+                    <p>
+                        Cin Nova is being built as a long-term software company with consumer, business,
+                        education, real estate, and public safety opportunities.
+                    </p>
+                </div>
+                <div className="pricing-grid">
+                    {timeline.map((item) => (
+                        <article className="pricing-card" key={item.year}>
+                            <p className="product-category">{item.year}</p>
+                            <h3>{item.title}</h3>
+                            {item.items.map((line) => (
+                                <p key={line}>- {line}</p>
+                            ))}
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section">
+                <div className="newsletter-card">
+                    <p className="eyebrow">STAY IN THE LOOP</p>
+                    <h2>Get product updates, launch announcements, and early access.</h2>
+                    <NewsletterSignup
+                        onSubscribe={onSubscribe}
+                        source="Products Page"
+                        tags={["Products", "Launch Updates"]}
+                    />
+                </div>
+            </section>
+        </main>
+    );
+}
+
 function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
     const cornerstonePosts = posts.filter((post) => post.cornerstone).slice(0, 17);
     const featuredPosts = cornerstonePosts.length ? cornerstonePosts : posts.slice(0, 17);
@@ -761,9 +936,9 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                     </p>
 
                     <div className="hero-actions">
-                        <a href="#products" className="primary-btn">
+                        <button className="primary-btn" onClick={() => setPage("products")}>
                             Explore Products
-                        </a>
+                        </button>
                         <button className="secondary-btn" onClick={onGoBlog}>
                             Start Reading
                         </button>
@@ -857,120 +1032,14 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                         </article>
                     ))}
                 </div>
-            </section>
-
-            <FeatureIconsSection />
-
-            <EcosystemDiagramSection />
-
-            <section className="section ecosystem-showcase-section">
-                <div className="section-heading">
-                    <p className="eyebrow">PRODUCT SHOWCASE</p>
-                    <h2>Inside the Cin Nova Ecosystem</h2>
-                    <p>
-                        Dashboard-style previews of how each product can feel as part of one
-                        connected AI software family.
-                    </p>
-                </div>
-
-                <div className="ecosystem-showcase-stack">
-                    {ecosystemShowcases.map((showcase, index) => (
-                        <EcosystemShowcase
-                            key={showcase.name}
-                            showcase={showcase}
-                            index={index}
-                        />
-                    ))}
-                </div>
-            </section>
-
-            <PlatformSection onNavigate={openProduct} />
-
-            <section className="section showcase-section">
-                <div className="section-heading">
-                    <p className="eyebrow">PRODUCT DASHBOARDS</p>
-                    <h2>Software previews built for the Cin Nova ecosystem</h2>
-                    <p>
-                        These dashboard mockups show how each platform can look as the products
-                        continue to develop.
-                    </p>
-                </div>
-
-                <div className="dashboard-grid">
-                    <DashboardCard
-                        icon="SN"
-                        title="StudyNest"
-                        tag="AI Learning"
-                        stats={[
-                            { value: "87%", label: "Progress" },
-                            { value: "120", label: "Flashcards" },
-                            { value: "42", label: "Quizzes" },
-                            { value: "AI", label: "Tutor Active" },
-                        ]}
-                    />
-
-                    <DashboardCard
-                        icon="PG"
-                        title="PoisonGuard"
-                        tag="Scanner Ready"
-                        stats={[
-                            { value: "94", label: "Safety Score" },
-                            { value: "Scan", label: "Product Check" },
-                            { value: "Guide", label: "Emergency Help" },
-                            { value: "DB", label: "Hazard Lookup" },
-                        ]}
-                    />
-
-                    <DashboardCard
-                        icon="RE"
-                        title="Real Estate AI"
-                        tag="Market Analysis"
-                        stats={[
-                            { value: "92", label: "Deal Score" },
-                            { value: "$645", label: "Cash Flow" },
-                            { value: "8.1%", label: "Cap Rate" },
-                            { value: "A+", label: "Market Grade" },
-                        ]}
-                    />
-
-                    <DashboardCard
-                        icon="TM"
-                        title="TechMate AI"
-                        tag="Diagnostics"
-                        stats={[
-                            { value: "98%", label: "Device Health" },
-                            { value: "24/7", label: "AI Help" },
-                            { value: "WiFi", label: "Network Tools" },
-                            { value: "Apps", label: "Troubleshooting" },
-                        ]}
-                    />
+                <div className="section-action">
+                    <button className="secondary-btn" onClick={() => setPage("products")}>
+                        View All Products →
+                    </button>
                 </div>
             </section>
 
             <TrustSection />
-
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">GROWTH TIMELINE</p>
-                    <h2>The future of the Cin Nova ecosystem</h2>
-                    <p>
-                        Cin Nova is being built as a long-term software company with consumer,
-                        business, education, real estate, and public safety opportunities.
-                    </p>
-                </div>
-
-                <div className="pricing-grid">
-                    {timeline.map((item) => (
-                        <article className="pricing-card" key={item.year}>
-                            <p className="product-category">{item.year}</p>
-                            <h3>{item.title}</h3>
-                            {item.items.map((line) => (
-                                <p key={line}>- {line}</p>
-                            ))}
-                        </article>
-                    ))}
-                </div>
-            </section>
 
             <section className="section blog-section" id="blog">
                 <div className="section-heading">
@@ -1348,7 +1417,7 @@ function App() {
                         ✕
                     </button>
                     <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
-                    <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Products</button>
+                    <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { openPage("blog-manager");       setMobileMenuOpen(false); }}>Blog Admin</button>
@@ -1386,6 +1455,12 @@ function App() {
                     onOpenArticle={openArticle}
                     onSubscribe={showNewsletterAlert}
                     onGoBlog={goBlog}
+                />
+            )}
+            {page === "products" && (
+                <ProductsPage
+                    onNavigate={openPage}
+                    onSubscribe={showNewsletterAlert}
                 />
             )}
             {page === "blog" && (
@@ -1505,7 +1580,7 @@ function App() {
                 </div>
 
                 <div className="footer-links">
-                    <button onClick={goHome}>Products</button>
+                    <button onClick={() => openPage("products")}>Products</button>
                     <button onClick={goBlog}>Blog</button>
                     <button onClick={goResources}>Resources</button>
                     <button onClick={() => openPage("blog-manager")}>Blog Admin</button>
