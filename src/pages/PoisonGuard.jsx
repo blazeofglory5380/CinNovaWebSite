@@ -4,6 +4,7 @@ import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
+import PoisonGuardSafetyDisclaimer from "../components/PoisonGuardSafetyDisclaimer.jsx";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 
@@ -48,6 +49,8 @@ function PoisonGuard() {
 
                 <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
+
+            <PoisonGuardSafetyDisclaimer variant="prominent" />
 
             <section className="section" id="features">
                 <div className="section-heading">

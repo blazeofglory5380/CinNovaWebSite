@@ -1,4 +1,5 @@
 import { trackProductCtaClick } from "../utils/analytics.js";
+import PoisonGuardSafetyDisclaimer from "./PoisonGuardSafetyDisclaimer.jsx";
 import ProductPhotoThumb from "./ProductPhotoThumb.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 
@@ -145,6 +146,9 @@ function BlogProductCTA({ category, onNavigate }) {
             >
                 {product.cta} →
             </button>
+            {productKey === "poisonguard" && (
+                <PoisonGuardSafetyDisclaimer variant="compact" />
+            )}
         </div>
     );
 }

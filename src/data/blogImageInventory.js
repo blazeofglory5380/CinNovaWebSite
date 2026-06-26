@@ -541,6 +541,124 @@ export const articleHeroAssignments = {
     32: "edu-ai-education-guide-2026",
 };
 
+/**
+ * Cornerstone inline editorial placements — sectionIndex (0-based) + pool asset id.
+ * Images must differ from each article's hero path.
+ */
+export const cornerstoneInlinePlacements = {
+    1: [
+        { sectionIndex: 2, assetId: "edu-ai-tutor-dashboard" },
+        { sectionIndex: 5, assetId: "edu-spaced-repetition-flashcards" },
+    ],
+    2: [
+        { sectionIndex: 3, assetId: "dc-gold-rush-facility" },
+        { sectionIndex: 6, assetId: "dc-power-grid-demand" },
+    ],
+    3: [
+        { sectionIndex: 2, assetId: "ai-chatgpt-infrastructure" },
+        { sectionIndex: 5, assetId: "dc-server-cooling-aisle" },
+    ],
+    4: [
+        { sectionIndex: 3, assetId: "ai-complete-guide-2026" },
+        { sectionIndex: 6, assetId: "pool-ai-neural-network-art" },
+    ],
+    5: [
+        { sectionIndex: 3, assetId: "dc-gold-rush-facility" },
+        { sectionIndex: 6, assetId: "ai-chatgpt-infrastructure" },
+    ],
+    6: [
+        { sectionIndex: 3, assetId: "edu-spaced-repetition-flashcards" },
+        { sectionIndex: 6, assetId: "edu-student-smarter-ai-tools" },
+    ],
+    7: [
+        { sectionIndex: 3, assetId: "pool-re-skyline-investment" },
+        { sectionIndex: 6, assetId: "re-modern-home-search" },
+    ],
+    8: [
+        { sectionIndex: 3, assetId: "pool-construction-crane-skyline" },
+        { sectionIndex: 6, assetId: "construction-blueprint-estimating" },
+    ],
+    9: [
+        { sectionIndex: 3, assetId: "pool-robotics-drone-inspection" },
+        { sectionIndex: 6, assetId: "robotics-industrial-arm-factory" },
+    ],
+    10: [
+        { sectionIndex: 3, assetId: "future-emerging-tech-lab" },
+        { sectionIndex: 6, assetId: "pool-future-clean-energy" },
+    ],
+    11: [
+        { sectionIndex: 3, assetId: "pool-edu-classroom-collaboration" },
+        { sectionIndex: 6, assetId: "edu-online-adaptive-platform" },
+    ],
+    12: [
+        { sectionIndex: 3, assetId: "edu-student-smarter-ai-tools" },
+        { sectionIndex: 6, assetId: "edu-studynest-workspace" },
+    ],
+    13: [
+        { sectionIndex: 3, assetId: "edu-spaced-repetition-flashcards" },
+        { sectionIndex: 6, assetId: "edu-ai-tutor-dashboard" },
+    ],
+    14: [
+        { sectionIndex: 3, assetId: "edu-parent-child-learning" },
+        { sectionIndex: 6, assetId: "edu-student-dashboard-desk" },
+    ],
+    15: [
+        { sectionIndex: 3, assetId: "edu-spaced-repetition-flashcards" },
+        { sectionIndex: 6, assetId: "edu-ai-tutor-dashboard" },
+    ],
+    31: [
+        { sectionIndex: 3, assetId: "ai-chatgpt-infrastructure" },
+        { sectionIndex: 7, assetId: "ai-economy-tech-stack" },
+        { sectionIndex: 11, assetId: "dc-gold-rush-facility" },
+    ],
+    32: [
+        { sectionIndex: 3, assetId: "edu-ai-classroom-transforming" },
+        { sectionIndex: 7, assetId: "edu-spaced-repetition-flashcards" },
+        { sectionIndex: 11, assetId: "edu-studynest-workspace" },
+    ],
+};
+
+export function applyCornerstoneInlineImages(content, postId, heroPath = "") {
+    const placements = cornerstoneInlinePlacements[postId];
+    if (!placements?.length || !Array.isArray(content)) {
+        return content;
+    }
+
+    return content.map((section, index) => {
+        const placement = placements.find((item) => item.sectionIndex === index);
+        if (!placement) return section;
+
+        const asset = poolById[placement.assetId];
+        if (!asset?.localPath || asset.localPath === heroPath) return section;
+
+        return {
+            ...section,
+            image: asset.localPath,
+            imageAlt: placement.alt || asset.alt,
+            imageCaption: placement.caption || asset.caption || "",
+        };
+    });
+}
+
+export function auditCornerstoneInlineImages(publishedPosts) {
+    const cornerstoneIds = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 31, 32]);
+    const cornerstones = publishedPosts.filter((post) => cornerstoneIds.has(post.id));
+    const withoutInline = cornerstones.filter(
+        (post) => !post.content?.some((section) => section.image),
+    );
+    const inlineCount = cornerstones.reduce(
+        (total, post) => total + (post.content?.filter((section) => section.image).length || 0),
+        0,
+    );
+
+    return {
+        cornerstoneTotal: cornerstones.length,
+        withInlineImages: cornerstones.length - withoutInline.length,
+        withoutInlinePostIds: withoutInline.map((post) => post.id),
+        totalInlineImages: inlineCount,
+    };
+}
+
 const poolById = Object.fromEntries(blogImagePool.map((asset) => [asset.id, asset]));
 
 export function getBlogImageAsset(assetId) {

@@ -1,6 +1,7 @@
 import { getPublishedBlogPosts } from "../src/data/blogPosts.js";
 import {
     auditBlogHeroAssignments,
+    auditCornerstoneInlineImages,
     blogImageCategories,
     getPoolImagesForCategory,
     blogImagePool,
@@ -31,6 +32,19 @@ console.log(
     `Cornerstone duplicate heroes: ${cornerstoneDupes.length ? cornerstoneDupes.length : "none"}`,
 );
 
+const inlineAudit = auditCornerstoneInlineImages(published);
+console.log("\n=== Cornerstone inline images ===\n");
+console.log(`Cornerstone articles: ${inlineAudit.cornerstoneTotal}`);
+console.log(`Cornerstones with inline images: ${inlineAudit.withInlineImages}`);
+console.log(`Total inline images placed: ${inlineAudit.totalInlineImages}`);
+console.log(
+    `Cornerstones missing inline images: ${
+        inlineAudit.withoutInlinePostIds.length
+            ? inlineAudit.withoutInlinePostIds.join(", ")
+            : "none"
+    }`,
+);
+
 console.log("\n=== Category reserve pools ===\n");
 for (const category of Object.keys(blogImageCategories)) {
     const pool = getPoolImagesForCategory(category);
@@ -48,6 +62,6 @@ published
         console.log(`${String(post.id).padStart(2)} | ${post.heroImage || "MISSING"} | ${post.title}`);
     });
 
-if (audit.missingPostIds.length || audit.duplicates.length) {
+if (audit.missingPostIds.length || audit.duplicates.length || inlineAudit.withoutInlinePostIds.length) {
     process.exitCode = 1;
 }

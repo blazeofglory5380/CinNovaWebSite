@@ -552,6 +552,8 @@ export const imageCredits = [
     },
 ];
 
+/** Cornerstone inline images (IDs 1–15, 31–32) reuse assets above via cornerstoneInlinePlacements in blogImageInventory.js. */
+
 export function getImageCredit(filename) {
     return imageCredits.find((c) => c.filename === filename) || null;
 }

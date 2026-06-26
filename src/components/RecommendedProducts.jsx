@@ -1,3 +1,4 @@
+import PoisonGuardSafetyDisclaimer from "./PoisonGuardSafetyDisclaimer.jsx";
 import ProductPhotoThumb from "./ProductPhotoThumb.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 
@@ -78,6 +79,7 @@ function RecommendedProducts({ category, onNavigate }) {
 
     const recs = productKeys.slice(0, 2).map((k) => productDetails[k]).filter(Boolean);
     if (recs.length === 0) return null;
+    const showsPoisonGuardDisclaimer = recs.some((product) => product.page === "poisonguard");
 
     return (
         <section className="section recommended-products-section">
@@ -116,6 +118,9 @@ function RecommendedProducts({ category, onNavigate }) {
                     </article>
                 ))}
             </div>
+            {showsPoisonGuardDisclaimer && (
+                <PoisonGuardSafetyDisclaimer variant="compact" />
+            )}
         </section>
     );
 }

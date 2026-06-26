@@ -8,6 +8,8 @@ import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import TermsOfService from "./pages/TermsOfService.jsx";
 import Blog from "./pages/Blog.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -1378,14 +1380,12 @@ function App() {
                     <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
-                    <button onClick={() => { openPage("blog-manager");       setMobileMenuOpen(false); }}>Blog Admin</button>
                     <button onClick={() => { openPage("pricing");            setMobileMenuOpen(false); }}>Pricing</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
                     <button onClick={() => { openPage("contact");            setMobileMenuOpen(false); }}>Contact</button>
                     <button onClick={() => { openPage("newsletter");         setMobileMenuOpen(false); }}>Newsletter</button>
                     <button onClick={() => { openPage("partners");           setMobileMenuOpen(false); }}>Partners</button>
                     <button onClick={() => { openPage("media-kit");          setMobileMenuOpen(false); }}>Media Kit</button>
-                    <button onClick={() => { openPage("newsletter-admin");   setMobileMenuOpen(false); }}>Admin</button>
                 </div>
 
                 <div className="nav-right">
@@ -1462,6 +1462,8 @@ function App() {
             {page === "pricing" && <Pricing />}
             {page === "about" && <About />}
             {page === "contact" && <Contact />}
+            {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
+            {page === "terms" && <TermsOfService onNavigate={openPage} />}
             {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
             {page === "media-kit" && <MediaKit onNavigate={openPage} />}
             {page === "advertise" && <Advertise onNavigate={openPage} />}
@@ -1541,17 +1543,20 @@ function App() {
                     <button onClick={() => openPage("products")}>Products</button>
                     <button onClick={goBlog}>Blog</button>
                     <button onClick={goResources}>Resources</button>
-                    <button onClick={() => openPage("blog-manager")}>Blog Admin</button>
                     <button onClick={() => openPage("pricing")}>Pricing</button>
                     <button onClick={() => openPage("about")}>About</button>
-                    <button onClick={() => openPage("contact")}>Contact</button>
                     <button onClick={() => openPage("newsletter")}>Newsletter</button>
                     <button onClick={() => openPage("partners")}>Partners</button>
                     <button onClick={() => openPage("media-kit")}>Media Kit</button>
                     <button onClick={() => openPage("advertise")}>Advertise With Us</button>
                     <button onClick={() => openPage("partner-with-us")}>Partner With Us</button>
                     <button onClick={() => openPage("sponsor-newsletter")}>Sponsor the Newsletter</button>
-                    <button onClick={() => openPage("newsletter-admin")}>Newsletter Admin</button>
+                </div>
+
+                <div className="footer-legal">
+                    <button onClick={() => openPage("privacy")}>Privacy Policy</button>
+                    <button onClick={() => openPage("terms")}>Terms of Service</button>
+                    <button onClick={() => openPage("contact")}>Contact</button>
                 </div>
 
                 <p className="footer-bottom">(c) 2026 Cin Nova. All Rights Reserved.</p>

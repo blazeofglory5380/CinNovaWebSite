@@ -1,4 +1,4 @@
-import { resolveArticleHero } from "./blogImageInventory.js";
+import { resolveArticleHero, applyCornerstoneInlineImages } from "./blogImageInventory.js";
 
 export const blogCategories = [
     "Artificial Intelligence",
@@ -3055,9 +3055,14 @@ const enrichedFullArticles = fullArticles.map((post) => {
         },
         relatedReading: buildRelatedReading(post),
     };
+    const rawContent = cornerstone ? buildCornerstoneContent(mergedPost) : mergedPost.content;
+    const heroFields = resolveArticleHero(mergedPost.id) || {};
+    const content = cornerstone
+        ? applyCornerstoneInlineImages(rawContent, mergedPost.id, heroFields.heroImage)
+        : rawContent;
     const professionalPost = {
         ...mergedPost,
-        content: cornerstone ? buildCornerstoneContent(mergedPost) : mergedPost.content,
+        content,
         coverImage: getCoverImage(mergedPost),
         editorialByline: cornerstone ? "Cin Nova Editorial Team" : mergedPost.author,
         publishedLabel: cornerstone ? "Published: June 2026" : `Published: ${mergedPost.date}`,
@@ -3067,7 +3072,7 @@ const enrichedFullArticles = fullArticles.map((post) => {
 
     return {
         ...professionalPost,
-        ...resolveArticleHero(professionalPost.id),
+        ...heroFields,
         readTime: estimateArticleReadingTime(professionalPost),
     };
 });

@@ -1,3 +1,5 @@
+import PoisonGuardSafetyDisclaimer from "./PoisonGuardSafetyDisclaimer.jsx";
+
 const productData = {
     studynest: {
         icon: "SN",
@@ -73,6 +75,9 @@ function ProductWidget({ productKey, onNavigate }) {
             >
                 {product.cta} →
             </button>
+            {productKey === "poisonguard" && (
+                <PoisonGuardSafetyDisclaimer variant="compact" />
+            )}
         </div>
     );
 }

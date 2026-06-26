@@ -47,6 +47,8 @@ const urls = [
     // Static pages
     { loc: `${siteUrl}/?page=about`,        lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=contact`,      lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
+    { loc: `${siteUrl}/?page=privacy`,     lastmod: "2026-06-26", changefreq: "yearly",  priority: "0.5" },
+    { loc: `${siteUrl}/?page=terms`,       lastmod: "2026-06-26", changefreq: "yearly",  priority: "0.5" },
     { loc: `${siteUrl}/?page=pricing`,      lastmod: "2026-06-18", changefreq: "monthly", priority: "0.7" },
     { loc: `${siteUrl}/?page=partners`,     lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=newsletter`,   lastmod: "2026-06-18", changefreq: "monthly", priority: "0.6" },
