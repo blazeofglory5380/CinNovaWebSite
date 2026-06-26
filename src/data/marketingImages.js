@@ -304,67 +304,85 @@ const productNameToKey = {
     "Cin Nova": "cin-nova",
 };
 
-/** Per-resource hero assignments — one unique visual identity per published resource */
+/** Official product brand colors for resource cover pills */
+export const resourceProductBrands = {
+    StudyNest: { bg: "#38bdf8", fg: "#0c4a6e", label: "StudyNest" },
+    PoisonGuard: { bg: "#10b981", fg: "#ffffff", label: "PoisonGuard" },
+    "TechMate AI": { bg: "#7c3aed", fg: "#ffffff", label: "TechMate AI" },
+    Kiddo: { bg: "#f59e0b", fg: "#451a03", label: "Kiddo" },
+    "Cin Nova Real Estate": { bg: "#2563eb", fg: "#ffffff", label: "Cin Nova RE" },
+    "Cin Nova": { bg: "#1d4ed8", fg: "#ffffff", label: "Cin Nova" },
+};
+
+/** Cliché product marketing shots — never use as resource heroes when alternatives exist */
+const bannedResourceHeroSrcs = new Set([
+    "/images/products/studynest-student-learning.jpg",
+    "/images/products/poisonguard-pet-family-safety.jpg",
+    "/images/products/cinnova-real-estate-property.jpg",
+    "/images/education/ai-education-guide-2026.jpg",
+]);
+
+/** Per-resource hero assignments — one unique editorial image per published resource */
 export const resourceHeroAssignments = {
     1: {
-        src: "/images/education/student-studying-smarter-ai-tools.jpg",
-        alt: "Student studying with AI-powered notes and flashcards",
-        theme: "students studying",
+        src: "/images/education/ai-tutor-personalized-learning-dashboard.jpg",
+        alt: "Student using a personalized AI tutoring dashboard on a laptop",
+        objectPosition: "50% 35%",
     },
     2: {
         src: "/images/blog/healthcare/veterinarian-pet-examination.jpg",
         alt: "Veterinarian examining a pet for poison safety guidance",
-        theme: "veterinarian",
+        objectPosition: "50% 40%",
     },
     3: {
         src: "/images/blog/business/startup-pitch-presentation.jpg",
-        alt: "Technology presentation for the Cin Nova product ecosystem",
-        theme: "technology presentation",
+        alt: "Product team presenting the Cin Nova ecosystem",
+        objectPosition: "50% 30%",
     },
     4: {
         src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg",
-        alt: "Investor reviewing a real estate deal analysis worksheet",
-        theme: "investment property",
+        alt: "Investor analyzing a real estate deal on a laptop",
+        objectPosition: "55% 45%",
     },
     5: {
-        src: "/images/marketing/techmate-network-diagnostics.jpg",
-        alt: "IT support professional diagnosing network equipment",
-        theme: "networking",
+        src: "/images/blog/ai/developer-laptop-ai-code.jpg",
+        alt: "Developer troubleshooting software on a laptop workstation",
+        objectPosition: "50% 40%",
     },
     6: {
-        src: "/images/marketing/kiddo-memory-games.jpg",
-        alt: "Children playing educational memory games together",
-        theme: "children learning",
+        src: "/images/products/kiddo-child-learning.jpg",
+        alt: "Child engaged in colorful early learning activities",
+        objectPosition: "50% 35%",
     },
     7: {
-        src: "/images/blog/business/startup-founders-whiteboard.jpg",
-        alt: "Startup team planning a newsletter growth strategy",
-        theme: "product planning",
+        src: "/images/blog/ai/neural-network-abstract-visualization.jpg",
+        alt: "Abstract AI visualization for a growth strategy playbook",
+        objectPosition: "50% 50%",
     },
     8: {
         src: "/images/blog/healthcare/household-chemical-safety-storage.jpg",
-        alt: "Household cleaning supplies stored safely in a cabinet",
-        theme: "household cleaning supplies",
+        alt: "Labeled household chemicals stored safely in a cabinet",
+        objectPosition: "50% 45%",
     },
     9: {
-        src: "/images/future-tech/technology-trends-next-decade-overview.jpg",
-        alt: "Product team reviewing an AI product launch roadmap",
-        theme: "innovation workspace",
+        src: "/images/blog/business/startup-founders-whiteboard.jpg",
+        alt: "Founders planning a product launch on a whiteboard",
+        objectPosition: "45% 35%",
     },
     10: {
         src: "/images/blog/healthcare/family-emergency-preparedness.jpg",
-        alt: "Family reviewing emergency preparedness for chemical safety",
-        theme: "emergency preparedness",
+        alt: "Family reviewing emergency preparedness supplies",
+        objectPosition: "50% 40%",
     },
     11: {
-        src: "/images/education/spaced-repetition-flashcard-study-schedule.jpg",
-        alt: "Weekly study planner with flashcards on a desk",
-        theme: "flashcards and planner",
+        src: "/images/blog/education/university-library-studying.jpg",
+        alt: "Students studying together in a university library",
+        objectPosition: "50% 40%",
     },
     12: {
-        src: "/images/blog/real-estate/staged-home-interior.jpg",
-        alt: "Staged home interior for cash flow investment analysis",
-        theme: "interior",
+        src: "/images/blog/real-estate/city-skyline-property-investment.jpg",
+        alt: "City skyline representing property investment analysis",
+        objectPosition: "50% 65%",
     },
 };
 
@@ -372,10 +390,31 @@ export function getResourceHeroImage(resourceId) {
     return resourceHeroAssignments[resourceId] || null;
 }
 
+export function resolveResourceCoverImage(resource, usedSrcs = new Set()) {
+    const registry = getResourceHeroImage(resource?.id);
+    if (registry?.src && !usedSrcs.has(registry.src)) {
+        return registry;
+    }
+
+    const pool = getPoolForProduct(resource?.product).filter(
+        (img) => !bannedResourceHeroSrcs.has(img.src) && !usedSrcs.has(img.src),
+    );
+    const start = ((resource?.id || 1) * 7) % Math.max(pool.length, 1);
+
+    for (let i = 0; i < pool.length; i++) {
+        const candidate = pool[(start + i) % pool.length];
+        if (!usedSrcs.has(candidate.src)) {
+            return candidate;
+        }
+    }
+
+    if (registry?.src) return registry;
+    return pool[0] || resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
+}
+
 /** Thematic image pools for fallback rotation when registry images collide on one screen */
 export const resourceImagePools = {
     studynest: [
-        { src: "/images/products/studynest-student-learning.jpg", alt: "Student writing organized notes at a desk", theme: "notebook" },
         { src: "/images/education/student-studying-smarter-ai-tools.jpg", alt: "Student studying with AI tools", theme: "students studying" },
         { src: "/images/education/ai-transforming-education-classroom.jpg", alt: "Students learning in a modern classroom", theme: "classroom" },
         { src: "/images/education/ai-tutor-personalized-learning-dashboard.jpg", alt: "Student using a laptop for AI tutoring", theme: "laptop" },
@@ -383,12 +422,12 @@ export const resourceImagePools = {
         { src: "/images/education/online-education-platform-adaptive-learning.jpg", alt: "Graduate capstone study session on tablet", theme: "graduation" },
         { src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg", alt: "Tutor supporting a student in class", theme: "tutoring" },
         { src: "/images/education/studynest-connected-learning-workspace.jpg", alt: "Study planner and organized workspace", theme: "planner" },
-        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Notebook and study guides on a desk", theme: "notebook" },
         { src: "/images/blog/education/university-library-studying.jpg", alt: "Students studying together in a library", theme: "library" },
         { src: "/images/blog/education/classroom-student-collaboration.jpg", alt: "Group study collaboration in class", theme: "group study" },
+        { src: "/images/products/studynest-student-learning.jpg", alt: "Student writing organized notes at a desk", theme: "notebook" },
+        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Notebook and study guides on a desk", theme: "notebook" },
     ],
     poisonguard: [
-        { src: "/images/products/poisonguard-pet-family-safety.jpg", alt: "Dog with family in a safe home", theme: "dog" },
         { src: "/images/blog/healthcare/pet-safety-home-environment.jpg", alt: "Cat in a pet-safe home environment", theme: "cat" },
         { src: "/images/blog/healthcare/veterinarian-pet-examination.jpg", alt: "Veterinarian examining a pet", theme: "veterinarian" },
         { src: "/images/blog/healthcare/household-chemical-safety-storage.jpg", alt: "Medicine and cleaners in secure storage", theme: "medicine cabinet" },
@@ -396,6 +435,7 @@ export const resourceImagePools = {
         { src: "/images/marketing/about-safety-first.jpg", alt: "Household cleaning supplies stored safely", theme: "household cleaning supplies" },
         { src: "/images/blog/education/parent-child-learning-support.jpg", alt: "Parent ensuring family safety at home", theme: "family safety" },
         { src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Caregiver monitoring a safe home environment", theme: "pet owner" },
+        { src: "/images/products/poisonguard-pet-family-safety.jpg", alt: "Dog with family in a safe home", theme: "dog" },
     ],
     techmate: [
         { src: "/images/products/techmate-ai-device-support.jpg", alt: "Laptop workstation for tech support", theme: "laptop" },
@@ -422,7 +462,6 @@ export const resourceImagePools = {
         { src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg", alt: "Early education teacher with young learners", theme: "early education" },
     ],
     "real-estate": [
-        { src: "/images/products/cinnova-real-estate-property.jpg", alt: "Residential investment property" },
         { src: "/images/marketing/realestate-property-search.jpg", alt: "Property search and tour" },
         { src: "/images/marketing/realestate-cash-flow.jpg", alt: "Rental property financial review" },
         { src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg", alt: "Property deal analysis on laptop" },
@@ -432,6 +471,7 @@ export const resourceImagePools = {
         { src: "/images/construction/ai-construction-engineering-jobsite.jpg", alt: "Development and construction site" },
         { src: "/images/datacenters/data-center-gold-rush-facility.jpg", alt: "Commercial property infrastructure" },
         { src: "/images/robotics/robotics-automation-warehouse-2026.jpg", alt: "Industrial commercial assets" },
+        { src: "/images/products/cinnova-real-estate-property.jpg", alt: "Residential investment property" },
     ],
     "cin-nova": [
         { src: "/images/home/homepage-hero-innovation.jpg", alt: "Cin Nova product team collaborating" },
@@ -453,21 +493,7 @@ function getPoolForProduct(product) {
 }
 
 export function pickResourceCoverFromPool(resource, usedSrcs = new Set()) {
-    if (resource?.coverImage?.src && !usedSrcs.has(resource.coverImage.src)) {
-        return resource.coverImage;
-    }
-
-    const pool = getPoolForProduct(resource?.product);
-    const start = ((resource?.id || 1) * 5 + (resource?.category?.length || 0)) % pool.length;
-
-    for (let i = 0; i < pool.length; i++) {
-        const candidate = pool[(start + i) % pool.length];
-        if (!usedSrcs.has(candidate.src)) {
-            return candidate;
-        }
-    }
-
-    return pool[start % pool.length];
+    return resolveResourceCoverImage(resource, usedSrcs);
 }
 
 export function assignUniqueCoversForList(resources) {
@@ -480,10 +506,8 @@ export function assignUniqueCoversForList(resources) {
 }
 
 export function getResourceCoverImage(resource) {
-    if (resource?.coverImage) return resource.coverImage;
+    if (resource?.coverImage?.src) return resource.coverImage;
     const registryCover = getResourceHeroImage(resource?.id);
     if (registryCover) return registryCover;
-    const pool = getPoolForProduct(resource?.product);
-    const index = ((resource?.id || 1) - 1) % pool.length;
-    return pool[index] || resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
+    return resolveResourceCoverImage(resource);
 }

@@ -1,5 +1,5 @@
 import { getPublishedBlogPosts, siteUrl } from "./blogPosts.js";
-import { getResourceHeroImage, pickResourceCoverFromPool } from "./marketingImages.js";
+import { getResourceHeroImage, resolveResourceCoverImage } from "./marketingImages.js";
 import { trackResourceDownload } from "../utils/analytics.js";
 
 export const resourceCategories = [
@@ -562,11 +562,7 @@ export function assignPageResourceCovers({ featured = [], recent = [], popular =
     const usedSrcs = new Set();
     const assign = (list) =>
         list.map((resource) => {
-            const registryCover = getResourceHeroImage(resource.id);
-            let coverImage = registryCover;
-            if (!coverImage?.src || usedSrcs.has(coverImage.src)) {
-                coverImage = pickResourceCoverFromPool(resource, usedSrcs);
-            }
+            const coverImage = resolveResourceCoverImage(resource, usedSrcs);
             usedSrcs.add(coverImage.src);
             return { ...resource, coverImage };
         });

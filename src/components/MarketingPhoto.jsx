@@ -1,4 +1,11 @@
-function MarketingPhoto({ src, alt = "", className = "", loading = "lazy", fetchPriority }) {
+function MarketingPhoto({
+    src,
+    alt = "",
+    className = "",
+    loading = "lazy",
+    fetchPriority,
+    objectPosition = "50% 50%",
+}) {
     if (!src) return null;
 
     return (
@@ -9,6 +16,7 @@ function MarketingPhoto({ src, alt = "", className = "", loading = "lazy", fetch
             loading={loading}
             decoding="async"
             fetchPriority={fetchPriority}
+            style={{ objectPosition }}
         />
     );
 }

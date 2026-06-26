@@ -128,16 +128,6 @@ function ResourcePublicationCard({
                 </h3>
                 <p className="resource-pub-description">{resource.description}</p>
 
-                {isHero && (
-                    <div className="resource-pub-hero-chips" aria-label="Resource details">
-                        <span>{resource.format}</span>
-                        <span>{resource.fileType}</span>
-                        <span>{resource.fileSize}</span>
-                        <span>{resource.difficulty}</span>
-                        <span>Updated {resource.lastUpdatedLabel}</span>
-                    </div>
-                )}
-
                 <dl className="resource-pub-meta">
                     <div>
                         <dt>

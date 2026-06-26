@@ -1,5 +1,5 @@
 import MarketingPhoto from "./MarketingPhoto.jsx";
-import { getResourceCoverImage } from "../data/marketingImages.js";
+import { getResourceCoverImage, resourceProductBrands } from "../data/marketingImages.js";
 import { formatResourceReadTime } from "../data/resources.js";
 
 function FormatIcon() {
@@ -27,6 +27,7 @@ function FormatIcon() {
 function ResourceThumbnail({ resource, large = false, imageLoading = "lazy", imagePriority = false }) {
     const cover = resource.coverImage || getResourceCoverImage(resource);
     const readTimeLabel = formatResourceReadTime(resource.readTime);
+    const brand = resourceProductBrands[resource.product] || resourceProductBrands["Cin Nova"];
 
     return (
         <div
@@ -39,11 +40,19 @@ function ResourceThumbnail({ resource, large = false, imageLoading = "lazy", ima
                 className="resource-thumb-photo-img"
                 loading={imageLoading}
                 fetchPriority={imagePriority ? "high" : undefined}
+                objectPosition={cover.objectPosition || "50% 50%"}
             />
             <div className="resource-thumb-photo-scrim" />
             <div className="resource-thumb-photo-overlay">
-                <span className="rt-product-tag">{resource.product}</span>
-                <span className="rt-cat-tag">{resource.category}</span>
+                <span
+                    className="rt-brand-pill"
+                    style={{
+                        "--rt-brand-bg": brand.bg,
+                        "--rt-brand-fg": brand.fg,
+                    }}
+                >
+                    {brand.label}
+                </span>
             </div>
             <div className="resource-thumb-photo-footer">
                 <span className="rt-format-tag">
