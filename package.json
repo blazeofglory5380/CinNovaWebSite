@@ -7,6 +7,8 @@
     "dev": "vite",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "download:images": "node scripts/download-marketing-images.mjs",
+    "download:blog-images": "node scripts/download-blog-images.mjs",
+    "audit:blog-images": "node scripts/audit-blog-images.mjs",
     "build": "npm run generate:sitemap && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

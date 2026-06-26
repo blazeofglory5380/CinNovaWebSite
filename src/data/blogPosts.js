@@ -1,3 +1,5 @@
+import { resolveArticleHero } from "./blogImageInventory.js";
+
 export const blogCategories = [
     "Artificial Intelligence",
     "Real Estate Technology",
@@ -3065,6 +3067,7 @@ const enrichedFullArticles = fullArticles.map((post) => {
 
     return {
         ...professionalPost,
+        ...resolveArticleHero(professionalPost.id),
         readTime: estimateArticleReadingTime(professionalPost),
     };
 });
