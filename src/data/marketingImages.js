@@ -301,14 +301,189 @@ const productNameToKey = {
     Kiddo: "kiddo",
     "TechMate AI": "techmate",
     "Cin Nova Real Estate": "real-estate",
-    "Cin Nova": "studynest",
+    "Cin Nova": "cin-nova",
 };
+
+/** Per-resource hero assignments — one unique visual identity per published resource */
+export const resourceHeroAssignments = {
+    1: {
+        src: "/images/education/student-studying-smarter-ai-tools.jpg",
+        alt: "Student studying with AI-powered notes and flashcards",
+        theme: "students studying",
+    },
+    2: {
+        src: "/images/blog/healthcare/veterinarian-pet-examination.jpg",
+        alt: "Veterinarian examining a pet for poison safety guidance",
+        theme: "veterinarian",
+    },
+    3: {
+        src: "/images/blog/business/startup-pitch-presentation.jpg",
+        alt: "Technology presentation for the Cin Nova product ecosystem",
+        theme: "technology presentation",
+    },
+    4: {
+        src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg",
+        alt: "Investor reviewing a real estate deal analysis worksheet",
+        theme: "investment property",
+    },
+    5: {
+        src: "/images/marketing/techmate-network-diagnostics.jpg",
+        alt: "IT support professional diagnosing network equipment",
+        theme: "networking",
+    },
+    6: {
+        src: "/images/marketing/kiddo-memory-games.jpg",
+        alt: "Children playing educational memory games together",
+        theme: "children learning",
+    },
+    7: {
+        src: "/images/blog/business/startup-founders-whiteboard.jpg",
+        alt: "Startup team planning a newsletter growth strategy",
+        theme: "product planning",
+    },
+    8: {
+        src: "/images/blog/healthcare/household-chemical-safety-storage.jpg",
+        alt: "Household cleaning supplies stored safely in a cabinet",
+        theme: "household cleaning supplies",
+    },
+    9: {
+        src: "/images/future-tech/technology-trends-next-decade-overview.jpg",
+        alt: "Product team reviewing an AI product launch roadmap",
+        theme: "innovation workspace",
+    },
+    10: {
+        src: "/images/blog/healthcare/family-emergency-preparedness.jpg",
+        alt: "Family reviewing emergency preparedness for chemical safety",
+        theme: "emergency preparedness",
+    },
+    11: {
+        src: "/images/education/spaced-repetition-flashcard-study-schedule.jpg",
+        alt: "Weekly study planner with flashcards on a desk",
+        theme: "flashcards and planner",
+    },
+    12: {
+        src: "/images/blog/real-estate/staged-home-interior.jpg",
+        alt: "Staged home interior for cash flow investment analysis",
+        theme: "interior",
+    },
+};
+
+export function getResourceHeroImage(resourceId) {
+    return resourceHeroAssignments[resourceId] || null;
+}
+
+/** Thematic image pools for fallback rotation when registry images collide on one screen */
+export const resourceImagePools = {
+    studynest: [
+        { src: "/images/products/studynest-student-learning.jpg", alt: "Student writing organized notes at a desk", theme: "notebook" },
+        { src: "/images/education/student-studying-smarter-ai-tools.jpg", alt: "Student studying with AI tools", theme: "students studying" },
+        { src: "/images/education/ai-transforming-education-classroom.jpg", alt: "Students learning in a modern classroom", theme: "classroom" },
+        { src: "/images/education/ai-tutor-personalized-learning-dashboard.jpg", alt: "Student using a laptop for AI tutoring", theme: "laptop" },
+        { src: "/images/education/spaced-repetition-flashcard-study-schedule.jpg", alt: "Flashcards and study schedule", theme: "flashcards" },
+        { src: "/images/education/online-education-platform-adaptive-learning.jpg", alt: "Graduate capstone study session on tablet", theme: "graduation" },
+        { src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg", alt: "Tutor supporting a student in class", theme: "tutoring" },
+        { src: "/images/education/studynest-connected-learning-workspace.jpg", alt: "Study planner and organized workspace", theme: "planner" },
+        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Notebook and study guides on a desk", theme: "notebook" },
+        { src: "/images/blog/education/university-library-studying.jpg", alt: "Students studying together in a library", theme: "library" },
+        { src: "/images/blog/education/classroom-student-collaboration.jpg", alt: "Group study collaboration in class", theme: "group study" },
+    ],
+    poisonguard: [
+        { src: "/images/products/poisonguard-pet-family-safety.jpg", alt: "Dog with family in a safe home", theme: "dog" },
+        { src: "/images/blog/healthcare/pet-safety-home-environment.jpg", alt: "Cat in a pet-safe home environment", theme: "cat" },
+        { src: "/images/blog/healthcare/veterinarian-pet-examination.jpg", alt: "Veterinarian examining a pet", theme: "veterinarian" },
+        { src: "/images/blog/healthcare/household-chemical-safety-storage.jpg", alt: "Medicine and cleaners in secure storage", theme: "medicine cabinet" },
+        { src: "/images/blog/healthcare/family-emergency-preparedness.jpg", alt: "Family first aid and emergency kit planning", theme: "first aid kit" },
+        { src: "/images/marketing/about-safety-first.jpg", alt: "Household cleaning supplies stored safely", theme: "household cleaning supplies" },
+        { src: "/images/blog/education/parent-child-learning-support.jpg", alt: "Parent ensuring family safety at home", theme: "family safety" },
+        { src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Caregiver monitoring a safe home environment", theme: "pet owner" },
+    ],
+    techmate: [
+        { src: "/images/products/techmate-ai-device-support.jpg", alt: "Laptop workstation for tech support", theme: "laptop" },
+        { src: "/images/blog/datacenters/database-admin-workstation.jpg", alt: "Professional IT workstation", theme: "workstation" },
+        { src: "/images/blog/ai/developer-laptop-ai-code.jpg", alt: "Developer coding on a laptop", theme: "coding" },
+        { src: "/images/ai/chatgpt-infrastructure-data-center.jpg", alt: "Server room infrastructure", theme: "server room" },
+        { src: "/images/marketing/about-practical-ai.jpg", alt: "IT support specialist at desk", theme: "IT support" },
+        { src: "/images/marketing/techmate-network-diagnostics.jpg", alt: "Network diagnostics equipment", theme: "networking" },
+        { src: "/images/blog/ai/small-business-ai-assistants-meeting.jpg", alt: "Help desk team collaboration", theme: "help desk" },
+        { src: "/images/datacenters/data-center-gold-rush-facility.jpg", alt: "Cloud infrastructure facility", theme: "cloud infrastructure" },
+        { src: "/images/education/ai-tutor-personalized-learning-dashboard.jpg", alt: "AI dashboard on a support laptop", theme: "AI dashboard" },
+        { src: "/images/home/homepage-hero-innovation.jpg", alt: "Office collaboration on technology issues", theme: "office collaboration" },
+    ],
+    kiddo: [
+        { src: "/images/products/kiddo-child-learning.jpg", alt: "Child engaged in early learning", theme: "children learning" },
+        { src: "/images/blog/education/parent-child-learning-support.jpg", alt: "Parent helping child read", theme: "reading" },
+        { src: "/images/blog/education/classroom-student-collaboration.jpg", alt: "Preschool classroom collaboration", theme: "classroom" },
+        { src: "/images/blog/future-tech/emerging-technology-research.jpg", alt: "Child exploring STEM concepts", theme: "STEM" },
+        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Art and learning materials on a desk", theme: "art" },
+        { src: "/images/marketing/kiddo-memory-games.jpg", alt: "Children playing educational games", theme: "educational toys" },
+        { src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Parent helping child with learning activities", theme: "parent helping child" },
+        { src: "/images/education/online-education-platform-adaptive-learning.jpg", alt: "Preschooler learning on a tablet", theme: "preschool" },
+        { src: "/images/education/ai-transforming-education-classroom.jpg", alt: "Playground learning in a bright classroom", theme: "playground learning" },
+        { src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg", alt: "Early education teacher with young learners", theme: "early education" },
+    ],
+    "real-estate": [
+        { src: "/images/products/cinnova-real-estate-property.jpg", alt: "Residential investment property" },
+        { src: "/images/marketing/realestate-property-search.jpg", alt: "Property search and tour" },
+        { src: "/images/marketing/realestate-cash-flow.jpg", alt: "Rental property financial review" },
+        { src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg", alt: "Property deal analysis on laptop" },
+        { src: "/images/blog/real-estate/city-skyline-property-investment.jpg", alt: "City skyline investment view" },
+        { src: "/images/blog/real-estate/staged-home-interior.jpg", alt: "Staged home interior" },
+        { src: "/images/blog/real-estate/modern-home-property-search.jpg", alt: "Modern home property search" },
+        { src: "/images/construction/ai-construction-engineering-jobsite.jpg", alt: "Development and construction site" },
+        { src: "/images/datacenters/data-center-gold-rush-facility.jpg", alt: "Commercial property infrastructure" },
+        { src: "/images/robotics/robotics-automation-warehouse-2026.jpg", alt: "Industrial commercial assets" },
+    ],
+    "cin-nova": [
+        { src: "/images/home/homepage-hero-innovation.jpg", alt: "Cin Nova product team collaborating" },
+        { src: "/images/marketing/about-practical-ai.jpg", alt: "Practical AI product development" },
+        { src: "/images/future-tech/technology-trends-next-decade-overview.jpg", alt: "Technology roadmap planning" },
+        { src: "/images/blog/business/startup-founders-whiteboard.jpg", alt: "Startup founders planning" },
+        { src: "/images/blog/business/startup-pitch-presentation.jpg", alt: "Product pitch presentation" },
+        { src: "/images/ai/ai-complete-guide-2026.jpg", alt: "AI industry research materials" },
+        { src: "/images/ai/ai-economy-companies-tech-stack.jpg", alt: "Software company workspace" },
+        { src: "/images/blog/future-tech/emerging-technology-research.jpg", alt: "Emerging technology research" },
+        { src: "/images/blog/ai/neural-network-abstract-visualization.jpg", alt: "AI innovation visualization" },
+        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Company resource library" },
+    ],
+};
+
+function getPoolForProduct(product) {
+    const key = productNameToKey[product] || "cin-nova";
+    return resourceImagePools[key] || resourceImagePools["cin-nova"];
+}
+
+export function pickResourceCoverFromPool(resource, usedSrcs = new Set()) {
+    if (resource?.coverImage?.src && !usedSrcs.has(resource.coverImage.src)) {
+        return resource.coverImage;
+    }
+
+    const pool = getPoolForProduct(resource?.product);
+    const start = ((resource?.id || 1) * 5 + (resource?.category?.length || 0)) % pool.length;
+
+    for (let i = 0; i < pool.length; i++) {
+        const candidate = pool[(start + i) % pool.length];
+        if (!usedSrcs.has(candidate.src)) {
+            return candidate;
+        }
+    }
+
+    return pool[start % pool.length];
+}
+
+export function assignUniqueCoversForList(resources) {
+    const used = new Set();
+    return resources.map((resource) => {
+        const coverImage = pickResourceCoverFromPool(resource, used);
+        used.add(coverImage.src);
+        return { ...resource, coverImage };
+    });
+}
 
 export function getResourceCoverImage(resource) {
     if (resource?.coverImage) return resource.coverImage;
-    const productKey = productNameToKey[resource?.product];
-    if (productKey && productMarketing[productKey]?.card) {
-        return productMarketing[productKey].card;
-    }
-    return resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
+    const registryCover = getResourceHeroImage(resource?.id);
+    if (registryCover) return registryCover;
+    const pool = getPoolForProduct(resource?.product);
+    const index = ((resource?.id || 1) - 1) % pool.length;
+    return pool[index] || resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
 }

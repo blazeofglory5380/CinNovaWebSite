@@ -3,14 +3,14 @@ import "../App.css";
 import SEO from "../components/SEO.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
+import ResourceEmptyState from "../components/ResourceEmptyState.jsx";
 import ResourcePublicationCard, { ResourceCategoryCard } from "../components/ResourcePublicationCard.jsx";
 import { resourceCategoryCovers, siteMarketing } from "../data/marketingImages.js";
 import {
+    curateResourcePageSections,
     filterLibraryResources,
-    getFeaturedResources,
     getLibraryResources,
-    getPopularResources,
-    getRecentlyAddedResources,
+    getRecentResourceBadges,
     getResourceLibraryStats,
     getResourceUrl,
     resourceCategories,
@@ -49,7 +49,7 @@ function FilterPillGroup({ label, value, options, onChange }) {
     );
 }
 
-function ResourceStrip({ title, description, items, onPreview, onDownload }) {
+function ResourceStrip({ title, description, items, onPreview, onDownload, stripType, searchQuery }) {
     if (!items.length) return null;
 
     return (
@@ -62,13 +62,25 @@ function ResourceStrip({ title, description, items, onPreview, onDownload }) {
                 </div>
             </div>
             <div className="resource-pub-grid resource-pub-grid--strip">
-                {items.map((resource) => (
+                {items.map((resource, index) => (
                     <ResourcePublicationCard
                         key={resource.id}
                         resource={resource}
                         onPreview={onPreview}
                         onDownload={onDownload}
                         variant="strip"
+                        stripType={stripType}
+                        stripBadges={stripType === "recent" ? getRecentResourceBadges(resource) : null}
+                        rankBadge={
+                            stripType === "popular"
+                                ? {
+                                      rank: index + 1,
+                                      label: index === 0 ? "Most Downloaded" : null,
+                                  }
+                                : null
+                        }
+                        searchQuery={searchQuery}
+                        imageLoading="lazy"
                     />
                 ))}
             </div>
@@ -79,9 +91,6 @@ function ResourceStrip({ title, description, items, onPreview, onDownload }) {
 function Resources({ onOpenResource, onSubscribe }) {
     const library = useMemo(() => getLibraryResources(), []);
     const stats = useMemo(() => getResourceLibraryStats(), []);
-    const featuredResources = useMemo(() => getFeaturedResources(3), []);
-    const recentlyAdded = useMemo(() => getRecentlyAddedResources(4), []);
-    const popularDownloads = useMemo(() => getPopularResources(4), []);
 
     const [activeCategory, setActiveCategory] = useState("All");
     const [activeProduct, setActiveProduct] = useState("All");
@@ -90,7 +99,7 @@ function Resources({ onOpenResource, onSubscribe }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [gatedResource, setGatedResource] = useState(null);
 
-    const filteredResources = useMemo(
+    const filteredBase = useMemo(
         () =>
             filterLibraryResources(library, {
                 category: activeCategory,
@@ -101,6 +110,14 @@ function Resources({ onOpenResource, onSubscribe }) {
             }),
         [library, activeCategory, activeProduct, activeResourceType, activeDifficulty, searchTerm],
     );
+
+    const pageResources = useMemo(
+        () => curateResourcePageSections(library, filteredBase),
+        [library, filteredBase],
+    );
+
+    const { featured: featuredResources, recent: recentlyAdded, popular: popularDownloads, catalog: filteredResources } =
+        pageResources;
 
     const categoryCounts = useMemo(() => {
         const counts = Object.fromEntries(
@@ -208,7 +225,10 @@ function Resources({ onOpenResource, onSubscribe }) {
                                 onPreview={onOpenResource}
                                 onDownload={setGatedResource}
                                 variant={index === 0 ? "hero" : "featured"}
-                                featured
+                                editorsPick={index === 0}
+                                searchQuery={searchTerm}
+                                imageLoading={index === 0 ? "eager" : "lazy"}
+                                imagePriority={index === 0}
                             />
                         ))}
                     </div>
@@ -321,6 +341,8 @@ function Resources({ onOpenResource, onSubscribe }) {
                 items={recentlyAdded}
                 onPreview={onOpenResource}
                 onDownload={setGatedResource}
+                stripType="recent"
+                searchQuery={searchTerm}
             />
 
             <ResourceStrip
@@ -329,6 +351,8 @@ function Resources({ onOpenResource, onSubscribe }) {
                 items={popularDownloads}
                 onPreview={onOpenResource}
                 onDownload={setGatedResource}
+                stripType="popular"
+                searchQuery={searchTerm}
             />
 
             <section className="section resource-library-catalog" aria-labelledby="all-resources-title">
@@ -340,9 +364,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                 </div>
 
                 {filteredResources.length === 0 ? (
-                    <p className="resources-empty-state" role="status">
-                        No resources match your filters. Try adjusting your search or clearing filters.
-                    </p>
+                    <ResourceEmptyState onClearFilters={clearFilters} />
                 ) : (
                     <div className="resource-pub-grid">
                         {filteredResources.map((resource) => (
@@ -351,6 +373,8 @@ function Resources({ onOpenResource, onSubscribe }) {
                                 resource={resource}
                                 onPreview={onOpenResource}
                                 onDownload={setGatedResource}
+                                searchQuery={searchTerm}
+                                imageLoading="lazy"
                             />
                         ))}
                     </div>

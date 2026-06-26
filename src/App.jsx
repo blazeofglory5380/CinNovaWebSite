@@ -23,7 +23,7 @@ import NewsletterPage from "./pages/NewsletterPage.jsx";
 import Advertise from "./pages/Advertise.jsx";
 import PartnerWithUs from "./pages/PartnerWithUs.jsx";
 import SponsorNewsletter from "./pages/SponsorNewsletter.jsx";
-import FloatingNewsletterButton from "./components/FloatingNewsletterButton.jsx";
+import SiteFooter from "./components/SiteFooter.jsx";
 import HomepageCTABanner from "./components/HomepageCTABanner.jsx";
 import NewsletterSignup from "./components/NewsletterSignup.jsx";
 import NewsletterPopup from "./components/NewsletterPopup.jsx";
@@ -1526,43 +1526,12 @@ function App() {
                 </>
             )}
 
-            <footer className="footer site-footer">
-                <div>
-                    <button className="brand footer-brand" onClick={goHome}>
-                        <span className="brand-mark">CN</span>
-                        <span>Cin Nova</span>
-                    </button>
-                    <p>
-                        Public company website, app hub, and technology blog for the
-                        Cin Nova software ecosystem.
-                    </p>
-                    <p className="footer-subscriber-count">
-                        Product updates, guides, and launch notes in one place.
-                    </p>
-                </div>
-
-                <div className="footer-links">
-                    <button onClick={() => openPage("products")}>Products</button>
-                    <button onClick={goBlog}>Blog</button>
-                    <button onClick={goResources}>Resources</button>
-                    <button onClick={() => openPage("pricing")}>Pricing</button>
-                    <button onClick={() => openPage("about")}>About</button>
-                    <button onClick={() => openPage("newsletter")}>Newsletter</button>
-                    <button onClick={() => openPage("partners")}>Partners</button>
-                    <button onClick={() => openPage("media-kit")}>Media Kit</button>
-                    <button onClick={() => openPage("advertise")}>Advertise With Us</button>
-                    <button onClick={() => openPage("partner-with-us")}>Partner With Us</button>
-                    <button onClick={() => openPage("sponsor-newsletter")}>Sponsor the Newsletter</button>
-                </div>
-
-                <div className="footer-legal">
-                    <button onClick={() => openPage("privacy")}>Privacy Policy</button>
-                    <button onClick={() => openPage("terms")}>Terms of Service</button>
-                    <button onClick={() => openPage("contact")}>Contact</button>
-                </div>
-
-                <p className="footer-bottom">(c) 2026 Cin Nova. All Rights Reserved.</p>
-            </footer>
+            <SiteFooter
+                onNavigate={openPage}
+                onGoBlog={goBlog}
+                onGoResources={goResources}
+                onGoHome={goHome}
+            />
         </div>
     );
 }

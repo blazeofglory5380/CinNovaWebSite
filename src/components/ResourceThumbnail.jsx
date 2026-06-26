@@ -1,6 +1,6 @@
 import MarketingPhoto from "./MarketingPhoto.jsx";
-import { formatResourceReadTime } from "../data/resources.js";
 import { getResourceCoverImage } from "../data/marketingImages.js";
+import { formatResourceReadTime } from "../data/resources.js";
 
 function FormatIcon() {
     return (
@@ -24,8 +24,8 @@ function FormatIcon() {
     );
 }
 
-function ResourceThumbnail({ resource, large = false }) {
-    const cover = getResourceCoverImage(resource);
+function ResourceThumbnail({ resource, large = false, imageLoading = "lazy", imagePriority = false }) {
+    const cover = resource.coverImage || getResourceCoverImage(resource);
     const readTimeLabel = formatResourceReadTime(resource.readTime);
 
     return (
@@ -33,7 +33,13 @@ function ResourceThumbnail({ resource, large = false }) {
             className={`resource-thumb-photo${large ? " resource-thumb-photo-large" : ""}`}
             aria-hidden="true"
         >
-            <MarketingPhoto src={cover.src} alt={cover.alt} className="resource-thumb-photo-img" />
+            <MarketingPhoto
+                src={cover.src}
+                alt={cover.alt}
+                className="resource-thumb-photo-img"
+                loading={imageLoading}
+                fetchPriority={imagePriority ? "high" : undefined}
+            />
             <div className="resource-thumb-photo-scrim" />
             <div className="resource-thumb-photo-overlay">
                 <span className="rt-product-tag">{resource.product}</span>

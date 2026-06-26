@@ -1,4 +1,5 @@
 import { getPublishedBlogPosts, siteUrl } from "./blogPosts.js";
+import { getResourceHeroImage, pickResourceCoverFromPool } from "./marketingImages.js";
 import { trackResourceDownload } from "../utils/analytics.js";
 
 export const resourceCategories = [
@@ -523,11 +524,98 @@ export function withLibraryMeta(resource) {
         lastUpdatedLabel: formatDisplayDate(lastUpdated),
         addedAt,
         popularRank: meta.popularRank ?? 99,
+        coverImage: getResourceHeroImage(resource.id),
     };
 }
 
 export function getLibraryResources() {
     return resources.map(withLibraryMeta);
+}
+
+export function getRecentResourceBadges(resource) {
+    const badges = [];
+    const added = new Date(resource.addedAt);
+    const updated = new Date(resource.lastUpdated);
+    const monthLabel = added.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    const daysSinceAdded = (Date.now() - added.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (daysSinceAdded <= 21) {
+        badges.push({ label: "NEW", variant: "new" });
+    }
+    if (updated > added) {
+        badges.push({ label: "Updated", variant: "updated" });
+    }
+    if (daysSinceAdded <= 45) {
+        badges.push({ label: "Recently Published", variant: "recent" });
+    }
+    badges.push({ label: monthLabel, variant: "date" });
+
+    const seen = new Set();
+    return badges.filter((badge) => {
+        if (seen.has(badge.label)) return false;
+        seen.add(badge.label);
+        return true;
+    }).slice(0, 3);
+}
+
+export function assignPageResourceCovers({ featured = [], recent = [], popular = [], catalog = [] }) {
+    const usedSrcs = new Set();
+    const assign = (list) =>
+        list.map((resource) => {
+            const registryCover = getResourceHeroImage(resource.id);
+            let coverImage = registryCover;
+            if (!coverImage?.src || usedSrcs.has(coverImage.src)) {
+                coverImage = pickResourceCoverFromPool(resource, usedSrcs);
+            }
+            usedSrcs.add(coverImage.src);
+            return { ...resource, coverImage };
+        });
+
+    return {
+        featured: assign(featured),
+        recent: assign(recent),
+        popular: assign(popular),
+        catalog: assign(catalog),
+    };
+}
+
+function pickFeaturedResources(library, limit = 3) {
+    return library
+        .filter((item) => item.featured)
+        .sort((a, b) => a.id - b.id)
+        .slice(0, limit);
+}
+
+function pickRecentResources(library, excludeIds, limit = 4) {
+    return [...library]
+        .sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+        .filter((item) => !excludeIds.has(item.id))
+        .slice(0, limit);
+}
+
+function pickPopularResources(library, excludeIds, limit = 4) {
+    return [...library]
+        .sort((a, b) => a.popularRank - b.popularRank)
+        .filter((item) => !excludeIds.has(item.id))
+        .slice(0, limit);
+}
+
+/** Curate homepage sections with no resource overlap across Featured, Recent, and Popular. */
+export function curateResourcePageSections(library, catalogFiltered) {
+    const featured = pickFeaturedResources(library, 3);
+    const exclude = new Set(featured.map((item) => item.id));
+
+    const recent = pickRecentResources(library, exclude, 4);
+    recent.forEach((item) => exclude.add(item.id));
+
+    const popular = pickPopularResources(library, exclude, 4);
+
+    return assignPageResourceCovers({
+        featured,
+        recent,
+        popular,
+        catalog: catalogFiltered,
+    });
 }
 
 export function getResourceLibraryStats() {
