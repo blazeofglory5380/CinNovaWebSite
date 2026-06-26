@@ -1,4 +1,4 @@
-import { siteUrl } from "./blogPosts.js";
+import { getPublishedBlogPosts, siteUrl } from "./blogPosts.js";
 import { trackResourceDownload } from "../utils/analytics.js";
 
 export const resourceCategories = [
@@ -412,6 +412,209 @@ export const resources = [
         ],
     },
 ];
+
+export const resourceProductFilters = [
+    "All",
+    "StudyNest",
+    "PoisonGuard",
+    "TechMate AI",
+    "Kiddo",
+    "Cin Nova Real Estate",
+    "Cin Nova",
+];
+
+export const resourceTypeFilters = [
+    "All",
+    "Guide",
+    "Checklist",
+    "Template",
+    "White Paper",
+    "Brochure",
+    "Case Study",
+    "Playbook",
+    "Worksheet",
+    "Resource Kit",
+];
+
+export const resourceDifficultyFilters = ["All", "Beginner", "Intermediate", "Advanced"];
+
+const resourceLibraryMeta = {
+    1: { resourceType: "Guide", difficulty: "Beginner", fileSize: "1.4 MB", lastUpdated: "2026-06-15", addedAt: "2026-05-10", popularRank: 2 },
+    2: { resourceType: "White Paper", difficulty: "Advanced", fileSize: "2.1 MB", lastUpdated: "2026-06-18", addedAt: "2026-05-20", popularRank: 1 },
+    3: { resourceType: "Brochure", difficulty: "Beginner", fileSize: "980 KB", lastUpdated: "2026-06-12", addedAt: "2026-05-01", popularRank: 3 },
+    4: { resourceType: "Worksheet", difficulty: "Intermediate", fileSize: "720 KB", lastUpdated: "2026-06-08", addedAt: "2026-06-01", popularRank: 6 },
+    5: { resourceType: "Brochure", difficulty: "Beginner", fileSize: "890 KB", lastUpdated: "2026-06-05", addedAt: "2026-05-15", popularRank: 8 },
+    6: { resourceType: "Case Study", difficulty: "Beginner", fileSize: "1.1 MB", lastUpdated: "2026-06-02", addedAt: "2026-05-25", popularRank: 9 },
+    7: { resourceType: "Playbook", difficulty: "Advanced", fileSize: "1.8 MB", lastUpdated: "2026-06-20", addedAt: "2026-06-10", popularRank: 4 },
+    8: { resourceType: "Resource Kit", difficulty: "Beginner", fileSize: "1.5 MB", lastUpdated: "2026-06-14", addedAt: "2026-06-08", popularRank: 5 },
+    9: { resourceType: "Checklist", difficulty: "Intermediate", fileSize: "540 KB", lastUpdated: "2026-06-22", addedAt: "2026-06-18", popularRank: 7 },
+    10: { resourceType: "Checklist", difficulty: "Beginner", fileSize: "610 KB", lastUpdated: "2026-06-24", addedAt: "2026-06-20", popularRank: 10 },
+    11: { resourceType: "Template", difficulty: "Beginner", fileSize: "480 KB", lastUpdated: "2026-06-25", addedAt: "2026-06-22", popularRank: 11 },
+    12: { resourceType: "Template", difficulty: "Intermediate", fileSize: "650 KB", lastUpdated: "2026-06-26", addedAt: "2026-06-24", popularRank: 12 },
+};
+
+const productToBlogCategory = {
+    StudyNest: "Education Technology",
+    PoisonGuard: "Healthcare Technology",
+    "TechMate AI": "Artificial Intelligence",
+    Kiddo: "Education Technology",
+    "Cin Nova Real Estate": "Real Estate Technology",
+    "Cin Nova": "CinNova Updates",
+};
+
+const productToPage = {
+    StudyNest: "studynest",
+    PoisonGuard: "poisonguard",
+    "TechMate AI": "techmate",
+    Kiddo: "kiddo",
+    "Cin Nova Real Estate": "real-estate",
+    "Cin Nova": "studynest",
+};
+
+const relatedProductPages = {
+    StudyNest: ["studynest", "kiddo"],
+    PoisonGuard: ["poisonguard"],
+    "TechMate AI": ["techmate"],
+    Kiddo: ["kiddo", "studynest"],
+    "Cin Nova Real Estate": ["real-estate"],
+    "Cin Nova": ["studynest", "poisonguard", "techmate"],
+};
+
+function inferResourceType(resource) {
+    const format = resource.format?.toLowerCase() || "";
+    if (format.includes("checklist")) return "Checklist";
+    if (format.includes("template") || format.includes("worksheet")) return "Template";
+    if (format.includes("white paper")) return "White Paper";
+    if (format.includes("brochure")) return "Brochure";
+    if (format.includes("case study")) return "Case Study";
+    if (format.includes("playbook")) return "Playbook";
+    if (format.includes("kit")) return "Resource Kit";
+    return "Guide";
+}
+
+function formatToFileType(format = "") {
+    const value = format.toLowerCase();
+    if (value.includes("template") || value.includes("worksheet")) return "XLSX";
+    if (value.includes("kit")) return "ZIP";
+    return "PDF";
+}
+
+function formatDisplayDate(isoDate) {
+    return new Date(isoDate).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+
+export function withLibraryMeta(resource) {
+    const meta = resourceLibraryMeta[resource.id] || {};
+    const resourceType = meta.resourceType || inferResourceType(resource);
+    const lastUpdated = meta.lastUpdated || "2026-06-01";
+    const addedAt = meta.addedAt || lastUpdated;
+
+    return {
+        ...resource,
+        resourceType,
+        difficulty: meta.difficulty || "Beginner",
+        fileSize: meta.fileSize || "850 KB",
+        fileType: formatToFileType(resource.format),
+        lastUpdated,
+        lastUpdatedLabel: formatDisplayDate(lastUpdated),
+        addedAt,
+        popularRank: meta.popularRank ?? 99,
+    };
+}
+
+export function getLibraryResources() {
+    return resources.map(withLibraryMeta);
+}
+
+export function getResourceLibraryStats() {
+    const library = getLibraryResources();
+    return {
+        total: library.length,
+        categories: resourceCategories.length - 1,
+        products: new Set(library.map((item) => item.product)).size,
+        types: new Set(library.map((item) => item.resourceType)).size,
+    };
+}
+
+export function getFeaturedResources(limit = 3) {
+    return getLibraryResources()
+        .filter((item) => item.featured)
+        .slice(0, limit);
+}
+
+export function getRecentlyAddedResources(limit = 4) {
+    return [...getLibraryResources()]
+        .sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+        .slice(0, limit);
+}
+
+export function getPopularResources(limit = 4) {
+    return [...getLibraryResources()]
+        .sort((a, b) => a.popularRank - b.popularRank)
+        .slice(0, limit);
+}
+
+export function filterLibraryResources(library, filters = {}) {
+    const { category = "All", product = "All", resourceType = "All", difficulty = "All", search = "" } =
+        filters;
+    const query = search.trim().toLowerCase();
+
+    return library.filter((item) => {
+        if (category !== "All" && item.category !== category) return false;
+        if (product !== "All" && item.product !== product) return false;
+        if (resourceType !== "All" && item.resourceType !== resourceType) return false;
+        if (difficulty !== "All" && item.difficulty !== difficulty) return false;
+        if (query) {
+            const haystack = [
+                item.title,
+                item.description,
+                item.category,
+                item.product,
+                item.format,
+                item.resourceType,
+                item.difficulty,
+            ]
+                .join(" ")
+                .toLowerCase();
+            if (!haystack.includes(query)) return false;
+        }
+        return true;
+    });
+}
+
+export function getRelatedArticlesForResource(resource, limit = 3) {
+    const posts = getPublishedBlogPosts();
+    const targetCategory = productToBlogCategory[resource.product];
+    const matched = posts.filter(
+        (post) =>
+            post.category === targetCategory ||
+            post.tags?.some((tag) =>
+                [resource.product, resource.category].some((needle) =>
+                    tag.toLowerCase().includes(needle.toLowerCase()),
+                ),
+            ),
+    );
+    const primary = matched.slice(0, limit);
+    if (primary.length >= limit) return primary;
+    const fallback = posts.filter((post) => !primary.includes(post)).slice(0, limit - primary.length);
+    return [...primary, ...fallback];
+}
+
+export function getRelatedProductsForResource(resource) {
+    const pages = relatedProductPages[resource.product] || [productToPage[resource.product]].filter(Boolean);
+    const productLabels = {
+        studynest: { name: "StudyNest", category: "Education AI", icon: "SN" },
+        poisonguard: { name: "PoisonGuard", category: "Safety Technology", icon: "PG" },
+        techmate: { name: "TechMate AI", category: "Tech Support AI", icon: "TM" },
+        kiddo: { name: "Kiddo", category: "Early Learning", icon: "KD" },
+        "real-estate": { name: "Cin Nova Real Estate", category: "Real Estate AI", icon: "RE" },
+    };
+    return [...new Set(pages)].map((page) => ({ page, ...productLabels[page] })).filter((item) => item.name);
+}
 
 export function generateResourceContent(resource) {
     const bar = "=".repeat(60);

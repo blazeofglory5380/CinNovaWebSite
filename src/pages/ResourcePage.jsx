@@ -1,23 +1,32 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ResourceThumbnail from "../components/ResourceThumbnail.jsx";
 import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
 import {
+    getRelatedArticlesForResource,
+    getRelatedProductsForResource,
     getResourceUrl,
     resources,
     resourceCategoryConfig,
+    withLibraryMeta,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
 
-function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
+function ResourcePage({ resource, onBack, onOpenResource, onSubscribe, onNavigate, onOpenArticle }) {
     const [gatedResource, setGatedResource] = useState(null);
+    const libraryResource = useMemo(() => withLibraryMeta(resource), [resource]);
+
     const relatedResources = resources
         .filter((item) => item.id !== resource.id && item.category === resource.category)
         .slice(0, 3);
     const fallbackRelated = resources.filter((item) => item.id !== resource.id).slice(0, 3);
     const resourcesToShow = relatedResources.length ? relatedResources : fallbackRelated;
+
+    const relatedArticles = useMemo(() => getRelatedArticlesForResource(resource, 3), [resource]);
+    const relatedProducts = useMemo(() => getRelatedProductsForResource(resource), [resource]);
+
     const resourceUrl = getResourceUrl(resource);
     const catConfig = resourceCategoryConfig[resource.category];
 
@@ -47,7 +56,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
             />
 
             <section className="section article-hero resource-hero">
-                <button className="secondary-btn article-back-button" onClick={onBack}>
+                <button type="button" className="secondary-btn article-back-button" onClick={onBack}>
                     Back to Resources
                 </button>
                 <div className="resource-hero-layout">
@@ -55,17 +64,23 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                         <p className="eyebrow">{resource.category.toUpperCase()}</p>
                         <h1>{resource.title}</h1>
                         <p className="article-excerpt">{resource.description}</p>
-                        <div className="article-meta-row">
+                        <div className="article-meta-row resource-detail-meta-row">
                             <span>{resource.product}</span>
-                            <span>{resource.format}</span>
+                            <span>{libraryResource.fileType}</span>
+                            <span>{libraryResource.fileSize}</span>
                             <span>{resource.readTime}</span>
+                            <span>{libraryResource.difficulty}</span>
+                            <span>Updated {libraryResource.lastUpdatedLabel}</span>
                         </div>
-                        <button
-                            className="primary-btn"
-                            onClick={() => setGatedResource(resource)}
-                        >
-                            ↓ {resource.downloadLabel}
-                        </button>
+                        <div className="resource-detail-hero-actions">
+                            <button
+                                type="button"
+                                className="primary-btn"
+                                onClick={() => setGatedResource(resource)}
+                            >
+                                ↓ {resource.downloadLabel}
+                            </button>
+                        </div>
                     </div>
                     <div className="resource-hero-thumb">
                         <ResourceThumbnail resource={resource} large={true} />
@@ -89,21 +104,23 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                             <p className="sidebar-widget-label">DOWNLOAD</p>
                             <p className="resource-dw-title">{resource.title}</p>
                             <div className="resource-dw-meta">
-                                <span>{resource.format}</span>
+                                <span>{libraryResource.fileType}</span>
+                                <span>{libraryResource.fileSize}</span>
                                 <span>{resource.readTime}</span>
                                 {catConfig && (
                                     <span style={{ color: catConfig.accentColor }}>
-                                        {catConfig.icon} {resource.category}
+                                        {resource.category}
                                     </span>
                                 )}
                             </div>
                             <button
+                                type="button"
                                 className="primary-btn resource-dw-btn"
                                 onClick={() => setGatedResource(resource)}
                             >
                                 ↓ {resource.downloadLabel}
                             </button>
-                            <p className="resource-dw-note">Free download · No login required</p>
+                            <p className="resource-dw-note">Free download · Email required for access</p>
                         </div>
 
                         {resourcesToShow.length > 0 && (
@@ -112,6 +129,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                                 <div className="resource-related-list">
                                     {resourcesToShow.map((item) => (
                                         <button
+                                            type="button"
                                             key={item.id}
                                             className="resource-related-item"
                                             onClick={() => onOpenResource(item)}
@@ -133,6 +151,68 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                     </aside>
                 </div>
             </section>
+
+            {relatedArticles.length > 0 && (
+                <section className="section resource-related-articles" aria-labelledby="related-articles-title">
+                    <div className="resource-library-strip-head">
+                        <div>
+                            <p className="eyebrow">FROM THE BLOG</p>
+                            <h2 id="related-articles-title">Related articles</h2>
+                            <p>Continue learning with editorial articles connected to this resource.</p>
+                        </div>
+                    </div>
+                    <div className="resource-related-articles-grid">
+                        {relatedArticles.map((article) => (
+                            <article key={article.id} className="resource-related-article-card">
+                                <p className="resource-related-article-category">{article.category}</p>
+                                <h3>{article.title}</h3>
+                                <p>{article.excerpt}</p>
+                                <div className="resource-related-article-meta">
+                                    <span>{article.readTime}</span>
+                                    <span>{article.date}</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="secondary-btn"
+                                    onClick={() => onOpenArticle?.(article)}
+                                >
+                                    Read article
+                                </button>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {relatedProducts.length > 0 && (
+                <section className="section resource-related-products" aria-labelledby="related-products-title">
+                    <div className="resource-library-strip-head">
+                        <div>
+                            <p className="eyebrow">CIN NOVA PRODUCTS</p>
+                            <h2 id="related-products-title">Related products</h2>
+                            <p>Explore the Cin Nova apps connected to this resource.</p>
+                        </div>
+                    </div>
+                    <div className="resource-related-products-grid">
+                        {relatedProducts.map((product) => (
+                            <article key={product.page} className="resource-related-product-card">
+                                <span className="resource-related-product-icon" aria-hidden="true">
+                                    {product.icon}
+                                </span>
+                                <p className="resource-related-product-category">{product.category}</p>
+                                <h3>{product.name}</h3>
+                                <button
+                                    type="button"
+                                    className="primary-btn"
+                                    onClick={() => onNavigate?.(product.page)}
+                                >
+                                    Explore {product.name}
+                                </button>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {gatedResource && (
                 <ResourceEmailGate

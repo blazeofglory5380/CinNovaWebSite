@@ -1457,6 +1457,8 @@ function App() {
                     onBack={goResources}
                     onOpenResource={openResource}
                     onSubscribe={showNewsletterAlert}
+                    onNavigate={openPage}
+                    onOpenArticle={openArticle}
                 />
             )}
             {page === "pricing" && <Pricing />}

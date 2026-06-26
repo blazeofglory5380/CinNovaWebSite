@@ -1,100 +1,104 @@
 import { useMemo, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ResourceThumbnail from "../components/ResourceThumbnail.jsx";
-import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
-import { resourceCategoryCovers } from "../data/marketingImages.js";
+import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
+import ResourcePublicationCard, { ResourceCategoryCard } from "../components/ResourcePublicationCard.jsx";
+import { resourceCategoryCovers, siteMarketing } from "../data/marketingImages.js";
 import {
+    filterLibraryResources,
+    getFeaturedResources,
+    getLibraryResources,
+    getPopularResources,
+    getRecentlyAddedResources,
+    getResourceLibraryStats,
+    getResourceUrl,
     resourceCategories,
     resourceCategoryConfig,
+    resourceDifficultyFilters,
+    resourceProductFilters,
+    resourceTypeFilters,
     resources,
-    getResourceUrl,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
 
-function ResourceCard({ resource, onOpenResource, onDownload }) {
-    const catConfig = resourceCategoryConfig[resource.category];
+function ResourceStrip({ title, description, items, onPreview, onDownload }) {
+    if (!items.length) return null;
+
     return (
-        <article
-            className="resource-card-v2"
-            onClick={() => onOpenResource(resource)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-                if (e.key === "Enter") onOpenResource(resource);
-            }}
-        >
-            <div className="resource-card-thumb">
-                <ResourceThumbnail resource={resource} />
-            </div>
-            <div className="resource-card-body">
-                <div className="resource-card-badges">
-                    <span
-                        className="resource-cat-pill"
-                        style={{
-                            "--rc-accent": catConfig?.accentColor || "#38bdf8",
-                            "--rc-accent-bg": catConfig?.accentBg || "rgba(56, 189, 248, 0.12)",
-                            "--rc-accent-border": catConfig?.accentBorder || "rgba(56, 189, 248, 0.25)",
-                        }}
-                    >
-                        {resource.category}
-                    </span>
-                    <span className="resource-product-pill">{resource.product}</span>
+        <section className="section resource-library-strip" aria-labelledby={`strip-${title.replace(/\s+/g, "-").toLowerCase()}`}>
+            <div className="resource-library-strip-head">
+                <div>
+                    <p className="eyebrow">LIBRARY</p>
+                    <h2 id={`strip-${title.replace(/\s+/g, "-").toLowerCase()}`}>{title}</h2>
+                    {description && <p>{description}</p>}
                 </div>
-                <h3>{resource.title}</h3>
-                <p>{resource.description}</p>
             </div>
-            <div className="resource-card-footer">
-                <div className="resource-card-meta">
-                    <small>{resource.format}</small>
-                    <small>{resource.readTime} read</small>
-                </div>
-                <button
-                    className="resource-dl-btn"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onDownload?.(resource);
-                    }}
-                >
-                    ↓ {resource.downloadLabel}
-                </button>
+            <div className="resource-pub-grid resource-pub-grid--strip">
+                {items.map((resource) => (
+                    <ResourcePublicationCard
+                        key={resource.id}
+                        resource={resource}
+                        onPreview={onPreview}
+                        onDownload={onDownload}
+                        variant="strip"
+                    />
+                ))}
             </div>
-        </article>
+        </section>
     );
 }
 
 function Resources({ onOpenResource, onSubscribe }) {
+    const library = useMemo(() => getLibraryResources(), []);
+    const stats = useMemo(() => getResourceLibraryStats(), []);
+    const featuredResources = useMemo(() => getFeaturedResources(3), []);
+    const recentlyAdded = useMemo(() => getRecentlyAddedResources(4), []);
+    const popularDownloads = useMemo(() => getPopularResources(4), []);
+
     const [activeCategory, setActiveCategory] = useState("All");
+    const [activeProduct, setActiveProduct] = useState("All");
+    const [activeResourceType, setActiveResourceType] = useState("All");
+    const [activeDifficulty, setActiveDifficulty] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
     const [gatedResource, setGatedResource] = useState(null);
 
-    const featuredResource = resources.find((r) => r.featured) || resources[0];
+    const filteredResources = useMemo(
+        () =>
+            filterLibraryResources(library, {
+                category: activeCategory,
+                product: activeProduct,
+                resourceType: activeResourceType,
+                difficulty: activeDifficulty,
+                search: searchTerm,
+            }),
+        [library, activeCategory, activeProduct, activeResourceType, activeDifficulty, searchTerm],
+    );
 
-    const filteredResources = useMemo(() => {
-        const q = searchTerm.trim().toLowerCase();
-        return resources.filter((r) => {
-            const matchesCat = activeCategory === "All" || r.category === activeCategory;
-            const matchesSearch =
-                !q ||
-                [r.title, r.category, r.product, r.format, r.description]
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(q);
-            return matchesCat && matchesSearch;
+    const categoryCounts = useMemo(() => {
+        const counts = Object.fromEntries(
+            resourceCategories.filter((cat) => cat !== "All").map((cat) => [cat, 0]),
+        );
+        library.forEach((item) => {
+            counts[item.category] = (counts[item.category] || 0) + 1;
         });
-    }, [activeCategory, searchTerm]);
+        return counts;
+    }, [library]);
 
-    const categoryGroups = useMemo(() => {
-        return resourceCategories
-            .filter((c) => c !== "All")
-            .map((cat) => ({
-                category: cat,
-                config: resourceCategoryConfig[cat],
-                items: filteredResources.filter((r) => r.category === cat),
-            }))
-            .filter((g) => g.items.length > 0);
-    }, [filteredResources]);
+    const hasActiveFilters =
+        activeCategory !== "All" ||
+        activeProduct !== "All" ||
+        activeResourceType !== "All" ||
+        activeDifficulty !== "All" ||
+        searchTerm.trim().length > 0;
+
+    function clearFilters() {
+        setActiveCategory("All");
+        setActiveProduct("All");
+        setActiveResourceType("All");
+        setActiveDifficulty("All");
+        setSearchTerm("");
+    }
 
     const resourcesSchema = {
         "@context": "https://schema.org",
@@ -116,8 +120,10 @@ function Resources({ onOpenResource, onSubscribe }) {
         })),
     };
 
+    const hero = siteMarketing.resourcesHero;
+
     return (
-        <main className="product-page resources-page">
+        <main className="product-page resources-page resources-library-page">
             <SEO
                 title="Resources Center | Cin Nova"
                 description="Free guides, checklists, templates, white papers, product brochures, and case studies from Cin Nova."
@@ -126,142 +132,221 @@ function Resources({ onOpenResource, onSubscribe }) {
                 schema={resourcesSchema}
             />
 
-            <section className="section blog-hero-section">
-                <div className="section-heading blog-hero-copy">
-                    <p className="eyebrow">RESOURCES CENTER</p>
-                    <h2>Guides, checklists, templates, and more — all free.</h2>
+            <section className="section resources-library-hero" aria-labelledby="resources-hero-title">
+                <div className="resources-library-hero-copy">
+                    <p className="eyebrow">DIGITAL KNOWLEDGE LIBRARY</p>
+                    <h1 id="resources-hero-title">Resources built for learning, safety, and smarter decisions.</h1>
                     <p>
-                        Browse {resources.length} downloadable resources built to help you understand
-                        the Cin Nova ecosystem, learn from real use cases, and apply practical
-                        frameworks to education, safety, and real estate.
+                        Browse publication-quality guides, checklists, templates, and product resources
+                        from the Cin Nova ecosystem — free to preview and download.
                     </p>
-                    <div className="resources-hero-stats">
-                        <span>{resources.length} resources</span>
-                        <span>6 categories</span>
-                        <span>Download center live</span>
+                    <div className="resources-library-stats" role="list" aria-label="Resource library statistics">
+                        <div className="resources-library-stat" role="listitem">
+                            <strong>{stats.total}</strong>
+                            <span>Resources</span>
+                        </div>
+                        <div className="resources-library-stat" role="listitem">
+                            <strong>{stats.categories}</strong>
+                            <span>Categories</span>
+                        </div>
+                        <div className="resources-library-stat" role="listitem">
+                            <strong>{stats.products}</strong>
+                            <span>Products</span>
+                        </div>
+                        <div className="resources-library-stat" role="listitem">
+                            <strong>{stats.types}</strong>
+                            <span>Formats</span>
+                        </div>
                     </div>
+                </div>
+                <div className="resources-library-hero-photo">
+                    <MarketingPhoto src={hero.src} alt={hero.alt} className="resources-library-hero-img" />
                 </div>
             </section>
 
-            <section className="section blog-featured-section">
-                <div className="blog-featured resource-featured">
+            {featuredResources.length > 0 && (
+                <section className="section resource-library-featured" aria-labelledby="featured-resources-title">
+                    <div className="resource-library-strip-head">
+                        <div>
+                            <p className="eyebrow">EDITOR'S PICKS</p>
+                            <h2 id="featured-resources-title">Featured resources</h2>
+                            <p>Hand-picked publications to help you get started across education, safety, and real estate.</p>
+                        </div>
+                    </div>
+                    <div className="resource-pub-grid resource-pub-grid--featured">
+                        {featuredResources.map((resource, index) => (
+                            <ResourcePublicationCard
+                                key={resource.id}
+                                resource={resource}
+                                onPreview={onOpenResource}
+                                onDownload={setGatedResource}
+                                variant={index === 0 ? "hero" : "featured"}
+                                featured
+                            />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <section className="section resource-library-categories" aria-labelledby="browse-categories-title">
+                <div className="resource-library-strip-head">
                     <div>
-                        <p className="eyebrow">
-                            {featuredResource.category.toUpperCase()} · FEATURED
-                        </p>
-                        <h2>{featuredResource.title}</h2>
-                        <p>{featuredResource.description}</p>
-                        <div className="article-meta-row">
-                            <span>{featuredResource.product}</span>
-                            <span>{featuredResource.format}</span>
-                            <span>{featuredResource.readTime}</span>
-                        </div>
-                        <div className="resource-featured-actions">
-                            <button
-                                className="primary-btn"
-                                onClick={() => onOpenResource(featuredResource)}
-                            >
-                                View Resource
-                            </button>
-                            <button
-                                className="secondary-btn"
-                                onClick={() => setGatedResource(featuredResource)}
-                            >
-                                ↓ {featuredResource.downloadLabel}
-                            </button>
-                        </div>
+                        <p className="eyebrow">BROWSE BY TOPIC</p>
+                        <h2 id="browse-categories-title">Explore by category</h2>
+                        <p>Select a collection to filter the library below.</p>
                     </div>
-                    <div className="blog-featured-panel resource-download-panel">
-                        <p className="product-category">DOWNLOAD READY</p>
-                        <strong>{featuredResource.format}</strong>
-                        <span>{featuredResource.downloadLabel}</span>
-                        <div className="resource-featured-cover">
-                            <ResourceThumbnail resource={featuredResource} large />
-                        </div>
-                    </div>
+                    {activeCategory !== "All" && (
+                        <button type="button" className="secondary-btn" onClick={() => setActiveCategory("All")}>
+                            Show all categories
+                        </button>
+                    )}
+                </div>
+                <div className="resource-category-card-grid">
+                    {resourceCategories
+                        .filter((cat) => cat !== "All")
+                        .map((category) => (
+                            <ResourceCategoryCard
+                                key={category}
+                                category={category}
+                                config={resourceCategoryConfig[category]}
+                                count={categoryCounts[category] || 0}
+                                cover={resourceCategoryCovers[category]}
+                                active={activeCategory === category}
+                                onSelect={setActiveCategory}
+                            />
+                        ))}
                 </div>
             </section>
 
-            <section className="section blog-tools-section">
-                <div className="blog-tools">
-                    <label className="blog-search">
-                        <span>Search resources</span>
+            <section className="section resource-library-filters" aria-label="Resource filters">
+                <div className="resource-library-filters-bar">
+                    <label className="resource-library-search">
+                        <span className="sr-only">Search resources</span>
                         <input
                             type="search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search guides, safety, real estate, templates..."
+                            placeholder="Search guides, templates, safety, real estate..."
+                            aria-label="Search resources"
                         />
                     </label>
-                    <div className="blog-categories">
-                        {resourceCategories.map((cat) => {
-                            const config = resourceCategoryConfig[cat];
-                            return (
-                                <button
-                                    className={`blog-category-pill${activeCategory === cat ? " active" : ""}`}
-                                    key={cat}
-                                    onClick={() => setActiveCategory(cat)}
-                                >
-                                    {cat}
-                                </button>
-                            );
-                        })}
+
+                    <div className="resource-library-filter-group">
+                        <label htmlFor="filter-category">
+                            Category
+                            <select
+                                id="filter-category"
+                                value={activeCategory}
+                                onChange={(e) => setActiveCategory(e.target.value)}
+                            >
+                                {resourceCategories.map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        <label htmlFor="filter-product">
+                            Product
+                            <select
+                                id="filter-product"
+                                value={activeProduct}
+                                onChange={(e) => setActiveProduct(e.target.value)}
+                            >
+                                {resourceProductFilters.map((product) => (
+                                    <option key={product} value={product}>
+                                        {product}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        <label htmlFor="filter-type">
+                            Resource type
+                            <select
+                                id="filter-type"
+                                value={activeResourceType}
+                                onChange={(e) => setActiveResourceType(e.target.value)}
+                            >
+                                {resourceTypeFilters.map((type) => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        <label htmlFor="filter-difficulty">
+                            Difficulty
+                            <select
+                                id="filter-difficulty"
+                                value={activeDifficulty}
+                                onChange={(e) => setActiveDifficulty(e.target.value)}
+                            >
+                                {resourceDifficultyFilters.map((level) => (
+                                    <option key={level} value={level}>
+                                        {level}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
                     </div>
+                </div>
+
+                <div className="resource-library-results-bar">
+                    <p>
+                        Showing <strong>{filteredResources.length}</strong> of {library.length} resources
+                    </p>
+                    {hasActiveFilters && (
+                        <button type="button" className="resource-library-clear" onClick={clearFilters}>
+                            Clear filters
+                        </button>
+                    )}
                 </div>
             </section>
 
-            {categoryGroups.length === 0 ? (
-                <section className="section showcase-section">
-                    <p className="resources-empty-state">
-                        No resources match your search. Try a different term.
+            <ResourceStrip
+                title="Recently added"
+                description="The latest publications added to the Cin Nova library."
+                items={recentlyAdded}
+                onPreview={onOpenResource}
+                onDownload={setGatedResource}
+            />
+
+            <ResourceStrip
+                title="Popular downloads"
+                description="Resources readers return to most often."
+                items={popularDownloads}
+                onPreview={onOpenResource}
+                onDownload={setGatedResource}
+            />
+
+            <section className="section resource-library-catalog" aria-labelledby="all-resources-title">
+                <div className="resource-library-strip-head">
+                    <div>
+                        <p className="eyebrow">FULL LIBRARY</p>
+                        <h2 id="all-resources-title">All resources</h2>
+                    </div>
+                </div>
+
+                {filteredResources.length === 0 ? (
+                    <p className="resources-empty-state" role="status">
+                        No resources match your filters. Try adjusting your search or clearing filters.
                     </p>
-                </section>
-            ) : (
-                categoryGroups.map((group) => (
-                    <section
-                        key={group.category}
-                        className="section resource-category-section"
-                        id={`rc-${group.category.replace(/\s+/g, "-").toLowerCase()}`}
-                    >
-                        <div
-                            className="resource-cat-header"
-                            style={{
-                                "--rc-accent": group.config.accentColor,
-                                "--rc-accent-bg": group.config.accentBg,
-                                "--rc-accent-border": group.config.accentBorder,
-                            }}
-                        >
-                            <div className="resource-cat-photo-block">
-                                {resourceCategoryCovers[group.category] && (
-                                    <MarketingPhoto
-                                        src={resourceCategoryCovers[group.category].src}
-                                        alt={resourceCategoryCovers[group.category].alt}
-                                        className="resource-cat-photo-img"
-                                    />
-                                )}
-                            </div>
-                            <div className="resource-cat-meta">
-                                <h3>{group.category}</h3>
-                                <p>{group.config.description}</p>
-                            </div>
-                            <span className="resource-cat-count">
-                                {group.items.length}{" "}
-                                {group.items.length === 1 ? "resource" : "resources"}
-                            </span>
-                        </div>
-                        <div className="resource-grid-v2">
-                            {group.items.map((resource) => (
-                                <ResourceCard
-                                    key={resource.id}
-                                    resource={resource}
-                                    onOpenResource={onOpenResource}
-                                    onDownload={setGatedResource}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                ))
-            )}
+                ) : (
+                    <div className="resource-pub-grid">
+                        {filteredResources.map((resource) => (
+                            <ResourcePublicationCard
+                                key={resource.id}
+                                resource={resource}
+                                onPreview={onOpenResource}
+                                onDownload={setGatedResource}
+                            />
+                        ))}
+                    </div>
+                )}
+            </section>
 
             {gatedResource && (
                 <ResourceEmailGate

@@ -153,6 +153,10 @@ export const siteMarketing = {
         src: "/images/home/homepage-hero-innovation.jpg",
         alt: "Technology team collaborating around laptops in a modern workspace",
     },
+    resourcesHero: {
+        src: "/images/education/ai-education-guide-2026.jpg",
+        alt: "Editorial desk with guides, notebooks, and learning resources",
+    },
 };
 
 export const aboutValues = [
