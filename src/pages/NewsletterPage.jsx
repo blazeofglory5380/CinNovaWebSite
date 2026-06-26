@@ -1,31 +1,10 @@
 import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import { newsletterBenefits, newsletterTopics } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
-
-const benefits = [
-    {
-        icon: "🚀",
-        title: "Product launches first",
-        description: "Get notified the moment a new Cin Nova app is ready for early access — before it's announced anywhere else.",
-    },
-    {
-        icon: "📘",
-        title: "Free guides and resources",
-        description: "Every issue includes links to new downloadable guides, templates, and checklists — all free, no strings attached.",
-    },
-    {
-        icon: "🔧",
-        title: "Behind-the-scenes builds",
-        description: "See how the products are being built: what features are shipping, what's being cut, and what the roadmap looks like.",
-    },
-    {
-        icon: "🎯",
-        title: "Early access and betas",
-        description: "Subscribers get first invites to product betas, new feature previews, and Cin Nova resource drops before the general public.",
-    },
-];
 
 const testimonials = [
     {
@@ -70,27 +49,6 @@ const faqs = [
     },
 ];
 
-const recentTopics = [
-    {
-        icon: "🤖",
-        category: "AI & Technology",
-        topic: "How AI Is Changing the Way Students Study",
-        desc: "A practical breakdown of how AI tutoring, flashcard generation, and adaptive scheduling are shifting what effective studying looks like.",
-    },
-    {
-        icon: "🏠",
-        category: "Real Estate",
-        topic: "Three Numbers Every Rental Property Investor Needs",
-        desc: "Cap rate, cash-on-cash return, and monthly cash flow — explained plainly so you can analyze any deal before wasting time on a bad one.",
-    },
-    {
-        icon: "🛡️",
-        category: "Safety",
-        topic: "The Household Chemicals Most Families Don't Know Are Dangerous",
-        desc: "A room-by-room look at common products that create serious risk when mixed, stored improperly, or left accessible to children and pets.",
-    },
-];
-
 function NewsletterPage({ onSubscribe }) {
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState("idle");
@@ -126,7 +84,6 @@ function NewsletterPage({ onSubscribe }) {
                 schema={nlSchema}
             />
 
-            {/* Hero */}
             <section className="section nl-hero-section">
                 <div className="nl-hero-inner">
                     <div className="nl-hero-copy">
@@ -144,10 +101,10 @@ function NewsletterPage({ onSubscribe }) {
                             to the Cin Nova product ecosystem — in your inbox, free, every week.
                         </p>
                         <ul className="nl-hero-perks">
-                            <li>🚀 Product launches and early access</li>
-                            <li>📘 Free guides and downloadable resources</li>
-                            <li>🔧 Behind-the-scenes build updates</li>
-                            <li>🎯 No spam, no paid posts, just useful content</li>
+                            <li>Product launches and early access</li>
+                            <li>Free guides and downloadable resources</li>
+                            <li>Behind-the-scenes build updates</li>
+                            <li>No spam, no paid posts, just useful content</li>
                         </ul>
                     </div>
 
@@ -209,7 +166,6 @@ function NewsletterPage({ onSubscribe }) {
                 </div>
             </section>
 
-            {/* Benefits */}
             <section className="section">
                 <div className="section-heading">
                     <p className="eyebrow">WHAT YOU GET</p>
@@ -217,17 +173,18 @@ function NewsletterPage({ onSubscribe }) {
                     <p>Each issue delivers something useful — no filler, no sponsored posts disguised as advice.</p>
                 </div>
                 <div className="nl-benefits-grid">
-                    {benefits.map((b) => (
-                        <div key={b.title} className="nl-benefit-card">
-                            <span className="nl-benefit-icon">{b.icon}</span>
+                    {newsletterBenefits.map((b) => (
+                        <article key={b.title} className="nl-benefit-card nl-benefit-card-photo">
+                            <div className="nl-benefit-photo-wrap">
+                                <MarketingPhoto src={b.image} alt={b.alt} className="nl-benefit-photo-img" />
+                            </div>
                             <strong>{b.title}</strong>
                             <p>{b.description}</p>
-                        </div>
+                        </article>
                     ))}
                 </div>
             </section>
 
-            {/* Recent topics */}
             <section className="section">
                 <div className="section-heading">
                     <p className="eyebrow">RECENT TOPICS</p>
@@ -235,9 +192,11 @@ function NewsletterPage({ onSubscribe }) {
                     <p>A sample of the topics from recent Cin Nova newsletters and blog posts.</p>
                 </div>
                 <div className="nl-topics-list">
-                    {recentTopics.map((topic) => (
-                        <article key={topic.topic} className="nl-topic-item">
-                            <div className="nl-topic-icon">{topic.icon}</div>
+                    {newsletterTopics.map((topic) => (
+                        <article key={topic.topic} className="nl-topic-item nl-topic-item-photo">
+                            <div className="nl-topic-photo-wrap">
+                                <MarketingPhoto src={topic.image} alt={topic.alt} className="nl-topic-photo-img" />
+                            </div>
                             <div className="nl-topic-body">
                                 <p className="nl-topic-category">{topic.category}</p>
                                 <strong>{topic.topic}</strong>
@@ -248,7 +207,6 @@ function NewsletterPage({ onSubscribe }) {
                 </div>
             </section>
 
-            {/* Testimonials */}
             <section className="section">
                 <div className="section-heading">
                     <p className="eyebrow">WHAT READERS SAY</p>
@@ -271,25 +229,18 @@ function NewsletterPage({ onSubscribe }) {
                 </div>
             </section>
 
-            {/* Second signup CTA */}
             <section className="section nl-mid-cta-section">
                 <div className="nl-mid-cta">
                     <p className="eyebrow">STILL ON THE FENCE?</p>
-                    <h2>
-                        The worst that happens is you unsubscribe in one click.
-                    </h2>
+                    <h2>The worst that happens is you unsubscribe in one click.</h2>
                     <p>
-                        Get practical Cin Nova
-                        content — free guides, product updates, and launch announcements.
+                        Get practical Cin Nova content — free guides, product updates, and launch
+                        announcements.
                     </p>
                     {status === "success" ? (
                         <p className="nl-already-subbed">✓ You're already subscribed. See you in your inbox.</p>
                     ) : (
-                        <form
-                            className="nl-inline-form"
-                            onSubmit={handleSubmit}
-                            noValidate
-                        >
+                        <form className="nl-inline-form" onSubmit={handleSubmit} noValidate>
                             <input
                                 type="email"
                                 value={email}
@@ -300,11 +251,7 @@ function NewsletterPage({ onSubscribe }) {
                                 placeholder="your@email.com"
                                 maxLength={254}
                             />
-                            <button
-                                type="submit"
-                                className="primary-btn"
-                                disabled={status === "loading"}
-                            >
+                            <button type="submit" className="primary-btn" disabled={status === "loading"}>
                                 {status === "loading" ? "Subscribing…" : "Subscribe →"}
                             </button>
                         </form>
@@ -312,7 +259,6 @@ function NewsletterPage({ onSubscribe }) {
                 </div>
             </section>
 
-            {/* FAQ */}
             <section className="section">
                 <div className="section-heading">
                     <p className="eyebrow">FAQ</p>
@@ -332,9 +278,7 @@ function NewsletterPage({ onSubscribe }) {
                                 <span>{faq.q}</span>
                                 <span className="nl-faq-arrow">{openFaqIndex === i ? "−" : "+"}</span>
                             </button>
-                            {openFaqIndex === i && (
-                                <p className="nl-faq-answer">{faq.a}</p>
-                            )}
+                            {openFaqIndex === i && <p className="nl-faq-answer">{faq.a}</p>}
                         </div>
                     ))}
                 </div>

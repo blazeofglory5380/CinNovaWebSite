@@ -1,4 +1,6 @@
 import "../App.css";
+import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import { newsletterSuccessPerks } from "../data/marketingImages.js";
 
 function NewsletterSuccess({ onGoHome, onGoBlog }) {
     return (
@@ -15,22 +17,16 @@ function NewsletterSuccess({ onGoHome, onGoBlog }) {
                     updates, and launch announcements will land in your inbox.
                 </p>
 
-                <div className="success-perks">
-                    <div className="success-perk">
-                        <span className="success-perk-icon">📬</span>
-                        <strong>Fresh Articles</strong>
-                        <p>AI, education, real estate, safety, and product updates.</p>
-                    </div>
-                    <div className="success-perk">
-                        <span className="success-perk-icon">🚀</span>
-                        <strong>Launch Previews</strong>
-                        <p>Early access to new Cin Nova products before public launch.</p>
-                    </div>
-                    <div className="success-perk">
-                        <span className="success-perk-icon">💡</span>
-                        <strong>Insider Updates</strong>
-                        <p>Behind-the-scenes progress on StudyNest, PoisonGuard, and more.</p>
-                    </div>
+                <div className="success-perks success-perks-photo">
+                    {newsletterSuccessPerks.map((perk) => (
+                        <div key={perk.title} className="success-perk success-perk-photo">
+                            <div className="success-perk-photo-wrap">
+                                <MarketingPhoto src={perk.image} alt={perk.alt} className="success-perk-photo-img" />
+                            </div>
+                            <strong>{perk.title}</strong>
+                            <p>{perk.description}</p>
+                        </div>
+                    ))}
                 </div>
 
                 <div className="success-actions">

@@ -248,14 +248,14 @@ function Kiddo() {
                             </p>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                                 {[
-                                    ["🏆", "Alphabet Champion", "All 26 letters mastered"],
-                                    ["📖", "Bookworm", "10 stories completed"],
-                                    ["⭐", "Gold Star Collector", "25 stars earned"],
-                                    ["🔢", "Number Ninja", "Counted to 50 without help"],
-                                    ["🎨", "Color Master", "All 12 colors identified"],
-                                ].map(([icon, badge, desc]) => (
+                                    ["ABC", "Alphabet Champion", "All 26 letters mastered"],
+                                    ["READ", "Bookworm", "10 stories completed"],
+                                    ["STAR", "Gold Star Collector", "25 stars earned"],
+                                    ["NUM", "Number Ninja", "Counted to 50 without help"],
+                                    ["COLOR", "Color Master", "All 12 colors identified"],
+                                ].map(([label, badge, desc]) => (
                                     <div key={badge} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 0", borderBottom: "1px solid #e2e8f0" }}>
-                                        <span style={{ fontSize: "1.4rem" }}>{icon}</span>
+                                        <span className="kiddo-badge-label">{label}</span>
                                         <div>
                                             <strong style={{ display: "block", color: "#0f172a", fontSize: "0.88rem" }}>{badge}</strong>
                                             <span style={{ color: "#64748b", fontSize: "0.78rem" }}>{desc}</span>

@@ -217,3 +217,94 @@ export const ecosystemProducts = [
 export function getProductCardImage(key) {
     return productMarketing[key]?.card || null;
 }
+
+export const featureCapabilityPhotos = [
+    { id: "ai", src: "/images/marketing/about-practical-ai.jpg", alt: "Engineer working with AI on a laptop", label: "Artificial Intelligence", desc: "Smart models that learn, adapt, and assist in real time" },
+    { id: "education", src: "/images/education/ai-education-guide-2026.jpg", alt: "Students collaborating in a modern classroom", label: "Education Tech", desc: "Study tools, tutors, and learning analytics for every level" },
+    { id: "safety", src: "/images/marketing/about-safety-first.jpg", alt: "Family with pets in a safe home environment", label: "Safety Technology", desc: "Protecting families, pets, and homes from everyday hazards" },
+    { id: "realestate", src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg", alt: "Investor reviewing property analysis on a laptop", label: "Real Estate AI", desc: "Deal analysis, mortgage tools, and property intelligence" },
+    { id: "technology", src: "/images/products/techmate-ai-device-support.jpg", alt: "Laptop workstation for technical support", label: "Tech Support AI", desc: "Device diagnostics, repair guides, and troubleshooting help" },
+    { id: "analytics", src: "/images/education/studynest-connected-learning-workspace.jpg", alt: "Connected learning workspace with progress materials", label: "Analytics", desc: "Data-driven insights built into every platform dashboard" },
+];
+
+export const trustPillarPhotos = [
+    { id: "privacy", src: "/images/marketing/about-safety-first.jpg", alt: "Family in a secure home environment", title: "Privacy First", desc: "Your data stays yours. We collect only what products need to function and never sell personal information." },
+    { id: "ai", src: "/images/marketing/about-practical-ai.jpg", alt: "Professional using practical AI tools at a desk", title: "AI Powered", desc: "Every product uses modern AI to deliver real intelligence — not keyword matching or static lookup tables." },
+    { id: "human", src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Parent and children learning together in a classroom", title: "Human Focused", desc: "AI should support people, not replace them. Every Cin Nova design keeps the human in control of every decision." },
+    { id: "everyday", src: "/images/home/homepage-hero-innovation.jpg", alt: "Technology team collaborating in a modern workspace", title: "Built for Everyone", desc: "No technical background required. Products are built so everyday people can use them confidently from day one." },
+];
+
+export const resourceCategoryCovers = {
+    "Free Guides": { src: "/images/education/ai-education-guide-2026.jpg", alt: "Educational guide materials on a desk" },
+    Checklists: { src: "/images/education/student-studying-smarter-ai-tools.jpg", alt: "Student reviewing a structured study checklist" },
+    Templates: { src: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg", alt: "Property analysis worksheet on a laptop" },
+    "White Papers": { src: "/images/ai/ai-complete-guide-2026.jpg", alt: "Research materials on artificial intelligence" },
+    "Product Brochures": { src: "/images/home/homepage-hero-innovation.jpg", alt: "Technology team building Cin Nova products" },
+    "Case Studies": { src: "/images/marketing/realestate-cash-flow.jpg", alt: "Investor analyzing rental property financials" },
+};
+
+export const newsletterBenefits = [
+    { image: "/images/future-tech/technology-trends-next-decade-overview.jpg", alt: "Product team planning a software launch", title: "Product launches first", description: "Get notified the moment a new Cin Nova app is ready for early access — before it's announced anywhere else." },
+    { image: "/images/education/ai-education-guide-2026.jpg", alt: "Printed guide and learning materials", title: "Free guides and resources", description: "Every issue includes links to new downloadable guides, templates, and checklists — all free, no strings attached." },
+    { image: "/images/home/homepage-hero-innovation.jpg", alt: "Developers collaborating on product builds", title: "Behind-the-scenes builds", description: "See how the products are being built: what features are shipping, what's being cut, and what the roadmap looks like." },
+    { image: "/images/marketing/about-practical-ai.jpg", alt: "Early access preview on a modern workstation", title: "Early access and betas", description: "Subscribers get first invites to product betas, new feature previews, and Cin Nova resource drops before the general public." },
+];
+
+export const newsletterTopics = [
+    { image: "/images/ai/ai-complete-guide-2026.jpg", alt: "AI technology workspace", category: "AI & Technology", topic: "How AI Is Changing the Way Students Study", desc: "A practical breakdown of how AI tutoring, flashcard generation, and adaptive scheduling are shifting what effective studying looks like." },
+    { image: "/images/marketing/realestate-property-search.jpg", alt: "Residential property tour with buyers", category: "Real Estate", topic: "Three Numbers Every Rental Property Investor Needs", desc: "Cap rate, cash-on-cash return, and monthly cash flow — explained plainly so you can analyze any deal before wasting time on a bad one." },
+    { image: "/images/marketing/about-safety-first.jpg", alt: "Family safety at home with children and pets", category: "Safety", topic: "The Household Chemicals Most Families Don't Know Are Dangerous", desc: "A room-by-room look at common products that create serious risk when mixed, stored improperly, or left accessible to children and pets." },
+];
+
+export const mediaKitSegments = [
+    { image: "/images/products/studynest-student-learning.jpg", alt: "Student studying with organized notes", name: "Students and Parents", description: "Readers interested in AI study tools, education apps, and learning support for K-12 and college students. Primary audience for StudyNest and Kiddo content.", tags: ["Education", "Parenting"] },
+    { image: "/images/marketing/realestate-property-search.jpg", alt: "Real estate buyers touring a property", name: "Real Estate Investors", description: "Rental property investors, house flippers, and real estate agents reading deal analysis articles and downloading investment analysis templates.", tags: ["Real Estate"] },
+    { image: "/images/products/poisonguard-pet-family-safety.jpg", alt: "Dog representing household safety awareness", name: "Safety-Conscious Households", description: "Families with children and pets who engage with household safety, poison prevention, and emergency preparedness content across the PoisonGuard blog posts.", tags: ["Safety", "Parenting"] },
+    { image: "/images/products/techmate-ai-device-support.jpg", alt: "Professional workstation for technology support", name: "Tech-Aware Professionals", description: "Entrepreneurs, product builders, and technology professionals reading AI and entrepreneurship content. Engaged with TechMate AI and product update posts.", tags: ["AI & Technology", "Entrepreneurship"] },
+];
+
+export const mediaKitPlacements = [
+    { image: "/images/home/homepage-hero-innovation.jpg", alt: "Newsletter and product updates", name: "Newsletter Sponsorship", format: "Text mention or short ad block", specs: "600px wide, plain text or HTML, 1 external link", reach: "Newsletter audience", range: "$150 – $350 / send", accent: "#38bdf8", accentBg: "rgba(56, 189, 248, 0.1)" },
+    { image: "/images/education/ai-education-guide-2026.jpg", alt: "Editorial article layout", name: "Article Sponsorship", format: "Branded or co-authored editorial article", specs: "600–900 words, labeled Sponsored, 1–2 external links", reach: "Blog audience + newsletter readers", range: "$200 – $500 / article", accent: "#10b981", accentBg: "rgba(16, 185, 129, 0.1)" },
+    { image: "/images/education/student-studying-smarter-ai-tools.jpg", alt: "Downloadable resource cover", name: "Resource Co-Brand", format: "Logo and mention on a downloadable resource", specs: "Co-brand credit on cover page and footer", reach: "Resource download page + direct downloads", range: "$100 – $250 / resource", accent: "#7c3aed", accentBg: "rgba(124, 58, 237, 0.1)" },
+    { image: "/images/marketing/about-practical-ai.jpg", alt: "Article sidebar placement", name: "Sidebar Display", format: "Static image or text widget in article sidebar", specs: "300×250px image or 300px wide text block", reach: "Article page readers", range: "$75 – $150 / month", accent: "#f59e0b", accentBg: "rgba(245, 158, 11, 0.1)" },
+    { image: "/images/ai/ai-economy-companies-tech-stack.jpg", alt: "Blog section banner placement", name: "Blog Section Placement", format: "Banner or callout in a targeted category section", specs: "728×90px or 970×90px, category targeted", reach: "Category article page visitors", range: "$100 – $200 / month", accent: "#2563eb", accentBg: "rgba(37, 99, 235, 0.1)" },
+    { image: "/images/products/cinnova-real-estate-property.jpg", alt: "Homepage feature placement", name: "Homepage Feature", format: "Product or brand callout on the Cin Nova homepage", specs: "Card or widget placement, 300px × flexible", reach: "All homepage visitors", range: "$200 – $450 / month", accent: "#ec4899", accentBg: "rgba(236, 72, 153, 0.1)" },
+];
+
+export const mediaKitAssets = [
+    { image: "/images/home/homepage-hero-innovation.jpg", alt: "Cin Nova press pack overview", key: "presspack", title: "Press Pack", description: "Company overview, product descriptions, audience summary, and contact information." },
+    { image: "/images/marketing/about-practical-ai.jpg", alt: "Cin Nova brand guidelines preview", key: "brandguidelines", title: "Brand Guidelines", description: "Colors, typography, logo usage rules, tone of voice, and product accent colors." },
+    { image: "/images/education/studynest-connected-learning-workspace.jpg", alt: "Audience analytics report preview", key: "audiencereport", title: "Audience Report", description: "Detailed breakdown of reader segments, engagement metrics, and content categories." },
+];
+
+export const partnerTypeImages = [
+    { image: "/images/education/ai-education-guide-2026.jpg", alt: "Editorial content collaboration", name: "Content Partner", accent: "#38bdf8", accentBg: "rgba(56, 189, 248, 0.1)", description: "Co-author articles, contribute expert roundups, or pitch guest posts for the Cin Nova blog. Reach an audience of students, parents, tech-aware households, and real estate investors.", benefits: ["Byline credit with author bio and link", "Shared social media promotion", "Access to the Cin Nova blog audience", "Long-term SEO backlink"], bestFor: "Educators, researchers, domain experts, bloggers" },
+    { image: "/images/marketing/realestate-cash-flow.jpg", alt: "Affiliate partnership tracking", name: "Affiliate Partner", accent: "#10b981", accentBg: "rgba(16, 185, 129, 0.1)", description: "Earn commission by referring users to Cin Nova products. Get your own tracked link, access to promotional assets, and monthly performance reports.", benefits: ["Commission on every referred conversion", "Tracked referral link and dashboard", "Access to approved promotional copy and graphics", "Monthly reporting on clicks and conversions"], bestFor: "Creators, bloggers, app reviewers, YouTube channels, newsletters" },
+    { image: "/images/ai/ai-economy-companies-tech-stack.jpg", alt: "Technology integration partnership", name: "Technology Partner", accent: "#7c3aed", accentBg: "rgba(124, 58, 237, 0.1)", description: "Explore API integration, product bundling, or distribution opportunities. Technology partnerships are reviewed case-by-case and reserved for companies with clear product overlap.", benefits: ["Direct access to Cin Nova product team", "Co-marketing and cross-promotion opportunities", "Joint product or feature development consideration", "Listed in the Cin Nova partner directory"], bestFor: "Software companies, EdTech platforms, real estate tools, safety apps" },
+    { image: "/images/home/homepage-hero-innovation.jpg", alt: "Sponsorship and brand placement", name: "Sponsor", accent: "#f59e0b", accentBg: "rgba(245, 158, 11, 0.1)", description: "Place your brand in front of a targeted audience through newsletter sponsorships, article co-branding, or resource placements. View the Media Kit for specs and current availability.", benefits: ["Newsletter send sponsorship for the Cin Nova audience", "Sponsored article placement on the blog", "Resource page co-brand and download credit", "Audience-matched placement targeting"], bestFor: "B2B brands, EdTech companies, real estate software, safety organizations" },
+];
+
+export const newsletterSuccessPerks = [
+    { image: "/images/education/ai-education-guide-2026.jpg", alt: "Fresh articles and editorial content", title: "Fresh Articles", description: "AI, education, real estate, safety, and product updates." },
+    { image: "/images/future-tech/technology-trends-next-decade-overview.jpg", alt: "Product launch previews", title: "Launch Previews", description: "Early access to new Cin Nova products before public launch." },
+    { image: "/images/home/homepage-hero-innovation.jpg", alt: "Behind-the-scenes product updates", title: "Insider Updates", description: "Behind-the-scenes progress on StudyNest, PoisonGuard, and more." },
+];
+
+const productNameToKey = {
+    StudyNest: "studynest",
+    PoisonGuard: "poisonguard",
+    Kiddo: "kiddo",
+    "TechMate AI": "techmate",
+    "Cin Nova Real Estate": "real-estate",
+    "Cin Nova": "studynest",
+};
+
+export function getResourceCoverImage(resource) {
+    if (resource?.coverImage) return resource.coverImage;
+    const productKey = productNameToKey[resource?.product];
+    if (productKey && productMarketing[productKey]?.card) {
+        return productMarketing[productKey].card;
+    }
+    return resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
+}

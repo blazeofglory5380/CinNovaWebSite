@@ -39,6 +39,13 @@ import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory, siteUrl } from "./data/blogPosts.js";
 import SEO from "./components/SEO.jsx";
 import { initAnalytics, trackPageView } from "./utils/analytics.js";
+import FeaturePhotoCard from "./components/FeaturePhotoCard.jsx";
+import MarketingPhoto from "./components/MarketingPhoto.jsx";
+import {
+    featureCapabilityPhotos,
+    productMarketing,
+    trustPillarPhotos,
+} from "./data/marketingImages.js";
 
 class ArticleErrorBoundary extends Component {
     constructor(props) {
@@ -123,6 +130,8 @@ const products = [
 const ecosystemShowcases = [
     {
         name: "StudyNest",
+        page: "studynest",
+        badge: "SN",
         category: "Education AI",
         summary:
             "A focused learning workspace for notes, review cycles, AI tutoring, and study planning.",
@@ -143,6 +152,8 @@ const ecosystemShowcases = [
     },
     {
         name: "PoisonGuard",
+        page: "poisonguard",
+        badge: "PG",
         category: "Safety Technology",
         summary:
             "A safety command center for scanning hazards, detecting risk, and finding urgent guidance.",
@@ -163,6 +174,8 @@ const ecosystemShowcases = [
     },
     {
         name: "TechMate AI",
+        page: "techmate",
+        badge: "TM",
         category: "Tech Support AI",
         summary:
             "An everyday repair assistant for diagnostics, error lookup, network help, and guided fixes.",
@@ -183,6 +196,8 @@ const ecosystemShowcases = [
     },
     {
         name: "Kiddo",
+        page: "kiddo",
+        badge: "KD",
         category: "Early Learning",
         summary:
             "A playful parent-supported learning hub for reading, counting, rewards, and progress.",
@@ -203,6 +218,8 @@ const ecosystemShowcases = [
     },
     {
         name: "Cin Nova Real Estate",
+        page: "real-estate",
+        badge: "RE",
         category: "Real Estate AI",
         summary:
             "A property intelligence suite for search, financing, investor analysis, and market research.",
@@ -289,6 +306,8 @@ function getButtonLabel(page) {
 }
 
 function EcosystemShowcase({ showcase, index }) {
+    const photo = productMarketing[showcase.page]?.hero;
+
     return (
         <article className={`ecosystem-showcase-row ${index % 2 === 1 ? "is-reversed" : ""}`}>
             <div className="ecosystem-copy">
@@ -303,48 +322,16 @@ function EcosystemShowcase({ showcase, index }) {
                 </div>
             </div>
 
-            <div className={`showcase-mockup showcase-mockup-${showcase.accent}`}>
-                <div className="mockup-topbar">
-                    <div>
-                        <span />
-                        <span />
-                        <span />
-                    </div>
-                    <p>{showcase.panelTitle}</p>
+            {photo && (
+                <div className="showcase-photo-card">
+                    <MarketingPhoto
+                        src={photo.src}
+                        alt={photo.alt}
+                        className="showcase-photo-img"
+                    />
+                    <span className="showcase-photo-badge">{showcase.badge}</span>
                 </div>
-
-                <div className="mockup-body">
-                    <aside className="mockup-sidebar">
-                        <strong>CN</strong>
-                        {showcase.chartLabels.map((label) => (
-                            <span key={label}>{label}</span>
-                        ))}
-                    </aside>
-
-                    <div className="mockup-main">
-                        <div className="mockup-metric-card">
-                            <p>{showcase.metricLabel}</p>
-                            <strong>{showcase.metric}</strong>
-                        </div>
-
-                        <div className="mockup-activity-card">
-                            <p>Latest activity</p>
-                            <strong>{showcase.activity}</strong>
-                        </div>
-
-                        <div className="mockup-chart-card">
-                            {showcase.bars.map((bar, barIndex) => (
-                                <div key={showcase.chartLabels[barIndex]} className="mockup-bar-row">
-                                    <span>{showcase.chartLabels[barIndex]}</span>
-                                    <div>
-                                        <i style={{ width: `${bar}%` }} />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            )}
         </article>
     );
 }
@@ -406,30 +393,7 @@ function StatsSection() {
     );
 }
 
-const featureCategories = [
-    { id: "ai",         label: "Artificial Intelligence", desc: "Smart models that learn, adapt, and assist in real time" },
-    { id: "education",  label: "Education Tech",          desc: "Study tools, tutors, and learning analytics for every level" },
-    { id: "safety",     label: "Safety Technology",       desc: "Protecting families, pets, and homes from everyday hazards" },
-    { id: "realestate", label: "Real Estate AI",          desc: "Deal analysis, mortgage tools, and property intelligence" },
-    { id: "technology", label: "Tech Support AI",         desc: "Device diagnostics, repair guides, and troubleshooting help" },
-    { id: "analytics",  label: "Analytics",               desc: "Data-driven insights built into every platform dashboard" },
-];
-
-function FeatureIconSVG({ id }) {
-    const paths = {
-        ai:         <><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>,
-        education:  <><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></>,
-        safety:     <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></>,
-        realestate: <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></>,
-        technology: <><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></>,
-        analytics:  <><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></>,
-    };
-    return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            {paths[id]}
-        </svg>
-    );
-}
+const featureCategories = featureCapabilityPhotos;
 
 function FeatureIconsSection() {
     return (
@@ -439,15 +403,16 @@ function FeatureIconsSection() {
                 <h2>AI-powered tools across every major domain</h2>
                 <p>Six core capability areas — every Cin Nova product is built on one or more of these foundations.</p>
             </div>
-            <div className="feature-icons-grid">
+            <div className="feature-icons-grid product-grid-photo">
                 {featureCategories.map((cat) => (
-                    <div key={cat.id} className="feature-icon-card">
-                        <div className="feature-icon-wrap">
-                            <FeatureIconSVG id={cat.id} />
-                        </div>
-                        <strong>{cat.label}</strong>
-                        <p>{cat.desc}</p>
-                    </div>
+                    <FeaturePhotoCard
+                        key={cat.id}
+                        image={cat.src}
+                        alt={cat.alt}
+                        category={cat.label}
+                        title={cat.label}
+                        description={cat.desc}
+                    />
                 ))}
             </div>
         </section>
@@ -523,6 +488,7 @@ function EcosystemDiagramSection() {
 const platformPreviews = [
     {
         name: "StudyNest",
+        badge: "SN",
         category: "Education AI",
         accentColor: "#0ea5e9",
         desc: "Smart notes, spaced-repetition flashcards, AI tutoring, and a study planner — all in one connected workspace.",
@@ -531,6 +497,7 @@ const platformPreviews = [
     },
     {
         name: "PoisonGuard",
+        badge: "PG",
         category: "Safety Technology",
         accentColor: "#10b981",
         desc: "Scan household products, detect chemical risk levels, and get emergency guidance for pets and families instantly.",
@@ -539,14 +506,16 @@ const platformPreviews = [
     },
     {
         name: "Kiddo",
+        badge: "KD",
         category: "Early Learning",
         accentColor: "#f59e0b",
         desc: "Playful ABCs, counting games, reading activities, a parent dashboard, and a rewards system for young learners.",
         page: "kiddo",
-        mockupLines: ["Today: Letter B + Counting", "⭐ 12 Stars Earned Today", "Parent: Progress Report Ready"],
+        mockupLines: ["Today: Letter B + Counting", "12 Stars Earned Today", "Parent: Progress Report Ready"],
     },
     {
         name: "TechMate AI",
+        badge: "TM",
         category: "Tech Support AI",
         accentColor: "#8b5cf6",
         desc: "Diagnose devices, look up error codes, troubleshoot Wi-Fi, and follow guided repair steps — no technician needed.",
@@ -555,6 +524,7 @@ const platformPreviews = [
     },
     {
         name: "Real Estate AI",
+        badge: "RE",
         category: "Real Estate AI",
         accentColor: "#2563eb",
         desc: "Analyze investment deals, estimate mortgage payments, review cash flow, and score properties against your goals.",
@@ -564,6 +534,8 @@ const platformPreviews = [
 ];
 
 function PlatformScreenshotCard({ preview, onNavigate }) {
+    const photo = productMarketing[preview.page]?.card;
+
     return (
         <article className="platform-card">
             <div className="platform-browser">
@@ -572,6 +544,12 @@ function PlatformScreenshotCard({ preview, onNavigate }) {
                     <div className="platform-browser-url">cin-nova.app/{preview.page}</div>
                 </div>
                 <div className="platform-browser-screen">
+                    {photo && (
+                        <div className="platform-screen-photo">
+                            <MarketingPhoto src={photo.src} alt={photo.alt} className="platform-screen-photo-img" />
+                            <span className="platform-screen-badge">{preview.badge}</span>
+                        </div>
+                    )}
                     <div className="platform-screen-header" style={{ background: preview.accentColor + "12" }}>
                         <span style={{ color: preview.accentColor }}>{preview.category.toUpperCase()}</span>
                         <strong>{preview.name}</strong>
@@ -579,7 +557,6 @@ function PlatformScreenshotCard({ preview, onNavigate }) {
                     <div className="platform-screen-rows">
                         {preview.mockupLines.map((line) => (
                             <div key={line} className="platform-screen-row">
-                                <i style={{ background: preview.accentColor }}/>
                                 {line}
                             </div>
                         ))}
@@ -619,26 +596,7 @@ function PlatformSection({ onNavigate }) {
     );
 }
 
-const trustPillars = [
-    { id: "privacy",  title: "Privacy First",     desc: "Your data stays yours. We collect only what products need to function and never sell personal information.", accent: "#10b981" },
-    { id: "ai",       title: "AI Powered",        desc: "Every product uses modern AI to deliver real intelligence — not keyword matching or static lookup tables.", accent: "#6366f1" },
-    { id: "human",    title: "Human Focused",     desc: "AI should support people, not replace them. Every Cin Nova design keeps the human in control of every decision.", accent: "#f59e0b" },
-    { id: "everyday", title: "Built for Everyone", desc: "No technical background required. Products are built so everyday people can use them confidently from day one.", accent: "#0ea5e9" },
-];
-
-function TrustSVG({ id }) {
-    const icons = {
-        privacy:  <><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></>,
-        ai:       <><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></>,
-        human:    <><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></>,
-        everyday: <><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></>,
-    };
-    return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            {icons[id]}
-        </svg>
-    );
-}
+const trustPillars = trustPillarPhotos;
 
 function TrustSection() {
     return (
@@ -648,15 +606,15 @@ function TrustSection() {
                 <h2>Built on principles, not just features</h2>
                 <p>These four pillars guide every product decision we make at Cin Nova.</p>
             </div>
-            <div className="trust-grid">
+            <div className="trust-grid trust-grid-photo">
                 {trustPillars.map((pillar) => (
-                    <div key={pillar.id} className="trust-card">
-                        <div className="trust-icon" style={{ background: pillar.accent + "16", color: pillar.accent }}>
-                            <TrustSVG id={pillar.id}/>
+                    <article key={pillar.id} className="trust-card trust-card-photo">
+                        <div className="trust-photo-wrap">
+                            <MarketingPhoto src={pillar.src} alt={pillar.alt} className="trust-photo-img" />
                         </div>
                         <h3>{pillar.title}</h3>
                         <p>{pillar.desc}</p>
-                    </div>
+                    </article>
                 ))}
             </div>
         </section>
@@ -833,8 +791,8 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                     <p className="eyebrow">PRODUCT PREVIEWS</p>
                     <h2>Inside the Cin Nova Ecosystem</h2>
                     <p>
-                        Dashboard-style previews of how each product can feel as part of one connected
-                        AI software family.
+                        Editorial previews of each product — real photography paired with the
+                        capabilities that define the Cin Nova platform family.
                     </p>
                 </div>
                 <div className="ecosystem-showcase-stack">
@@ -1019,9 +977,9 @@ function HomePage({ posts, setPage, onOpenArticle, onSubscribe, onGoBlog }) {
                                         loading="lazy"
                                         decoding="async"
                                     />
+                                    <span className="product-card-badge">{product.icon}</span>
                                 </div>
                             )}
-                            <div className="product-icon">{product.icon}</div>
                             <p className="product-category">{product.category}</p>
                             <h3>{product.name}</h3>
                             <p>{product.description}</p>

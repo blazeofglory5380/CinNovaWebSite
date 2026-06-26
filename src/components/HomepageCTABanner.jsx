@@ -33,10 +33,10 @@ function HomepageCTABanner({ onSubscribe }) {
                         straight to your inbox. No spam. Unsubscribe any time.
                     </p>
                     <ul className="homepage-cta-perks">
-                        <li>🚀 Product launch announcements</li>
-                        <li>📘 Free guides and resource drops</li>
-                        <li>🔧 Behind-the-scenes building updates</li>
-                        <li>🎯 Early access to new features</li>
+                        <li>Product launch announcements</li>
+                        <li>Free guides and resource drops</li>
+                        <li>Behind-the-scenes building updates</li>
+                        <li>Early access to new features</li>
                     </ul>
                 </div>
 

@@ -116,9 +116,9 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe }) {
                                             className="resource-related-item"
                                             onClick={() => onOpenResource(item)}
                                         >
-                                            <span className="resource-related-icon">
-                                                {resourceCategoryConfig[item.category]?.icon || "📄"}
-                                            </span>
+                                            <div className="resource-related-thumb">
+                                                <ResourceThumbnail resource={item} />
+                                            </div>
                                             <div className="resource-related-copy">
                                                 <strong>{item.title}</strong>
                                                 <small>

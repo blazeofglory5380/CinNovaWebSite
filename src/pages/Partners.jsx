@@ -2,6 +2,8 @@ import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import { partnerTypeImages } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
 import {
     isValidEmail,
@@ -11,68 +13,7 @@ import {
     sanitizeText,
 } from "../utils/security.js";
 
-const partnerTypes = [
-    {
-        icon: "✍️",
-        name: "Content Partner",
-        accent: "#38bdf8",
-        accentBg: "rgba(56, 189, 248, 0.1)",
-        description:
-            "Co-author articles, contribute expert roundups, or pitch guest posts for the Cin Nova blog. Reach an audience of students, parents, tech-aware households, and real estate investors.",
-        benefits: [
-            "Byline credit with author bio and link",
-            "Shared social media promotion",
-            "Access to the Cin Nova blog audience",
-            "Long-term SEO backlink",
-        ],
-        bestFor: "Educators, researchers, domain experts, bloggers",
-    },
-    {
-        icon: "🔗",
-        name: "Affiliate Partner",
-        accent: "#10b981",
-        accentBg: "rgba(16, 185, 129, 0.1)",
-        description:
-            "Earn commission by referring users to Cin Nova products. Get your own tracked link, access to promotional assets, and monthly performance reports.",
-        benefits: [
-            "Commission on every referred conversion",
-            "Tracked referral link and dashboard",
-            "Access to approved promotional copy and graphics",
-            "Monthly reporting on clicks and conversions",
-        ],
-        bestFor: "Creators, bloggers, app reviewers, YouTube channels, newsletters",
-    },
-    {
-        icon: "🔧",
-        name: "Technology Partner",
-        accent: "#7c3aed",
-        accentBg: "rgba(124, 58, 237, 0.1)",
-        description:
-            "Explore API integration, product bundling, or distribution opportunities. Technology partnerships are reviewed case-by-case and reserved for companies with clear product overlap.",
-        benefits: [
-            "Direct access to Cin Nova product team",
-            "Co-marketing and cross-promotion opportunities",
-            "Joint product or feature development consideration",
-            "Listed in the Cin Nova partner directory",
-        ],
-        bestFor: "Software companies, EdTech platforms, real estate tools, safety apps",
-    },
-    {
-        icon: "📢",
-        name: "Sponsor",
-        accent: "#f59e0b",
-        accentBg: "rgba(245, 158, 11, 0.1)",
-        description:
-            "Place your brand in front of a targeted audience through newsletter sponsorships, article co-branding, or resource placements. View the Media Kit for specs and current availability.",
-        benefits: [
-            "Newsletter send sponsorship for the Cin Nova audience",
-            "Sponsored article placement on the blog",
-            "Resource page co-brand and download credit",
-            "Audience-matched placement targeting",
-        ],
-        bestFor: "B2B brands, EdTech companies, real estate software, safety organizations",
-    },
-];
+const partnerTypes = partnerTypeImages;
 
 const howItWorks = [
     {
@@ -175,9 +116,9 @@ function Partners({ onSubscribe }) {
                         to partner — from content collaboration to full sponsorships.
                     </p>
                     <div className="resources-hero-stats">
-                        <span>📧 Growing newsletter audience</span>
-                        <span>⬇️ Live resource downloads</span>
-                        <span>📚 7 article categories</span>
+                        <span>Growing newsletter audience</span>
+                        <span>Live resource downloads</span>
+                        <span>7 article categories</span>
                     </div>
                 </div>
             </section>
@@ -192,10 +133,12 @@ function Partners({ onSubscribe }) {
                     {partnerTypes.map((pt) => (
                         <article
                             key={pt.name}
-                            className="partner-type-card"
+                            className="partner-type-card partner-type-card-photo"
                             style={{ "--pt-accent": pt.accent, "--pt-accent-bg": pt.accentBg }}
                         >
-                            <div className="partner-type-icon">{pt.icon}</div>
+                            <div className="partner-type-photo-wrap">
+                                <MarketingPhoto src={pt.image} alt={pt.alt} className="partner-type-photo-img" />
+                            </div>
                             <h3>{pt.name}</h3>
                             <p>{pt.description}</p>
                             <ul className="partner-type-benefits">

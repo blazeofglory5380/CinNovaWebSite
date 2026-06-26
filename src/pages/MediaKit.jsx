@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import { mediaKitAssets, mediaKitPlacements, mediaKitSegments } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
 import {
     isValidEmail,
@@ -11,107 +13,16 @@ import {
 } from "../utils/security.js";
 
 const audienceStats = [
-    { value: "Growing", label: "Newsletter Audience", icon: "📧" },
-    { value: "Active", label: "Monthly Content Program", icon: "👁️" },
-    { value: "Live", label: "Resource Downloads", icon: "⬇️" },
-    { value: "6 min", label: "Avg. Article Read Time", icon: "⏱️" },
-    { value: "7", label: "Article Categories", icon: "📂" },
-    { value: "12", label: "Published Resources", icon: "📚" },
+    { value: "Growing", label: "Newsletter Audience" },
+    { value: "Active", label: "Monthly Content Program" },
+    { value: "Live", label: "Resource Downloads" },
+    { value: "6 min", label: "Avg. Article Read Time" },
+    { value: "7", label: "Article Categories" },
+    { value: "12", label: "Published Resources" },
 ];
 
-const audienceSegments = [
-    {
-        icon: "🎓",
-        name: "Students and Parents",
-        description:
-            "Readers interested in AI study tools, education apps, and learning support for K-12 and college students. Primary audience for StudyNest and Kiddo content.",
-        tags: ["Education", "Parenting"],
-    },
-    {
-        icon: "🏠",
-        name: "Real Estate Investors",
-        description:
-            "Rental property investors, house flippers, and real estate agents reading deal analysis articles and downloading investment analysis templates.",
-        tags: ["Real Estate"],
-    },
-    {
-        icon: "🛡️",
-        name: "Safety-Conscious Households",
-        description:
-            "Families with children and pets who engage with household safety, poison prevention, and emergency preparedness content across the PoisonGuard blog posts.",
-        tags: ["Safety", "Parenting"],
-    },
-    {
-        icon: "💻",
-        name: "Tech-Aware Professionals",
-        description:
-            "Entrepreneurs, product builders, and technology professionals reading AI and entrepreneurship content. Engaged with TechMate AI and product update posts.",
-        tags: ["AI & Technology", "Entrepreneurship"],
-    },
-];
-
-const adPlacements = [
-    {
-        icon: "📧",
-        name: "Newsletter Sponsorship",
-        format: "Text mention or short ad block",
-        specs: "600px wide, plain text or HTML, 1 external link",
-        reach: "Newsletter audience",
-        range: "$150 – $350 / send",
-        accent: "#38bdf8",
-        accentBg: "rgba(56, 189, 248, 0.1)",
-    },
-    {
-        icon: "✍️",
-        name: "Article Sponsorship",
-        format: "Branded or co-authored editorial article",
-        specs: "600–900 words, labeled Sponsored, 1–2 external links",
-        reach: "Blog audience + newsletter readers",
-        range: "$200 – $500 / article",
-        accent: "#10b981",
-        accentBg: "rgba(16, 185, 129, 0.1)",
-    },
-    {
-        icon: "🗂️",
-        name: "Resource Co-Brand",
-        format: "Logo and mention on a downloadable resource",
-        specs: "Co-brand credit on cover page and footer",
-        reach: "Resource download page + direct downloads",
-        range: "$100 – $250 / resource",
-        accent: "#7c3aed",
-        accentBg: "rgba(124, 58, 237, 0.1)",
-    },
-    {
-        icon: "📌",
-        name: "Sidebar Display",
-        format: "Static image or text widget in article sidebar",
-        specs: "300×250px image or 300px wide text block",
-        reach: "Article page readers",
-        range: "$75 – $150 / month",
-        accent: "#f59e0b",
-        accentBg: "rgba(245, 158, 11, 0.1)",
-    },
-    {
-        icon: "🌐",
-        name: "Blog Section Placement",
-        format: "Banner or callout in a targeted category section",
-        specs: "728×90px or 970×90px, category targeted",
-        reach: "Category article page visitors",
-        range: "$100 – $200 / month",
-        accent: "#2563eb",
-        accentBg: "rgba(37, 99, 235, 0.1)",
-    },
-    {
-        icon: "🏠",
-        name: "Homepage Feature",
-        format: "Product or brand callout on the Cin Nova homepage",
-        specs: "Card or widget placement, 300px × flexible",
-        reach: "All homepage visitors",
-        range: "$200 – $450 / month",
-        accent: "#ec4899",
-        accentBg: "rgba(236, 72, 153, 0.1)",
-    },
-];
+const audienceSegments = mediaKitSegments;
+const adPlacements = mediaKitPlacements;
 
 function downloadAsset(assetType) {
     const assets = {
@@ -338,7 +249,6 @@ function MediaKit({ onNavigate }) {
                 <div className="mk-stats-grid">
                     {audienceStats.map((stat) => (
                         <div key={stat.label} className="mk-stat-card">
-                            <span className="mk-stat-icon">{stat.icon}</span>
                             <strong className="mk-stat-value">{stat.value}</strong>
                             <p className="mk-stat-label">{stat.label}</p>
                         </div>
@@ -354,8 +264,10 @@ function MediaKit({ onNavigate }) {
                 </div>
                 <div className="mk-segments-grid">
                     {audienceSegments.map((seg) => (
-                        <article key={seg.name} className="mk-segment-card">
-                            <div className="mk-segment-icon">{seg.icon}</div>
+                        <article key={seg.name} className="mk-segment-card mk-segment-card-photo">
+                            <div className="mk-segment-photo-wrap">
+                                <MarketingPhoto src={seg.image} alt={seg.alt} className="mk-segment-photo-img" />
+                            </div>
                             <h3>{seg.name}</h3>
                             <p>{seg.description}</p>
                             <div className="mk-segment-tags">
@@ -381,10 +293,12 @@ function MediaKit({ onNavigate }) {
                     {adPlacements.map((placement) => (
                         <article
                             key={placement.name}
-                            className="mk-placement-card"
+                            className="mk-placement-card mk-placement-card-photo"
                             style={{ "--mk-accent": placement.accent, "--mk-accent-bg": placement.accentBg }}
                         >
-                            <div className="mk-placement-icon">{placement.icon}</div>
+                            <div className="mk-placement-photo-wrap">
+                                <MarketingPhoto src={placement.image} alt={placement.alt} className="mk-placement-photo-img" />
+                            </div>
                             <h3>{placement.name}</h3>
                             <p className="mk-placement-format">{placement.format}</p>
                             <dl className="mk-placement-specs">
@@ -424,30 +338,18 @@ function MediaKit({ onNavigate }) {
                     <p>Download the Cin Nova press pack, brand guidelines, and audience report.</p>
                 </div>
                 <div className="mk-assets-grid">
-                    <div className="mk-asset-card">
-                        <div className="mk-asset-icon">📦</div>
-                        <strong>Press Pack</strong>
-                        <p>Company overview, product descriptions, audience summary, and contact information.</p>
-                        <button className="secondary-btn" onClick={() => downloadAsset("presspack")}>
-                            ↓ Download Press Pack
-                        </button>
-                    </div>
-                    <div className="mk-asset-card">
-                        <div className="mk-asset-icon">🎨</div>
-                        <strong>Brand Guidelines</strong>
-                        <p>Colors, typography, logo usage rules, tone of voice, and product accent colors.</p>
-                        <button className="secondary-btn" onClick={() => downloadAsset("brandguidelines")}>
-                            ↓ Download Brand Guidelines
-                        </button>
-                    </div>
-                    <div className="mk-asset-card">
-                        <div className="mk-asset-icon">📊</div>
-                        <strong>Audience Report</strong>
-                        <p>Detailed breakdown of reader segments, engagement metrics, and content categories.</p>
-                        <button className="secondary-btn" onClick={() => downloadAsset("audiencereport")}>
-                            ↓ Download Audience Report
-                        </button>
-                    </div>
+                    {mediaKitAssets.map((asset) => (
+                        <div key={asset.key} className="mk-asset-card mk-asset-card-photo">
+                            <div className="mk-asset-photo-wrap">
+                                <MarketingPhoto src={asset.image} alt={asset.alt} className="mk-asset-photo-img" />
+                            </div>
+                            <strong>{asset.title}</strong>
+                            <p>{asset.description}</p>
+                            <button className="secondary-btn" onClick={() => downloadAsset(asset.key)}>
+                                ↓ Download {asset.title}
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </section>
 

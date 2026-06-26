@@ -13,46 +13,40 @@ export const resourceCategories = [
 
 export const resourceCategoryConfig = {
     "Free Guides": {
-        icon: "📘",
         description: "Practical starter guides you can read and apply today",
         accentColor: "#38bdf8",
         accentBg: "rgba(56, 189, 248, 0.12)",
         accentBorder: "rgba(56, 189, 248, 0.25)",
     },
-    "Checklists": {
-        icon: "✅",
+    Checklists: {
         description: "Step-by-step checklists for safety, planning, and action",
         accentColor: "#10b981",
         accentBg: "rgba(16, 185, 129, 0.12)",
         accentBorder: "rgba(16, 185, 129, 0.25)",
     },
-    "Templates": {
-        icon: "📋",
+    Templates: {
         description: "Ready-to-use templates for analysis, planning, and tracking",
         accentColor: "#f59e0b",
         accentBg: "rgba(245, 158, 11, 0.12)",
         accentBorder: "rgba(245, 158, 11, 0.25)",
     },
     "White Papers": {
-        icon: "📄",
         description: "Research-backed papers on AI, safety, education, and market trends",
         accentColor: "#7c3aed",
         accentBg: "rgba(124, 58, 237, 0.12)",
         accentBorder: "rgba(124, 58, 237, 0.25)",
     },
     "Product Brochures": {
-        icon: "🗂️",
         description: "Overview brochures for every product in the Cin Nova ecosystem",
         accentColor: "#2563eb",
         accentBg: "rgba(37, 99, 235, 0.12)",
         accentBorder: "rgba(37, 99, 235, 0.25)",
     },
     "Case Studies": {
-        icon: "📊",
         description: "Real-world use cases showing how Cin Nova products solve problems",
         accentColor: "#ec4899",
         accentBg: "rgba(236, 72, 153, 0.12)",
-        accentBorder: "rgba(236, 72, 153, 0.25)",
+        accentBorder: "rgba(236, 72, 153, 0.12)",
     },
 };
 

@@ -3,6 +3,8 @@ import "../App.css";
 import SEO from "../components/SEO.jsx";
 import ResourceThumbnail from "../components/ResourceThumbnail.jsx";
 import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
+import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import { resourceCategoryCovers } from "../data/marketingImages.js";
 import {
     resourceCategories,
     resourceCategoryConfig,
@@ -134,9 +136,9 @@ function Resources({ onOpenResource, onSubscribe }) {
                         frameworks to education, safety, and real estate.
                     </p>
                     <div className="resources-hero-stats">
-                        <span>📚 {resources.length} resources</span>
-                        <span>📂 6 categories</span>
-                        <span>⬇️ Download center live</span>
+                        <span>{resources.length} resources</span>
+                        <span>6 categories</span>
+                        <span>Download center live</span>
                     </div>
                 </div>
             </section>
@@ -173,11 +175,8 @@ function Resources({ onOpenResource, onSubscribe }) {
                         <p className="product-category">DOWNLOAD READY</p>
                         <strong>{featuredResource.format}</strong>
                         <span>{featuredResource.downloadLabel}</span>
-                        <div className="resource-file-preview">
-                            <i />
-                            <i />
-                            <i />
-                            <i />
+                        <div className="resource-featured-cover">
+                            <ResourceThumbnail resource={featuredResource} large />
                         </div>
                     </div>
                 </div>
@@ -203,7 +202,6 @@ function Resources({ onOpenResource, onSubscribe }) {
                                     key={cat}
                                     onClick={() => setActiveCategory(cat)}
                                 >
-                                    {config ? `${config.icon} ` : ""}
                                     {cat}
                                 </button>
                             );
@@ -233,7 +231,15 @@ function Resources({ onOpenResource, onSubscribe }) {
                                 "--rc-accent-border": group.config.accentBorder,
                             }}
                         >
-                            <div className="resource-cat-icon-block">{group.config.icon}</div>
+                            <div className="resource-cat-photo-block">
+                                {resourceCategoryCovers[group.category] && (
+                                    <MarketingPhoto
+                                        src={resourceCategoryCovers[group.category].src}
+                                        alt={resourceCategoryCovers[group.category].alt}
+                                        className="resource-cat-photo-img"
+                                    />
+                                )}
+                            </div>
                             <div className="resource-cat-meta">
                                 <h3>{group.category}</h3>
                                 <p>{group.config.description}</p>

@@ -268,14 +268,16 @@ function TechMateAI() {
                             </p>
                             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                                 {[
-                                    ["🖥️", "Fix Windows 11 Update Stuck at 35%", "Guide"],
-                                    ["📱", "iPhone Battery Draining Fast — iOS 17", "Guide"],
-                                    ["📡", "Starlink Connection Drops Fix", "Guide"],
-                                    ["💿", "macOS Sonoma Slow Performance", "Guide"],
-                                    ["🖨️", "HP Printer Offline on Wi-Fi — All Models", "Guide"],
-                                ].map(([icon, title, status]) => (
+                                    ["WIN", "Fix Windows 11 Update Stuck at 35%", "Guide"],
+                                    ["IOS", "iPhone Battery Draining Fast — iOS 17", "Guide"],
+                                    ["NET", "Starlink Connection Drops Fix", "Guide"],
+                                    ["MAC", "macOS Sonoma Slow Performance", "Guide"],
+                                    ["PRT", "HP Printer Offline on Wi-Fi — All Models", "Guide"],
+                                ].map(([label, title, status]) => (
                                     <div key={title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #e2e8f0" }}>
-                                        <span style={{ color: "#334155", fontSize: "0.88rem" }}>{icon} {title}</span>
+                                        <span style={{ color: "#334155", fontSize: "0.88rem" }}>
+                                            <span className="guide-row-label">{label}</span> {title}
+                                        </span>
                                         <span style={{ color: "#64748b", fontSize: "0.78rem", whiteSpace: "nowrap", marginLeft: "12px" }}>{status}</span>
                                     </div>
                                 ))}

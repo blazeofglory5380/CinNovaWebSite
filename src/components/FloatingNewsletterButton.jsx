@@ -90,7 +90,7 @@ function FloatingNewsletterButton({ onSubscribe }) {
                 aria-label="Open newsletter signup"
                 aria-expanded={open}
             >
-                <span className="float-nl-icon">📧</span>
+                <span className="float-nl-icon">NL</span>
                 <span className="float-nl-label">Newsletter</span>
             </button>
         </div>

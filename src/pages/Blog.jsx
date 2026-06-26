@@ -417,7 +417,7 @@ function Blog({
                 </div>
                 <div className="categories-grid">
                     {blogCategories.map((cat) => {
-                        const config = categoryConfig[cat] || { icon: "📄", desc: "" };
+                        const config = categoryConfig[cat] || { icon: "CN", desc: "" };
                         const count = posts.filter((p) => p.category === cat).length;
                         return (
                             <a

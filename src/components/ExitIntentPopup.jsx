@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { downloadFreeGuide, freeGuideTitle } from "../data/freeGuide.js";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
+import MarketingPhoto from "./MarketingPhoto.jsx";
 import "../App.css";
 
 function ExitIntentPopup({ onSubscribe, onClose }) {
@@ -46,7 +47,13 @@ function ExitIntentPopup({ onSubscribe, onClose }) {
                     </div>
                 ) : (
                     <>
-                        <div className="exit-popup-icon">📘</div>
+                        <div className="exit-popup-photo-wrap">
+                            <MarketingPhoto
+                                src="/images/education/ai-education-guide-2026.jpg"
+                                alt="Free Cin Nova AI guide cover"
+                                className="exit-popup-photo-img"
+                            />
+                        </div>
                         <p className="eyebrow">FREE RESOURCE</p>
                         <h2>Wait — grab the free guide first.</h2>
                         <p className="popup-body">
