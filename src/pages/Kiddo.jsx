@@ -1,8 +1,44 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+
+const { hero, features } = productMarketing.kiddo;
+
+const kiddoBenefits = [
+    {
+        src: "/images/marketing/about-safety-first.jpg",
+        alt: "Family in a safe, child-friendly home environment",
+        category: "Safety",
+        title: "Safe for Young Children",
+        description: "No ads, no social features, no external links. Kiddo is a fully closed, child-safe environment reviewed for ages 3–8. COPPA compliant and privacy-first by design.",
+    },
+    {
+        src: "/images/marketing/kiddo-progress-tracking.jpg",
+        alt: "Children learning in an age-appropriate classroom",
+        category: "Curriculum",
+        title: "Age-Appropriate Learning",
+        description: "Content is structured around early childhood milestones and adapts automatically to each child's pace — never too easy, never too frustrating.",
+    },
+    {
+        src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg",
+        alt: "Parent and educator guiding a child's learning",
+        category: "Parents",
+        title: "Full Parent Controls",
+        description: "Set daily time limits, choose which subjects to focus on, lock specific activities, and require your approval before a child advances to a new level.",
+    },
+    {
+        src: "/images/education/online-education-platform-adaptive-learning.jpg",
+        alt: "Child learning with guided digital tools on a tablet",
+        category: "Insights",
+        title: "Progress Monitoring",
+        description: "Real-time insight into what your child has mastered, where they need support, and how their learning compares to early childhood development benchmarks.",
+    },
+];
 
 const kiddoSchema = {
     "@context": "https://schema.org",
@@ -43,29 +79,9 @@ function Kiddo() {
                     </div>
                 </div>
 
-                <div className="app-preview">
-                    <div className="preview-header">
-                        <h3>Kiddo Dashboard</h3>
-                        <button>Start Learning</button>
-                    </div>
-                    <div className="preview-grid">
-                        <div><strong>12</strong><span>Activities</span></div>
-                        <div><strong>4 ★</strong><span>Stars Earned</span></div>
-                        <div><strong>ABCs</strong><span>Today's Lesson</span></div>
-                        <div><strong>Ages 3–8</strong><span>All Levels</span></div>
-                    </div>
-                    <div className="preview-note">
-                        <p>Active Session — Emma, Age 5</p>
-                        <h4>Letter B — Reading Practice Complete!</h4>
-                        <span>
-                            Emma identified 9 out of 10 words starting with B and earned
-                            a Gold Star. Next up: Writing the letter B with guided tracing.
-                        </span>
-                    </div>
-                </div>
+                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
 
-            {/* ── Features Grid ──────────────────────────────────── */}
             <section className="section" id="features">
                 <div className="section-heading">
                     <p className="eyebrow">FEATURES</p>
@@ -77,126 +93,10 @@ function Kiddo() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">🔤</div>
-                        <p className="product-category">Language</p>
-                        <h3>ABC Learning</h3>
-                        <p>
-                            Interactive letter recognition, phonics sounds, and alphabet
-                            songs that make learning the ABCs fun and memorable.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📖</div>
-                        <p className="product-category">Literacy</p>
-                        <h3>Reading Practice</h3>
-                        <p>
-                            Guided word recognition, sight words, and short stories
-                            leveled to match each child's growing reading ability.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">✏️</div>
-                        <p className="product-category">Literacy</p>
-                        <h3>Writing Practice</h3>
-                        <p>
-                            Tracing guides, letter formation drills, and fill-in-the-blank
-                            activities that build handwriting skills step by step.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🔢</div>
-                        <p className="product-category">Numeracy</p>
-                        <h3>Counting</h3>
-                        <p>
-                            Fun counting games from 1 to 100, number recognition, and
-                            hands-on activities that build strong number sense early.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">➕</div>
-                        <p className="product-category">Numeracy</p>
-                        <h3>Math Skills</h3>
-                        <p>
-                            Introduction to addition, subtraction, patterns, and basic
-                            problem-solving through visual, game-based lessons.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🔵</div>
-                        <p className="product-category">Foundations</p>
-                        <h3>Shapes &amp; Colors</h3>
-                        <p>
-                            Identify shapes, match colors, spot differences, and build
-                            visual perception skills through creative, interactive play.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🧩</div>
-                        <p className="product-category">Cognitive</p>
-                        <h3>Memory Games</h3>
-                        <p>
-                            Card matching, sequence recall, and concentration puzzles
-                            that sharpen working memory and attention span.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📚</div>
-                        <p className="product-category">Creativity</p>
-                        <h3>Interactive Stories</h3>
-                        <p>
-                            AI-narrated adventures where children make choices, learn
-                            vocabulary, and build a love of reading through storytelling.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">👨‍👩‍👧</div>
-                        <p className="product-category">Parents</p>
-                        <h3>Parent Dashboard</h3>
-                        <p>
-                            See everything your child is learning, how much time they
-                            spend, and which areas need extra practice — all in one view.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📊</div>
-                        <p className="product-category">Parents</p>
-                        <h3>Progress Tracking</h3>
-                        <p>
-                            Weekly snapshots of skill mastery, lesson completion, and
-                            growth milestones mapped to early childhood learning standards.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🏆</div>
-                        <p className="product-category">Motivation</p>
-                        <h3>Achievement Rewards</h3>
-                        <p>
-                            Stars, badges, and celebration moments that reward effort
-                            and keep children motivated to come back every day.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📋</div>
-                        <p className="product-category">Parents</p>
-                        <h3>Learning Reports</h3>
-                        <p>
-                            Monthly PDF reports summarizing your child's strengths,
-                            growth areas, and recommended next steps for home practice.
-                        </p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {features.map((feature) => (
+                        <FeaturePhotoCard key={feature.title} {...feature} />
+                    ))}
                 </div>
             </section>
 
@@ -306,50 +206,10 @@ function Kiddo() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">🔒</div>
-                        <p className="product-category">Safety</p>
-                        <h3>Safe for Young Children</h3>
-                        <p>
-                            No ads, no social features, no external links. Kiddo is a
-                            fully closed, child-safe environment reviewed for ages 3–8.
-                            COPPA compliant and privacy-first by design.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🎯</div>
-                        <p className="product-category">Curriculum</p>
-                        <h3>Age-Appropriate Learning</h3>
-                        <p>
-                            Content is structured around early childhood milestones and
-                            adapts automatically to each child's pace — never too easy,
-                            never too frustrating.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🎛️</div>
-                        <p className="product-category">Parents</p>
-                        <h3>Full Parent Controls</h3>
-                        <p>
-                            Set daily time limits, choose which subjects to focus on,
-                            lock specific activities, and require your approval before
-                            a child advances to a new level.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📈</div>
-                        <p className="product-category">Insights</p>
-                        <h3>Progress Monitoring</h3>
-                        <p>
-                            Real-time insight into what your child has mastered,
-                            where they need support, and how their learning compares
-                            to early childhood development benchmarks.
-                        </p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {kiddoBenefits.map((benefit) => (
+                        <FeaturePhotoCard key={benefit.title} {...benefit} />
+                    ))}
                 </div>
             </section>
 

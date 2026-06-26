@@ -1,8 +1,13 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+
+const { hero, features } = productMarketing.poisonguard;
 
 const poisonguardSchema = {
     "@context": "https://schema.org",
@@ -41,26 +46,7 @@ function PoisonGuard() {
                     </div>
                 </div>
 
-                <div className="app-preview">
-                    <div className="preview-header">
-                        <h3>PoisonGuard Dashboard</h3>
-                        <button>Check Substance</button>
-                    </div>
-                    <div className="preview-grid">
-                        <div><strong>10k+</strong><span>Substances</span></div>
-                        <div><strong>Fast</strong><span>AI Lookup</span></div>
-                        <div><strong>Pets</strong><span>Coverage</span></div>
-                        <div><strong>24/7</strong><span>Guidance</span></div>
-                    </div>
-                    <div className="preview-note">
-                        <p>Recent Lookup</p>
-                        <h4>Acetaminophen — Moderate Risk</h4>
-                        <span>
-                            Toxic to cats and dogs even in small doses. Contact a vet or
-                            poison control immediately.
-                        </span>
-                    </div>
-                </div>
+                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
 
             <section className="section" id="features">
@@ -68,27 +54,10 @@ function PoisonGuard() {
                     <p className="eyebrow">FEATURES</p>
                     <h2>Safety tools built for fast, confident decisions</h2>
                 </div>
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">🔍</div>
-                        <h3>Substance Lookup</h3>
-                        <p>Instantly identify thousands of household chemicals, medications, and plants.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">🐾</div>
-                        <h3>Pet Safety</h3>
-                        <p>Check toxicity levels for dogs, cats, and other common household pets.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">🚨</div>
-                        <h3>Emergency Guidance</h3>
-                        <p>Step-by-step first response instructions for accidental exposure.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">📞</div>
-                        <h3>Poison Control Links</h3>
-                        <p>Direct access to poison control hotlines and emergency contacts.</p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {features.map((feature) => (
+                        <FeaturePhotoCard key={feature.title} {...feature} />
+                    ))}
                 </div>
             </section>
 

@@ -1,8 +1,11 @@
 import { trackProductCtaClick } from "../utils/analytics.js";
+import ProductPhotoThumb from "./ProductPhotoThumb.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 
 const productCTAContent = {
     studynest: {
         icon: "SN",
+        imageKey: "studynest",
         name: "StudyNest",
         category: "Education AI",
         headline: "Stop studying harder. Start studying smarter.",
@@ -19,6 +22,7 @@ const productCTAContent = {
     },
     poisonguard: {
         icon: "PG",
+        imageKey: "poisonguard",
         name: "PoisonGuard",
         category: "Safety Technology",
         headline: "Know what's in your home before it becomes an emergency.",
@@ -35,6 +39,7 @@ const productCTAContent = {
     },
     techmate: {
         icon: "TM",
+        imageKey: "techmate",
         name: "TechMate AI",
         category: "Tech Support AI",
         headline: "Fix your tech problems without the tech degree.",
@@ -51,6 +56,7 @@ const productCTAContent = {
     },
     kiddo: {
         icon: "KD",
+        imageKey: "kiddo",
         name: "Kiddo",
         category: "Early Learning",
         headline: "Make every day a learning day — without the struggle.",
@@ -67,6 +73,7 @@ const productCTAContent = {
     },
     "real-estate": {
         icon: "RE",
+        imageKey: "real-estate",
         name: "Cin Nova Real Estate",
         category: "Real Estate AI",
         headline: "Analyze any deal before you waste time on the wrong property.",
@@ -107,7 +114,12 @@ function BlogProductCTA({ category, onNavigate }) {
             style={{ "--bpc-accent": product.accent, "--bpc-bg": product.accentBg }}
         >
             <div className="bpc-left">
-                <div className="bpc-icon">{product.icon}</div>
+                <ProductPhotoThumb
+                    src={productMarketing[product.imageKey]?.card?.src}
+                    alt={productMarketing[product.imageKey]?.card?.alt || product.name}
+                    badge={product.icon}
+                    className="bpc-photo-thumb"
+                />
                 <div className="bpc-copy">
                     <p className="bpc-category">{product.category}</p>
                     <strong className="bpc-name">{product.name}</strong>

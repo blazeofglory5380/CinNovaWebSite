@@ -1,3 +1,6 @@
+import ProductPhotoThumb from "./ProductPhotoThumb.jsx";
+import { productMarketing } from "../data/marketingImages.js";
+
 const categoryProductMap = {
     "Artificial Intelligence": ["techmate", "studynest"],
     "Real Estate Technology": ["real-estate"],
@@ -14,6 +17,7 @@ const categoryProductMap = {
 const productDetails = {
     studynest: {
         icon: "SN",
+        imageKey: "studynest",
         name: "StudyNest",
         category: "Education AI",
         tagline: "Notes, flashcards, AI tutoring, and a weekly study planner in one focused workspace.",
@@ -24,6 +28,7 @@ const productDetails = {
     },
     poisonguard: {
         icon: "PG",
+        imageKey: "poisonguard",
         name: "PoisonGuard",
         category: "Safety Technology",
         tagline: "Scan household chemicals for instant hazard info, pet safety warnings, and emergency guidance.",
@@ -34,6 +39,7 @@ const productDetails = {
     },
     techmate: {
         icon: "TM",
+        imageKey: "techmate",
         name: "TechMate AI",
         category: "Tech Support AI",
         tagline: "Describe the problem and get step-by-step fixes for phones, computers, apps, and WiFi.",
@@ -44,6 +50,7 @@ const productDetails = {
     },
     kiddo: {
         icon: "KD",
+        imageKey: "kiddo",
         name: "Kiddo",
         category: "Early Learning",
         tagline: "ABCs, reading games, counting activities, and a parent progress dashboard for young learners.",
@@ -54,6 +61,7 @@ const productDetails = {
     },
     "real-estate": {
         icon: "RE",
+        imageKey: "real-estate",
         name: "Cin Nova Real Estate",
         category: "Real Estate AI",
         tagline: "Cap rate, cash flow, mortgage analysis, and market intelligence for real estate investors.",
@@ -87,7 +95,12 @@ function RecommendedProducts({ category, onNavigate }) {
                         className="rec-product-card"
                         style={{ "--rp-accent": product.accent }}
                     >
-                        <div className="rec-product-icon">{product.icon}</div>
+                        <ProductPhotoThumb
+                            src={productMarketing[product.imageKey]?.card?.src}
+                            alt={productMarketing[product.imageKey]?.card?.alt || product.name}
+                            badge={product.icon}
+                            className="rec-product-photo"
+                        />
                         <div className="rec-product-body">
                             <p className="rec-product-category">{product.category}</p>
                             <h3>{product.name}</h3>

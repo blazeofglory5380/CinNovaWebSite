@@ -1,8 +1,13 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+
+const { hero, features } = productMarketing.techmate;
 
 const techmateSchema = {
     "@context": "https://schema.org",
@@ -43,29 +48,9 @@ function TechMateAI() {
                     </div>
                 </div>
 
-                <div className="app-preview">
-                    <div className="preview-header">
-                        <h3>TechMate Dashboard</h3>
-                        <button>New Support Ticket</button>
-                    </div>
-                    <div className="preview-grid">
-                        <div><strong>2 min</strong><span>Avg Resolution</span></div>
-                        <div><strong>98%</strong><span>Issue Solved</span></div>
-                        <div><strong>500k+</strong><span>Error Codes</span></div>
-                        <div><strong>24/7</strong><span>AI Support</span></div>
-                    </div>
-                    <div className="preview-note">
-                        <p>Active Session</p>
-                        <h4>Wi-Fi Drops Every 30 Minutes — Resolved</h4>
-                        <span>
-                            Driver conflict identified on Intel AX201. Updated firmware and
-                            adjusted power management setting. Connection stable for 4 hours.
-                        </span>
-                    </div>
-                </div>
+                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
 
-            {/* ── Feature Cards ──────────────────────────────────── */}
             <section className="section" id="features">
                 <div className="section-heading">
                     <p className="eyebrow">FEATURES</p>
@@ -76,86 +61,10 @@ function TechMateAI() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">🖥️</div>
-                        <p className="product-category">Hardware</p>
-                        <h3>Device Troubleshooting</h3>
-                        <p>
-                            Diagnose issues with laptops, desktops, phones, tablets, printers,
-                            and peripherals using guided AI diagnostics and repair steps.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">💿</div>
-                        <p className="product-category">Software</p>
-                        <h3>Software Support</h3>
-                        <p>
-                            Fix crashes, installation failures, update errors, and
-                            compatibility issues across Windows, macOS, iOS, and Android.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📡</div>
-                        <p className="product-category">Connectivity</p>
-                        <h3>Network Diagnostics</h3>
-                        <p>
-                            Troubleshoot Wi-Fi drops, slow speeds, router conflicts, VPN
-                            issues, and DNS failures with automated diagnostic flows.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🔎</div>
-                        <p className="product-category">Lookup</p>
-                        <h3>Error Code Lookup</h3>
-                        <p>
-                            Paste any error code or message and get an instant plain-English
-                            explanation with a clear, ranked list of fixes to try.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🛠️</div>
-                        <p className="product-category">Guides</p>
-                        <h3>Step-by-Step Repair Guides</h3>
-                        <p>
-                            Follow visual, verified repair guides for thousands of devices
-                            and software configurations — built for non-technical users.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🎧</div>
-                        <p className="product-category">Enterprise</p>
-                        <h3>IT Help Desk Assistant</h3>
-                        <p>
-                            Give your IT team an AI co-pilot that triages tickets, suggests
-                            resolutions, and documents every fix automatically.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📚</div>
-                        <p className="product-category">Resources</p>
-                        <h3>Knowledge Base</h3>
-                        <p>
-                            Search a curated, AI-organized library of tech guides, tutorials,
-                            and how-to articles for products across every major brand.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🤖</div>
-                        <p className="product-category">AI</p>
-                        <h3>AI Chat Assistant</h3>
-                        <p>
-                            Describe any tech problem in plain language and get an expert-level
-                            response in seconds — no jargon, no scripted runaround.
-                        </p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {features.map((feature) => (
+                        <FeaturePhotoCard key={feature.title} {...feature} />
+                    ))}
                 </div>
             </section>
 

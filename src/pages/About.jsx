@@ -1,85 +1,11 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
+import { aboutAudiences, aboutValues, ecosystemProducts, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-
-const products = [
-    {
-        icon: "🎓",
-        name: "StudyNest",
-        category: "Education AI",
-        description:
-            "AI-powered studying with notes, flashcards, quizzes, study guides, and an AI tutor available 24/7.",
-    },
-    {
-        icon: "🛡️",
-        name: "PoisonGuard",
-        category: "Safety Technology",
-        description:
-            "Poison and chemical safety tools for families and pets — fast substance lookup and emergency guidance.",
-    },
-    {
-        icon: "💻",
-        name: "TechMate AI",
-        category: "Tech Support AI",
-        description:
-            "AI troubleshooting for devices, software, networks, and error codes — no hold music required.",
-    },
-    {
-        icon: "🧸",
-        name: "Kiddo",
-        category: "Early Learning",
-        description:
-            "Interactive reading, writing, counting, and math for children ages 3–8 with a full parent dashboard.",
-    },
-    {
-        icon: "🏡",
-        name: "Cin Nova Real Estate",
-        category: "Real Estate AI",
-        description:
-            "Deal analysis, cash flow modeling, mortgage calculators, and AI investment guidance for every level of investor.",
-    },
-];
-
-const values = [
-    {
-        icon: "🤖",
-        name: "Practical AI",
-        description:
-            "AI built to solve real problems — not just impressive demos. Every feature earns its place by being genuinely useful.",
-    },
-    {
-        icon: "📚",
-        name: "Education Access",
-        description:
-            "High-quality learning tools should not be locked behind expensive tutors or institutions. StudyNest and Kiddo are built to change that.",
-    },
-    {
-        icon: "🔒",
-        name: "Safety First",
-        description:
-            "Software that touches families, children, and emergencies holds a higher standard. PoisonGuard is built with that responsibility in mind.",
-    },
-    {
-        icon: "👨‍👩‍👧",
-        name: "Family-Friendly Technology",
-        description:
-            "Products that parents trust and children enjoy. No ads, no dark patterns, no surveillance — just tools that help families.",
-    },
-    {
-        icon: "🏠",
-        name: "Real Estate Intelligence",
-        description:
-            "Property investment decisions should be driven by data, not guesswork. Cin Nova RE puts institutional-grade tools in every investor's hands.",
-    },
-    {
-        icon: "🌱",
-        name: "Long-Term Innovation",
-        description:
-            "Building a sustainable company takes time. Cin Nova is focused on doing the work — shipping products, growing an audience, and earning trust.",
-    },
-];
 
 const roadmap = [
     {
@@ -192,20 +118,21 @@ function About() {
                     <div className="showcase-card">
                         <h3>Who We Build For</h3>
                         <div style={{ marginTop: "14px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                            {[
-                                ["🎓", "Students", "who need smarter study tools, not just flashcard apps"],
-                                ["👨‍👩‍👧", "Families", "who want safe, age-appropriate tech for every member"],
-                                ["🔧", "Technicians", "who need fast, accurate answers — not scripted call centers"],
-                                ["🧒", "Children", "who deserve joyful, screen-time-worthy learning experiences"],
-                                ["💼", "Investors", "who want data-driven decisions, not gut-feel guesses"],
-                            ].map(([icon, who, desc]) => (
-                                <div key={who} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                                    <span style={{ fontSize: "1.2rem", marginTop: "2px" }}>{icon}</span>
-                                    <p style={{ color: "#334155", lineHeight: "1.6", margin: 0 }}>
-                                        <strong style={{ color: "#0f172a" }}>{who}</strong> — {desc}
-                                    </p>
-                                </div>
-                            ))}
+                            {aboutAudiences.map((item) => {
+                                const photo = productMarketing[item.key]?.card;
+                                return (
+                                    <div key={item.who} className="audience-photo-row">
+                                        <ProductPhotoThumb
+                                            src={photo?.src}
+                                            alt={photo?.alt || item.who}
+                                            className="audience-photo-thumb"
+                                        />
+                                        <p style={{ color: "#334155", lineHeight: "1.6", margin: 0 }}>
+                                            <strong style={{ color: "#0f172a" }}>{item.who}</strong> — {item.desc}
+                                        </p>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -222,14 +149,16 @@ function About() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    {products.map((p) => (
-                        <article className="product-card" key={p.name}>
-                            <div className="product-icon">{p.icon}</div>
-                            <p className="product-category">{p.category}</p>
-                            <h3>{p.name}</h3>
-                            <p>{p.description}</p>
-                        </article>
+                <div className="product-grid product-grid-photo">
+                    {ecosystemProducts.map((p) => (
+                        <FeaturePhotoCard
+                            key={p.name}
+                            image={productMarketing[p.key].card.src}
+                            alt={productMarketing[p.key].card.alt}
+                            category={p.category}
+                            title={p.name}
+                            description={p.description}
+                        />
                     ))}
                 </div>
             </section>
@@ -314,13 +243,9 @@ function About() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    {values.map((v) => (
-                        <article className="product-card" key={v.name}>
-                            <div className="product-icon">{v.icon}</div>
-                            <h3>{v.name}</h3>
-                            <p>{v.description}</p>
-                        </article>
+                <div className="product-grid product-grid-photo">
+                    {aboutValues.map((v) => (
+                        <FeaturePhotoCard key={v.title} {...v} />
                     ))}
                 </div>
             </section>

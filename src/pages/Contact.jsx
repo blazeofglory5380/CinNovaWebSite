@@ -1,88 +1,12 @@
 import { useState } from "react";
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { contactProductGuide, contactTopics, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-
-const contactCards = [
-    {
-        icon: "🎓",
-        title: "Product Questions",
-        category: "General",
-        description:
-            "Questions about any Cin Nova product — features, availability, how to get started, or what's coming next.",
-    },
-    {
-        icon: "🤝",
-        title: "Partnership Inquiries",
-        category: "Business",
-        description:
-            "Interested in co-marketing, cross-promotions, integration partnerships, or affiliate arrangements.",
-    },
-    {
-        icon: "🏫",
-        title: "School & Business Plans",
-        category: "Enterprise",
-        description:
-            "Looking for classroom licenses, team subscriptions, school dashboards, or volume business plans.",
-    },
-    {
-        icon: "🏡",
-        title: "Investor / Real Estate Tools",
-        category: "Real Estate",
-        description:
-            "Questions about Cin Nova Real Estate — deal analysis, cash flow tools, mortgage calculators, or investment features.",
-    },
-    {
-        icon: "🛠️",
-        title: "Support",
-        category: "Help",
-        description:
-            "Experiencing a bug, account issue, or technical problem? Describe what's happening and we'll help.",
-    },
-    {
-        icon: "📰",
-        title: "Media / Blog Collaborations",
-        category: "Media",
-        description:
-            "Press inquiries, content partnerships, guest blog opportunities, or coverage of Cin Nova products.",
-    },
-];
-
-const productGuide = [
-    {
-        icon: "🎓",
-        name: "StudyNest",
-        description:
-            "Mention StudyNest for questions about AI tutoring, notes, flashcards, quizzes, study guides, or education partnerships.",
-    },
-    {
-        icon: "🛡️",
-        name: "PoisonGuard",
-        description:
-            "Mention PoisonGuard for substance safety lookups, household hazard tools, pet safety, or emergency guidance features.",
-    },
-    {
-        icon: "💻",
-        name: "TechMate AI",
-        description:
-            "Mention TechMate AI for device troubleshooting, error code lookup, software support, or IT help desk tools.",
-    },
-    {
-        icon: "🧸",
-        name: "Kiddo",
-        description:
-            "Mention Kiddo for children's reading, writing, counting, math activities, or parent dashboard and tracking features.",
-    },
-    {
-        icon: "🏡",
-        name: "Cin Nova Real Estate",
-        description:
-            "Mention Cin Nova Real Estate for property analysis, mortgage tools, cash flow modeling, or investment calculators.",
-    },
-];
 
 const inquiryTypes = [
     "Product Question",
@@ -156,14 +80,16 @@ function Contact() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    {contactCards.map((card) => (
-                        <article className="product-card" key={card.title}>
-                            <div className="product-icon">{card.icon}</div>
-                            <p className="product-category">{card.category}</p>
-                            <h3>{card.title}</h3>
-                            <p>{card.description}</p>
-                        </article>
+                <div className="product-grid product-grid-photo">
+                    {contactTopics.map((card) => (
+                        <FeaturePhotoCard
+                            key={card.title}
+                            image={card.src}
+                            alt={card.alt}
+                            category={card.category}
+                            title={card.title}
+                            description={card.description}
+                        />
                     ))}
                 </div>
             </section>
@@ -250,13 +176,15 @@ function Contact() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    {productGuide.map((p) => (
-                        <article className="product-card" key={p.name}>
-                            <div className="product-icon">{p.icon}</div>
-                            <h3>{p.name}</h3>
-                            <p>{p.description}</p>
-                        </article>
+                <div className="product-grid product-grid-photo">
+                    {contactProductGuide.map((p) => (
+                        <FeaturePhotoCard
+                            key={p.name}
+                            image={productMarketing[p.key].card.src}
+                            alt={productMarketing[p.key].card.alt}
+                            title={p.name}
+                            description={p.description}
+                        />
                     ))}
                 </div>
             </section>

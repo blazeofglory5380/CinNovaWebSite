@@ -1,10 +1,10 @@
 import { writeFile } from "node:fs/promises";
 import {
     blogCategories,
-    blogPosts,
     getArticleUrl,
     getBlogUrl,
     getCategoryUrl,
+    getPublishedBlogPosts,
     siteUrl,
 } from "../src/data/blogPosts.js";
 import { resources, getResourceUrl } from "../src/data/resources.js";
@@ -54,7 +54,7 @@ const urls = [
     { loc: `${siteUrl}/?page=advertise`,    lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=partner-with-us`, lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
     { loc: `${siteUrl}/?page=sponsor-newsletter`, lastmod: "2026-06-19", changefreq: "monthly", priority: "0.6" },
-    ...blogPosts.map((post) => ({
+    ...getPublishedBlogPosts().map((post) => ({
         loc: getArticleUrl(post),
         lastmod: toIsoDate(post.date),
         changefreq: "monthly",

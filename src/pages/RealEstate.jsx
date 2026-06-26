@@ -1,8 +1,13 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+
+const { hero, features } = productMarketing["real-estate"];
 
 const realestateSchema = {
     "@context": "https://schema.org",
@@ -43,29 +48,9 @@ function RealEstate() {
                     </div>
                 </div>
 
-                <div className="app-preview">
-                    <div className="preview-header">
-                        <h3>RE Dashboard</h3>
-                        <button>Analyze Deal</button>
-                    </div>
-                    <div className="preview-grid">
-                        <div><strong>$2.4M</strong><span>Deal Value</span></div>
-                        <div><strong>8.3%</strong><span>Cap Rate</span></div>
-                        <div><strong>$6,200</strong><span>Monthly NOI</span></div>
-                        <div><strong>18mo</strong><span>ROI Break-Even</span></div>
-                    </div>
-                    <div className="preview-note">
-                        <p>AI Deal Summary</p>
-                        <h4>123 Maple St — Strong Buy</h4>
-                        <span>
-                            Cash-on-cash return of 11.4%. Below-market acquisition price.
-                            Comparable sales support a 12% upside within 24 months.
-                        </span>
-                    </div>
-                </div>
+                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
 
-            {/* ── Feature Cards ──────────────────────────────────── */}
             <section className="section" id="features">
                 <div className="section-heading">
                     <p className="eyebrow">FEATURES</p>
@@ -76,96 +61,10 @@ function RealEstate() {
                     </p>
                 </div>
 
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">🔍</div>
-                        <p className="product-category">Discovery</p>
-                        <h3>Property Search</h3>
-                        <p>
-                            Search MLS listings, off-market properties, and distressed assets
-                            with AI-filtered criteria for your investment strategy.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📊</div>
-                        <p className="product-category">Underwriting</p>
-                        <h3>Deal Analyzer</h3>
-                        <p>
-                            Run full acquisition underwriting in minutes. Model purchase price,
-                            rehab costs, ARV, holding costs, and profit margins.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🏦</div>
-                        <p className="product-category">Financing</p>
-                        <h3>Mortgage Calculator</h3>
-                        <p>
-                            Compare loan scenarios, calculate PITI, model rate changes,
-                            and evaluate refinance timing for any property type.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">💰</div>
-                        <p className="product-category">Performance</p>
-                        <h3>Cash Flow Analyzer</h3>
-                        <p>
-                            Project monthly and annual cash flow with vacancy rates, expenses,
-                            cap-ex reserves, and multi-year appreciation models.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🤖</div>
-                        <p className="product-category">AI Guidance</p>
-                        <h3>AI Advisor</h3>
-                        <p>
-                            Ask any real estate question and get expert-level answers on
-                            strategy, tax, zoning, financing, and market positioning.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">📈</div>
-                        <p className="product-category">Intelligence</p>
-                        <h3>Market Intelligence</h3>
-                        <p>
-                            Track price trends, rental demand, absorption rates, and
-                            neighborhood growth signals across any US market.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🏗️</div>
-                        <p className="product-category">Development</p>
-                        <h3>Architecture &amp; BIM</h3>
-                        <p>
-                            Integrate BIM data, estimate construction costs, and model
-                            build-to-rent or ground-up development scenarios.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🏢</div>
-                        <p className="product-category">Commercial</p>
-                        <h3>Commercial RE Analysis</h3>
-                        <p>
-                            Underwrite office, retail, multifamily, and industrial assets
-                            with DSCR, NOI, cap rate, and tenant-mix modeling.
-                        </p>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-icon">🌍</div>
-                        <p className="product-category">Land</p>
-                        <h3>Land Development Tools</h3>
-                        <p>
-                            Evaluate raw land for subdivision potential, entitlement risk,
-                            infrastructure costs, and highest-and-best-use scenarios.
-                        </p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {features.map((feature) => (
+                        <FeaturePhotoCard key={feature.title} {...feature} />
+                    ))}
                 </div>
             </section>
 

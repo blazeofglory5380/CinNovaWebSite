@@ -1,12 +1,15 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { pricingAudiences, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 
 const products = [
     {
-        icon: "🎓",
+        key: "studynest",
         name: "StudyNest",
         category: "Education AI",
         description: "AI-powered studying for students of all levels.",
@@ -32,7 +35,7 @@ const products = [
         ],
     },
     {
-        icon: "🛡️",
+        key: "poisonguard",
         name: "PoisonGuard",
         category: "Safety Technology",
         description: "Poison and chemical safety for families and pets.",
@@ -58,7 +61,7 @@ const products = [
         ],
     },
     {
-        icon: "💻",
+        key: "techmate",
         name: "TechMate AI",
         category: "Tech Support AI",
         description: "AI-powered device and software troubleshooting.",
@@ -84,7 +87,7 @@ const products = [
         ],
     },
     {
-        icon: "🧸",
+        key: "kiddo",
         name: "Kiddo",
         category: "Early Learning",
         description: "Interactive learning for children ages 3–8.",
@@ -110,7 +113,7 @@ const products = [
         ],
     },
     {
-        icon: "🏡",
+        key: "real-estate",
         name: "Cin Nova Real Estate",
         category: "Real Estate AI",
         description: "AI investment tools for investors and developers.",
@@ -134,44 +137,6 @@ const products = [
                 perks: "BIM intelligence, commercial underwriting, land development tools, and team collaboration.",
             },
         ],
-    },
-];
-
-const comparisons = [
-    {
-        icon: "🎓",
-        audience: "Best for Students",
-        product: "StudyNest",
-        why: "AI tutoring, flashcards, and study guides that adapt to how you learn — available 24/7.",
-        plan: "Student Pro — $9.99/mo",
-    },
-    {
-        icon: "👨‍👩‍👧",
-        audience: "Best for Families",
-        product: "PoisonGuard + Kiddo",
-        why: "Keep children safe from household hazards and give them a head start with guided early learning.",
-        plan: "Family Premium + Family Plan — $11.98/mo",
-    },
-    {
-        icon: "🔧",
-        audience: "Best for Technicians",
-        product: "TechMate AI",
-        why: "AI-powered troubleshooting, error lookup, and repair guides that save hours on every job.",
-        plan: "TechMate Pro — $14.99/mo",
-    },
-    {
-        icon: "💼",
-        audience: "Best for Investors",
-        product: "Cin Nova Real Estate",
-        why: "Deal analysis, cash flow modeling, and market intelligence that makes every decision data-driven.",
-        plan: "Investor Pro — $29/mo",
-    },
-    {
-        icon: "🏫",
-        audience: "Best for Schools & Teams",
-        product: "StudyNest + Kiddo",
-        why: "Classroom tools, student progress dashboards, and curriculum-aligned learning from K–12.",
-        plan: "School Plans — Coming Soon",
     },
 ];
 
@@ -237,9 +202,12 @@ function Pricing() {
                     >
                         {/* Product label row */}
                         <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "24px" }}>
-                            <div className="product-icon" style={{ marginBottom: 0, flexShrink: 0 }}>
-                                {product.icon}
-                            </div>
+                            <ProductPhotoThumb
+                                src={productMarketing[product.key].card.src}
+                                alt={productMarketing[product.key].card.alt}
+                                badge={productMarketing[product.key].card.src ? undefined : product.key.slice(0, 2).toUpperCase()}
+                                className="pricing-product-thumb"
+                            />
                             <div>
                                 <p className="eyebrow" style={{ marginBottom: "2px" }}>
                                     {product.category.toUpperCase()}
@@ -302,29 +270,20 @@ function Pricing() {
                     <p>Here's how different Cin Nova products serve different people.</p>
                 </div>
 
-                <div className="product-grid">
-                    {comparisons.map((item) => (
-                        <article className="product-card" key={item.audience}>
-                            <div className="product-icon">{item.icon}</div>
-                            <p className="product-category">{item.audience}</p>
-                            <h3>{item.product}</h3>
-                            <p>{item.why}</p>
-                            <div
-                                style={{
-                                    marginTop: "18px",
-                                    padding: "10px 14px",
-                                    borderRadius: "10px",
-                                    background: "rgba(56, 189, 248, 0.08)",
-                                    border: "1px solid rgba(56, 189, 248, 0.2)",
-                                    color: "#1d4ed8",
-                                    fontSize: "0.82rem",
-                                    fontWeight: 700,
-                                }}
-                            >
-                                {item.plan}
-                            </div>
-                        </article>
-                    ))}
+                <div className="product-grid product-grid-photo">
+                    {pricingAudiences.map((item) => {
+                        const photo = productMarketing[item.key]?.card;
+                        return (
+                            <FeaturePhotoCard
+                                key={item.audience}
+                                image={photo?.src}
+                                alt={photo?.alt || item.product}
+                                category={item.audience}
+                                title={item.product}
+                                description={`${item.why} Recommended plan: ${item.plan}`}
+                            />
+                        );
+                    })}
                 </div>
             </section>
 

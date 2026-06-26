@@ -1,6 +1,11 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import { productMarketing } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
+
+const { hero, features } = productMarketing.studynest;
 
 const studynestSchema = {
     "@context": "https://schema.org",
@@ -40,26 +45,7 @@ function StudyNest() {
                     </div>
                 </div>
 
-                <div className="app-preview">
-                    <div className="preview-header">
-                        <h3>StudyNest Dashboard</h3>
-                        <button>New Note</button>
-                    </div>
-                    <div className="preview-grid">
-                        <div><strong>24</strong><span>Notes</span></div>
-                        <div><strong>132</strong><span>Flashcards</span></div>
-                        <div><strong>18</strong><span>Quizzes</span></div>
-                        <div><strong>Ready</strong><span>AI Tutor</span></div>
-                    </div>
-                    <div className="preview-note">
-                        <p>Biology Notes</p>
-                        <h4>Photosynthesis Study Guide</h4>
-                        <span>
-                            Plants convert sunlight into energy using chlorophyll, carbon dioxide,
-                            and water.
-                        </span>
-                    </div>
-                </div>
+                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
             </section>
 
             <section className="section" id="features">
@@ -67,27 +53,10 @@ function StudyNest() {
                     <p className="eyebrow">FEATURES</p>
                     <h2>Everything students need in one study workspace</h2>
                 </div>
-                <div className="product-grid">
-                    <article className="product-card">
-                        <div className="product-icon">📝</div>
-                        <h3>Smart Notes</h3>
-                        <p>Organize class notes by subject, course, and topic.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">🧠</div>
-                        <h3>AI Tutor</h3>
-                        <p>Ask questions and get simple explanations when studying.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">🎴</div>
-                        <h3>Flashcards</h3>
-                        <p>Turn notes into flashcards for active recall.</p>
-                    </article>
-                    <article className="product-card">
-                        <div className="product-icon">✅</div>
-                        <h3>Quiz Generator</h3>
-                        <p>Practice with quizzes before exams.</p>
-                    </article>
+                <div className="product-grid product-grid-photo">
+                    {features.map((feature) => (
+                        <FeaturePhotoCard key={feature.title} {...feature} />
+                    ))}
                 </div>
             </section>
 

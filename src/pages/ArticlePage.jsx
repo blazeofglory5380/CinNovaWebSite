@@ -259,20 +259,26 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
         trackArticleView(post);
     }, [post.slug]);
 
-    const relatedBySlug = (post.relatedReading || [])
-        .map((slug) => posts.find((item) => item.slug === slug))
-        .filter(Boolean);
-    const relatedArticles = posts
-        .filter((item) => item.id !== post.id && item.category === post.category)
-        .slice(0, 3);
-    const fallbackRelated = posts
-        .filter((item) => item.id !== post.id && item.cornerstone)
-        .slice(0, 3);
-    const articlesToShow = relatedBySlug.length
-        ? relatedBySlug
-        : relatedArticles.length
-          ? relatedArticles
-          : fallbackRelated;
+    const articlesToShow = useMemo(() => {
+        const relatedBySlug = (post.relatedReading || [])
+            .map((slug) => posts.find((item) => item.slug === slug))
+            .filter(Boolean);
+        const relatedArticles = posts
+            .filter((item) => item.id !== post.id && item.category === post.category)
+            .slice(0, 3);
+        const fallbackRelated = posts
+            .filter((item) => item.id !== post.id && item.cornerstone)
+            .slice(0, 3);
+        const list = relatedBySlug.length
+            ? relatedBySlug
+            : relatedArticles.length
+              ? relatedArticles
+              : fallbackRelated;
+        return list.map((item) => ({
+            ...item,
+            readTime: item.readTime || estimateArticleReadingTime(item),
+        }));
+    }, [post.id, post.relatedReading, post.category, posts]);
 
     const moreFromAuthor = posts
         .filter((item) => item.id !== post.id && item.author === post.author)
@@ -418,7 +424,9 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 </div>
             </section>
 
-            <BlogProductCTA category={post.category} onNavigate={onNavigate} />
+            <section className="section article-product-cta-section">
+                <BlogProductCTA category={post.category} onNavigate={onNavigate} />
+            </section>
 
             {affiliateLinks.length > 0 && (
                 <section className="section affiliate-section">

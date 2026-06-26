@@ -3007,6 +3007,36 @@ cornerstoneOverrides[31] = {
     ],
 };
 
+const PILLAR_GUIDES = {
+    ai: "the-complete-guide-to-artificial-intelligence-in-2026",
+    education: "the-complete-guide-to-ai-in-education-2026",
+};
+
+const PILLAR_AI_CATEGORIES = new Set([
+    "Artificial Intelligence",
+    "Real Estate Technology",
+    "Healthcare Technology",
+    "Construction Technology",
+    "Data Centers & Databases",
+    "Robotics & Automation",
+    "Future Technology",
+    "Business & Entrepreneurship",
+    "CinNova Updates",
+]);
+
+function buildRelatedReading(post) {
+    const base = cornerstoneRelated[post.id] || post.relatedReading || [];
+    if (post.id === 31 || post.id === 32) return base;
+    const pillar = [];
+    if (post.category === "Education Technology") {
+        pillar.push(PILLAR_GUIDES.education);
+    }
+    if (PILLAR_AI_CATEGORIES.has(post.category)) {
+        pillar.push(PILLAR_GUIDES.ai);
+    }
+    return [...new Set([...pillar, ...base])].slice(0, 4);
+}
+
 const enrichedFullArticles = fullArticles.map((post) => {
     const cornerstone = post.id <= 15 || post.id === 31 || post.id === 32;
     const override = cornerstoneOverrides[post.id] || {};
@@ -3014,14 +3044,14 @@ const enrichedFullArticles = fullArticles.map((post) => {
         ...post,
         ...override,
         cornerstone,
-        featured: post.id <= 5,
+        featured: post.id <= 5 || post.id === 31 || post.id === 32,
         trending: cornerstone || post.trending,
         popular: cornerstone || post.popular,
         thumbnail: override.thumbnail || post.thumbnail || {
             label: post.category.slice(0, 2).toUpperCase(),
             title: post.category,
         },
-        relatedReading: cornerstoneRelated[post.id] || post.relatedReading || [],
+        relatedReading: buildRelatedReading(post),
     };
     const professionalPost = {
         ...mergedPost,
@@ -3146,6 +3176,10 @@ const plannedArticles = plannedBlueprints.map(
 );
 
 export const blogPosts = [...enrichedFullArticles, ...plannedArticles];
+
+export function getPublishedBlogPosts() {
+    return blogPosts.filter((post) => post.status === "published");
+}
 
 export function getPostBySlug(slug) {
     return blogPosts.find((post) => post.slug === slug);

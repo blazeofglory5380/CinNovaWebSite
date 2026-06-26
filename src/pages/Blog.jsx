@@ -46,11 +46,26 @@ function Blog({
         () => posts.filter((post) => post.featured || post.cornerstone).slice(0, 15),
         [posts]
     );
-    const featuredPost = featuredPosts[0] || posts[0];
-    const secondaryFeaturedPosts = featuredPosts.filter((post) => post.id !== featuredPost?.id).slice(0, 14);
     const cornerstonePost = useMemo(
-        () => posts.find((p) => p.cornerstone) || featuredPost,
-        [posts, featuredPost]
+        () =>
+            posts.find((p) => p.slug === "the-complete-guide-to-artificial-intelligence-in-2026") ||
+            posts.find((p) => p.cornerstone) ||
+            posts[0],
+        [posts]
+    );
+    const featuredPost = useMemo(() => {
+        const candidates = featuredPosts.filter((post) => post.id !== cornerstonePost?.id);
+        return candidates[0] || featuredPosts[0] || posts[0];
+    }, [featuredPosts, cornerstonePost, posts]);
+    const secondaryFeaturedPosts = useMemo(
+        () =>
+            featuredPosts
+                .filter(
+                    (post) =>
+                        post.id !== featuredPost?.id && post.id !== cornerstonePost?.id
+                )
+                .slice(0, 14),
+        [featuredPosts, featuredPost, cornerstonePost]
     );
 
     const trendingPosts = useMemo(
@@ -132,6 +147,19 @@ function Blog({
     }
 
     function ArticleVisual({ post, variant = "card" }) {
+        if (post.heroImage) {
+            return (
+                <div className={`article-thumb-photo article-thumb-photo-${variant}`}>
+                    <img
+                        src={post.heroImage}
+                        alt={post.heroImageAlt || post.title}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </div>
+            );
+        }
+
         const config = categoryConfig[post.category] || { icon: "CN", desc: "" };
         const cover = post.coverImage || {
             label: post.thumbnail?.label || config.icon,
@@ -285,8 +313,8 @@ function Blog({
                                 tabIndex={0}
                                 onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
                             >
-                                <div className="trending-badge-row">
-                                    <span>{post.category}</span>
+                                <div className="article-card-top-row trending-badge-row">
+                                    <span className="article-category-badge">{post.category}</span>
                                     <span className="trending-badge">Trending</span>
                                     {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
                                 </div>
@@ -433,7 +461,7 @@ function Blog({
                             }}
                         >
                             <div className="article-card-top-row">
-                                <span>{post.category}</span>
+                                <span className="article-category-badge">{post.category}</span>
                                 {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
                             </div>
                             <ArticleVisual post={post} />
