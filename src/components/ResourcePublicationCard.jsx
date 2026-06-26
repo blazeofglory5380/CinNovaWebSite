@@ -1,6 +1,6 @@
 import MarketingPhoto from "./MarketingPhoto.jsx";
 import ResourceThumbnail from "./ResourceThumbnail.jsx";
-import { resourceCategoryConfig } from "../data/resources.js";
+import { resourceCategoryConfig, formatResourceReadTime } from "../data/resources.js";
 
 function ResourcePublicationCard({
     resource,
@@ -20,7 +20,7 @@ function ResourcePublicationCard({
             }}
         >
             <div className="resource-pub-cover">
-                <ResourceThumbnail resource={resource} />
+                <ResourceThumbnail resource={resource} large={variant === "hero"} />
                 {featured && <span className="resource-pub-badge">Featured</span>}
             </div>
 
@@ -33,10 +33,20 @@ function ResourcePublicationCard({
                 <h3 className="resource-pub-title">{resource.title}</h3>
                 <p className="resource-pub-description">{resource.description}</p>
 
+                {variant === "hero" && (
+                    <div className="resource-pub-hero-chips" aria-label="Resource details">
+                        <span>{resource.format}</span>
+                        <span>{resource.fileType}</span>
+                        <span>{resource.fileSize}</span>
+                        <span>{resource.difficulty}</span>
+                        <span>Updated {resource.lastUpdatedLabel}</span>
+                    </div>
+                )}
+
                 <dl className="resource-pub-meta">
                     <div>
                         <dt>Reading time</dt>
-                        <dd>{resource.readTime}</dd>
+                        <dd>{formatResourceReadTime(resource.readTime)}</dd>
                     </div>
                     <div>
                         <dt>File type</dt>

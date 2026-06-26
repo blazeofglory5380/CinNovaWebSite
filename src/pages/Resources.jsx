@@ -22,6 +22,33 @@ import {
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
 
+function FilterPillGroup({ label, value, options, onChange }) {
+    return (
+        <div className="resource-filter-pill-group">
+            <p className="resource-filter-pill-label" id={`filter-label-${label.replace(/\s+/g, "-").toLowerCase()}`}>
+                {label}
+            </p>
+            <div
+                className="resource-filter-pill-row"
+                role="group"
+                aria-labelledby={`filter-label-${label.replace(/\s+/g, "-").toLowerCase()}`}
+            >
+                {options.map((option) => (
+                    <button
+                        key={option}
+                        type="button"
+                        className={`resource-filter-pill${value === option ? " is-active" : ""}`}
+                        aria-pressed={value === option}
+                        onClick={() => onChange(option)}
+                    >
+                        {option}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 function ResourceStrip({ title, description, items, onPreview, onDownload }) {
     if (!items.length) return null;
 
@@ -218,10 +245,27 @@ function Resources({ onOpenResource, onSubscribe }) {
                 </div>
             </section>
 
-            <section className="section resource-library-filters" aria-label="Resource filters">
-                <div className="resource-library-filters-bar">
-                    <label className="resource-library-search">
-                        <span className="sr-only">Search resources</span>
+            <section className="section resource-library-search-panel" aria-labelledby="resource-search-title">
+                <div className="resource-search-panel-card">
+                    <div className="resource-search-panel-head">
+                        <h2 id="resource-search-title">Find the right resource</h2>
+                        <p>
+                            Search guides, templates, checklists, and reports across the CinNova library.
+                        </p>
+                    </div>
+
+                    <div className="resource-search-input-wrap">
+                        <svg
+                            className="resource-search-icon"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <circle cx="9" cy="9" r="5.75" stroke="currentColor" strokeWidth="1.6" />
+                            <path d="M13.5 13.5 17 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                        </svg>
                         <input
                             type="search"
                             value={searchTerm}
@@ -229,80 +273,45 @@ function Resources({ onOpenResource, onSubscribe }) {
                             placeholder="Search guides, templates, safety, real estate..."
                             aria-label="Search resources"
                         />
-                    </label>
-
-                    <div className="resource-library-filter-group">
-                        <label htmlFor="filter-category">
-                            Category
-                            <select
-                                id="filter-category"
-                                value={activeCategory}
-                                onChange={(e) => setActiveCategory(e.target.value)}
-                            >
-                                {resourceCategories.map((cat) => (
-                                    <option key={cat} value={cat}>
-                                        {cat}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-
-                        <label htmlFor="filter-product">
-                            Product
-                            <select
-                                id="filter-product"
-                                value={activeProduct}
-                                onChange={(e) => setActiveProduct(e.target.value)}
-                            >
-                                {resourceProductFilters.map((product) => (
-                                    <option key={product} value={product}>
-                                        {product}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-
-                        <label htmlFor="filter-type">
-                            Resource type
-                            <select
-                                id="filter-type"
-                                value={activeResourceType}
-                                onChange={(e) => setActiveResourceType(e.target.value)}
-                            >
-                                {resourceTypeFilters.map((type) => (
-                                    <option key={type} value={type}>
-                                        {type}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-
-                        <label htmlFor="filter-difficulty">
-                            Difficulty
-                            <select
-                                id="filter-difficulty"
-                                value={activeDifficulty}
-                                onChange={(e) => setActiveDifficulty(e.target.value)}
-                            >
-                                {resourceDifficultyFilters.map((level) => (
-                                    <option key={level} value={level}>
-                                        {level}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
                     </div>
-                </div>
 
-                <div className="resource-library-results-bar">
-                    <p>
-                        Showing <strong>{filteredResources.length}</strong> of {library.length} resources
-                    </p>
-                    {hasActiveFilters && (
-                        <button type="button" className="resource-library-clear" onClick={clearFilters}>
-                            Clear filters
-                        </button>
-                    )}
+                    <div className="resource-search-filters">
+                        <FilterPillGroup
+                            label="Category"
+                            value={activeCategory}
+                            options={resourceCategories}
+                            onChange={setActiveCategory}
+                        />
+                        <FilterPillGroup
+                            label="Product"
+                            value={activeProduct}
+                            options={resourceProductFilters}
+                            onChange={setActiveProduct}
+                        />
+                        <FilterPillGroup
+                            label="Resource type"
+                            value={activeResourceType}
+                            options={resourceTypeFilters}
+                            onChange={setActiveResourceType}
+                        />
+                        <FilterPillGroup
+                            label="Difficulty"
+                            value={activeDifficulty}
+                            options={resourceDifficultyFilters}
+                            onChange={setActiveDifficulty}
+                        />
+                    </div>
+
+                    <div className="resource-library-results-bar">
+                        <p>
+                            Showing <strong>{filteredResources.length}</strong> of {library.length} resources
+                        </p>
+                        {hasActiveFilters && (
+                            <button type="button" className="resource-library-clear" onClick={clearFilters}>
+                                Clear filters
+                            </button>
+                        )}
+                    </div>
                 </div>
             </section>
 

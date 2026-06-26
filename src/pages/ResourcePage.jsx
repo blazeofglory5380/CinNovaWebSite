@@ -8,6 +8,7 @@ import {
     getRelatedArticlesForResource,
     getRelatedProductsForResource,
     getResourceUrl,
+    formatResourceReadTime,
     resources,
     resourceCategoryConfig,
     withLibraryMeta,
@@ -68,7 +69,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe, onNavigat
                             <span>{resource.product}</span>
                             <span>{libraryResource.fileType}</span>
                             <span>{libraryResource.fileSize}</span>
-                            <span>{resource.readTime}</span>
+                            <span>{formatResourceReadTime(resource.readTime)}</span>
                             <span>{libraryResource.difficulty}</span>
                             <span>Updated {libraryResource.lastUpdatedLabel}</span>
                         </div>
@@ -106,7 +107,7 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe, onNavigat
                             <div className="resource-dw-meta">
                                 <span>{libraryResource.fileType}</span>
                                 <span>{libraryResource.fileSize}</span>
-                                <span>{resource.readTime}</span>
+                                <span>{formatResourceReadTime(resource.readTime)}</span>
                                 {catConfig && (
                                     <span style={{ color: catConfig.accentColor }}>
                                         {resource.category}

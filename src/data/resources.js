@@ -616,6 +616,12 @@ export function getRelatedProductsForResource(resource) {
     return [...new Set(pages)].map((page) => ({ page, ...productLabels[page] })).filter((item) => item.name);
 }
 
+export function formatResourceReadTime(readTime) {
+    if (!readTime) return "";
+    const trimmed = readTime.trim();
+    return /\bread\b/i.test(trimmed) ? trimmed : `${trimmed} read`;
+}
+
 export function generateResourceContent(resource) {
     const bar = "=".repeat(60);
     const lines = [
