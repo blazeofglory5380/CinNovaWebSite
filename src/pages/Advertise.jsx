@@ -1,5 +1,11 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import BusinessHero from "../components/business/BusinessHero.jsx";
+import BusinessSection from "../components/business/BusinessSection.jsx";
+import BusinessStats from "../components/business/BusinessStats.jsx";
+import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
+import BusinessCTABanner from "../components/business/BusinessCTABanner.jsx";
+import { advertiseFaq, businessAudienceStats } from "../data/businessCenter.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { trackSponsorCtaClick } from "../utils/analytics.js";
 
@@ -68,7 +74,7 @@ function Advertise({ onNavigate }) {
     }
 
     return (
-        <main className="product-page media-kit-page">
+        <main className="product-page business-center-page media-kit-page">
             <SEO
                 title="Advertise With Us | Cin Nova"
                 description="Reach the Cin Nova audience through website sponsorships, sponsored articles, newsletter sponsorships, and resource placements."
@@ -77,75 +83,57 @@ function Advertise({ onNavigate }) {
                 schema={advertiseSchema}
             />
 
-            <section className="section blog-hero-section">
-                <div className="section-heading blog-hero-copy">
-                    <p className="eyebrow">ADVERTISE WITH US</p>
-                    <h2>Reach readers who care about practical AI, learning, real estate, and technology.</h2>
-                    <p>
-                        Cin Nova connects useful technology content with a growing audience of
-                        students, educators, AI professionals, real estate readers, founders,
-                        and technology enthusiasts. Advertising is reviewed carefully so every
-                        placement protects reader trust and fits the surrounding content.
-                    </p>
-                    <div className="media-kit-hero-actions">
-                        <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
-                            Contact Cin Nova
-                        </button>
-                        <button className="secondary-btn" onClick={() => handleSponsorCta("View Media Kit", "media-kit")}>
-                            View Media Kit
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <BusinessHero
+                eyebrow="ADVERTISE WITH US"
+                title="Reach readers who care about practical AI, learning, real estate, and technology."
+                description="Cin Nova connects useful technology content with a growing audience of students, educators, AI professionals, real estate readers, founders, and technology enthusiasts. Advertising is reviewed carefully so every placement protects reader trust and fits the surrounding content."
+                pills={["Website sponsorships", "Sponsored articles", "Newsletter placements", "Resource features"]}
+                actions={[
+                    { label: "Contact Cin Nova", onClick: () => handleSponsorCta("Contact Cin Nova", "contact") },
+                    { label: "View Media Kit", onClick: () => handleSponsorCta("View Media Kit", "media-kit"), variant: "secondary" },
+                ]}
+            />
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">AUDIENCE OVERVIEW</p>
-                    <h2>A focused audience across growing product categories.</h2>
-                    <p>
-                        Cin Nova publishes cornerstone articles, product pages, guides, and
-                        newsletter updates across education, AI, real estate, safety, and future
-                        technology.
-                    </p>
-                </div>
-                <div className="product-grid">
+            <BusinessSection
+                eyebrow="AUDIENCE OVERVIEW"
+                title="A focused audience across growing product categories"
+                description="Cin Nova publishes cornerstone articles, product pages, guides, and newsletter updates across education, AI, real estate, safety, and future technology."
+            >
+                <BusinessStats
+                    stats={businessAudienceStats}
+                    note="Metrics marked “Placeholder metric” are estimates until verified reporting is available."
+                />
+                <div className="product-grid bc-segment-grid">
                     {audienceSegments.map((segment) => (
-                        <article className="product-card" key={segment.name}>
+                        <article className="product-card bc-segment-card" key={segment.name}>
                             <p className="product-category">{segment.category}</p>
                             <h3>{segment.name}</h3>
                             <p>{segment.description}</p>
                         </article>
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section showcase-section">
-                <div className="section-heading">
-                    <p className="eyebrow">WEBSITE SPONSORSHIPS</p>
-                    <h2>Website sponsorship opportunities.</h2>
-                    <p>
-                        Website placements are best for brands that want contextual visibility
-                        near articles, resources, and product education pages.
-                    </p>
-                </div>
-                <div className="newsletter-card" style={{ textAlign: "left", maxWidth: "860px" }}>
+            <BusinessSection
+                eyebrow="WEBSITE SPONSORSHIPS"
+                title="Website sponsorship opportunities"
+                description="Website placements are best for brands that want contextual visibility near articles, resources, and product education pages."
+                className="showcase-section"
+            >
+                <div className="newsletter-card bc-list-card">
                     <ul className="partner-type-benefits">
                         {websiteOpportunities.map((item) => (
                             <li key={item}>{item}</li>
                         ))}
                     </ul>
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">SPONSORED ARTICLES</p>
-                    <h2>Sponsored article opportunities.</h2>
-                    <p>
-                        Sponsored articles must be useful, clearly labeled, and aligned with
-                        the editorial quality of the Cin Nova blog.
-                    </p>
-                </div>
+            <BusinessSection
+                eyebrow="SPONSORED ARTICLES"
+                title="Sponsored article opportunities"
+                description="Sponsored articles must be useful, clearly labeled, and aligned with the editorial quality of the Cin Nova blog."
+            >
                 <div className="product-grid">
                     {sponsoredArticleOpportunities.map((item) => (
                         <article className="product-card" key={item}>
@@ -155,18 +143,14 @@ function Advertise({ onNavigate }) {
                         </article>
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section showcase-section">
-                <div className="section-heading">
-                    <p className="eyebrow">NEWSLETTER SPONSORSHIPS</p>
-                    <h2>Newsletter sponsorship opportunities.</h2>
-                    <p>
-                        Newsletter sponsorships put your brand in front of readers who have
-                        opted in to follow Cin Nova articles, guides, product launches, and
-                        practical AI updates.
-                    </p>
-                </div>
+            <BusinessSection
+                eyebrow="NEWSLETTER SPONSORSHIPS"
+                title="Newsletter sponsorship opportunities"
+                description="Newsletter sponsorships put your brand in front of readers who have opted in to follow Cin Nova articles, guides, product launches, and practical AI updates."
+                className="showcase-section"
+            >
                 <div className="showcase-grid">
                     {newsletterOpportunities.map((item) => (
                         <div className="showcase-card" key={item}>
@@ -175,21 +159,21 @@ function Advertise({ onNavigate }) {
                         </div>
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section" id="contact">
-                <div className="newsletter-card">
-                    <p className="eyebrow">CONTACT CTA</p>
-                    <h2>Ready to discuss a campaign?</h2>
-                    <p style={{ color: "#64748b", maxWidth: "560px", margin: "0 auto 18px", lineHeight: "1.8" }}>
-                        Tell us about your product, audience, campaign goal, budget range, and
-                        preferred timing. We will review fit and respond with availability.
-                    </p>
-                    <button className="primary-btn" onClick={() => handleSponsorCta("Contact Cin Nova", "contact")}>
-                        Contact Cin Nova
-                    </button>
-                </div>
-            </section>
+            <BusinessSection eyebrow="FAQ" title="Advertising FAQ">
+                <BusinessFAQ items={advertiseFaq} title="Advertising frequently asked questions" />
+            </BusinessSection>
+
+            <BusinessCTABanner
+                eyebrow="CONTACT CTA"
+                title="Ready to discuss a campaign?"
+                description="Tell us about your product, audience, campaign goal, budget range, and preferred timing. We will review fit and respond with availability."
+                primaryLabel="Contact Cin Nova"
+                onPrimary={() => handleSponsorCta("Contact Cin Nova", "contact")}
+                secondaryLabel="View Media Kit"
+                onSecondary={() => handleSponsorCta("View Media Kit", "media-kit")}
+            />
         </main>
     );
 }

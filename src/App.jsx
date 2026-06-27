@@ -23,6 +23,8 @@ import MediaKit from "./pages/MediaKit.jsx";
 import NewsletterPage from "./pages/NewsletterPage.jsx";
 import Advertise from "./pages/Advertise.jsx";
 import PartnerWithUs from "./pages/PartnerWithUs.jsx";
+import Partnerships from "./pages/Partnerships.jsx";
+import PressCenter from "./pages/PressCenter.jsx";
 import SponsorNewsletter from "./pages/SponsorNewsletter.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 import NewsletterSignup from "./components/NewsletterSignup.jsx";
@@ -964,10 +966,13 @@ function App() {
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { openPage("pricing");            setMobileMenuOpen(false); }}>Pricing</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
+                    <button onClick={() => { openPage("advertise");          setMobileMenuOpen(false); }}>Advertise</button>
+                    <button onClick={() => { openPage("partnerships");       setMobileMenuOpen(false); }}>Partnerships</button>
+                    <button onClick={() => { openPage("media-kit");          setMobileMenuOpen(false); }}>Media Kit</button>
+                    <button onClick={() => { openPage("press-center");        setMobileMenuOpen(false); }}>Press</button>
                     <button onClick={() => { openPage("contact");            setMobileMenuOpen(false); }}>Contact</button>
                     <button onClick={() => { openPage("newsletter");         setMobileMenuOpen(false); }}>Newsletter</button>
                     <button onClick={() => { openPage("partners");           setMobileMenuOpen(false); }}>Partners</button>
-                    <button onClick={() => { openPage("media-kit");          setMobileMenuOpen(false); }}>Media Kit</button>
                 </div>
 
                 <div className="nav-right">
@@ -1049,13 +1054,15 @@ function App() {
                 />
             )}
             {page === "pricing" && <Pricing />}
-            {page === "about" && <About />}
+            {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
             {page === "terms" && <TermsOfService onNavigate={openPage} />}
             {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
             {page === "media-kit" && <MediaKit onNavigate={openPage} />}
             {page === "advertise" && <Advertise onNavigate={openPage} />}
+            {page === "partnerships" && <Partnerships onNavigate={openPage} />}
+            {page === "press-center" && <PressCenter onNavigate={openPage} />}
             {page === "partner-with-us" && <PartnerWithUs onNavigate={openPage} />}
             {page === "sponsor-newsletter" && <SponsorNewsletter onNavigate={openPage} />}
             {page === "newsletter" && (

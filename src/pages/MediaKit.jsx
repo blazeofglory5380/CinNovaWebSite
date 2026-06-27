@@ -12,16 +12,10 @@ import {
     sanitizeText,
 } from "../utils/security.js";
 
-const audienceStats = [
-    { value: "Growing", label: "Newsletter Audience" },
-    { value: "Active", label: "Monthly Content Program" },
-    { value: "Live", label: "Resource Downloads" },
-    { value: "6 min", label: "Avg. Article Read Time" },
-    { value: "7", label: "Article Categories" },
-    { value: "12", label: "Published Resources" },
-];
-
-const audienceSegments = mediaKitSegments;
+import BusinessHero from "../components/business/BusinessHero.jsx";
+import BusinessSection from "../components/business/BusinessSection.jsx";
+import BusinessStats from "../components/business/BusinessStats.jsx";
+import { businessAudienceStats } from "../data/businessCenter.js";
 const adPlacements = mediaKitPlacements;
 
 function downloadAsset(assetType) {
@@ -201,7 +195,7 @@ function MediaKit({ onNavigate }) {
     };
 
     return (
-        <main className="product-page media-kit-page">
+        <main className="product-page business-center-page media-kit-page">
             <SEO
                 title="Media Kit | Advertise with Cin Nova"
                 description="Reach students, parents, real estate investors, and tech professionals through Cin Nova newsletter sponsorships, article placements, and display advertising."
@@ -210,60 +204,36 @@ function MediaKit({ onNavigate }) {
                 schema={mediaKitSchema}
             />
 
-            <section className="section blog-hero-section">
-                <div className="section-heading blog-hero-copy">
-                    <p className="eyebrow">MEDIA KIT 2026</p>
-                    <h2>Reach the Cin Nova audience.</h2>
-                    <p>
-                        Cin Nova reaches students, parents, real estate investors, tech
-                        professionals, and safety-conscious households through a growing blog,
-                        newsletter, and resource library. This media kit covers audience stats,
-                        placement options, technical specs, and how to get in touch.
-                    </p>
-                    <div className="media-kit-hero-actions">
-                        <button
-                            className="primary-btn"
-                            onClick={() => downloadAsset("presspack")}
-                        >
-                            ↓ Download Press Pack
-                        </button>
-                        <a href="#contact" className="secondary-btn">
-                            Contact for Rates →
-                        </a>
-                        <button
-                            className="secondary-btn"
-                            onClick={() => onNavigate?.("advertise")}
-                        >
-                            Advertise With Us
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <BusinessHero
+                eyebrow="MEDIA KIT 2026"
+                title="Reach the Cin Nova audience."
+                description="Cin Nova reaches students, parents, real estate investors, tech professionals, and safety-conscious households through a growing blog, newsletter, and resource library. This media kit covers audience stats, placement options, technical specs, and how to get in touch."
+                pills={["Audience segments", "Ad placements", "Brand assets", "Rate inquiries"]}
+                actions={[
+                    { label: "Download Press Pack", onClick: () => downloadAsset("presspack") },
+                    { label: "Contact for Rates", href: "#contact", variant: "secondary" },
+                    { label: "Advertise With Us", onClick: () => onNavigate?.("advertise"), variant: "secondary" },
+                ]}
+            />
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">AUDIENCE OVERVIEW</p>
-                    <h2>By the numbers.</h2>
-                    <p>Current audience metrics across newsletter, blog, and resources.</p>
-                </div>
-                <div className="mk-stats-grid">
-                    {audienceStats.map((stat) => (
-                        <div key={stat.label} className="mk-stat-card">
-                            <strong className="mk-stat-value">{stat.value}</strong>
-                            <p className="mk-stat-label">{stat.label}</p>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            <BusinessSection
+                eyebrow="AUDIENCE OVERVIEW"
+                title="By the numbers"
+                description="Current audience metrics across newsletter, blog, and resources."
+            >
+                <BusinessStats
+                    stats={businessAudienceStats}
+                    note="Metrics marked “Placeholder metric” will be updated with verified analytics."
+                />
+            </BusinessSection>
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">AUDIENCE SEGMENTS</p>
-                    <h2>Who reads Cin Nova.</h2>
-                    <p>Four distinct reader segments across the Cin Nova content and product ecosystem.</p>
-                </div>
+            <BusinessSection
+                eyebrow="AUDIENCE SEGMENTS"
+                title="Who reads Cin Nova"
+                description="Four distinct reader segments across the Cin Nova content and product ecosystem."
+            >
                 <div className="mk-segments-grid">
-                    {audienceSegments.map((seg) => (
+                    {mediaKitSegments.map((seg) => (
                         <article key={seg.name} className="mk-segment-card mk-segment-card-photo">
                             <div className="mk-segment-photo-wrap">
                                 <MarketingPhoto src={seg.image} alt={seg.alt} className="mk-segment-photo-img" />
@@ -278,19 +248,15 @@ function MediaKit({ onNavigate }) {
                         </article>
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">AD PLACEMENTS</p>
-                    <h2>Six ways to reach the Cin Nova audience.</h2>
-                    <p>
-                        All placements are reviewed and approved by Cin Nova. Pricing shown is an
-                        estimated range — final rates depend on campaign details and availability.
-                    </p>
-                </div>
+            <BusinessSection
+                eyebrow="AD PLACEMENTS"
+                title="Six ways to reach the Cin Nova audience"
+                description="All placements are reviewed and approved by Cin Nova. Pricing shown is an estimated range — final rates depend on campaign details and availability."
+            >
                 <div className="mk-placements-grid">
-                    {adPlacements.map((placement) => (
+                    {mediaKitPlacements.map((placement) => (
                         <article
                             key={placement.name}
                             className="mk-placement-card mk-placement-card-photo"
@@ -324,19 +290,18 @@ function MediaKit({ onNavigate }) {
                     </button>
                     <button
                         className="secondary-btn"
-                        onClick={() => onNavigate?.("partner-with-us")}
+                        onClick={() => onNavigate?.("partnerships")}
                     >
-                        Partner With Us
+                        Partnerships
                     </button>
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section">
-                <div className="section-heading">
-                    <p className="eyebrow">BRAND ASSETS</p>
-                    <h2>Downloads for press and partners.</h2>
-                    <p>Download the Cin Nova press pack, brand guidelines, and audience report.</p>
-                </div>
+            <BusinessSection
+                eyebrow="BRAND ASSETS"
+                title="Downloads for press and partners"
+                description="Download the Cin Nova press pack, brand guidelines, and audience report."
+            >
                 <div className="mk-assets-grid">
                     {mediaKitAssets.map((asset) => (
                         <div key={asset.key} className="mk-asset-card mk-asset-card-photo">
@@ -351,23 +316,14 @@ function MediaKit({ onNavigate }) {
                         </div>
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            <section className="section" id="contact">
-                <div className="section-heading">
-                    <p className="eyebrow">CONTACT</p>
-                    <h2>Ready to advertise? Get in touch.</h2>
-                    <p>
-                        Fill in the form below or email{" "}
-                        <a
-                            href="mailto:thin_line_99@yahoo.com"
-                            className="mk-email-link"
-                        >
-                            thin_line_99@yahoo.com
-                        </a>{" "}
-                        directly with your campaign brief.
-                    </p>
-                </div>
+            <BusinessSection
+                id="contact"
+                eyebrow="CONTACT"
+                title="Ready to advertise? Get in touch."
+                description="Fill in the form below or email thin_line_99@yahoo.com directly with your campaign brief."
+            >
 
                 {contactSent ? (
                     <div className="partner-success">
@@ -427,7 +383,7 @@ function MediaKit({ onNavigate }) {
                                     onChange={(e) => updateContact("placement", e.target.value)}
                                 >
                                     <option value="">Select a placement...</option>
-                                    {adPlacements.map((p) => (
+                                    {mediaKitPlacements.map((p) => (
                                         <option key={p.name} value={p.name}>{p.name}</option>
                                     ))}
                                     <option value="Custom Package">Custom Package</option>
@@ -450,7 +406,7 @@ function MediaKit({ onNavigate }) {
                         </button>
                     </form>
                 )}
-            </section>
+            </BusinessSection>
         </main>
     );
 }

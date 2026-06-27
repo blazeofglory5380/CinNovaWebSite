@@ -32,14 +32,13 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                 </div>
 
                 <div className="site-footer-col">
-                    <p className="site-footer-col-title">Company</p>
-                    <button type="button" onClick={() => onNavigate("about")}>About</button>
-                    <button type="button" onClick={() => onNavigate("partners")}>Partners</button>
+                    <p className="site-footer-col-title">Business</p>
+                    <button type="button" onClick={() => onNavigate("about")}>About CinNova</button>
+                    <button type="button" onClick={() => onNavigate("advertise")}>Advertise with CinNova</button>
                     <button type="button" onClick={() => onNavigate("media-kit")}>Media Kit</button>
+                    <button type="button" onClick={() => onNavigate("partnerships")}>Partnerships</button>
+                    <button type="button" onClick={() => onNavigate("press-center")}>Press Center</button>
                     <button type="button" onClick={() => onNavigate("contact")}>Contact</button>
-                    <span className="site-footer-roadmap" aria-disabled="true">
-                        Roadmap (Coming Soon)
-                    </span>
                 </div>
 
                 <div className="site-footer-col">

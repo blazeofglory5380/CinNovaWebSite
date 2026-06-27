@@ -2,66 +2,30 @@ import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
+import BusinessHero from "../components/business/BusinessHero.jsx";
+import BusinessSection from "../components/business/BusinessSection.jsx";
+import BusinessStats from "../components/business/BusinessStats.jsx";
+import BusinessTimeline from "../components/business/BusinessTimeline.jsx";
+import BusinessCTABanner from "../components/business/BusinessCTABanner.jsx";
 import { aboutAudiences, aboutValues, ecosystemProducts, productMarketing } from "../data/marketingImages.js";
+import { aboutRoadmapTimeline, businessCompanyStats } from "../data/businessCenter.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-
-const roadmap = [
-    {
-        phase: "01",
-        title: "Build Product Pages & Brand Website",
-        status: "In Progress",
-        statusColor: "#1d4ed8",
-        description:
-            "Establish the Cin Nova brand identity, product pages, and a professional web presence that represents the full product ecosystem.",
-    },
-    {
-        phase: "02",
-        title: "Launch Core Apps",
-        status: "Coming Soon",
-        statusColor: "#7c3aed",
-        description:
-            "Ship the first versions of StudyNest, PoisonGuard, TechMate AI, Kiddo, and Cin Nova Real Estate as functional web applications.",
-    },
-    {
-        phase: "03",
-        title: "Grow Blog & Newsletter",
-        status: "Planned",
-        statusColor: "#64748b",
-        description:
-            "Publish consistent content across all five product verticals — education, safety, tech, family, and real estate — to build organic traffic and an email list.",
-    },
-    {
-        phase: "04",
-        title: "Add Subscriptions & Premium Tools",
-        status: "Planned",
-        statusColor: "#64748b",
-        description:
-            "Launch paid tiers across all products. Introduce advanced AI features, deeper analytics, and premium tools that justify recurring revenue.",
-    },
-    {
-        phase: "05",
-        title: "Expand to Business, School & Enterprise",
-        status: "Future",
-        statusColor: "#334155",
-        description:
-            "Scale beyond individual users into classrooms, IT teams, real estate brokerages, and enterprise organizations with team plans and custom integrations.",
-    },
-];
 
 const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "About Cin Nova",
-    description: "Learn about Cin Nova — the company building practical AI software products for education, safety, real estate, tech support, and early childhood learning.",
+    description:
+        "Learn about Cin Nova — the company building practical AI software products for education, safety, real estate, tech support, and early childhood learning.",
     url: `${siteUrl}/?page=about`,
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
-function About() {
+function About({ onNavigate }) {
     return (
-        <div className="product-page">
+        <main className="product-page business-center-page">
             <SEO
                 title="About Cin Nova | Practical AI Software Company"
                 description="Cin Nova builds AI-powered products for learning, safety, real estate, tech support, and early childhood education. Learn about our products, values, and roadmap."
@@ -70,48 +34,46 @@ function About() {
                 schema={aboutSchema}
             />
 
-            {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="section" style={{ paddingBottom: "48px" }}>
-                <div className="section-heading" style={{ marginBottom: 0 }}>
-                    <p className="eyebrow">ABOUT CIN NOVA</p>
-                    <h2>Building practical software for real-world problems.</h2>
-                    <p style={{ maxWidth: "700px", margin: "0 auto", fontSize: "1.1rem", lineHeight: "1.9" }}>
-                        Cin Nova is a software and media company creating AI tools, education
-                        platforms, safety products, technology assistants, and real estate
-                        intelligence — built for people who need tools that actually work.
-                    </p>
-                </div>
-            </section>
+            <BusinessHero
+                eyebrow="ABOUT CIN NOVA"
+                title="Building practical software for real-world problems."
+                description="Cin Nova is a software and media company creating AI tools, education platforms, safety products, technology assistants, and real estate intelligence — built for people who need tools that actually work."
+                pills={["5 products", "Education & safety", "Media + software", "Long-term build"]}
+                actions={[
+                    { label: "View partnerships", onClick: () => onNavigate?.("partnerships"), variant: "secondary" },
+                    { label: "Press center", onClick: () => onNavigate?.("press-center"), variant: "secondary" },
+                ]}
+            />
 
-            {/* ── Stats bar ──────────────────────────────────────── */}
-            <section className="section" style={{ paddingTop: 0, paddingBottom: "60px" }}>
-                <div className="hero-stats" style={{ maxWidth: "760px", margin: "0 auto" }}>
-                    <div><strong>5</strong><span>Products</span></div>
-                    <div><strong>4</strong><span>Industries</span></div>
-                    <div><strong>1</strong><span>Company</span></div>
-                </div>
-            </section>
+            <BusinessSection
+                eyebrow="COMPANY SNAPSHOT"
+                title="Cin Nova by the numbers"
+                description="A growing product and content ecosystem. Placeholder metrics are labeled until verified reporting is available."
+            >
+                <BusinessStats
+                    stats={businessCompanyStats}
+                    note="Metrics marked “Placeholder metric” will be updated with verified analytics."
+                />
+            </BusinessSection>
 
-            {/* ── Mission ────────────────────────────────────────── */}
-            <section className="section showcase-section" id="mission">
-                <div className="section-heading">
-                    <p className="eyebrow">OUR MISSION</p>
-                    <h2>Help people learn, stay safe, solve problems, and invest smarter.</h2>
-                </div>
-
+            <BusinessSection
+                eyebrow="OUR MISSION"
+                title="Help people learn, stay safe, solve problems, and invest smarter."
+                id="mission"
+                className="showcase-section"
+            >
                 <div className="showcase-grid">
                     <div className="showcase-card">
                         <h3>What We Build</h3>
                         <div className="chat-ai" style={{ marginTop: "14px" }}>
-                            Cin Nova builds software that addresses real gaps in how people
-                            access learning, safety information, technical help, and investment
-                            tools. Every product starts with a clear problem and works backward
-                            to the simplest, most useful solution.
-                            <br /><br />
-                            We focus on five areas: education, family safety, technology support,
-                            early childhood learning, and real estate intelligence — because
-                            these are areas where the right tool can genuinely change outcomes
-                            for individuals and families.
+                            Cin Nova builds software that addresses real gaps in how people access learning, safety
+                            information, technical help, and investment tools. Every product starts with a clear
+                            problem and works backward to the simplest, most useful solution.
+                            <br />
+                            <br />
+                            We focus on five areas: education, family safety, technology support, early childhood
+                            learning, and real estate intelligence — because these are areas where the right tool
+                            can genuinely change outcomes for individuals and families.
                         </div>
                     </div>
 
@@ -136,19 +98,14 @@ function About() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </BusinessSection>
 
-            {/* ── Product Ecosystem ──────────────────────────────── */}
-            <section className="section" id="products">
-                <div className="section-heading">
-                    <p className="eyebrow">THE ECOSYSTEM</p>
-                    <h2>Five products. One brand. A connected platform.</h2>
-                    <p>
-                        Every Cin Nova product lives under the same umbrella — sharing
-                        infrastructure, design language, and a single account login.
-                    </p>
-                </div>
-
+            <BusinessSection
+                eyebrow="THE ECOSYSTEM"
+                title="Five products. One brand. A connected platform."
+                description="Every Cin Nova product lives under the same umbrella — sharing infrastructure, design language, and a single account login."
+                id="products"
+            >
                 <div className="product-grid product-grid-photo">
                     {ecosystemProducts.map((p) => (
                         <FeaturePhotoCard
@@ -161,154 +118,71 @@ function About() {
                         />
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            {/* ── Founder Vision ─────────────────────────────────── */}
-            <section className="section showcase-section" id="vision">
-                <div className="section-heading">
-                    <p className="eyebrow">FOUNDER VISION</p>
-                    <h2>Built for the long term.</h2>
-                </div>
-
-                <div
-                    className="newsletter-card"
-                    style={{ textAlign: "left", maxWidth: "860px" }}
-                >
+            <BusinessSection eyebrow="FOUNDER VISION" title="Built for the long term." id="vision" className="showcase-section">
+                <div className="newsletter-card bc-founder-card">
                     <p className="eyebrow">FROM THE FOUNDER</p>
-                    <h2 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)", marginBottom: "24px" }}>
-                        "Cin Nova is being built as a real software company — not a side project."
+                    <h2 className="bc-founder-quote">
+                        &ldquo;Cin Nova is being built as a real software company — not a side project.&rdquo;
                     </h2>
-
-                    <p style={{ color: "#334155", lineHeight: "1.9", marginBottom: "18px" }}>
-                        The goal is straightforward: identify categories where people genuinely
-                        need better tools, build clean and useful software, and grow an audience
-                        through honest content and product quality. That is how sustainable
-                        technology businesses are built.
+                    <p>
+                        The goal is straightforward: identify categories where people genuinely need better tools,
+                        build clean and useful software, and grow an audience through honest content and product
+                        quality. That is how sustainable technology businesses are built.
                     </p>
-                    <p style={{ color: "#334155", lineHeight: "1.9", marginBottom: "18px" }}>
-                        Each product under the Cin Nova brand is designed to stand on its own —
-                        to be useful to someone on day one, not just after a long onboarding
-                        process. The five initial products cover education, safety, tech support,
-                        early childhood learning, and real estate because these are underserved
-                        markets where AI can make a meaningful difference today.
+                    <p>
+                        Each product under the Cin Nova brand is designed to stand on its own — to be useful to
+                        someone on day one, not just after a long onboarding process. The five initial products
+                        cover education, safety, tech support, early childhood learning, and real estate because
+                        these are underserved markets where AI can make a meaningful difference today.
                     </p>
-                    <p style={{ color: "#334155", lineHeight: "1.9" }}>
-                        The roadmap is clear: ship great products, create content that helps
-                        people, build an email list, launch subscriptions, and keep improving.
-                        No shortcuts. No pivots. Just the work.
+                    <p>
+                        The roadmap is clear: ship great products, create content that helps people, build an email
+                        list, launch subscriptions, and keep improving. No shortcuts. No pivots. Just the work.
                     </p>
-
-                    <div
-                        style={{
-                            marginTop: "28px",
-                            paddingTop: "24px",
-                            borderTop: "1px solid #e2e8f0",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "14px",
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: "48px",
-                                height: "48px",
-                                borderRadius: "14px",
-                                background: "linear-gradient(135deg, #38bdf8, #7c3aed)",
-                                display: "grid",
-                                placeItems: "center",
-                                fontWeight: 900,
-                                fontSize: "1.1rem",
-                                color: "#fff",
-                                flexShrink: 0,
-                            }}
-                        >
+                    <div className="bc-founder-meta">
+                        <div className="bc-founder-avatar" aria-hidden="true">
                             CN
                         </div>
                         <div>
-                            <strong style={{ display: "block", color: "#0f172a" }}>Cin Nova</strong>
-                            <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Founder &amp; Builder</span>
+                            <strong>Cin Nova</strong>
+                            <span>Founder &amp; Builder</span>
                         </div>
                     </div>
                 </div>
-            </section>
+            </BusinessSection>
 
-            {/* ── Values ─────────────────────────────────────────── */}
-            <section className="section" id="values">
-                <div className="section-heading">
-                    <p className="eyebrow">OUR VALUES</p>
-                    <h2>The principles behind every product decision.</h2>
-                    <p>
-                        These aren't mission-statement buzzwords. They're the actual filters
-                        used when deciding what to build, what to ship, and what to cut.
-                    </p>
-                </div>
-
+            <BusinessSection
+                eyebrow="OUR VALUES"
+                title="The principles behind every product decision."
+                description="These aren't mission-statement buzzwords. They're the actual filters used when deciding what to build, what to ship, and what to cut."
+                id="values"
+            >
                 <div className="product-grid product-grid-photo">
                     {aboutValues.map((v) => (
                         <FeaturePhotoCard key={v.title} {...v} />
                     ))}
                 </div>
-            </section>
+            </BusinessSection>
 
-            {/* ── Roadmap ────────────────────────────────────────── */}
-            <section className="section showcase-section" id="roadmap">
-                <div className="section-heading">
-                    <p className="eyebrow">ROADMAP</p>
-                    <h2>Five phases. One direction.</h2>
-                    <p>
-                        Building a sustainable software company is a long game.
-                        Here's how Cin Nova is approaching it — one phase at a time.
-                    </p>
-                </div>
+            <BusinessSection
+                eyebrow="ROADMAP"
+                title="Five phases. One direction."
+                description="Building a sustainable software company is a long game. Here's how Cin Nova is approaching it — one phase at a time."
+                id="roadmap"
+                className="showcase-section"
+            >
+                <BusinessTimeline items={aboutRoadmapTimeline} />
+            </BusinessSection>
 
-                <div className="product-grid">
-                    {roadmap.map((step) => (
-                        <article className="product-card" key={step.phase}>
-                            <div
-                                className="product-icon"
-                                style={{
-                                    background: "rgba(56,189,248,0.10)",
-                                    fontSize: "1rem",
-                                    fontWeight: 900,
-                                    color: "#1d4ed8",
-                                    letterSpacing: "1px",
-                                }}
-                            >
-                                {step.phase}
-                            </div>
-
-                            <div
-                                style={{
-                                    display: "inline-block",
-                                    padding: "3px 10px",
-                                    borderRadius: "999px",
-                                    border: `1px solid ${step.statusColor}40`,
-                                    background: `${step.statusColor}14`,
-                                    color: step.statusColor,
-                                    fontSize: "0.73rem",
-                                    fontWeight: 900,
-                                    letterSpacing: "1px",
-                                    marginBottom: "12px",
-                                }}
-                            >
-                                {step.status}
-                            </div>
-
-                            <h3 style={{ marginBottom: "10px" }}>{step.title}</h3>
-                            <p>{step.description}</p>
-                        </article>
-                    ))}
-                </div>
-            </section>
-
-            {/* ── CTA ─────────────────────────────────────────────── */}
-            <section className="section" id="community">
+            <BusinessSection id="community">
                 <div className="newsletter-card">
                     <p className="eyebrow">JOIN THE COMMUNITY</p>
                     <h2>Join the Cin Nova community and follow the build.</h2>
-                    <p style={{ color: "#64748b", maxWidth: "520px", margin: "0 auto 8px", lineHeight: "1.8" }}>
-                        Get product updates, early access announcements, and behind-the-scenes
-                        content delivered to your inbox.
+                    <p className="bc-newsletter-lead">
+                        Get product updates, early access announcements, and behind-the-scenes content delivered to
+                        your inbox.
                     </p>
                     <NewsletterSignup
                         onSubscribe={saveSubscriber}
@@ -316,9 +190,8 @@ function About() {
                         tags={["Community", "Company Updates"]}
                     />
                 </div>
-            </section>
-
-        </div>
+            </BusinessSection>
+        </main>
     );
 }
 
