@@ -16012,14 +16012,29 @@ button.product-hero-pill {
 
 /* Real Estate — city / property grid */
 
+.immersive-scene--real-estate {
+    --immersive-opacity: 0.22;
+}
+
+.immersive-scene--real-estate.immersive-scene--calm {
+    --immersive-opacity: 0.18;
+}
+
 .immersive-scene--real-estate .immersive-scene__grid--city {
     inset: 0;
     background:
-        linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px),
-        linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+        linear-gradient(rgba(37, 99, 235, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, transparent 0%, rgba(239, 246, 255, 0.35) 100%);
     background-size: 36px 36px, 36px 36px, 100% 100%;
-    opacity: 0.92;
+    opacity: 0.55;
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, rgba(0, 0, 0, 0.35) 55%, #000 75%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, rgba(0, 0, 0, 0.35) 55%, #000 75%);
+}
+
+.hero-with-immersive-scene.studynest-hero:has(.immersive-scene--real-estate) > :not(.immersive-scene) {
+    position: relative;
+    z-index: 1;
 }
 
 .immersive-house-card {
@@ -16073,9 +16088,9 @@ button.product-hero-pill {
     bottom: 14%;
     width: 160px;
     height: 72px;
-    border-left: 2px solid rgba(37, 99, 235, 0.25);
-    border-bottom: 2px solid rgba(37, 99, 235, 0.25);
-    opacity: var(--immersive-opacity);
+    border-left: 2px solid rgba(37, 99, 235, 0.18);
+    border-bottom: 2px solid rgba(37, 99, 235, 0.18);
+    opacity: calc(var(--immersive-opacity) * 0.9);
 }
 
 .immersive-scene--real-estate .immersive-scene__chart--line::after {
@@ -16254,7 +16269,8 @@ button.product-hero-pill {
     }
 
     .immersive-scene--real-estate .immersive-scene__static-fallback {
-        background: linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(239, 246, 255, 0.9) 100%);
+        opacity: 0.3;
+        background: linear-gradient(90deg, transparent 0%, rgba(239, 246, 255, 0.45) 65%);
     }
 
     .immersive-scene--techmate .immersive-scene__static-fallback {
