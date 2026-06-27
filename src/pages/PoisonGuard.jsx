@@ -307,11 +307,13 @@ function PoisonGuard() {
                 </div>
             </section>
 
-            <PoisonGuardFeatureModal
-                feature={activeFeature}
-                onClose={handleCloseFeature}
-                returnFocusRef={returnFocusRef}
-            />
+            {activeFeature ? (
+                <PoisonGuardFeatureModal
+                    feature={activeFeature}
+                    onClose={handleCloseFeature}
+                    returnFocusRef={returnFocusRef}
+                />
+            ) : null}
 
             <section className="section pg-preview" aria-labelledby="pg-preview-title">
                 <div className="pg-section-head">

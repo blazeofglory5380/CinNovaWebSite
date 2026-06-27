@@ -9,6 +9,8 @@ function PoisonGuardFeatureModal({ feature, onClose, returnFocusRef }) {
     const closeBtnRef = useRef(null);
 
     useEffect(() => {
+        if (!feature) return;
+
         const previousFocus = returnFocusRef?.current;
         closeBtnRef.current?.focus();
 
@@ -43,9 +45,12 @@ function PoisonGuardFeatureModal({ feature, onClose, returnFocusRef }) {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
             document.body.style.overflow = previousOverflow;
+            if (!previousOverflow) {
+                document.body.style.removeProperty("overflow");
+            }
             previousFocus?.focus?.();
         };
-    }, [onClose, returnFocusRef]);
+    }, [feature, onClose, returnFocusRef]);
 
     function handleBackdropClick(event) {
         if (event.target === event.currentTarget) {
