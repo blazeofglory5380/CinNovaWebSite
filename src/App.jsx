@@ -81,7 +81,7 @@ const products = [
             "AI-powered study tools with notes, flashcards, quizzes, study guides, tutoring, planner support, and future stylus note-taking.",
         page: "studynest",
         image: "/images/products/studynest-student-learning.jpg",
-        imageAlt: "Student writing organized notes in a study checklist â€” the foundation of effective learning",
+        imageAlt: "Student writing organized notes in a study checklist \u2014 the foundation of effective learning",
     },
     {
         name: "PoisonGuard",
@@ -92,7 +92,7 @@ const products = [
             "A poison and chemical safety assistant for families, pets, schools, and future public safety use.",
         page: "poisonguard",
         image: "/images/products/poisonguard-pet-family-safety.jpg",
-        imageAlt: "Happy dog outdoors â€” PoisonGuard helps protect pets and families from household hazards",
+        imageAlt: "Happy dog outdoors \u2014 PoisonGuard helps protect pets and families from household hazards",
     },
     {
         name: "Kiddo",
@@ -103,7 +103,7 @@ const products = [
             "A playful early-learning platform for ABCs, reading, writing, counting, math, characters, levels, and rewards.",
         page: "kiddo",
         image: "/images/products/kiddo-child-learning.jpg",
-        imageAlt: "Joyful child covered in colorful paint â€” Kiddo makes early learning fun and playful",
+        imageAlt: "Joyful child covered in colorful paint \u2014 Kiddo makes early learning fun and playful",
     },
     {
         name: "TechMate AI",
@@ -114,7 +114,7 @@ const products = [
             "An AI troubleshooting assistant for phones, computers, software, apps, smart devices, and everyday tech problems.",
         page: "techmate",
         image: "/images/products/techmate-ai-device-support.jpg",
-        imageAlt: "MacBook with code editor open on a clean home office desk â€” TechMate AI guides device troubleshooting",
+        imageAlt: "MacBook with code editor open on a clean home office desk \u2014 TechMate AI guides device troubleshooting",
     },
     {
         name: "Cin Nova Real Estate",
@@ -125,7 +125,7 @@ const products = [
             "AI tools for property analysis, deal evaluation, mortgage estimates, cash flow, commercial real estate, land, and development intelligence.",
         page: "real-estate",
         image: "/images/products/cinnova-real-estate-property.jpg",
-        imageAlt: "Classic white colonial house with a green lawn â€” Cin Nova Real Estate AI for property analysis",
+        imageAlt: "Classic white colonial house with a green lawn \u2014 Cin Nova Real Estate AI for property analysis",
     },
 ];
 
@@ -273,7 +273,7 @@ const timeline = [
 const productDetails = {
     studynest: {
         whoFor: ["High school and college students", "Self-directed learners", "Exam preppers and certification seekers"],
-        problem: "Students spend hours rereading notes without retaining anything. StudyNest converts notes into active recall tools â€” flashcards, quizzes, and AI-guided sessions â€” so studying actually sticks.",
+        problem: "Students spend hours rereading notes without retaining anything. StudyNest converts notes into active recall tools \u2014 flashcards, quizzes, and AI-guided sessions \u2014 so studying actually sticks.",
         features: ["AI-powered flashcard generation", "Smart quiz builder", "Note summarization", "Spaced repetition engine", "Study planner", "AI tutor chat", "Progress dashboard", "Future stylus note-taking"],
     },
     poisonguard: {
@@ -282,7 +282,7 @@ const productDetails = {
         features: ["Product barcode scanner", "Ingredient toxicity lookup", "Pet-specific safety database", "Plant hazard identification", "Emergency first-aid guidance", "Poison Control integration", "Scan history log", "Multi-pet support"],
     },
     kiddo: {
-        whoFor: ["Parents of children ages 2â€“7", "Early childhood educators", "Homeschool families"],
+        whoFor: ["Parents of children ages 2\u20137", "Early childhood educators", "Homeschool families"],
         problem: "Early learning apps are either too passive or too complex. Kiddo uses characters, levels, and rewards to make ABCs, reading, and counting genuinely fun while giving parents a clear view of progress.",
         features: ["ABC and phonics lessons", "Interactive reading games", "Counting and number activities", "Reward badges and stars", "Character companions", "Parent progress dashboard", "Age-adaptive difficulty", "No ads, no in-app purchases"],
     },
@@ -346,7 +346,7 @@ function FeatureIconsSection() {
             <div className="section-heading">
                 <p className="eyebrow">WHAT WE BUILD</p>
                 <h2>AI-powered tools across every major domain</h2>
-                <p>Six core capability areas â€” every Cin Nova product is built on one or more of these foundations.</p>
+                <p>Six core capability areas \u2014 every Cin Nova product is built on one or more of these foundations.</p>
             </div>
             <div className="feature-icons-grid product-grid-photo">
                 {featureCategories.map((cat) => (
@@ -436,9 +436,9 @@ const platformPreviews = [
         badge: "SN",
         category: "Education AI",
         accentColor: "#0ea5e9",
-        desc: "Smart notes, spaced-repetition flashcards, AI tutoring, and a study planner â€” all in one connected workspace.",
+        desc: "Smart notes, spaced-repetition flashcards, AI tutoring, and a study planner \u2014 all in one connected workspace.",
         page: "studynest",
-        mockupLines: ["Notes â†’ 32 flashcards generated", "AI Tutor: Biology session ready", "Planner: 3 tasks due tomorrow"],
+        mockupLines: ["Notes \u2192 32 flashcards generated", "AI Tutor: Biology session ready", "Planner: 3 tasks due tomorrow"],
     },
     {
         name: "PoisonGuard",
@@ -447,7 +447,7 @@ const platformPreviews = [
         accentColor: "#10b981",
         desc: "Scan household products, detect chemical risk levels, and get emergency guidance for pets and families instantly.",
         page: "poisonguard",
-        mockupLines: ["Hazard Scanner: Ready to scan", "Risk Level: Low âœ“", "Pet Safety: 2 items flagged"],
+        mockupLines: ["Hazard Scanner: Ready to scan", { text: "Risk Level: Low", success: true }, "Pet Safety: 2 items flagged"],
     },
     {
         name: "Kiddo",
@@ -463,9 +463,9 @@ const platformPreviews = [
         badge: "TM",
         category: "Tech Support AI",
         accentColor: "#8b5cf6",
-        desc: "Diagnose devices, look up error codes, troubleshoot Wi-Fi, and follow guided repair steps â€” no technician needed.",
+        desc: "Diagnose devices, look up error codes, troubleshoot Wi-Fi, and follow guided repair steps \u2014 no technician needed.",
         page: "techmate",
-        mockupLines: ["Device Health: 98% âœ“", "Wi-Fi Troubleshooter: Active", "Error Code Lookup: Resolved"],
+        mockupLines: [{ text: "Device Health: 98%", success: true }, "Wi-Fi Troubleshooter: Active", "Error Code Lookup: Resolved"],
     },
     {
         name: "Real Estate AI",
@@ -474,9 +474,13 @@ const platformPreviews = [
         accentColor: "#2563eb",
         desc: "Analyze investment deals, estimate mortgage payments, review cash flow, and score properties against your goals.",
         page: "real-estate",
-        mockupLines: ["Deal Score: A- (Strong Buy)", "Cap Rate: 8.1% | Cash Flow: +$645", "Market Intelligence: Rising â†‘"],
+        mockupLines: ["Deal Score: A- (Strong Buy)", "Cap Rate: 8.1% | Cash Flow: +$645", "Market Intelligence: Rising \u2191"],
     },
 ];
+
+function platformMockupLineKey(line) {
+    return typeof line === "string" ? line : line.text;
+}
 
 function PlatformScreenshotCard({ preview, onNavigate }) {
     const photo = productMarketing[preview.page]?.card;
@@ -501,8 +505,11 @@ function PlatformScreenshotCard({ preview, onNavigate }) {
                     </div>
                     <div className="platform-screen-rows">
                         {preview.mockupLines.map((line) => (
-                            <div key={line} className="platform-screen-row">
-                                {line}
+                            <div
+                                key={platformMockupLineKey(line)}
+                                className={`platform-screen-row${typeof line === "object" && line.success ? " platform-screen-row--success" : ""}`}
+                            >
+                                {typeof line === "string" ? line : line.text}
                             </div>
                         ))}
                     </div>
@@ -517,7 +524,7 @@ function PlatformScreenshotCard({ preview, onNavigate }) {
                     style={{ borderColor: preview.accentColor + "66", color: preview.accentColor }}
                     onClick={() => onNavigate(preview.page)}
                 >
-                    Explore {preview.name} â†’
+                    Explore {preview.name}
                 </button>
             </div>
         </article>
@@ -592,7 +599,7 @@ function ProductDetailSection({ product, index, onNavigate }) {
                             <ul className="product-features-list">
                                 {detail.features.map((f) => (
                                     <li key={f}>
-                                        <span className="feature-check" aria-hidden="true">âœ“</span>
+                                        <span className="feature-check" aria-hidden="true" />
                                         {f}
                                     </li>
                                 ))}
@@ -623,7 +630,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                     <p className="eyebrow">PRODUCT CATALOG</p>
                     <h1>Five platforms. One connected AI ecosystem.</h1>
                     <p className="hero-text">
-                        Every Cin Nova product solves a specific real-world problem â€” and each one is built to
+                        Every Cin Nova product solves a specific real-world problem \u2014 and each one is built to
                         work together as a unified AI platform.
                     </p>
                     <div className="hero-actions">
@@ -661,7 +668,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                     <p className="eyebrow">PRODUCT PREVIEWS</p>
                     <h2>Inside the Cin Nova Ecosystem</h2>
                     <p>
-                        Editorial previews of each product â€” real photography paired with the
+                        Editorial previews of each product \u2014 real photography paired with the
                         capabilities that define the Cin Nova platform family.
                     </p>
                 </div>
@@ -784,7 +791,7 @@ function App() {
         trackPageView(window.location.pathname + window.location.search);
     }, []);
 
-    // Timed newsletter popup â€” fires once per session after 45 s
+    // Timed newsletter popup - fires once per session after 45 s
     useEffect(() => {
         if (safeGetSessionFlag(POPUP_KEY)) return;
         const timer = setTimeout(() => {
@@ -796,7 +803,7 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
-    // 50% scroll trigger â€” fires once, removes itself after triggering or dismissal
+    // 50% scroll trigger - fires once, removes itself after triggering or dismissal
     useEffect(() => {
         if (safeGetSessionFlag(POPUP_KEY)) return;
         function onScroll50() {
@@ -816,7 +823,7 @@ function App() {
         return () => window.removeEventListener("scroll", onScroll50);
     }, []);
 
-    // Exit-intent popup â€” mouse leaves viewport through the top
+    // Exit-intent popup - mouse leaves viewport through the top
     useEffect(() => {
         function onMouseLeave(e) {
             if (
@@ -832,7 +839,7 @@ function App() {
         return () => document.removeEventListener("mouseleave", onMouseLeave);
     }, [showNewsletterPopup, showGuideModal]);
 
-    // Sticky bar â€” appears after 40 % scroll, once per session
+    // Sticky bar - appears after 40 % scroll, once per session
     useEffect(() => {
         if (stickyDismissed) return;
         function onScroll() {
@@ -1015,9 +1022,7 @@ function App() {
                         className="nav-mobile-close"
                         onClick={() => setMobileMenuOpen(false)}
                         aria-label="Close menu"
-                    >
-                        âœ•
-                    </button>
+                    />
                     <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
                     <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
