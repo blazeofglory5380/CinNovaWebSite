@@ -1,0 +1,20 @@
+{
+  "description": "Internal scanner validation manifest. Copy to manifest.json and add real test images.",
+  "cases": [
+    {
+      "imagePath": "public/images/blog/healthcare/pet-safety-home-environment.jpg",
+      "expectedSpecies": "Domestic Cat",
+      "reviewerNotes": "Pet-safe home environment baseline"
+    },
+    {
+      "imagePath": "public/images/products/kiddo-child-learning.jpg",
+      "expectedSpecies": "Unknown plant",
+      "reviewerNotes": "Child learning scene — should not classify as pet"
+    },
+    {
+      "imagePath": "public/images/blog/healthcare/veterinarian-pet-examination.jpg",
+      "expectedSpecies": "Domestic Dog",
+      "reviewerNotes": "Veterinary exam reference"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { getPublishedBlogPosts, siteUrl } from "./blogPosts.js";
-import { getResourceHeroImage, resolveResourceCoverImage } from "./marketingImages.js";
+import { getResourceHeroImage, resolveResourceCoverImage, auditResourceCoverList, auditResourceHeroRegistry } from "./marketingImages.js";
 import { trackResourceDownload } from "../utils/analytics.js";
 
 export const resourceCategories = [
@@ -532,46 +532,47 @@ export function getLibraryResources() {
     return resources.map(withLibraryMeta);
 }
 
-export function getRecentResourceBadges(resource) {
-    const badges = [];
+export function getPublicationStatusBadge(resource) {
     const added = new Date(resource.addedAt);
     const updated = new Date(resource.lastUpdated);
-    const monthLabel = added.toLocaleDateString("en-US", { month: "long", year: "numeric" });
     const daysSinceAdded = (Date.now() - added.getTime()) / (1000 * 60 * 60 * 24);
 
     if (daysSinceAdded <= 21) {
-        badges.push({ label: "NEW", variant: "new" });
+        return { label: "New", variant: "new" };
     }
     if (updated > added) {
-        badges.push({ label: "Updated", variant: "updated" });
+        return { label: "Updated", variant: "updated" };
     }
     if (daysSinceAdded <= 45) {
-        badges.push({ label: "Recently Published", variant: "recent" });
+        return { label: "Recently Published", variant: "recent" };
     }
-    badges.push({ label: monthLabel, variant: "date" });
 
-    const seen = new Set();
-    return badges.filter((badge) => {
-        if (seen.has(badge.label)) return false;
-        seen.add(badge.label);
-        return true;
-    }).slice(0, 3);
+    return null;
+}
+
+/** @deprecated Use getPublicationStatusBadge instead */
+export function getRecentResourceBadges(resource) {
+    const status = getPublicationStatusBadge(resource);
+    return status ? [status] : [];
 }
 
 export function assignPageResourceCovers({ featured = [], recent = [], popular = [], catalog = [] }) {
-    const usedSrcs = new Set();
-    const assign = (list) =>
-        list.map((resource) => {
+    const assignSection = (list) => {
+        const usedSrcs = new Set();
+        return list.map((resource) => {
             const coverImage = resolveResourceCoverImage(resource, usedSrcs);
-            usedSrcs.add(coverImage.src);
+            if (coverImage?.src) {
+                usedSrcs.add(coverImage.src);
+            }
             return { ...resource, coverImage };
         });
+    };
 
     return {
-        featured: assign(featured),
-        recent: assign(recent),
-        popular: assign(popular),
-        catalog: assign(catalog),
+        featured: assignSection(featured),
+        recent: assignSection(recent),
+        popular: assignSection(popular),
+        catalog: assignSection(catalog),
     };
 }
 
@@ -612,6 +613,25 @@ export function curateResourcePageSections(library, catalogFiltered) {
         popular,
         catalog: catalogFiltered,
     });
+}
+
+/** Audit hero registry and resolved covers for the full Resources page. */
+export function auditResourcesPageCovers(library = getLibraryResources()) {
+    const registryAudit = auditResourceHeroRegistry(library.map((item) => item.id));
+    const page = curateResourcePageSections(library, library);
+
+    const sectionAudits = {
+        featured: auditResourceCoverList(page.featured, "featured"),
+        recent: auditResourceCoverList(page.recent, "recent"),
+        popular: auditResourceCoverList(page.popular, "popular"),
+        catalog: auditResourceCoverList(page.catalog, "catalog"),
+    };
+
+    return {
+        registry: registryAudit,
+        sections: sectionAudits,
+        ok: registryAudit.ok && sectionAudits.catalog.ok,
+    };
 }
 
 export function getResourceLibraryStats() {

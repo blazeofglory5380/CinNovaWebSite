@@ -1,5 +1,7 @@
+import { Component } from "react";
 import MarketingPhoto from "./MarketingPhoto.jsx";
 import ResourceThumbnail from "./ResourceThumbnail.jsx";
+import { defaultResourceCover, resourceProductBrands } from "../data/marketingImages.js";
 import { resourceCategoryConfig, formatResourceReadTime } from "../data/resources.js";
 import { highlightSearchText } from "../utils/highlightSearch.js";
 
@@ -55,13 +57,13 @@ function HighlightedTitle({ title, query }) {
     );
 }
 
-function ResourcePublicationCard({
+function ResourcePublicationCardInner({
     resource,
     onPreview,
     onDownload,
     variant = "standard",
     editorsPick = false,
-    stripBadges = null,
+    publicationStatus = null,
     rankBadge = null,
     searchQuery = "",
     imageLoading = "lazy",
@@ -86,34 +88,37 @@ function ResourcePublicationCard({
                     imageLoading={imagePriority ? "eager" : imageLoading}
                     imagePriority={imagePriority}
                 />
-                {editorsPick && (
-                    <span className="resource-pub-badge resource-pub-badge--editors">Editor&apos;s Pick</span>
-                )}
-                {rankBadge && (
-                    <div className="resource-pub-rank-badges">
-                        {rankBadge.label && (
-                            <span className="resource-pub-rank-label">{rankBadge.label}</span>
-                        )}
-                        <span className="resource-pub-rank-number" aria-label={`Rank ${rankBadge.rank}`}>
-                            #{rankBadge.rank}
-                        </span>
-                    </div>
-                )}
-                {stripBadges?.length > 0 && (
-                    <div className="resource-pub-strip-badges">
-                        {stripBadges.map((badge) => (
-                            <span
-                                key={badge.label}
-                                className={`resource-pub-strip-badge resource-pub-strip-badge--${badge.variant}`}
-                            >
-                                {badge.label}
-                            </span>
-                        ))}
-                    </div>
-                )}
             </div>
 
             <div className="resource-pub-body">
+                <div
+                    className="resource-pub-flags"
+                    aria-label={
+                        editorsPick || publicationStatus || rankBadge ? "Resource highlights" : undefined
+                    }
+                    aria-hidden={!(editorsPick || publicationStatus || rankBadge) || undefined}
+                >
+                    {editorsPick && (
+                        <span className="resource-pub-flag resource-pub-flag--editors">Editor&apos;s Pick</span>
+                    )}
+                    {publicationStatus && (
+                        <span className={`resource-pub-flag resource-pub-flag--${publicationStatus.variant}`}>
+                            {publicationStatus.label}
+                        </span>
+                    )}
+                    {rankBadge?.label && (
+                        <span className="resource-pub-flag resource-pub-flag--top">{rankBadge.label}</span>
+                    )}
+                    {rankBadge && (
+                        <span
+                            className={`resource-pub-rank resource-pub-rank--${rankBadge.rank}`}
+                            aria-label={`Rank ${rankBadge.rank}`}
+                        >
+                            #{rankBadge.rank}
+                        </span>
+                    )}
+                </div>
+
                 <div className="resource-pub-labels">
                     <span className="resource-pub-category">{resource.category}</span>
                     <span className="resource-pub-product">{resource.product}</span>
@@ -186,6 +191,84 @@ function ResourcePublicationCard({
                 </div>
             </div>
         </article>
+    );
+}
+
+class ResourceCardErrorBoundary extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+
+    render() {
+        if (this.state.hasError) {
+            const { resource, onPreview, onDownload } = this.props;
+            const brand = resourceProductBrands[resource?.product] || resourceProductBrands["Cin Nova"];
+
+            return (
+                <article className="resource-pub-card resource-pub-card--fallback">
+                    <div className="resource-pub-cover">
+                        <MarketingPhoto
+                            src={defaultResourceCover.src}
+                            alt={defaultResourceCover.alt}
+                            className="resource-thumb-photo-img"
+                            objectPosition={defaultResourceCover.objectPosition}
+                        />
+                        <div className="resource-thumb-photo-overlay">
+                            <span
+                                className="rt-brand-pill"
+                                style={{
+                                    "--rt-brand-bg": brand.bg,
+                                    "--rt-brand-fg": brand.fg,
+                                }}
+                            >
+                                {brand.label}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="resource-pub-body">
+                        <h3 className="resource-pub-title">{resource?.title || "Resource"}</h3>
+                        <p className="resource-pub-description">
+                            {resource?.description || "This resource is temporarily unavailable."}
+                        </p>
+                        <div className="resource-pub-actions">
+                            <button
+                                type="button"
+                                className="secondary-btn"
+                                onClick={() => onPreview?.(resource)}
+                            >
+                                Preview
+                            </button>
+                            <button
+                                type="button"
+                                className="primary-btn"
+                                onClick={() => onDownload?.(resource)}
+                            >
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            );
+        }
+
+        return this.props.children;
+    }
+}
+
+function ResourcePublicationCard(props) {
+    return (
+        <ResourceCardErrorBoundary
+            resource={props.resource}
+            onPreview={props.onPreview}
+            onDownload={props.onDownload}
+        >
+            <ResourcePublicationCardInner {...props} />
+        </ResourceCardErrorBoundary>
     );
 }
 

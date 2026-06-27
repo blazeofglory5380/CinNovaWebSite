@@ -345,19 +345,19 @@ export const resourceHeroAssignments = {
         objectPosition: "55% 45%",
     },
     5: {
-        src: "/images/blog/ai/developer-laptop-ai-code.jpg",
-        alt: "Developer troubleshooting software on a laptop workstation",
+        src: "/images/products/techmate-ai-device-support.jpg",
+        alt: "IT support specialist troubleshooting a laptop workstation",
         objectPosition: "50% 40%",
     },
     6: {
-        src: "/images/products/kiddo-child-learning.jpg",
-        alt: "Child engaged in colorful early learning activities",
+        src: "/images/marketing/kiddo-memory-games.jpg",
+        alt: "Children playing colorful educational memory games",
         objectPosition: "50% 35%",
     },
     7: {
-        src: "/images/blog/ai/neural-network-abstract-visualization.jpg",
-        alt: "Abstract AI visualization for a growth strategy playbook",
-        objectPosition: "50% 50%",
+        src: "/images/future-tech/technology-trends-next-decade-overview.jpg",
+        alt: "Product team reviewing technology roadmap and innovation strategy",
+        objectPosition: "50% 40%",
     },
     8: {
         src: "/images/blog/healthcare/household-chemical-safety-storage.jpg",
@@ -386,30 +386,54 @@ export const resourceHeroAssignments = {
     },
 };
 
+/** Safe fallback when registry/pool lookup fails */
+export const defaultResourceCover = {
+    src: "/images/home/homepage-hero-innovation.jpg",
+    alt: "Cin Nova resource library",
+    objectPosition: "50% 50%",
+};
+
 export function getResourceHeroImage(resourceId) {
     return resourceHeroAssignments[resourceId] || null;
+}
+
+function normalizeCoverImage(cover) {
+    if (cover?.src) {
+        return {
+            src: cover.src,
+            alt: cover.alt || "Resource cover image",
+            objectPosition: cover.objectPosition || "50% 50%",
+        };
+    }
+    return defaultResourceCover;
 }
 
 export function resolveResourceCoverImage(resource, usedSrcs = new Set()) {
     const registry = getResourceHeroImage(resource?.id);
     if (registry?.src && !usedSrcs.has(registry.src)) {
-        return registry;
+        return normalizeCoverImage(registry);
     }
 
     const pool = getPoolForProduct(resource?.product).filter(
-        (img) => !bannedResourceHeroSrcs.has(img.src) && !usedSrcs.has(img.src),
+        (img) => img?.src && !bannedResourceHeroSrcs.has(img.src) && !usedSrcs.has(img.src),
     );
     const start = ((resource?.id || 1) * 7) % Math.max(pool.length, 1);
 
     for (let i = 0; i < pool.length; i++) {
         const candidate = pool[(start + i) % pool.length];
-        if (!usedSrcs.has(candidate.src)) {
-            return candidate;
+        if (candidate?.src && !usedSrcs.has(candidate.src)) {
+            return normalizeCoverImage(candidate);
         }
     }
 
-    if (registry?.src) return registry;
-    return pool[0] || resourceCategoryCovers[resource?.category] || siteMarketing.homeHero;
+    if (registry?.src) return normalizeCoverImage(registry);
+
+    const categoryCover = resourceCategoryCovers[resource?.category];
+    if (categoryCover?.src && !usedSrcs.has(categoryCover.src)) {
+        return normalizeCoverImage(categoryCover);
+    }
+
+    return normalizeCoverImage(siteMarketing.homeHero);
 }
 
 /** Thematic image pools for fallback rotation when registry images collide on one screen */
@@ -433,8 +457,6 @@ export const resourceImagePools = {
         { src: "/images/blog/healthcare/household-chemical-safety-storage.jpg", alt: "Medicine and cleaners in secure storage", theme: "medicine cabinet" },
         { src: "/images/blog/healthcare/family-emergency-preparedness.jpg", alt: "Family first aid and emergency kit planning", theme: "first aid kit" },
         { src: "/images/marketing/about-safety-first.jpg", alt: "Household cleaning supplies stored safely", theme: "household cleaning supplies" },
-        { src: "/images/blog/education/parent-child-learning-support.jpg", alt: "Parent ensuring family safety at home", theme: "family safety" },
-        { src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Caregiver monitoring a safe home environment", theme: "pet owner" },
         { src: "/images/products/poisonguard-pet-family-safety.jpg", alt: "Dog with family in a safe home", theme: "dog" },
     ],
     techmate: [
@@ -446,15 +468,13 @@ export const resourceImagePools = {
         { src: "/images/marketing/techmate-network-diagnostics.jpg", alt: "Network diagnostics equipment", theme: "networking" },
         { src: "/images/blog/ai/small-business-ai-assistants-meeting.jpg", alt: "Help desk team collaboration", theme: "help desk" },
         { src: "/images/datacenters/data-center-gold-rush-facility.jpg", alt: "Cloud infrastructure facility", theme: "cloud infrastructure" },
-        { src: "/images/education/ai-tutor-personalized-learning-dashboard.jpg", alt: "AI dashboard on a support laptop", theme: "AI dashboard" },
-        { src: "/images/home/homepage-hero-innovation.jpg", alt: "Office collaboration on technology issues", theme: "office collaboration" },
+        { src: "/images/blog/datacenters/server-cooling-aisle.jpg", alt: "Server cooling aisle in a data center", theme: "server cooling" },
+        { src: "/images/blog/datacenters/fiber-optic-network-cables.jpg", alt: "Fiber-optic network cabling", theme: "network cabling" },
     ],
     kiddo: [
         { src: "/images/products/kiddo-child-learning.jpg", alt: "Child engaged in early learning", theme: "children learning" },
         { src: "/images/blog/education/parent-child-learning-support.jpg", alt: "Parent helping child read", theme: "reading" },
         { src: "/images/blog/education/classroom-student-collaboration.jpg", alt: "Preschool classroom collaboration", theme: "classroom" },
-        { src: "/images/blog/future-tech/emerging-technology-research.jpg", alt: "Child exploring STEM concepts", theme: "STEM" },
-        { src: "/images/education/ai-education-guide-2026.jpg", alt: "Art and learning materials on a desk", theme: "art" },
         { src: "/images/marketing/kiddo-memory-games.jpg", alt: "Children playing educational games", theme: "educational toys" },
         { src: "/images/marketing/kiddo-progress-tracking.jpg", alt: "Parent helping child with learning activities", theme: "parent helping child" },
         { src: "/images/education/online-education-platform-adaptive-learning.jpg", alt: "Preschooler learning on a tablet", theme: "preschool" },
@@ -482,7 +502,6 @@ export const resourceImagePools = {
         { src: "/images/ai/ai-complete-guide-2026.jpg", alt: "AI industry research materials" },
         { src: "/images/ai/ai-economy-companies-tech-stack.jpg", alt: "Software company workspace" },
         { src: "/images/blog/future-tech/emerging-technology-research.jpg", alt: "Emerging technology research" },
-        { src: "/images/blog/ai/neural-network-abstract-visualization.jpg", alt: "AI innovation visualization" },
         { src: "/images/education/ai-education-guide-2026.jpg", alt: "Company resource library" },
     ],
 };
@@ -500,14 +519,79 @@ export function assignUniqueCoversForList(resources) {
     const used = new Set();
     return resources.map((resource) => {
         const coverImage = pickResourceCoverFromPool(resource, used);
-        used.add(coverImage.src);
+        if (coverImage?.src) {
+            used.add(coverImage.src);
+        }
         return { ...resource, coverImage };
     });
 }
 
 export function getResourceCoverImage(resource) {
-    if (resource?.coverImage?.src) return resource.coverImage;
+    if (resource?.coverImage?.src) return normalizeCoverImage(resource.coverImage);
     const registryCover = getResourceHeroImage(resource?.id);
-    if (registryCover) return registryCover;
+    if (registryCover?.src) return normalizeCoverImage(registryCover);
     return resolveResourceCoverImage(resource);
+}
+
+/** Expected published resource count for hero registry audits */
+export const RESOURCE_LIBRARY_SIZE = 12;
+
+/**
+ * Audit hero registry for missing entries and duplicate src paths.
+ * @param {number[]} resourceIds - IDs to validate (defaults to 1..12)
+ */
+export function auditResourceHeroRegistry(resourceIds = Array.from({ length: RESOURCE_LIBRARY_SIZE }, (_, i) => i + 1)) {
+    const bySrc = new Map();
+    const missingIds = [];
+    const assignments = [];
+
+    for (const id of resourceIds) {
+        const hero = resourceHeroAssignments[id];
+        if (!hero?.src) {
+            missingIds.push(id);
+            continue;
+        }
+        assignments.push({ id, src: hero.src, alt: hero.alt });
+        const list = bySrc.get(hero.src) || [];
+        list.push(id);
+        bySrc.set(hero.src, list);
+    }
+
+    const duplicates = [...bySrc.entries()].filter(([, ids]) => ids.length > 1);
+
+    return {
+        total: resourceIds.length,
+        assigned: assignments.length,
+        missingIds,
+        uniqueHeroImages: bySrc.size,
+        duplicates,
+        assignments,
+        ok: missingIds.length === 0 && duplicates.length === 0,
+    };
+}
+
+/**
+ * Audit resolved cover images for a resource list (e.g. catalog grid).
+ */
+export function auditResourceCoverList(resources, label = "resources") {
+    const bySrc = new Map();
+
+    for (const resource of resources) {
+        const cover = resource.coverImage || getResourceCoverImage(resource);
+        const src = cover?.src;
+        if (!src) continue;
+        const entry = bySrc.get(src) || [];
+        entry.push({ id: resource.id, product: resource.product, title: resource.title });
+        bySrc.set(src, entry);
+    }
+
+    const duplicates = [...bySrc.entries()].filter(([, items]) => items.length > 1);
+
+    return {
+        label,
+        total: resources.length,
+        uniqueImages: bySrc.size,
+        duplicates,
+        ok: duplicates.length === 0 && bySrc.size === resources.length,
+    };
 }

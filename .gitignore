@@ -1,4 +1,7 @@
-# Logs
+# Scanner validation artifacts (ledger + exports contain test run data)
+data/scanner-validation/results/
+data/scanner-validation/exports/
+
 logs
 *.log
 npm-debug.log*

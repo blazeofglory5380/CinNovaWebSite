@@ -1,5 +1,5 @@
 import MarketingPhoto from "./MarketingPhoto.jsx";
-import { getResourceCoverImage, resourceProductBrands } from "../data/marketingImages.js";
+import { defaultResourceCover, getResourceCoverImage, resourceProductBrands } from "../data/marketingImages.js";
 import { formatResourceReadTime } from "../data/resources.js";
 
 function FormatIcon() {
@@ -25,9 +25,20 @@ function FormatIcon() {
 }
 
 function ResourceThumbnail({ resource, large = false, imageLoading = "lazy", imagePriority = false }) {
-    const cover = resource.coverImage || getResourceCoverImage(resource);
-    const readTimeLabel = formatResourceReadTime(resource.readTime);
-    const brand = resourceProductBrands[resource.product] || resourceProductBrands["Cin Nova"];
+    let cover;
+    try {
+        cover = resource?.coverImage?.src
+            ? resource.coverImage
+            : getResourceCoverImage(resource);
+    } catch {
+        cover = null;
+    }
+    if (!cover?.src) {
+        cover = defaultResourceCover;
+    }
+
+    const readTimeLabel = formatResourceReadTime(resource?.readTime);
+    const brand = resourceProductBrands[resource?.product] || resourceProductBrands["Cin Nova"];
 
     return (
         <div

@@ -30,6 +30,7 @@ import NewsletterPopup from "./components/NewsletterPopup.jsx";
 import ExitIntentPopup from "./components/ExitIntentPopup.jsx";
 import GuideModal from "./components/GuideModal.jsx";
 import StickyNewsletterBar from "./components/StickyNewsletterBar.jsx";
+import FloatingNewsletterButton from "./components/FloatingNewsletterButton.jsx";
 import {
     getManagedPostBySlug,
     getManagedPosts,

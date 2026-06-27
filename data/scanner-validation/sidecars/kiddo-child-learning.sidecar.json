@@ -1,0 +1,9 @@
+{
+  "matches": [
+    { "species": "Unknown plant", "confidence": 0.41 },
+    { "species": "Domestic Cat", "confidence": 0.22 },
+    { "species": "Philodendron", "confidence": 0.15 },
+    { "species": "Pothos", "confidence": 0.12 },
+    { "species": "Dieffenbachia", "confidence": 0.1 }
+  ]
+}

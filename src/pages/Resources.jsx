@@ -10,7 +10,7 @@ import {
     curateResourcePageSections,
     filterLibraryResources,
     getLibraryResources,
-    getRecentResourceBadges,
+    getPublicationStatusBadge,
     getResourceLibraryStats,
     getResourceUrl,
     resourceCategories,
@@ -70,7 +70,7 @@ function ResourceStrip({ title, description, items, onPreview, onDownload, strip
                         onDownload={onDownload}
                         variant="strip"
                         stripType={stripType}
-                        stripBadges={stripType === "recent" ? getRecentResourceBadges(resource) : null}
+                        publicationStatus={stripType === "recent" ? getPublicationStatusBadge(resource) : null}
                         rankBadge={
                             stripType === "popular"
                                 ? {

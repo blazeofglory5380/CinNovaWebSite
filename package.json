@@ -9,7 +9,11 @@
     "download:images": "node scripts/download-marketing-images.mjs",
     "download:blog-images": "node scripts/download-blog-images.mjs",
     "audit:blog-images": "node scripts/audit-blog-images.mjs",
-    "build": "npm run generate:sitemap && vite build",
+    "audit:resource-images": "node scripts/audit-resource-images.mjs",
+    "scanner:validate": "node scripts/scanner-validate.mjs --provider sidecar --sidecar-dir data/scanner-validation/sidecars",
+    "scanner:validate:live": "node scripts/scanner-validate.mjs --provider auto",
+    "scanner:export": "node scripts/scanner-validation-export.mjs --format both",
+    "build": "npm run generate:sitemap && npm run audit:resource-images && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
