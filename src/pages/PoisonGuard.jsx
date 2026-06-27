@@ -1,11 +1,15 @@
+import { useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
-import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
+import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
+import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import PoisonGuardSafetyDisclaimer from "../components/PoisonGuardSafetyDisclaimer.jsx";
+import { poisonGuardFeatures } from "../data/poisonGuardFeatures.js";
 import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/blogPosts.js";
@@ -76,65 +80,6 @@ const useCases = [
     {
         title: "Community safety",
         description: "Equip neighborhoods, libraries, and local programs with accessible poison-prevention tools.",
-    },
-];
-
-const landingFeatures = [
-    {
-        src: "/images/blog/healthcare/pet-safety-home-environment.jpg",
-        alt: "Pet in a safe home environment",
-        category: "Recognition",
-        title: "Plant & animal hazard recognition",
-        description: "Identify common plants, foods, and substances that pose risks to people and pets.",
-    },
-    {
-        src: "/images/blog/healthcare/household-chemical-safety-storage.jpg",
-        alt: "Household chemicals stored safely",
-        category: "Roadmap",
-        title: "Chemical safety support",
-        description: "Expanding coverage for cleaners, pesticides, automotive fluids, and labeled household chemicals.",
-    },
-    {
-        src: "/images/marketing/about-safety-first.jpg",
-        alt: "Family safety awareness at home",
-        category: "Assessment",
-        title: "Clear risk levels",
-        description: "Low, moderate, and high risk ratings designed for fast decisions under stress.",
-    },
-    {
-        src: "/images/blog/healthcare/veterinarian-pet-examination.jpg",
-        alt: "Veterinarian examining a pet",
-        category: "Transparency",
-        title: "Confidence score",
-        description: "See how certain the model is so you know when to verify with a professional.",
-    },
-    {
-        src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg",
-        alt: "Caregiver supporting a child",
-        category: "Emergency",
-        title: "Emergency guidance",
-        description: "Step-by-step first-response instructions and direct links to poison control hotlines.",
-    },
-    {
-        src: "/images/blog/healthcare/family-emergency-preparedness.jpg",
-        alt: "Family emergency preparedness planning",
-        category: "History",
-        title: "Saved scan history",
-        description: "Review past scans and share context with caregivers, vets, or medical professionals.",
-    },
-    {
-        src: "/images/education/ai-transforming-education-classroom.jpg",
-        alt: "Diverse classroom environment",
-        category: "Roadmap",
-        title: "Multilingual support",
-        description: "Guidance in multiple languages so more households can act quickly and confidently.",
-    },
-    {
-        src: "/images/products/poisonguard-pet-family-safety.jpg",
-        alt: "Family with pet in a safe home",
-        category: "Privacy",
-        title: "Privacy-conscious image handling",
-        description: "Images processed with safety-first defaults — designed to minimize unnecessary retention.",
     },
 ];
 
@@ -227,6 +172,18 @@ const faqItems = [
 ];
 
 function PoisonGuard() {
+    const [activeFeature, setActiveFeature] = useState(null);
+    const returnFocusRef = useRef(null);
+
+    function handleOpenFeature(feature, buttonRef) {
+        returnFocusRef.current = buttonRef.current;
+        setActiveFeature(feature);
+    }
+
+    function handleCloseFeature() {
+        setActiveFeature(null);
+    }
+
     return (
         <main className="product-page poisonguard-landing">
             <SEO
@@ -338,12 +295,23 @@ function PoisonGuard() {
                         built in from day one.
                     </p>
                 </div>
+                <PoisonGuardWorkflowBanner />
                 <div className="product-grid product-grid-photo pg-feature-grid">
-                    {landingFeatures.map((feature) => (
-                        <FeaturePhotoCard key={feature.title} image={feature.src} alt={feature.alt} {...feature} />
+                    {poisonGuardFeatures.map((feature) => (
+                        <PoisonGuardFeatureCard
+                            key={feature.id}
+                            feature={feature}
+                            onOpen={handleOpenFeature}
+                        />
                     ))}
                 </div>
             </section>
+
+            <PoisonGuardFeatureModal
+                feature={activeFeature}
+                onClose={handleCloseFeature}
+                returnFocusRef={returnFocusRef}
+            />
 
             <section className="section pg-preview" aria-labelledby="pg-preview-title">
                 <div className="pg-section-head">
