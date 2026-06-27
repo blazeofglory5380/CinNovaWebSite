@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { highlightGlossaryTerms } from "../../data/articleEngagement.js";
 
 function GlossaryTerm({ term, definition }) {
     const [open, setOpen] = useState(false);
+    const tooltipId = useId();
 
     return (
         <span className="article-glossary-inline">
@@ -11,11 +12,12 @@ function GlossaryTerm({ term, definition }) {
                 className="article-glossary-inline-btn"
                 onClick={() => setOpen(!open)}
                 aria-expanded={open}
+                aria-describedby={open ? tooltipId : undefined}
             >
                 {term}
             </button>
             {open && (
-                <span className="article-glossary-inline-popover" role="tooltip">
+                <span id={tooltipId} className="article-glossary-inline-popover" role="tooltip">
                     {definition}
                 </span>
             )}

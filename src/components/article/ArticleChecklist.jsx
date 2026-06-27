@@ -5,13 +5,20 @@ function ArticleChecklist({ checklist, post }) {
     const [checked, setChecked] = useState(() => checklist.items.map(() => false));
 
     useEffect(() => {
+        let next = checklist.items.map(() => false);
         try {
             const saved = localStorage.getItem(storageKey);
-            if (saved) setChecked(JSON.parse(saved));
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length === checklist.items.length) {
+                    next = parsed;
+                }
+            }
         } catch {
             /* ignore */
         }
-    }, [storageKey]);
+        setChecked(next);
+    }, [storageKey, checklist.items.length]);
 
     function toggle(index) {
         const next = checked.map((value, i) => (i === index ? !value : value));
@@ -40,6 +47,7 @@ function ArticleChecklist({ checklist, post }) {
                                 type="checkbox"
                                 checked={checked[i]}
                                 onChange={() => toggle(i)}
+                                aria-label={item}
                             />
                             <span>{item}</span>
                         </label>

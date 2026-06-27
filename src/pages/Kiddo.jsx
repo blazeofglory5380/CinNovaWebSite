@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import KiddoArtwork from "../components/KiddoArtwork.jsx";
 import { kiddoAssets } from "../data/kiddoAssets.js";
@@ -215,7 +216,8 @@ function Kiddo() {
                 schema={kiddoSchema}
             />
 
-            <section className="kd-hero section" aria-labelledby="kd-hero-title">
+            <section className="kd-hero section hero-with-immersive-scene" aria-labelledby="kd-hero-title">
+                <ImmersiveHeroScene variant="kiddo" intensity="medium" />
                 <div className="kd-hero-blobs" aria-hidden="true">
                     <span className="kd-blob kd-blob--1" />
                     <span className="kd-blob kd-blob--2" />

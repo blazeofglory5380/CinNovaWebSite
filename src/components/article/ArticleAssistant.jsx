@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { answerArticleQuestion } from "../../data/articleEngagement.js";
 import { trackEvent } from "../../utils/analytics.js";
 
@@ -10,6 +10,16 @@ function ArticleAssistant({ post }) {
             text: "Ask me about this article — I can point you to relevant sections and key ideas.",
         },
     ]);
+
+    useEffect(() => {
+        setQuestion("");
+        setMessages([
+            {
+                role: "assistant",
+                text: "Ask me about this article — I can point you to relevant sections and key ideas.",
+            },
+        ]);
+    }, [post.slug]);
 
     function handleSubmit(event) {
         event.preventDefault();

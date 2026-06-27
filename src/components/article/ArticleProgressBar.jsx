@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
-function ArticleReadingProgress({ targetSelector = ".article-content-card" }) {
+function ArticleProgressBar({ targetSelector = ".article-content-card", articleSlug = "" }) {
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        setProgress(0);
+    }, [articleSlug]);
 
     useEffect(() => {
         function onScroll() {
@@ -26,13 +30,25 @@ function ArticleReadingProgress({ targetSelector = ".article-content-card" }) {
             window.removeEventListener("scroll", onScroll);
             window.removeEventListener("resize", onScroll);
         };
-    }, [targetSelector]);
+    }, [targetSelector, articleSlug]);
+
+    const rounded = Math.round(progress);
 
     return (
-        <div className="reading-progress-track" aria-hidden="true">
-            <div className="reading-progress-fill" style={{ width: `${progress}%` }} />
+        <div
+            className="article-progress-bar"
+            role="progressbar"
+            aria-valuenow={rounded}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Article reading progress: ${rounded} percent`}
+        >
+            <div className="article-progress-fill" style={{ width: `${progress}%` }} />
+            <span className="article-progress-label" aria-hidden="true">
+                {rounded}%
+            </span>
         </div>
     );
 }
 
-export default ArticleReadingProgress;
+export default ArticleProgressBar;

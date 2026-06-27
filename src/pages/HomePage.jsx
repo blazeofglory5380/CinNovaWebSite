@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import SEO from "../components/SEO.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
@@ -109,7 +110,8 @@ function HomePage({
                 schema={homeSchema}
             />
 
-            <section className="home-v12-hero section" aria-labelledby="home-v12-hero-title">
+            <section className="home-v12-hero section hero-with-immersive-scene" aria-labelledby="home-v12-hero-title">
+                <ImmersiveHeroScene variant="home" intensity="calm" />
                 <div className="home-v12-hero-grid">
                     <div className="home-v12-hero-copy">
                         <p className="eyebrow">THE CIN NOVA ECOSYSTEM</p>

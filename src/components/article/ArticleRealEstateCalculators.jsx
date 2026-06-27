@@ -49,17 +49,19 @@ function ArticleRealEstateCalculators() {
         const maxPayment = monthlyIncome * 0.28 - affordability.debts;
         const monthlyRate = affordability.rate / 100 / 12;
         const months = 360;
-        const loan = maxPayment > 0
-            ? (maxPayment * (1 - Math.pow(1 + monthlyRate, -months))) / monthlyRate
-            : 0;
+        if (maxPayment <= 0 || monthlyRate <= 0) {
+            return Math.max(0, affordability.down);
+        }
+        const loan = (maxPayment * (1 - Math.pow(1 + monthlyRate, -months))) / monthlyRate;
         return Math.max(0, loan + affordability.down);
     }, [affordability]);
 
     const mortgageResult = useMemo(() => {
         const loan = Math.max(0, mortgage.price - mortgage.down);
         const monthlyRate = mortgage.rate / 100 / 12;
-        const months = mortgage.years * 12;
-        if (!loan || !monthlyRate) return loan / months;
+        const months = Math.max(mortgage.years * 12, 1);
+        if (!loan) return 0;
+        if (!monthlyRate) return loan / months;
         return (loan * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
     }, [mortgage]);
 
@@ -97,6 +99,7 @@ function ArticleRealEstateCalculators() {
                                 <span>{label}</span>
                                 <input
                                     type="number"
+                                    inputMode="decimal"
                                     value={cashFlow[key]}
                                     onChange={(e) =>
                                         setCashFlow({ ...cashFlow, [key]: Number(e.target.value) || 0 })

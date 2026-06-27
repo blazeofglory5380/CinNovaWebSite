@@ -16,6 +16,7 @@ function ArticleGlossary({ glossary = {} }) {
                         type="button"
                         className={`article-glossary-term${activeTerm === term ? " article-glossary-term-active" : ""}`}
                         onClick={() => setActiveTerm(term)}
+                        aria-pressed={activeTerm === term}
                     >
                         {term}
                     </button>

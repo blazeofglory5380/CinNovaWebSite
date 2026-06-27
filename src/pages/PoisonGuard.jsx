@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -236,7 +237,8 @@ function PoisonGuard() {
                 schema={poisonguardSchema}
             />
 
-            <section className="pg-hero section" aria-labelledby="pg-hero-title">
+            <section className="pg-hero section hero-with-immersive-scene" aria-labelledby="pg-hero-title">
+                <ImmersiveHeroScene variant="poisonguard" intensity="calm" />
                 <div className="pg-hero-grid">
                     <div className="pg-hero-copy">
                         <div className="pg-hero-badges">

@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -123,7 +124,8 @@ function StudyNest() {
                 schema={studynestSchema}
             />
 
-            <section className="sn-hero section" aria-labelledby="sn-hero-title">
+            <section className="sn-hero section hero-with-immersive-scene" aria-labelledby="sn-hero-title">
+                <ImmersiveHeroScene variant="studynest" intensity="calm" />
                 <div className="sn-hero-grid">
                     <div className="sn-hero-copy">
                         <div className="sn-hero-badges">

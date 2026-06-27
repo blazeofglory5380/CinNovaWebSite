@@ -1031,6 +1031,7 @@ function App() {
                         posts={publishedPosts}
                         onBack={goBlog}
                         onOpenArticle={openArticle}
+                        onOpenResource={openResource}
                         onSubscribe={showNewsletterAlert}
                         onNavigate={openPage}
                     />

@@ -6,6 +6,7 @@ function ArticlePoll({ poll, post }) {
     const [selected, setSelected] = useState(null);
 
     useEffect(() => {
+        setSelected(null);
         try {
             const saved = localStorage.getItem(storageKey);
             if (saved) setSelected(saved);
@@ -40,6 +41,7 @@ function ArticlePoll({ poll, post }) {
                         className={`article-poll-option${selected === option ? " article-poll-option-selected" : ""}`}
                         onClick={() => vote(option)}
                         disabled={Boolean(selected)}
+                        aria-pressed={selected === option}
                     >
                         {option}
                     </button>

@@ -1,5 +1,6 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
@@ -33,7 +34,8 @@ function RealEstate() {
             />
 
             {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="studynest-hero">
+            <section className="studynest-hero hero-with-immersive-scene">
+                <ImmersiveHeroScene variant="real-estate" intensity="calm" />
                 <div>
                     <p className="eyebrow">CIN NOVA REAL ESTATE</p>
                     <h1>AI-powered real estate intelligence for investors and builders.</h1>

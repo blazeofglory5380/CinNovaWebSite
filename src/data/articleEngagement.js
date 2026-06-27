@@ -173,6 +173,71 @@ export const relatedResourceSlugsByCategory = {
     "CinNova Updates": ["cin-nova-product-ecosystem-brochure"],
 };
 
+export const launchChecklistItems = [
+    "Define the core user problem in one sentence",
+    "Confirm target audience and early feedback channel",
+    "Ship a narrow MVP with one clear workflow",
+    "Add analytics for the primary conversion action",
+    "Prepare launch copy, screenshots, and support FAQ",
+    "Plan a two-week post-launch review cycle",
+];
+
+export function getInteractiveBlockType(post = {}) {
+    const category = post.category || "";
+    const productKey = categoryProductKey[category];
+
+    if (productKey === "real-estate") return null;
+    if (productKey === "poisonguard") return "safety-checklist";
+    if (category === "Education Technology") return "quiz";
+    if (category === "Business & Entrepreneurship" || category === "CinNova Updates") {
+        return "launch-checklist";
+    }
+    if (
+        [
+            "Artificial Intelligence",
+            "Future Technology",
+            "Data Centers & Databases",
+            "Robotics & Automation",
+            "Construction Technology",
+        ].includes(category)
+    ) {
+        return "explainer";
+    }
+    return null;
+}
+
+export function getArticleTakeaways(post = {}) {
+    if (Array.isArray(post.takeaways) && post.takeaways.length) {
+        return post.takeaways.map((item) =>
+            typeof item === "string" ? { title: "Key takeaway", body: item } : item
+        );
+    }
+
+    const sections = Array.isArray(post.content) ? post.content : [];
+    const explicit = sections.filter((section) =>
+        /takeaway|key point|summary|conclusion/i.test(section.heading || "")
+    );
+
+    if (explicit.length) {
+        return explicit.slice(0, 5).map((section) => ({
+            title: section.heading,
+            body:
+                section.body ||
+                (Array.isArray(section.list) ? section.list.join(" ") : "") ||
+                "See the full section for details.",
+        }));
+    }
+
+    return sections.slice(0, 4).map((section) => {
+        const firstSentence =
+            (section.body || "").match(/[^.!?]+[.!?]+/)?.[0]?.trim() || section.heading;
+        return {
+            title: section.heading,
+            body: firstSentence,
+        };
+    });
+}
+
 export function getArticleEngagement(post = {}) {
     const category = post.category || "";
     const productKey = categoryProductKey[category] || "studynest";
@@ -193,7 +258,7 @@ export function getArticleEngagement(post = {}) {
         relatedResources,
         checklists: productKey === "poisonguard" ? checklistsByProduct.poisonguard : [],
         showCalculators: productKey === "real-estate",
-        showStudyTools: productKey === "studynest",
+        showStudyTools: category === "Education Technology",
         showChecklists: productKey === "poisonguard",
     };
 }

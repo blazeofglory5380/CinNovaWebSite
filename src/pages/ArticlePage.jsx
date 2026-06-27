@@ -1,25 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import "../App.css";
-import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import AuthorProfile from "../components/AuthorProfile.jsx";
 import ArticleCTA from "../components/ArticleCTA.jsx";
 import SEO from "../components/SEO.jsx";
 import SponsoredDisclosure from "../components/SponsoredDisclosure.jsx";
 import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
-import BlogProductCTA from "../components/BlogProductCTA.jsx";
 import ArticleImage from "../components/ArticleImage.jsx";
-import ArticleReadingProgress from "../components/article/ArticleReadingProgress.jsx";
+import ArticleProgressBar from "../components/article/ArticleProgressBar.jsx";
 import ArticleTableOfContents from "../components/article/ArticleTableOfContents.jsx";
+import ArticleActionToolbar from "../components/article/ArticleActionToolbar.jsx";
+import ArticleTakeaways from "../components/article/ArticleTakeaways.jsx";
+import ArticleInteractiveBlock from "../components/article/ArticleInteractiveBlock.jsx";
+import ArticlePoll from "../components/article/ArticlePoll.jsx";
 import ArticleProductQuiz from "../components/article/ArticleProductQuiz.jsx";
 import ArticleAssistant from "../components/article/ArticleAssistant.jsx";
-import ArticlePoll from "../components/article/ArticlePoll.jsx";
+import ArticleGlossary from "../components/article/ArticleGlossary.jsx";
+import ArticleGlossaryText from "../components/article/ArticleGlossaryText.jsx";
 import ArticleRealEstateCalculators from "../components/article/ArticleRealEstateCalculators.jsx";
 import ArticleChecklist from "../components/article/ArticleChecklist.jsx";
 import ArticleStudyTools from "../components/article/ArticleStudyTools.jsx";
-import ArticleGlossary from "../components/article/ArticleGlossary.jsx";
-import ArticleGlossaryText from "../components/article/ArticleGlossaryText.jsx";
 import ArticleResourceDownloads from "../components/article/ArticleResourceDownloads.jsx";
+import RelatedContentModule from "../components/article/RelatedContentModule.jsx";
 import {
     estimateArticleReadingTime,
     getArticleUrl,
@@ -112,32 +114,6 @@ function RelatedSidebar({ articles, onOpenArticle }) {
     );
 }
 
-function RelatedReadingBlock({ articles, onOpenArticle }) {
-    if (!articles.length) return null;
-    return (
-        <aside className="related-reading-block" aria-label="Related reading">
-            <p className="sidebar-widget-label">RELATED READING</p>
-            <div className="related-reading-grid">
-                {articles.map((item) => (
-                    <a
-                        href={`/blog/${item.slug}`}
-                        key={item.id}
-                        className="related-reading-card"
-                        onClick={(event) => {
-                            event.preventDefault();
-                            onOpenArticle(item);
-                        }}
-                    >
-                        <span>{item.category}</span>
-                        <strong>{item.title}</strong>
-                        <small>{item.readTime}</small>
-                    </a>
-                ))}
-            </div>
-        </aside>
-    );
-}
-
 function PrevNextNav({ prev, next, onOpenArticle }) {
     if (!prev && !next) return null;
     return (
@@ -224,7 +200,15 @@ function ArticlePublicationMeta({ post, author, readingTime }) {
     );
 }
 
-function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNavigate }) {
+function ArticlePage({
+    post,
+    posts,
+    onBack,
+    onOpenArticle,
+    onOpenResource,
+    onSubscribe,
+    onNavigate,
+}) {
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
     const readingTime = estimateArticleReadingTime(post);
@@ -301,7 +285,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
 
     return (
         <main className="product-page article-page">
-            <ArticleReadingProgress />
+            <ArticleProgressBar key={post.slug} articleSlug={post.slug} />
             {post.sponsored && post.sponsor && (
                 <SponsoredDisclosure sponsor={post.sponsor} />
             )}
@@ -315,9 +299,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
             />
 
             <section className="section article-hero">
-                <button className="secondary-btn article-back-button" onClick={onBack}>
-                    Back to Blog
-                </button>
+                <ArticleActionToolbar articleUrl={articleUrl} onBack={onBack} />
                 <p className="eyebrow">{post.category.toUpperCase()}</p>
                 <h1>{post.title}</h1>
                 <p className="article-excerpt">{post.excerpt}</p>
@@ -337,7 +319,8 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
             <section className="section article-content-section">
                 <div className="article-body-layout">
                     <article className="article-content-card article-body-counter">
-                        <ArticleTableOfContents sections={sections} className="article-toc-mobile" />
+                        <ArticleTableOfContents sections={sections} variant="mobile" />
+                        <ArticleTakeaways post={post} />
                         {sections.map((section, i, arr) => {
                             const isIntro = i === 0;
                             const isCallout = /takeaway|key point|conclusion|summary/i.test(section.heading);
@@ -352,7 +335,7 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                             ].filter(Boolean).join(" ");
 
                             return (
-                                <section className={sectionClass} key={section.heading} id={`section-${i}`}>
+                                <section className={sectionClass} key={`${section.heading}-${i}`} id={`section-${i}`}>
                                     <h2>{section.heading}</h2>
                                     {section.body && (
                                         <p>
@@ -398,7 +381,12 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                                             caption={section.imageCaption || ""}
                                         />
                                     )}
-                                    {i === 0 && <ArticlePoll poll={engagement.poll} post={post} />}
+                                    {i === 0 && (
+                                        <>
+                                            <ArticlePoll poll={engagement.poll} post={post} />
+                                            <ArticleInteractiveBlock post={post} />
+                                        </>
+                                    )}
                                     {i === 1 && <ArticleCTA onSubscribe={onSubscribe} />}
                                     {i === midpoint - 1 && engagement.showCalculators && (
                                         <ArticleRealEstateCalculators />
@@ -419,30 +407,22 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                                 </section>
                             );
                         })}
-                        <ArticleProductQuiz post={post} onNavigate={onNavigate} />
+                        <ArticleProductQuiz key={post.slug} post={post} onNavigate={onNavigate} />
                         <ArticleResourceDownloads
                             resources={engagement.relatedResources}
                             onSubscribe={onSubscribe}
                         />
-                        <RelatedReadingBlock
-                            articles={articlesToShow}
-                            onOpenArticle={onOpenArticle}
-                        />
                     </article>
 
                     <aside className="article-sidebar">
-                        <ArticleTableOfContents sections={sections} className="article-toc-desktop" />
+                        <ArticleTableOfContents sections={sections} variant="sidebar" />
                         <ArticleGlossary glossary={engagement.glossary} />
-                        <ArticleAssistant post={post} />
+                        <ArticleAssistant key={post.slug} post={post} />
                         <ShareButtons url={articleUrl} title={post.title} />
                         <RelatedSidebar articles={articlesToShow} onOpenArticle={onOpenArticle} />
                         <AdSlot placement="sidebar" onNavigate={onNavigate} />
                     </aside>
                 </div>
-            </section>
-
-            <section className="section article-product-cta-section">
-                <BlogProductCTA category={post.category} onNavigate={onNavigate} />
             </section>
 
             {affiliateLinks.length > 0 && (
@@ -528,20 +508,15 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 </section>
             )}
 
-            <section className="section" id="newsletter">
-                <div className="newsletter-card article-end-newsletter">
-                    <p className="eyebrow">JOIN THE NEWSLETTER</p>
-                    <h2>Join the Cin Nova Newsletter.</h2>
-                    <p className="newsletter-copy">
-                        Get AI, Education, Real Estate, and Technology insights in your inbox.
-                    </p>
-                    <NewsletterSignup
-                        onSubscribe={onSubscribe}
-                        source={`Article: ${post.title}`}
-                        tags={[post.category, "Article Reader"]}
-                    />
-                </div>
-            </section>
+            <RelatedContentModule
+                post={post}
+                articles={articlesToShow}
+                resources={engagement.relatedResources}
+                onOpenArticle={onOpenArticle}
+                onOpenResource={onOpenResource}
+                onSubscribe={onSubscribe}
+                onNavigate={onNavigate}
+            />
         </main>
     );
 }

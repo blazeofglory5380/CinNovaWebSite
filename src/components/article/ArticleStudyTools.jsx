@@ -11,6 +11,8 @@ function ArticleStudyTools({ post }) {
     const [quizDone, setQuizDone] = useState(false);
     const [saved, setSaved] = useState(false);
 
+    if (!flashcards.length) return null;
+
     const currentCard = flashcards[cardIndex] || flashcards[0];
     const currentQuiz = quiz[quizIndex];
 
@@ -28,6 +30,7 @@ function ArticleStudyTools({ post }) {
     }
 
     function answerQuiz(choiceIndex) {
+        if (!currentQuiz) return;
         if (choiceIndex === currentQuiz.correct) setQuizScore((s) => s + 1);
         if (quizIndex >= quiz.length - 1) {
             setQuizDone(true);
@@ -48,6 +51,7 @@ function ArticleStudyTools({ post }) {
                         type="button"
                         className={`sn-flashcard article-study-flashcard${flipped ? " article-study-flashcard-flipped" : ""}`}
                         onClick={() => setFlipped(!flipped)}
+                        aria-label={flipped ? "Show flashcard question" : "Reveal flashcard answer"}
                     >
                         <p className="sn-flashcard-prompt">{flipped ? currentCard.answer : currentCard.prompt}</p>
                         <p className="sn-flashcard-answer">{flipped ? "Tap to see question" : "Tap to reveal answer"}</p>

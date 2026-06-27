@@ -1,5 +1,6 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
 import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
@@ -33,7 +34,8 @@ function TechMateAI() {
             />
 
             {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="studynest-hero">
+            <section className="studynest-hero hero-with-immersive-scene">
+                <ImmersiveHeroScene variant="techmate" intensity="calm" />
                 <div>
                     <p className="eyebrow">TECHMATE AI</p>
                     <h1>AI-powered tech support for every device and problem.</h1>

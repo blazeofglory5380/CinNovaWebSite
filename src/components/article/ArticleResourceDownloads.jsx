@@ -18,6 +18,7 @@ function ArticleResourceDownloads({ resources = [], onSubscribe }) {
                             type="button"
                             className="article-download-card"
                             onClick={() => setGateResource(resource)}
+                            aria-label={`Download ${resource.title}`}
                         >
                             <span className="article-download-format">{resource.format}</span>
                             <strong>{resource.title}</strong>
