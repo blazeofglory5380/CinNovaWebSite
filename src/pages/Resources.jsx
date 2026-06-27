@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
+import ResourcePreviewModal from "../components/ResourcePreviewModal.jsx";
 import ResourceEmptyState from "../components/ResourceEmptyState.jsx";
 import ResourcePublicationCard, { ResourceCategoryCard } from "../components/ResourcePublicationCard.jsx";
 import { resourceCategoryCovers, siteMarketing } from "../data/marketingImages.js";
@@ -98,6 +99,17 @@ function Resources({ onOpenResource, onSubscribe }) {
     const [activeDifficulty, setActiveDifficulty] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
     const [gatedResource, setGatedResource] = useState(null);
+    const [previewResource, setPreviewResource] = useState(null);
+    const previewReturnFocusRef = useRef(null);
+
+    function handlePreview(resource, event) {
+        previewReturnFocusRef.current = event?.currentTarget ?? null;
+        setPreviewResource(resource);
+    }
+
+    function handleClosePreview() {
+        setPreviewResource(null);
+    }
 
     const filteredBase = useMemo(
         () =>
@@ -222,7 +234,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                             <ResourcePublicationCard
                                 key={resource.id}
                                 resource={resource}
-                                onPreview={onOpenResource}
+                                onPreview={handlePreview}
                                 onDownload={setGatedResource}
                                 variant={index === 0 ? "hero" : "featured"}
                                 editorsPick={index === 0}
@@ -339,7 +351,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                 title="Recently added"
                 description="The latest publications added to the Cin Nova library."
                 items={recentlyAdded}
-                onPreview={onOpenResource}
+                onPreview={handlePreview}
                 onDownload={setGatedResource}
                 stripType="recent"
                 searchQuery={searchTerm}
@@ -349,7 +361,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                 title="Popular downloads"
                 description="Resources readers return to most often."
                 items={popularDownloads}
-                onPreview={onOpenResource}
+                onPreview={handlePreview}
                 onDownload={setGatedResource}
                 stripType="popular"
                 searchQuery={searchTerm}
@@ -371,7 +383,7 @@ function Resources({ onOpenResource, onSubscribe }) {
                             <ResourcePublicationCard
                                 key={resource.id}
                                 resource={resource}
-                                onPreview={onOpenResource}
+                                onPreview={handlePreview}
                                 onDownload={setGatedResource}
                                 searchQuery={searchTerm}
                                 imageLoading="lazy"
@@ -380,6 +392,16 @@ function Resources({ onOpenResource, onSubscribe }) {
                     </div>
                 )}
             </section>
+
+            {previewResource && (
+                <ResourcePreviewModal
+                    resource={previewResource}
+                    onClose={handleClosePreview}
+                    onDownload={setGatedResource}
+                    onOpenResource={onOpenResource}
+                    returnFocusRef={previewReturnFocusRef}
+                />
+            )}
 
             {gatedResource && (
                 <ResourceEmailGate

@@ -91,33 +91,33 @@ function ResourcePublicationCardInner({
             </div>
 
             <div className="resource-pub-body">
-                <div
-                    className="resource-pub-flags"
-                    aria-label={
-                        editorsPick || publicationStatus || rankBadge ? "Resource highlights" : undefined
-                    }
-                    aria-hidden={!(editorsPick || publicationStatus || rankBadge) || undefined}
-                >
-                    {editorsPick && (
-                        <span className="resource-pub-flag resource-pub-flag--editors">Editor&apos;s Pick</span>
-                    )}
-                    {publicationStatus && (
-                        <span className={`resource-pub-flag resource-pub-flag--${publicationStatus.variant}`}>
-                            {publicationStatus.label}
-                        </span>
-                    )}
-                    {rankBadge?.label && (
-                        <span className="resource-pub-flag resource-pub-flag--top">{rankBadge.label}</span>
-                    )}
-                    {rankBadge && (
-                        <span
-                            className={`resource-pub-rank resource-pub-rank--${rankBadge.rank}`}
-                            aria-label={`Rank ${rankBadge.rank}`}
-                        >
-                            #{rankBadge.rank}
-                        </span>
-                    )}
-                </div>
+                {(publicationStatus || rankBadge) && (
+                    <div
+                        className="resource-pub-flags"
+                        aria-label="Resource highlights"
+                    >
+                        {publicationStatus && (
+                            <span className={`resource-pub-flag resource-pub-flag--${publicationStatus.variant}`}>
+                                {publicationStatus.label}
+                            </span>
+                        )}
+                        {rankBadge?.label && (
+                            <span className="resource-pub-flag resource-pub-flag--top">{rankBadge.label}</span>
+                        )}
+                        {rankBadge && (
+                            <span
+                                className={`resource-pub-rank resource-pub-rank--${rankBadge.rank}`}
+                                aria-label={`Rank ${rankBadge.rank}`}
+                            >
+                                #{rankBadge.rank}
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                {editorsPick && (
+                    <span className="resource-editors-pick-badge">Editor&apos;s Pick</span>
+                )}
 
                 <div className="resource-pub-labels">
                     <span className="resource-pub-category">{resource.category}</span>
@@ -175,7 +175,7 @@ function ResourcePublicationCardInner({
                     <button
                         type="button"
                         className="secondary-btn resource-pub-preview"
-                        onClick={() => onPreview?.(resource)}
+                        onClick={(event) => onPreview?.(resource, event)}
                         aria-label={`Preview ${resource.title}`}
                     >
                         Preview

@@ -454,6 +454,205 @@ const resourceLibraryMeta = {
     12: { resourceType: "Template", difficulty: "Intermediate", fileSize: "650 KB", lastUpdated: "2026-06-26", addedAt: "2026-06-24", popularRank: 12 },
 };
 
+/** Extended landing-page metadata for preview modal and detail pages (v1.4). */
+const resourceDetailMeta = {
+    1: {
+        whatsInside: [
+            "Weekly study system overview",
+            "Note capture and review prompt workflow",
+            "AI tutoring integration checklist",
+            "Session planning template guidance",
+        ],
+        whoItsFor: [
+            "Students building consistent study habits",
+            "Parents supporting learning at home",
+            "Tutors and educators evaluating StudyNest",
+        ],
+        relatedResourceIds: [11, 8, 3],
+    },
+    2: {
+        whatsInside: [
+            "Household and institutional safety gap analysis",
+            "PoisonGuard product opportunity overview",
+            "Implementation priorities for safety software",
+            "Emergency response design principles",
+        ],
+        whoItsFor: [
+            "Families and pet owners researching safety tools",
+            "School and childcare safety coordinators",
+            "Healthcare and safety technology partners",
+        ],
+        relatedResourceIds: [10, 8, 3],
+    },
+    3: {
+        whatsInside: [
+            "Five-product ecosystem overview",
+            "Shared platform and design language",
+            "Partnership and investor use cases",
+            "Product lane positioning summary",
+        ],
+        whoItsFor: [
+            "Partners evaluating the Cin Nova portfolio",
+            "Early customers comparing product fit",
+            "Investors and stakeholders needing a concise overview",
+        ],
+        relatedResourceIds: [5, 2, 7],
+    },
+    4: {
+        whatsInside: [
+            "Core deal input worksheet",
+            "Cash flow and return comparison framework",
+            "Risk review prompts",
+            "Cin Nova Real Estate workflow tie-in",
+        ],
+        whoItsFor: [
+            "First-time real estate investors",
+            "Operators comparing residential deals",
+            "Cin Nova Real Estate evaluators",
+        ],
+        relatedResourceIds: [12, 3, 7],
+    },
+    5: {
+        whatsInside: [
+            "Everyday support problem overview",
+            "Assistant-led troubleshooting workflows",
+            "Business and IT help desk use cases",
+            "TechMate AI feature summary",
+        ],
+        whoItsFor: [
+            "Home users needing device and network help",
+            "Small business IT evaluators",
+            "Support teams exploring AI assistants",
+        ],
+        relatedResourceIds: [3, 9, 7],
+    },
+    6: {
+        whatsInside: [
+            "Early learning goal definition",
+            "Kiddo product flow walkthrough",
+            "Parent dashboard and progress outcomes",
+            "Sample implementation timeline",
+        ],
+        whoItsFor: [
+            "Parents of preschool and early elementary children",
+            "Educators exploring gamified learning",
+            "Partners evaluating Kiddo deployments",
+        ],
+        relatedResourceIds: [1, 11, 3],
+    },
+    7: {
+        whatsInside: [
+            "Newsletter channel strategy overview",
+            "Content mix and publishing cadence",
+            "Lead magnet and resource funnel design",
+            "Success metrics and review framework",
+        ],
+        whoItsFor: [
+            "App founders building audience before launch",
+            "Marketing leads at software companies",
+            "Cin Nova teams planning content growth",
+        ],
+        relatedResourceIds: [9, 3, 1],
+    },
+    8: {
+        whatsInside: [
+            "Room-by-room storage audit steps",
+            "Scan history and labeling guidance",
+            "Pet and child safety preparation",
+            "Emergency contact readiness checklist",
+        ],
+        whoItsFor: [
+            "Families establishing household safety routines",
+            "PoisonGuard users organizing home inventories",
+            "Caregivers preparing for emergencies",
+        ],
+        relatedResourceIds: [10, 2, 1],
+    },
+    9: {
+        whatsInside: [
+            "Pre-launch readiness checklist",
+            "Launch day execution steps",
+            "Post-launch feedback and review plan",
+            "AI product shipping best practices",
+        ],
+        whoItsFor: [
+            "Founders shipping their first AI product",
+            "Product managers planning a launch window",
+            "Cin Nova teams coordinating go-to-market",
+        ],
+        relatedResourceIds: [7, 3, 5],
+    },
+    10: {
+        whatsInside: [
+            "Kitchen and laundry hazard review",
+            "Garage and storage area audit",
+            "Emergency preparation and hotline setup",
+            "PoisonGuard scan workflow tips",
+        ],
+        whoItsFor: [
+            "Homeowners and renters doing safety audits",
+            "Pet owners reviewing chemical storage",
+            "PoisonGuard users preparing scan routines",
+        ],
+        relatedResourceIds: [8, 2, 6],
+    },
+    11: {
+        whatsInside: [
+            "Weekly schedule layout template",
+            "Subject priority scoring grid",
+            "Spaced repetition review tracker",
+            "StudyNest retention workflow",
+        ],
+        whoItsFor: [
+            "Students managing multi-subject workloads",
+            "Parents helping teens plan study time",
+            "StudyNest users building weekly routines",
+        ],
+        relatedResourceIds: [1, 6, 12],
+    },
+    12: {
+        whatsInside: [
+            "Income and vacancy input worksheet",
+            "Operating expense line-item guide",
+            "NOI, cap rate, and cash-on-cash formulas",
+            "Side-by-side deal comparison prompts",
+        ],
+        whoItsFor: [
+            "Residential investors analyzing rentals",
+            "Operators comparing financing scenarios",
+            "Cin Nova Real Estate users running deal math",
+        ],
+        relatedResourceIds: [4, 3, 7],
+    },
+};
+
+function buildTableOfContents(resource, detailMeta) {
+    if (detailMeta.tableOfContents?.length) {
+        return detailMeta.tableOfContents;
+    }
+
+    const sectionEntries = resource.sections.map((section, index) => ({
+        id: `section-${index}`,
+        label: section.heading,
+    }));
+
+    return [
+        { id: "whats-inside", label: "What's inside" },
+        { id: "who-its-for", label: "Who it's for" },
+        ...sectionEntries,
+    ];
+}
+
+function getDetailMetaForResource(resource) {
+    const detailMeta = resourceDetailMeta[resource.id] || {};
+    return {
+        tableOfContents: buildTableOfContents(resource, detailMeta),
+        whatsInside: detailMeta.whatsInside || resource.sections.map((section) => section.heading),
+        whoItsFor: detailMeta.whoItsFor || ["Readers exploring Cin Nova resources"],
+        relatedResourceIds: detailMeta.relatedResourceIds || null,
+    };
+}
+
 const productToBlogCategory = {
     StudyNest: "Education Technology",
     PoisonGuard: "Healthcare Technology",
@@ -510,6 +709,7 @@ function formatDisplayDate(isoDate) {
 
 export function withLibraryMeta(resource) {
     const meta = resourceLibraryMeta[resource.id] || {};
+    const detailMeta = getDetailMetaForResource(resource);
     const resourceType = meta.resourceType || inferResourceType(resource);
     const lastUpdated = meta.lastUpdated || "2026-06-01";
     const addedAt = meta.addedAt || lastUpdated;
@@ -525,6 +725,10 @@ export function withLibraryMeta(resource) {
         addedAt,
         popularRank: meta.popularRank ?? 99,
         coverImage: getResourceHeroImage(resource.id),
+        tableOfContents: detailMeta.tableOfContents,
+        whatsInside: detailMeta.whatsInside,
+        whoItsFor: detailMeta.whoItsFor,
+        relatedResourceIds: detailMeta.relatedResourceIds,
     };
 }
 
@@ -718,6 +922,52 @@ export function getRelatedProductsForResource(resource) {
         "real-estate": { name: "Cin Nova Real Estate", category: "Real Estate AI", icon: "RE" },
     };
     return [...new Set(pages)].map((page) => ({ page, ...productLabels[page] })).filter((item) => item.name);
+}
+
+/** Related resources by product, category, and type — no duplicates. */
+export function getRelatedResources(resource, limit = 3) {
+    const library = getLibraryResources();
+    const explicitIds = resource.relatedResourceIds;
+
+    if (explicitIds?.length) {
+        const explicit = explicitIds
+            .map((id) => library.find((item) => item.id === id))
+            .filter((item) => item && item.id !== resource.id);
+
+        if (explicit.length >= limit) {
+            return explicit.slice(0, limit);
+        }
+
+        const seen = new Set(explicit.map((item) => item.id));
+        seen.add(resource.id);
+        const filled = [...explicit];
+
+        for (const candidate of scoreRelatedResources(resource, library)) {
+            if (filled.length >= limit) break;
+            if (!seen.has(candidate.id)) {
+                filled.push(candidate);
+                seen.add(candidate.id);
+            }
+        }
+
+        return filled.slice(0, limit);
+    }
+
+    return scoreRelatedResources(resource, library).slice(0, limit);
+}
+
+function scoreRelatedResources(resource, library) {
+    return library
+        .filter((item) => item.id !== resource.id)
+        .map((item) => {
+            let score = 0;
+            if (item.product === resource.product) score += 3;
+            if (item.category === resource.category) score += 2;
+            if (item.resourceType === resource.resourceType) score += 1;
+            return { item, score };
+        })
+        .sort((a, b) => b.score - a.score || a.item.id - b.item.id)
+        .map(({ item }) => item);
 }
 
 export function formatResourceReadTime(readTime) {
