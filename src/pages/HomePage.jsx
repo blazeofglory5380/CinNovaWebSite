@@ -4,6 +4,7 @@ import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
 import { siteMarketing } from "../data/marketingImages.js";
+import { normalizeProductStatus } from "../data/products.js";
 import { siteUrl } from "../data/blogPosts.js";
 
 const homeSchema = {
@@ -52,12 +53,6 @@ const whyCinNovaPillars = [
             "Guides, templates, and product resources give teams a shared language for launches, safety programs, and customer education.",
     },
 ];
-
-function normalizeProductStatus(status) {
-    if (status === "Active Build") return { label: "Available", variant: "available" };
-    if (status === "In Development") return { label: "Beta", variant: "beta" };
-    return { label: "Coming Soon", variant: "coming-soon" };
-}
 
 function parsePostDate(dateString = "") {
     const parsed = Date.parse(dateString);
