@@ -1,15 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isValidEmail, normalizeEmailInput, safeGetSessionFlag, safeSetSessionFlag } from "../utils/security.js";
 
 const SESSION_KEY = "cn_float_btn_dismissed";
+const SCROLL_SHOW_RATIO = 0.6;
 
-function FloatingNewsletterButton({ onSubscribe }) {
+function FloatingNewsletterButton({ onSubscribe, newsletterAnchorId = "newsletter" }) {
     const [dismissed] = useState(() => safeGetSessionFlag(SESSION_KEY));
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState("idle"); // idle | loading | success | error
+    const [pastScrollThreshold, setPastScrollThreshold] = useState(false);
+    const [newsletterInView, setNewsletterInView] = useState(false);
+
+    useEffect(() => {
+        function updateScrollThreshold() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const ratio = docHeight > 0 ? window.scrollY / docHeight : 0;
+            setPastScrollThreshold(ratio >= SCROLL_SHOW_RATIO);
+        }
+
+        updateScrollThreshold();
+        window.addEventListener("scroll", updateScrollThreshold, { passive: true });
+        return () => window.removeEventListener("scroll", updateScrollThreshold);
+    }, []);
+
+    useEffect(() => {
+        const newsletterSection = document.getElementById(newsletterAnchorId);
+        if (!newsletterSection) return undefined;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => setNewsletterInView(entry.isIntersecting),
+            { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+        );
+
+        observer.observe(newsletterSection);
+        return () => observer.disconnect();
+    }, [newsletterAnchorId]);
 
     if (dismissed) return null;
+
+    const showWidget = pastScrollThreshold && !newsletterInView;
 
     function handleDismiss() {
         safeSetSessionFlag(SESSION_KEY);
@@ -33,7 +63,11 @@ function FloatingNewsletterButton({ onSubscribe }) {
     }
 
     return (
-        <div className="float-nl-wrap" aria-live="polite">
+        <div
+            className={`float-nl-wrap${showWidget ? "" : " float-nl-wrap--hidden"}`}
+            aria-live="polite"
+            aria-hidden={!showWidget}
+        >
             {open && (
                 <div className="float-nl-modal" role="dialog" aria-label="Newsletter signup">
                     <button
@@ -89,6 +123,7 @@ function FloatingNewsletterButton({ onSubscribe }) {
                 onClick={() => setOpen((prev) => !prev)}
                 aria-label="Open newsletter signup"
                 aria-expanded={open}
+                tabIndex={showWidget ? 0 : -1}
             >
                 <span className="float-nl-icon">NL</span>
                 <span className="float-nl-label">Newsletter</span>
