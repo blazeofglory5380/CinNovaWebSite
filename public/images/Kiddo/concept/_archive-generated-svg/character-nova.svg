@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-label="Nova the Star Captain character portrait">
+  <defs><filter id="s"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/></filter></defs>
+  <rect width="320" height="400" fill="#818cf8"/>
+  <g filter="url(#s)" transform="translate(110 80)">
+    <circle cx="50" cy="55" r="72" fill="#fff" opacity="0.15"/>
+    <circle cx="50" cy="72" r="68" fill="#6366f1"/>
+    <circle cx="32" cy="65" r="8" fill="#431407"/><circle cx="68" cy="65" r="8" fill="#431407"/>
+    <path d="M40 88 Q50 98 60 88" stroke="#431407" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <polygon points="50,8 58,32 84,32 64,48 72,74 50,60 28,74 36,48 16,32 42,32" fill="#fbbf24"/>
+    <rect x="22" y="118" width="56" height="42" rx="14" fill="#4f46e5"/>
+  </g>
+</svg>

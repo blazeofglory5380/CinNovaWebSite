@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-label="Max the Mountain Coach character portrait">
+  <defs><filter id="s"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/></filter></defs>
+  <rect width="320" height="400" fill="#fbbf24"/>
+  <g filter="url(#s)" transform="translate(110 78)">
+    <circle cx="50" cy="55" r="72" fill="#fff" opacity="0.2"/>
+    <circle cx="50" cy="70" r="70" fill="#f59e0b"/>
+    <circle cx="30" cy="62" r="9" fill="#431407"/><circle cx="70" cy="62" r="9" fill="#431407"/>
+    <ellipse cx="50" cy="82" rx="18" ry="12" fill="#92400e"/>
+    <path d="M50 20 C30 0 78 0 58 22" fill="#b45309"/>
+    <rect x="18" y="118" width="64" height="48" rx="16" fill="#d97706"/>
+    <text x="50" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="28" font-weight="700" fill="#fff">5</text>
+  </g>
+</svg>

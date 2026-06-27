@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" role="img" aria-label="Coral the Ocean Guide character portrait">
+  <defs><filter id="s"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/></filter></defs>
+  <rect width="320" height="400" fill="#2dd4bf"/>
+  <g filter="url(#s)" transform="translate(110 80)">
+    <circle cx="50" cy="55" r="72" fill="#fff" opacity="0.18"/>
+    <circle cx="50" cy="72" r="68" fill="#14b8a6"/>
+    <circle cx="32" cy="65" r="8" fill="#431407"/><circle cx="68" cy="65" r="8" fill="#431407"/>
+    <path d="M40 88 Q50 100 60 88" stroke="#431407" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M20 45 C35 20 75 25 80 50 C60 55 45 48 20 45" fill="#0d9488"/>
+    <ellipse cx="50" cy="150" rx="55" ry="20" fill="#5eead4"/>
+    <circle cx="95" cy="100" r="12" fill="#f97316" opacity="0.8"/>
+    <circle cx="8" cy="110" r="8" fill="#38bdf8"/>
+  </g>
+</svg>

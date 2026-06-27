@@ -1,331 +1,494 @@
 import "../App.css";
-import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
-import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
-import { productMarketing } from "../data/marketingImages.js";
-import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import KiddoArtwork from "../components/KiddoArtwork.jsx";
+import { kiddoAssets } from "../data/kiddoAssets.js";
+import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/blogPosts.js";
-
-const { hero, features } = productMarketing.kiddo;
-
-const kiddoBenefits = [
-    {
-        src: "/images/marketing/about-safety-first.jpg",
-        alt: "Family in a safe, child-friendly home environment",
-        category: "Safety",
-        title: "Safe for Young Children",
-        description: "No ads, no social features, no external links. Kiddo is a fully closed, child-safe environment reviewed for ages 3–8. COPPA compliant and privacy-first by design.",
-    },
-    {
-        src: "/images/marketing/kiddo-progress-tracking.jpg",
-        alt: "Children learning in an age-appropriate classroom",
-        category: "Curriculum",
-        title: "Age-Appropriate Learning",
-        description: "Content is structured around early childhood milestones and adapts automatically to each child's pace — never too easy, never too frustrating.",
-    },
-    {
-        src: "/images/education/ai-tutor-teacher-classroom-partnership.jpg",
-        alt: "Parent and educator guiding a child's learning",
-        category: "Parents",
-        title: "Full Parent Controls",
-        description: "Set daily time limits, choose which subjects to focus on, lock specific activities, and require your approval before a child advances to a new level.",
-    },
-    {
-        src: "/images/education/online-education-platform-adaptive-learning.jpg",
-        alt: "Child learning with guided digital tools on a tablet",
-        category: "Insights",
-        title: "Progress Monitoring",
-        description: "Real-time insight into what your child has mastered, where they need support, and how their learning compares to early childhood development benchmarks.",
-    },
-];
 
 const kiddoSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Kiddo",
     applicationCategory: "EducationApplication",
-    description: "Interactive early learning app for children ages 3–8 with reading, writing, counting, math games, stories, and a parent dashboard.",
+    description:
+        "Interactive early learning app for children ages 2\u20137 with reading, writing, math, science, and a parent dashboard.",
     operatingSystem: "Web",
     url: `${siteUrl}/?page=kiddo`,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
+const heroHighlights = [
+    { value: "Ages 2\u20137", label: "Built for early learners" },
+    { value: "Reading + Math", label: "Core skill worlds" },
+    { value: "Safe", label: "Ad-free learning" },
+];
+
+const learningWorlds = [
+    {
+        name: "Alphabet Forest",
+        focus: "Letters & phonics",
+        description: "Meet friendly letter guides and discover sounds through woodland trails.",
+        ages: "Ages 2\u20135",
+        asset: kiddoAssets.worlds.alphabetForest,
+        accent: "#34d399",
+    },
+    {
+        name: "Number Mountain",
+        focus: "Counting & math",
+        description: "Climb counting paths, solve addition puzzles, and collect golden stars.",
+        ages: "Ages 3\u20136",
+        asset: kiddoAssets.worlds.numberMountain,
+        accent: "#fbbf24",
+    },
+    {
+        name: "Reading Castle",
+        focus: "Stories & literacy",
+        description: "Unlock story towers with sight words, rhymes, and interactive tales.",
+        ages: "Ages 4\u20137",
+        asset: kiddoAssets.worlds.readingCastle,
+        accent: "#a78bfa",
+    },
+    {
+        name: "Science Lab",
+        focus: "Experiments & discovery",
+        description: "Mix experiments, explore nature, and ask why the world works.",
+        ages: "Ages 4\u20137",
+        asset: kiddoAssets.worlds.scienceLab,
+        accent: "#38bdf8",
+    },
+    {
+        name: "Ocean Discovery",
+        focus: "Geography & nature",
+        description: "Dive into habitats, marine life, and maps across the deep blue.",
+        ages: "Ages 4\u20137",
+        asset: kiddoAssets.worlds.oceanDiscovery,
+        accent: "#2dd4bf",
+    },
+    {
+        name: "Space Explorer",
+        focus: "Science & curiosity",
+        description: "Rocket through planets, constellations, and curiosity-fueled missions.",
+        ages: "Ages 5\u20137",
+        asset: kiddoAssets.worlds.spaceExplorer,
+        accent: "#818cf8",
+    },
+];
+
+const characters = [
+    {
+        name: "Luna",
+        title: "The Curious Explorer",
+        personality: "Brave, kind, and always ready to help a friend find the way.",
+        teaches: "Reading quests, story choices, and empathy",
+        variant: "luna",
+        asset: kiddoAssets.characters.luna,
+    },
+    {
+        name: "Oliver",
+        title: "The Wise Owl",
+        personality: "Patient, thoughtful, and full of gentle encouragement.",
+        teaches: "Phonics, vocabulary, and comprehension",
+        variant: "oliver",
+        asset: kiddoAssets.characters.oliver,
+    },
+    {
+        name: "Nova",
+        title: "The Star Captain",
+        personality: "Energetic, inventive, and obsessed with big questions.",
+        teaches: "Science, space, and problem solving",
+        variant: "nova",
+        asset: kiddoAssets.characters.nova,
+    },
+    {
+        name: "Coral",
+        title: "The Ocean Guide",
+        personality: "Playful, curious, and loves sharing fun facts.",
+        teaches: "Geography, nature, and social skills",
+        variant: "coral",
+        asset: kiddoAssets.characters.coral,
+    },
+    {
+        name: "Max",
+        title: "The Mountain Coach",
+        personality: "Cheerful, determined, and celebrates every small win.",
+        teaches: "Counting, math challenges, and persistence",
+        variant: "max",
+        asset: kiddoAssets.characters.max,
+    },
+];
+
+const gameplayFeatures = [
+    { title: "Treasure hunts", copy: "Follow clues across worlds to unlock story surprises." },
+    { title: "Mini games", copy: "Quick, joyful games that build skills in short bursts." },
+    { title: "Reading quests", copy: "Choose-your-path stories that grow vocabulary naturally." },
+    { title: "Math challenges", copy: "Friendly number games with instant, encouraging feedback." },
+    { title: "Badges", copy: "Achievement moments parents and kids can celebrate together." },
+    { title: "Rewards", copy: "Stars, stickers, and treasures that keep motivation high." },
+    { title: "Unlockable worlds", copy: "New destinations open as skills grow." },
+    { title: "Daily challenges", copy: "Gentle streaks that celebrate consistency, not pressure." },
+];
+
+const parentFeatures = [
+    { title: "Progress tracking", copy: "See what your child mastered today and what comes next." },
+    { title: "Learning reports", copy: "Weekly snapshots written for busy parents, not data scientists." },
+    { title: "Screen-time controls", copy: "Set daily limits and quiet-hour schedules you control." },
+    { title: "Safe environment", copy: "Closed experience with no social feeds or open chat." },
+    { title: "No ads", copy: "Zero ad networks, zero surprise purchases, zero dark patterns." },
+    { title: "Privacy-first design", copy: "Built with family privacy and COPPA-minded defaults." },
+];
+
+const learningSubjects = [
+    { name: "Reading", color: "#a78bfa" },
+    { name: "Writing", color: "#fb7185" },
+    { name: "Math", color: "#fbbf24" },
+    { name: "Science", color: "#38bdf8" },
+    { name: "Geography", color: "#2dd4bf" },
+    { name: "Creativity", color: "#f472b6" },
+    { name: "Problem Solving", color: "#818cf8" },
+    { name: "Languages", color: "#34d399" },
+];
+
+const pricingPlans = [
+    {
+        name: "Free Explorer",
+        price: "$0",
+        description: "Alphabet Forest, starter counting, five stories, and mini games for one child.",
+        featured: false,
+    },
+    {
+        name: "Kiddo Plus",
+        price: "$7.99/mo",
+        description: "All learning worlds, unlimited stories, rewards, and parent dashboard for up to 3 kids.",
+        featured: true,
+    },
+    {
+        name: "Family Plan",
+        price: "$11.99/mo",
+        description: "Everything in Plus with shared family profiles, reports, and priority feature access.",
+        featured: false,
+    },
+    {
+        name: "Schools",
+        price: "Coming Soon",
+        description: "Classroom tools, educator dashboards, and curriculum alignment for Pre-K through Grade 2.",
+        featured: false,
+    },
+];
+
+const faqItems = [
+    {
+        question: "What age is Kiddo for?",
+        answer: "Kiddo is designed for children ages 2\u20137, with worlds and difficulty that adapt as your child grows.",
+    },
+    {
+        question: "Is Kiddo safe?",
+        answer: "Yes. Kiddo is a closed, child-first environment with no open chat, social feeds, or external links in child mode.",
+    },
+    {
+        question: "Does it have ads?",
+        answer: "No. Kiddo is completely ad-free with no in-app purchases or surprise charges.",
+    },
+    {
+        question: "What subjects does it teach?",
+        answer: "Reading, writing, math, science, geography, creativity, problem solving, and early languages through playful worlds.",
+    },
+    {
+        question: "Can parents track progress?",
+        answer: "Yes. The parent dashboard shows learning progress, achievements, reports, and subject growth over time.",
+    },
+    {
+        question: "Will it work on tablets?",
+        answer: "Kiddo is being built for tablets, phones, and web browsers so families can learn at home or on the go.",
+    },
+];
+
 function Kiddo() {
     return (
-        <div className="product-page">
+        <main className="product-page kiddo-landing">
             <SEO
-                title="Kiddo | Early Learning App for Kids Ages 3–8 — Cin Nova"
-                description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 3–8, with a parent dashboard to track progress. In development by Cin Nova."
+                title="Kiddo | Early Learning App for Kids Ages 2\u20137 \u2014 Cin Nova"
+                description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 2\u20137, with a parent dashboard to track progress. In development by Cin Nova."
                 url={`${siteUrl}/?page=kiddo`}
                 type="website"
                 schema={kiddoSchema}
             />
 
-            {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="studynest-hero">
-                <div>
-                    <p className="eyebrow">KIDDO</p>
-                    <h1>AI-powered learning built for young minds.</h1>
-                    <p className="hero-text">
-                        Kiddo makes learning to read, write, count, and explore the world
-                        a joyful adventure for children ages 3–8 — with interactive stories,
-                        games, and a parent dashboard that keeps you in the loop.
-                    </p>
-                    <div className="hero-actions">
-                        <a href="#waitlist" className="primary-btn">Join Waitlist</a>
-                        <a href="#features" className="secondary-btn">View Features</a>
-                    </div>
+            <section className="kd-hero section" aria-labelledby="kd-hero-title">
+                <div className="kd-hero-blobs" aria-hidden="true">
+                    <span className="kd-blob kd-blob--1" />
+                    <span className="kd-blob kd-blob--2" />
+                    <span className="kd-blob kd-blob--3" />
                 </div>
-
-                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
-            </section>
-
-            <section className="section" id="features">
-                <div className="section-heading">
-                    <p className="eyebrow">FEATURES</p>
-                    <h2>Everything children need to learn, explore, and grow</h2>
-                    <p>
-                        Kiddo covers every early learning milestone — from the alphabet to
-                        addition — through games, stories, and guided practice children
-                        actually enjoy.
-                    </p>
-                </div>
-
-                <div className="product-grid product-grid-photo">
-                    {features.map((feature) => (
-                        <FeaturePhotoCard key={feature.title} {...feature} />
-                    ))}
-                </div>
-            </section>
-
-            {/* ── Learning Preview ────────────────────────────────── */}
-            <section className="section showcase-section" id="preview">
-                <div className="section-heading">
-                    <p className="eyebrow">LEARNING IN ACTION</p>
-                    <h2>See how Kiddo teaches through play and guided discovery</h2>
-                </div>
-
-                <div className="showcase-grid">
-                    <div className="showcase-card">
-                        <h3>ABC &amp; Reading Session</h3>
-                        <div className="chat-user">
-                            Kiddo: Can you find the animal that starts with the letter C?
-                            🐱 🐶 🐰 🦊
+                <div className="kd-hero-grid">
+                    <div className="kd-hero-copy">
+                        <div className="kd-hero-badges">
+                            <span className="kd-status-badge">Adventure Awaits</span>
+                            <span className="kd-category-badge">Early Learning</span>
                         </div>
-                        <div className="chat-ai">
-                            <strong>🐱 Yes! Cat starts with C!</strong>
-                            <br /><br />
-                            Great job, Emma! C makes the "kuh" sound.
-                            C — C — Cat. C — C — Car. C — C — Cookie.
-                            <br /><br />
-                            You earned a ⭐ Gold Star! Ready to try writing the letter C?
+                        <p className="eyebrow">KIDDO</p>
+                        <h1 id="kd-hero-title">Learning becomes an adventure.</h1>
+                        <p className="kd-hero-lead">
+                            Kiddo turns ABCs, reading, math, and curiosity into colorful worlds your child will
+                            actually want to explore — with a parent dashboard that keeps you confidently in control.
+                        </p>
+                        <div className="kd-hero-actions">
+                            <a href="#waitlist" className="primary-btn kd-btn-primary">
+                                Join Waitlist
+                            </a>
+                            <a href="#worlds" className="secondary-btn kd-btn-secondary">
+                                Explore Learning Worlds
+                            </a>
+                        </div>
+                        <div className="kd-hero-stats" role="list" aria-label="Kiddo highlights">
+                            {heroHighlights.map((stat) => (
+                                <div key={stat.label} role="listitem" className="kd-hero-stat">
+                                    <strong>{stat.value}</strong>
+                                    <span>{stat.label}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
-
-                    <div className="showcase-card">
-                        <h3>Counting &amp; Math Game</h3>
-                        <div className="flashcard-preview">
-                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
-                                COUNTING CHALLENGE — LEVEL 2
-                            </p>
-                            <p style={{ color: "#334155", fontSize: "1.1rem", marginBottom: "10px" }}>
-                                🍎 🍎 🍎 + 🍎 🍎 = ?
-                            </p>
-                            <strong style={{ fontSize: "1.6rem", display: "block", marginBottom: "6px" }}>3 + 2 = 5 ✅</strong>
-                            <p style={{ color: "#64748b", fontSize: "0.88rem", lineHeight: "1.6" }}>
-                                Noah counted the apples one by one and got it right!
-                                Score: 7/8 correct. Next: subtraction with stars ⭐
-                            </p>
+                    <div className="kd-hero-visual">
+                        <div className="kd-hero-frame">
+                            <KiddoArtwork asset={kiddoAssets.hero} className="kd-hero-artwork" />
+                            <span className="kd-hero-sparkle kd-hero-sparkle--1" />
+                            <span className="kd-hero-sparkle kd-hero-sparkle--2" />
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ── Interactive Stories + Memory Games Preview ────────── */}
-            <section className="section" id="stories">
-                <div className="section-heading">
-                    <p className="eyebrow">STORIES &amp; GAMES</p>
-                    <h2>Adventures that teach — every choice builds a skill</h2>
+            <section className="section kd-worlds" id="worlds" aria-labelledby="kd-worlds-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">LEARNING WORLDS</p>
+                    <h2 id="kd-worlds-title">Six magical destinations to explore</h2>
+                    <p>Every world is a playful chapter in your child&apos;s learning journey.</p>
                 </div>
-
-                <div className="showcase-grid">
-                    <div className="showcase-card">
-                        <h3>Interactive Story — The Lost Star</h3>
-                        <div className="chat-ai">
-                            <em style={{ color: "#64748b" }}>
-                                Luna the bunny found a glowing star in the meadow. It was lost
-                                and wanted to go home to the sky. Luna needed to cross the
-                                Whispering Forest to find the rainbow bridge...
-                            </em>
-                        </div>
-                        <div className="chat-user" style={{ marginTop: "10px" }}>
-                            What should Luna do?
-                            <br />
-                            <strong>A)</strong> Follow the fireflies 🪲&nbsp;&nbsp;
-                            <strong>B)</strong> Ask the owl 🦉&nbsp;&nbsp;
-                            <strong>C)</strong> Walk alone 🐰
-                        </div>
-                        <div className="chat-ai">
-                            You chose <strong>B — Ask the owl!</strong> Great thinking!
-                            The wise owl knew the forest path. Luna learned that asking for
-                            help is always a good idea. <strong>New word: Wisdom 🦉</strong>
-                        </div>
-                    </div>
-
-                    <div className="showcase-card">
-                        <h3>Memory Match Game</h3>
-                        <div className="preview-grid" style={{ marginTop: "14px" }}>
-                            <div><strong>8</strong><span>Cards Left</span></div>
-                            <div><strong>5</strong><span>Matches</span></div>
-                            <div><strong>12s</strong><span>Fastest Flip</span></div>
-                            <div><strong>Level 2</strong><span>Current</span></div>
-                        </div>
-                        <div className="preview-note" style={{ marginTop: "14px" }}>
-                            <p>Shapes &amp; Colors — Match Game</p>
-                            <h4>Sofia matched the blue circle — 3 in a row!</h4>
-                            <span>
-                                Pattern recognition score improving. Sofia is now 40% faster
-                                at matching than her first session. Unlocking Level 3: Animals.
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ── Benefits Section ────────────────────────────────── */}
-            <section className="section showcase-section" id="benefits">
-                <div className="section-heading">
-                    <p className="eyebrow">BUILT FOR FAMILIES</p>
-                    <h2>Safe, age-appropriate, and always in your hands</h2>
-                    <p>
-                        Kiddo is designed from the ground up for young children — with
-                        parent controls, no ads, and content reviewed by early childhood
-                        education specialists.
-                    </p>
-                </div>
-
-                <div className="product-grid product-grid-photo">
-                    {kiddoBenefits.map((benefit) => (
-                        <FeaturePhotoCard key={benefit.title} {...benefit} />
-                    ))}
-                </div>
-            </section>
-
-            {/* ── Parent Dashboard Preview ────────────────────────── */}
-            <section className="section" id="parents">
-                <div className="section-heading">
-                    <p className="eyebrow">PARENT DASHBOARD</p>
-                    <h2>Stay connected to your child's learning journey</h2>
-                </div>
-
-                <div className="showcase-grid">
-                    <div className="showcase-card">
-                        <h3>Weekly Progress Report</h3>
-                        <div className="preview-grid" style={{ marginTop: "14px" }}>
-                            <div><strong>14</strong><span>Lessons Done</span></div>
-                            <div><strong>3h 20m</strong><span>Time Learned</span></div>
-                            <div><strong>8</strong><span>Stars Earned</span></div>
-                            <div><strong>92%</strong><span>Accuracy</span></div>
-                        </div>
-                        <div className="preview-note" style={{ marginTop: "14px" }}>
-                            <p>AI Parent Insight — Emma, Age 5</p>
-                            <h4>Strong week! Reading is her superpower.</h4>
-                            <span>
-                                Emma completed all 5 reading lessons and scored above 90%
-                                on each. Recommend adding 10 minutes of counting practice
-                                this week to keep math on track.
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="showcase-card">
-                        <h3>Achievement Milestones</h3>
-                        <div className="flashcard-preview">
-                            <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
-                                BADGES EARNED THIS MONTH
-                            </p>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                                {[
-                                    ["ABC", "Alphabet Champion", "All 26 letters mastered"],
-                                    ["READ", "Bookworm", "10 stories completed"],
-                                    ["STAR", "Gold Star Collector", "25 stars earned"],
-                                    ["NUM", "Number Ninja", "Counted to 50 without help"],
-                                    ["COLOR", "Color Master", "All 12 colors identified"],
-                                ].map(([label, badge, desc]) => (
-                                    <div key={badge} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "8px 0", borderBottom: "1px solid #e2e8f0" }}>
-                                        <span className="kiddo-badge-label">{label}</span>
-                                        <div>
-                                            <strong style={{ display: "block", color: "#0f172a", fontSize: "0.88rem" }}>{badge}</strong>
-                                            <span style={{ color: "#64748b", fontSize: "0.78rem" }}>{desc}</span>
-                                        </div>
-                                    </div>
-                                ))}
+                <div className="kd-worlds-grid">
+                    {learningWorlds.map((world) => (
+                        <article
+                            key={world.name}
+                            className="kd-world-card"
+                            style={{ "--kd-world-accent": world.accent }}
+                        >
+                            <div className="kd-world-photo">
+                                <KiddoArtwork asset={world.asset} className="kd-world-artwork" placeholderLabel={world.name} />
+                                <span className="kd-world-age">{world.ages}</span>
                             </div>
-                        </div>
+                            <div className="kd-world-body">
+                                <p className="kd-world-focus">{world.focus}</p>
+                                <h3>{world.name}</h3>
+                                <p>{world.description}</p>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section kd-characters" aria-labelledby="kd-characters-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">MEET THE CHARACTERS</p>
+                    <h2 id="kd-characters-title">Friends who make learning feel alive</h2>
+                    <p>Each guide has a personality, a purpose, and a world to share.</p>
+                </div>
+                <div className="kd-characters-grid">
+                    {characters.map((character) => (
+                        <article key={character.name} className={`kd-character-card kd-character-card--${character.variant}`}>
+                            <div className="kd-character-portrait-wrap">
+                                <KiddoArtwork
+                                    asset={character.asset}
+                                    className="kd-character-artwork"
+                                    placeholderLabel={character.name}
+                                />
+                            </div>
+                            <h3>{character.name}</h3>
+                            <p className="kd-character-title">{character.title}</p>
+                            <p className="kd-character-personality">{character.personality}</p>
+                            <p className="kd-character-teaches">
+                                <strong>Teaches:</strong> {character.teaches}
+                            </p>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section kd-gameplay" aria-labelledby="kd-gameplay-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">ADVENTURE GAMEPLAY</p>
+                    <h2 id="kd-gameplay-title">Play that builds real skills</h2>
+                    <p>Quests, rewards, and discovery loops children love — parents trust.</p>
+                </div>
+                <div className="kd-gameplay-layout">
+                    <div className="kd-gameplay-grid">
+                        {gameplayFeatures.map((item) => (
+                            <article key={item.title} className="kd-gameplay-chip">
+                                <h3>{item.title}</h3>
+                                <p>{item.copy}</p>
+                            </article>
+                        ))}
+                    </div>
+                    <div className="kd-gameplay-mocks">
+                        <article className="kd-mock-card kd-mock-card-visual">
+                            <KiddoArtwork asset={kiddoAssets.gameplay} className="kd-gameplay-preview-art" />
+                        </article>
+                        <article className="kd-mock-card">
+                            <p className="kd-mock-label">Treasure Map</p>
+                            <h3>Find the hidden letter gems</h3>
+                            <div className="kd-mock-map">
+                                <span className="kd-mock-node kd-mock-node--done">A</span>
+                                <span className="kd-mock-path" />
+                                <span className="kd-mock-node kd-mock-node--active">B</span>
+                                <span className="kd-mock-path" />
+                                <span className="kd-mock-node">C</span>
+                            </div>
+                            <p className="kd-mock-caption">2 of 3 clues found in Alphabet Forest</p>
+                        </article>
+                        <article className="kd-mock-card">
+                            <p className="kd-mock-label">Daily Challenge</p>
+                            <h3>Star streak unlocked</h3>
+                            <div className="kd-mock-streak">
+                                <span className="kd-mock-star kd-mock-star--on" />
+                                <span className="kd-mock-star kd-mock-star--on" />
+                                <span className="kd-mock-star kd-mock-star--on" />
+                                <span className="kd-mock-star" />
+                                <span className="kd-mock-star" />
+                            </div>
+                            <p className="kd-mock-caption">Come back tomorrow for a surprise badge</p>
+                        </article>
                     </div>
                 </div>
             </section>
 
-            {/* ── Pricing ─────────────────────────────────────────── */}
-            <section className="section pricing-section" id="pricing">
-                <div className="section-heading">
+            <section className="section kd-parents" aria-labelledby="kd-parents-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">PARENT DASHBOARD</p>
+                    <h2 id="kd-parents-title">Confidence for parents, joy for kids</h2>
+                    <p>Everything you need to guide learning without hovering over every tap.</p>
+                </div>
+                <div className="kd-parents-layout">
+                    <div className="kd-parent-features">
+                        {parentFeatures.map((item) => (
+                            <article key={item.title} className="kd-parent-feature">
+                                <h3>{item.title}</h3>
+                                <p>{item.copy}</p>
+                            </article>
+                        ))}
+                    </div>
+                    <div className="kd-parent-visual">
+                        <KiddoArtwork asset={kiddoAssets.parentDashboard} className="kd-parent-dashboard-art" />
+                        <article className="kd-parent-dashboard-mock" aria-label="Parent dashboard preview">
+                            <div className="kd-dashboard-header">
+                                <strong>Emma&apos;s Week</strong>
+                                <span>Age 5</span>
+                            </div>
+                            <div className="kd-dashboard-stats">
+                                <div>
+                                    <strong>14</strong>
+                                    <span>Lessons</span>
+                                </div>
+                                <div>
+                                    <strong>3h 20m</strong>
+                                    <span>Learned</span>
+                                </div>
+                                <div>
+                                    <strong>8</strong>
+                                    <span>Stars</span>
+                                </div>
+                                <div>
+                                    <strong>92%</strong>
+                                    <span>Accuracy</span>
+                                </div>
+                            </div>
+                            <div className="kd-dashboard-insight">
+                                <p className="kd-dashboard-insight-label">Parent insight</p>
+                                <p>Reading is Emma&apos;s superpower this week. Add 10 minutes of counting play tomorrow.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section className="section kd-subjects" aria-labelledby="kd-subjects-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">LEARNING SUBJECTS</p>
+                    <h2 id="kd-subjects-title">A full early-learning universe</h2>
+                </div>
+                <div className="kd-subjects-grid">
+                    {learningSubjects.map((subject) => (
+                        <article
+                            key={subject.name}
+                            className="kd-subject-card"
+                            style={{ "--kd-subject-color": subject.color }}
+                        >
+                            <span className="kd-subject-dot" />
+                            <h3>{subject.name}</h3>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section kd-pricing" id="pricing" aria-labelledby="kd-pricing-title">
+                <div className="kd-section-head">
                     <p className="eyebrow">PRICING</p>
-                    <h2>Affordable learning for every family</h2>
-                    <p>Cancel anytime. No ads. No surprise charges.</p>
+                    <h2 id="kd-pricing-title">Plans for every family</h2>
+                    <p>Start free, upgrade when your explorer is ready for more worlds.</p>
                 </div>
-
-                <div className="pricing-grid">
-                    <div className="pricing-card">
-                        <p className="product-category">STARTER</p>
-                        <h3>Free</h3>
-                        <div className="price">$0</div>
-                        <p>
-                            ABC learning, basic counting, 5 interactive stories, and
-                            memory games. Perfect for getting started with one child.
-                        </p>
-                    </div>
-
-                    <div className="pricing-card featured">
-                        <p className="product-category">FAMILY</p>
-                        <h3>Kiddo Plus</h3>
-                        <div className="price">$7.99/mo</div>
-                        <p>
-                            All 12 learning modules, unlimited stories, full parent
-                            dashboard, progress tracking, achievement rewards, and
-                            monthly learning reports. Up to 3 child profiles.
-                        </p>
-                    </div>
-
-                    <div className="pricing-card">
-                        <p className="product-category">CLASSROOM</p>
-                        <h3>Educator Plan</h3>
-                        <div className="price">Coming Soon</div>
-                        <p>
-                            Classroom tools, student progress tracking, teacher
-                            dashboards, and curriculum alignment for Pre-K through
-                            Grade 2. Built for schools and daycares.
-                        </p>
-                    </div>
+                <div className="kd-pricing-grid">
+                    {pricingPlans.map((plan) => (
+                        <article
+                            key={plan.name}
+                            className={`kd-pricing-card${plan.featured ? " kd-pricing-card--featured" : ""}`}
+                        >
+                            {plan.featured && <span className="kd-pricing-flag">Most popular</span>}
+                            <h3>{plan.name}</h3>
+                            <div className="kd-pricing-price">{plan.price}</div>
+                            <p>{plan.description}</p>
+                            <a href="#waitlist" className={plan.featured ? "primary-btn kd-btn-primary" : "secondary-btn kd-btn-secondary"}>
+                                Join Waitlist
+                            </a>
+                        </article>
+                    ))}
                 </div>
             </section>
 
-            {/* ── CTA / Waitlist ───────────────────────────────────── */}
-            <section className="section" id="waitlist">
-                <div className="newsletter-card">
-                    <p className="eyebrow">EARLY ACCESS</p>
-                    <h2>Give your child a head start — join the Kiddo waitlist today.</h2>
-                    <NewsletterSignup
-                        onSubscribe={saveSubscriber}
-                        source="Kiddo Waitlist"
-                        tags={["Kiddo", "Early Access"]}
-                        buttonLabel="Get Early Access"
-                    />
+            <section className="section kd-faq" aria-labelledby="kd-faq-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">FAQ</p>
+                    <h2 id="kd-faq-title">Questions parents ask most</h2>
+                </div>
+                <div className="kd-faq-list">
+                    {faqItems.map((item) => (
+                        <article key={item.question} className="kd-faq-item">
+                            <h3>{item.question}</h3>
+                            <p>{item.answer}</p>
+                        </article>
+                    ))}
                 </div>
             </section>
 
-        </div>
+            <section className="section kd-waitlist" id="waitlist" aria-labelledby="kd-waitlist-title">
+                <div className="kd-waitlist-card">
+                    <div className="kd-waitlist-copy">
+                        <p className="eyebrow">JOIN THE WAITLIST</p>
+                        <h2 id="kd-waitlist-title">Give your child a head start on the adventure.</h2>
+                        <p>
+                            Get launch updates, early access invitations, and family learning tips from the Cin Nova
+                            team. No spam — unsubscribe anytime.
+                        </p>
+                    </div>
+                    <div className="kd-waitlist-form">
+                        <NewsletterSignup
+                            onSubscribe={saveSubscriber}
+                            source="Kiddo Waitlist"
+                            tags={["Kiddo", "Waitlist"]}
+                            buttonLabel="Join Waitlist"
+                        />
+                    </div>
+                </div>
+            </section>
+        </main>
     );
 }
 

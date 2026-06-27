@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-label="Kiddo parent dashboard concept preview">
+  <defs>
+    <linearGradient id="play" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fdf4ff"/><stop offset="100%" stop-color="#fde68a"/></linearGradient>
+    <linearGradient id="dash" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff7ed"/><stop offset="100%" stop-color="#ffedd5"/></linearGradient>
+    <filter id="c"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect width="720" height="720" fill="url(#dash)"/>
+  <g filter="url(#c)">
+    <rect x="48" y="48" width="624" height="624" rx="28" fill="#fff"/>
+    <rect x="80" y="80" width="560" height="64" rx="14" fill="#ffedd5"/>
+    <text x="110" y="122" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#9a3412">Emma&apos;s Learning Week</text>
+    <rect x="80" y="170" width="170" height="120" rx="16" fill="#fef3c7"/>
+    <text x="110" y="220" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#78350f">Lessons</text>
+    <text x="110" y="260" font-family="system-ui,sans-serif" font-size="36" font-weight="800" fill="#92400e">14</text>
+    <rect x="275" y="170" width="170" height="120" rx="16" fill="#fce7f3"/>
+    <text x="305" y="220" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#9d174d">Learned</text>
+    <text x="305" y="260" font-family="system-ui,sans-serif" font-size="32" font-weight="800" fill="#be185d">3h 20m</text>
+    <rect x="470" y="170" width="170" height="120" rx="16" fill="#dbeafe"/>
+    <text x="500" y="220" font-family="system-ui,sans-serif" font-size="14" font-weight="600" fill="#1e40af">Accuracy</text>
+    <text x="500" y="260" font-family="system-ui,sans-serif" font-size="36" font-weight="800" fill="#1d4ed8">92%</text>
+    <rect x="80" y="320" width="560" height="200" rx="18" fill="#fff7ed"/>
+    <text x="110" y="360" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#c2410c">PARENT INSIGHT</text>
+    <text x="110" y="400" font-family="system-ui,sans-serif" font-size="18" fill="#78350f">Reading is Emma&apos;s superpower this week.</text>
+    <text x="110" y="430" font-family="system-ui,sans-serif" font-size="18" fill="#78350f">Try 10 minutes of counting play tomorrow.</text>
+    <rect x="80" y="545" width="260" height="90" rx="14" fill="#dcfce7"/>
+    <text x="110" y="585" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#166534">Screen time: 25 min today</text>
+    <rect x="380" y="545" width="260" height="90" rx="14" fill="#ede9fe"/>
+    <text x="410" y="585" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#5b21b6">Safe mode: ON</text>
+  </g>
+</svg>

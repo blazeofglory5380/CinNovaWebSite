@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Reading Castle learning world concept art">
+  <defs><filter id="w"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.12"/></filter></defs>
+  <rect width="640" height="640" fill="#ede9fe"/>
+  <g filter="url(#w)">
+    <rect x="180" y="280" width="280" height="220" rx="16" fill="#a78bfa"/>
+    <rect x="220" y="220" width="80" height="80" rx="8" fill="#8b5cf6"/>
+    <rect x="340" y="180" width="100" height="120" rx="8" fill="#7c3aed"/>
+    <polygon points="220,220 260,160 300,220" fill="#ddd6fe"/>
+    <polygon points="340,180 390,100 440,180" fill="#ddd6fe"/>
+    <rect x="300" y="360" width="48" height="80" rx="8" fill="#6d28d9"/>
+    <rect x="80" y="420" width="480" height="120" rx="24" fill="#c4b5fd" opacity="0.6"/>
+    <text x="320" y="500" text-anchor="middle" font-family="Georgia,serif" font-size="36" font-weight="700" fill="#5b21b6">Once upon a time…</text>
+  </g>
+</svg>

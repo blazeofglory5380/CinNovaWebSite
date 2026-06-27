@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Alphabet Forest learning world concept art">
+  <defs><filter id="w"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.12"/></filter></defs>
+  <rect width="640" height="640" fill="#bbf7d0"/>
+  <g filter="url(#w)">
+    <ellipse cx="200" cy="120" rx="120" ry="50" fill="#fff" opacity="0.5"/>
+    <rect x="40" y="380" width="560" height="200" rx="40" fill="#34d399" opacity="0.35"/>
+    <circle cx="120" cy="280" r="80" fill="#059669"/><text x="120" y="300" text-anchor="middle" font-family="Georgia,serif" font-size="72" font-weight="700" fill="#fff">A</text>
+    <circle cx="320" cy="220" r="70" fill="#10b981"/><text x="320" y="240" text-anchor="middle" font-family="Georgia,serif" font-size="60" font-weight="700" fill="#fff">B</text>
+    <circle cx="500" cy="300" r="75" fill="#047857"/><text x="500" y="320" text-anchor="middle" font-family="Georgia,serif" font-size="64" font-weight="700" fill="#fff">C</text>
+    <rect x="80" y="450" width="90" height="140" rx="20" fill="#166534"/><ellipse cx="125" cy="420" rx="70" ry="80" fill="#22c55e"/>
+    <rect x="480" y="460" width="80" height="130" rx="18" fill="#166534"/><ellipse cx="520" cy="430" rx="65" ry="75" fill="#4ade80"/>
+  </g>
+</svg>
