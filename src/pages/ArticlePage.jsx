@@ -9,6 +9,17 @@ import AdSlot from "../components/AdSlot.jsx";
 import RecommendedProducts from "../components/RecommendedProducts.jsx";
 import BlogProductCTA from "../components/BlogProductCTA.jsx";
 import ArticleImage from "../components/ArticleImage.jsx";
+import ArticleReadingProgress from "../components/article/ArticleReadingProgress.jsx";
+import ArticleTableOfContents from "../components/article/ArticleTableOfContents.jsx";
+import ArticleProductQuiz from "../components/article/ArticleProductQuiz.jsx";
+import ArticleAssistant from "../components/article/ArticleAssistant.jsx";
+import ArticlePoll from "../components/article/ArticlePoll.jsx";
+import ArticleRealEstateCalculators from "../components/article/ArticleRealEstateCalculators.jsx";
+import ArticleChecklist from "../components/article/ArticleChecklist.jsx";
+import ArticleStudyTools from "../components/article/ArticleStudyTools.jsx";
+import ArticleGlossary from "../components/article/ArticleGlossary.jsx";
+import ArticleGlossaryText from "../components/article/ArticleGlossaryText.jsx";
+import ArticleResourceDownloads from "../components/article/ArticleResourceDownloads.jsx";
 import {
     estimateArticleReadingTime,
     getArticleUrl,
@@ -16,29 +27,9 @@ import {
     siteUrl,
     slugifyCategory,
 } from "../data/blogPosts.js";
+import { getArticleEngagement } from "../data/articleEngagement.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
 import { trackArticleView } from "../utils/analytics.js";
-
-function ReadingProgressBar() {
-    const [progress, setProgress] = useState(0);
-
-    useEffect(() => {
-        function onScroll() {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            setProgress(docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0);
-        }
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    return (
-        <div className="reading-progress-track" aria-hidden="true">
-            <div className="reading-progress-fill" style={{ width: `${progress}%` }} />
-        </div>
-    );
-}
 
 function extractPullQuote(body = "") {
     const sentences = body.match(/[^.!?]+[.!?]+/g) || [];
@@ -47,23 +38,6 @@ function extractPullQuote(body = "") {
             const t = s.trim();
             return t.length >= 90 && t.length <= 210;
         })?.trim() || null
-    );
-}
-
-function TableOfContents({ sections }) {
-    return (
-        <nav className="sidebar-widget article-toc" aria-label="Table of contents">
-            <p className="sidebar-widget-label">IN THIS ARTICLE</p>
-            <ol className="toc-list">
-                {sections.map((section, i) => (
-                    <li key={i}>
-                        <a href={`#section-${i}`} className="toc-link">
-                            {section.heading}
-                        </a>
-                    </li>
-                ))}
-            </ol>
-        </nav>
     );
 }
 
@@ -254,6 +228,8 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
     const readingTime = estimateArticleReadingTime(post);
+    const engagement = useMemo(() => getArticleEngagement(post), [post.category]);
+    const sections = Array.isArray(post.content) ? post.content : [];
 
     useEffect(() => {
         trackArticleView(post);
@@ -299,7 +275,6 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 return new Date().toISOString();
             }
         };
-        const sections = Array.isArray(post.content) ? post.content : [];
         return {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
@@ -322,11 +297,11 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                 url: siteUrl,
             },
         };
-    }, [post.id, articleUrl, author.name]);
+    }, [post.id, articleUrl, author.name, sections]);
 
     return (
         <main className="product-page article-page">
-            <ReadingProgressBar />
+            <ArticleReadingProgress />
             {post.sponsored && post.sponsor && (
                 <SponsoredDisclosure sponsor={post.sponsor} />
             )}
@@ -362,7 +337,8 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
             <section className="section article-content-section">
                 <div className="article-body-layout">
                     <article className="article-content-card article-body-counter">
-                        {(Array.isArray(post.content) ? post.content : []).map((section, i, arr) => {
+                        <ArticleTableOfContents sections={sections} className="article-toc-mobile" />
+                        {sections.map((section, i, arr) => {
                             const isIntro = i === 0;
                             const isCallout = /takeaway|key point|conclusion|summary/i.test(section.heading);
                             const midpoint = Math.ceil(arr.length / 2);
@@ -378,18 +354,35 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                             return (
                                 <section className={sectionClass} key={section.heading} id={`section-${i}`}>
                                     <h2>{section.heading}</h2>
-                                    {section.body && <p>{section.body}</p>}
+                                    {section.body && (
+                                        <p>
+                                            <ArticleGlossaryText
+                                                text={section.body}
+                                                glossary={engagement.glossary}
+                                            />
+                                        </p>
+                                    )}
                                     {Array.isArray(section.list) && (
                                         <ul>
                                             {section.list.map((item, idx) => (
-                                                <li key={idx}>{item}</li>
+                                                <li key={idx}>
+                                                    <ArticleGlossaryText
+                                                        text={item}
+                                                        glossary={engagement.glossary}
+                                                    />
+                                                </li>
                                             ))}
                                         </ul>
                                     )}
                                     {Array.isArray(section.numberedList) && (
                                         <ol>
                                             {section.numberedList.map((item, idx) => (
-                                                <li key={idx}>{item}</li>
+                                                <li key={idx}>
+                                                    <ArticleGlossaryText
+                                                        text={item}
+                                                        glossary={engagement.glossary}
+                                                    />
+                                                </li>
                                             ))}
                                         </ol>
                                     )}
@@ -405,10 +398,32 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                                             caption={section.imageCaption || ""}
                                         />
                                     )}
+                                    {i === 0 && <ArticlePoll poll={engagement.poll} post={post} />}
                                     {i === 1 && <ArticleCTA onSubscribe={onSubscribe} />}
+                                    {i === midpoint - 1 && engagement.showCalculators && (
+                                        <ArticleRealEstateCalculators />
+                                    )}
+                                    {i === midpoint - 1 && engagement.showStudyTools && (
+                                        <ArticleStudyTools post={post} />
+                                    )}
+                                    {engagement.showChecklists &&
+                                        engagement.checklists.map((checklist, checklistIndex) =>
+                                            i === checklistIndex + 1 ? (
+                                                <ArticleChecklist
+                                                    key={checklist.id}
+                                                    checklist={checklist}
+                                                    post={post}
+                                                />
+                                            ) : null
+                                        )}
                                 </section>
                             );
                         })}
+                        <ArticleProductQuiz post={post} onNavigate={onNavigate} />
+                        <ArticleResourceDownloads
+                            resources={engagement.relatedResources}
+                            onSubscribe={onSubscribe}
+                        />
                         <RelatedReadingBlock
                             articles={articlesToShow}
                             onOpenArticle={onOpenArticle}
@@ -416,7 +431,9 @@ function ArticlePage({ post, posts, onBack, onOpenArticle, onSubscribe, onNaviga
                     </article>
 
                     <aside className="article-sidebar">
-                        <TableOfContents sections={Array.isArray(post.content) ? post.content : []} />
+                        <ArticleTableOfContents sections={sections} className="article-toc-desktop" />
+                        <ArticleGlossary glossary={engagement.glossary} />
+                        <ArticleAssistant post={post} />
                         <ShareButtons url={articleUrl} title={post.title} />
                         <RelatedSidebar articles={articlesToShow} onOpenArticle={onOpenArticle} />
                         <AdSlot placement="sidebar" onNavigate={onNavigate} />

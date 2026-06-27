@@ -83,7 +83,7 @@ const characters = [
         personality: "Brave, kind, and always ready to help a friend find the way.",
         teaches: "Reading quests, story choices, and empathy",
         variant: "luna",
-        asset: kiddoAssets.characters.luna,
+        asset: { src: "/images/Kiddo/characters/kiki.png", alt: "Kiki — curious explorer and reading quest guide" },
     },
     {
         name: "Oliver",

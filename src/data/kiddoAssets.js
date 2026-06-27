@@ -36,23 +36,23 @@ export const kiddoAssets = {
             "Alphabet Forest learning world with letter trees and woodland trails"
         ),
         numberMountain: asset(
-            "worlds/number-mountain.png",
+            "worlds/math-mountain.png",
             "Number Mountain learning world with golden peaks and counting paths"
         ),
         readingCastle: asset(
-            "worlds/reading-castle.png",
+            "worlds/pixel-kingdom.png",
             "Reading Castle learning world with story towers and fairy-tale gates"
         ),
         scienceLab: asset(
-            "worlds/science-lab.png",
+            "worlds/discovery-lab.png",
             "Science Lab learning world with colorful experiments and discovery stations"
         ),
         oceanDiscovery: asset(
-            "worlds/ocean-discovery.png",
+            "worlds/ocean-cove.png",
             "Ocean Discovery learning world with coral reefs and marine friends"
         ),
         spaceExplorer: asset(
-            "worlds/space-explorer.png",
+            "worlds/novas-dream-studio.png",
             "Space Explorer learning world with rockets, planets, and star missions"
         ),
     },
