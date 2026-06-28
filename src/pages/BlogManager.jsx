@@ -133,6 +133,7 @@ function BlogManager({ posts, onPostsChange }) {
                 description="Manage Cin Nova blog articles locally with drafts, publishing, categories, authors, and featured article controls."
                 url={`${siteUrl}/blog-admin`}
                 type="website"
+                noindex
             />
 
             <section className="section">

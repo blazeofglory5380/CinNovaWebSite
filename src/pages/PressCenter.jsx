@@ -8,17 +8,20 @@ import BusinessCTABanner from "../components/business/BusinessCTABanner.jsx";
 import BusinessContactCard from "../components/business/BusinessContactCard.jsx";
 import { businessAudienceStats, pressFaq, pressNewsItems } from "../data/businessCenter.js";
 import { mediaKitAssets } from "../data/marketingImages.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 
-const pressSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Cin Nova Press Center",
-    description:
-        "Press resources, company news, media assets, and contact information for journalists covering Cin Nova.",
-    url: `${siteUrl}/?page=press-center`,
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
+const pressSchema = withSchemaGraph(
+    {
+        "@type": "WebPage",
+        name: "Cin Nova Press Center",
+        description:
+            "Press resources, company news, media assets, and contact information for journalists covering Cin Nova.",
+        url: `${siteUrl}/?page=press-center`,
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(pressFaq),
+);
 
 function downloadPressAsset(assetType) {
     const assets = {

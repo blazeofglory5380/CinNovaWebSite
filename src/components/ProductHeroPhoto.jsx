@@ -5,7 +5,7 @@ function ProductHeroPhoto({ src, alt }) {
 
     return (
         <div className="product-hero-photo">
-            <MarketingPhoto src={src} alt={alt} className="product-hero-photo-img" loading="eager" />
+            <MarketingPhoto src={src} alt={alt} className="product-hero-photo-img" loading="eager" fetchPriority="high" />
         </div>
     );
 }

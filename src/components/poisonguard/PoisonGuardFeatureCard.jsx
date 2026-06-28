@@ -5,7 +5,7 @@ function PoisonGuardFeatureCard({ feature, onOpen }) {
     const buttonRef = useRef(null);
 
     return (
-        <article className="pg-feature-card-v2 product-card product-card-photo">
+        <article className="pg-feature-card-v2">
             <button
                 ref={buttonRef}
                 type="button"

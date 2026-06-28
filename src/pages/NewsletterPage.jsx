@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { newsletterBenefits, newsletterTopics } from "../data/marketingImages.js";
-import { siteUrl } from "../data/blogPosts.js";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 
 const testimonials = [
@@ -66,13 +67,15 @@ function NewsletterPage({ onSubscribe }) {
         setStatus("success");
     }
 
-    const nlSchema = {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: "Cin Nova Newsletter",
-        description: "Join the Cin Nova newsletter. Get product updates, free guides, and early access.",
-        url: `${siteUrl}/?page=newsletter`,
-    };
+    const nlSchema = withSchemaGraph(
+        {
+            "@type": "WebPage",
+            name: "Cin Nova Newsletter",
+            description: "Join the Cin Nova newsletter. Get product updates, free guides, and early access.",
+            url: `${siteUrl}/?page=newsletter`,
+        },
+        buildFaqSchema(faqs),
+    );
 
     return (
         <main className="product-page newsletter-landing-page">

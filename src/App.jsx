@@ -26,6 +26,7 @@ import PartnerWithUs from "./pages/PartnerWithUs.jsx";
 import Partnerships from "./pages/Partnerships.jsx";
 import PressCenter from "./pages/PressCenter.jsx";
 import SponsorNewsletter from "./pages/SponsorNewsletter.jsx";
+import NotFound from "./pages/NotFound.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 import NewsletterSignup from "./components/NewsletterSignup.jsx";
 import NewsletterPopup from "./components/NewsletterPopup.jsx";
@@ -42,8 +43,9 @@ import { getResourceBySlug, resources } from "./data/resources.js";
 import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory, siteUrl } from "./data/blogPosts.js";
+import { defaultOgImage, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import SEO from "./components/SEO.jsx";
-import { initAnalytics, trackPageView } from "./utils/analytics.js";
+import { trackPageView } from "./utils/analytics.js";
 import FeaturePhotoCard from "./components/FeaturePhotoCard.jsx";
 import MarketingPhoto from "./components/MarketingPhoto.jsx";
 import {
@@ -539,6 +541,16 @@ function ProductDetailSection({ product, index, onNavigate }) {
 }
 
 function ProductsPage({ onNavigate, onSubscribe }) {
+    const productsSchema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Cin Nova Product Catalog",
+        description:
+            "Explore StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI.",
+        url: `${siteUrl}/?page=products`,
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    };
+
     return (
         <main>
             <SEO
@@ -546,6 +558,8 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                 description="Explore the Cin Nova product catalog: StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI. Five platforms solving real-world problems."
                 url={`${siteUrl}/?page=products`}
                 type="website"
+                image={defaultOgImage}
+                schema={productsSchema}
             />
 
             <section className="products-hero">
@@ -681,19 +695,35 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     if (articleMatch) {
         const post = getManagedPostBySlug(decodeURIComponent(articleMatch[1]), posts);
         if (post) return { page: "article", article: post, resource: null, category: null };
+        return { page: "not-found", article: null, resource: null, category: null };
     }
 
     if (articleSlug) {
         const post = getManagedPostBySlug(articleSlug, posts);
         if (post) return { page: "article", article: post, resource: null, category: null };
+        return { page: "not-found", article: null, resource: null, category: null };
     }
 
     if (resourceSlug) {
         const resource = getResourceBySlug(resourceSlug);
         if (resource) return { page: "resource", article: null, resource, category: null };
+        return { page: "not-found", article: null, resource: null, category: null };
     }
 
-    if (routedPage) return { page: routedPage, article: null, resource: null, category: null };
+    if (routedPage) {
+        if (VALID_PAGE_KEYS.has(routedPage)) {
+            return { page: routedPage, article: null, resource: null, category: null };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    const isKnownPath =
+        path === "/" || path === "/blog" || path === "/blog-admin" || path.startsWith("/blog/");
+
+    if (!isKnownPath) {
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
     return { page: "home", article: null, resource: null, category: null };
 }
 
@@ -722,11 +752,10 @@ function App() {
         () => safeGetSessionFlag(STICKY_KEY)
     );
 
-    // Boot GA4: inject gtag script and fire the initial page_view
+    // Track SPA page views whenever the routed view changes.
     useEffect(() => {
-        initAnalytics();
         trackPageView(window.location.pathname + window.location.search);
-    }, []);
+    }, [page, selectedArticle?.slug, selectedResource?.slug]);
 
     // Timed newsletter popup - fires once per session after 45 s
     useEffect(() => {
@@ -797,7 +826,6 @@ function App() {
             setSelectedResource(route.resource);
             setSelectedCategory(route.category || "All");
             scrollTop();
-            trackPageView(window.location.pathname + window.location.search);
         }
 
         window.addEventListener("popstate", handlePopState);
@@ -810,7 +838,6 @@ function App() {
 
     function pushRoute(url) {
         window.history.pushState({}, "", url);
-        trackPageView(url);
     }
 
     function goHome() {
@@ -1139,6 +1166,8 @@ function App() {
                     <ProductEcosystemSection currentPage="kiddo" onNavigate={openPage} />
                 </>
             )}
+
+            {page === "not-found" && <NotFound onGoHome={goHome} />}
 
             <SiteFooter
                 onNavigate={openPage}

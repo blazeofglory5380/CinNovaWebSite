@@ -1,441 +1,611 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://cin-nova-web-site.vercel.app/</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/artificial-intelligence</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/real-estate-technology</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/education-technology</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/healthcare-technology</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/construction-technology</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/data-centers-and-databases</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/robotics-and-automation</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/future-technology</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/business-and-entrepreneurship</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/category/cinnova-updates</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=resources</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=studynest</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=poisonguard</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=real-estate</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=techmate</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=kiddo</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/home/homepage-hero-innovation.jpg</image:loc>
+      <image:title>Cin Nova</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/?page=about</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=advertise</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/?page=contact</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=privacy</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=terms</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=pricing</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=partners</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?page=kiddo</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/products/kiddo-child-learning.jpg</image:loc>
+      <image:title>Kiddo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=media-kit</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/?page=newsletter</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=media-kit</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/?page=advertise</loc>
-    <lastmod>2026-06-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/?page=partner-with-us</loc>
-    <lastmod>2026-06-19</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=partners</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=partnerships</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=poisonguard</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/products/poisonguard-pet-family-safety.jpg</image:loc>
+      <image:title>PoisonGuard</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=press-center</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=pricing</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=privacy</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=products</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=real-estate</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/products/cinnova-real-estate-property.jpg</image:loc>
+      <image:title>Cin Nova Real Estate</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?page=resources</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/?page=sponsor-newsletter</loc>
-    <lastmod>2026-06-19</lastmod>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-is-transforming-education</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?page=studynest</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/products/studynest-student-learning.jpg</image:loc>
+      <image:title>StudyNest</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-hidden-infrastructure-behind-chatgpt-and-ai</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?page=techmate</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/products/techmate-ai-device-support.jpg</image:loc>
+      <image:title>TechMate AI</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/why-data-centers-are-becoming-the-new-gold-rush</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://cin-nova-web-site.vercel.app/?page=terms</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-companies-building-the-ai-economy</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=ai-product-launch-checklist</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/can-americas-power-grid-handle-ai</loc>
-    <lastmod>2026-06-13</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=ai-study-planning-starter-guide</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-rise-of-ai-tutors-and-personalized-learning</loc>
-    <lastmod>2026-06-12</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=cin-nova-product-ecosystem-brochure</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-is-changing-real-estate-investing</loc>
-    <lastmod>2026-06-11</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=family-safety-resource-kit</loc>
+    <lastmod>2026-06-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=household-chemical-safety-checklist</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=kiddo-early-learning-case-study</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=newsletter-growth-playbook-for-app-companies</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=poison-safety-technology-white-paper</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=real-estate-cash-flow-analysis-template</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=real-estate-deal-analysis-template</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=techmate-ai-troubleshooting-brochure</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/?resource=weekly-student-study-planner-template</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/blog/ai-in-construction-and-engineering</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/construction/ai-construction-engineering-jobsite.jpg</image:loc>
+      <image:title>AI in Construction and Engineering</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/ai-in-construction-estimating</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/construction/blueprint-cost-estimating.jpg</image:loc>
+      <image:title>AI in Construction Estimating</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/can-americas-power-grid-handle-ai</loc>
+    <lastmod>2026-06-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/datacenters/power-grid-ai-electricity-demand.jpg</image:loc>
+      <image:title>Can America&apos;s Power Grid Handle AI?</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/artificial-intelligence</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/robotics-and-automation-in-2026</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/business-and-entrepreneurship</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-technology-trends-that-will-shape-the-next-decade</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/cinnova-updates</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/why-ai-tutors-are-not-replacing-teachers</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/construction-technology</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-science-behind-spaced-repetition-and-learning</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/data-centers-and-databases</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-students-can-study-smarter-with-ai</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/education-technology</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-future-of-online-education-platforms</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/future-technology</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-studynest-is-reimagining-learning</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/healthcare-technology</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/home-safety-tips-for-families</loc>
-    <lastmod>2026-06-07</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/real-estate-technology</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-technology-can-support-parents</loc>
-    <lastmod>2026-06-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/what-small-businesses-should-know-about-ai-assistants</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-changes-property-search</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/student-dashboards-that-actually-help</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-digital-triage-can-improve-family-safety</loc>
-    <lastmod>2026-06-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/construction-tech-for-small-contractors</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/why-data-centers-matter-to-everyday-apps</loc>
-    <lastmod>2026-05-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/robotics-automation-for-everyday-businesses</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/future-technology-trends-worth-watching</loc>
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/how-founders-can-validate-multiple-app-ideas</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://cin-nova-web-site.vercel.app/blog/category/robotics-and-automation</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/blog/cinnova-product-roadmap-overview</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/home/homepage-hero-innovation.jpg</image:loc>
+      <image:title>CinNova Product Roadmap Overview</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/construction-tech-for-small-contractors</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/construction/small-contractor-jobsite-tablet.jpg</image:loc>
+      <image:title>Construction Tech for Small Contractors</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/blog/database-basics-for-product-founders</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/datacenters/database-admin-workstation.jpg</image:loc>
+      <image:title>Database Basics for Product Founders</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/ai-in-construction-estimating</loc>
-    <lastmod>2026-05-25</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/future-technology-trends-worth-watching</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/future-tech/emerging-technology-research.jpg</image:loc>
+      <image:title>Future Technology Trends Worth Watching</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-complete-guide-to-ai-in-education-2026</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/home-safety-tips-for-families</loc>
+    <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/healthcare/household-chemical-safety-storage.jpg</image:loc>
+      <image:title>Home Safety Tips for Families</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/blog/the-complete-guide-to-artificial-intelligence-in-2026</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-changes-property-search</loc>
+    <lastmod>2026-06-04</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/real-estate/modern-home-property-search.jpg</image:loc>
+      <image:title>How AI Changes Property Search</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-is-changing-real-estate-investing</loc>
+    <lastmod>2026-06-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/real-estate/ai-real-estate-investing-deal-analysis.jpg</image:loc>
+      <image:title>How AI Is Changing Real Estate Investing</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-ai-is-transforming-education</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/ai-transforming-education-classroom.jpg</image:loc>
+      <image:title>How AI Is Transforming Education</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-digital-triage-can-improve-family-safety</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/healthcare/family-emergency-preparedness.jpg</image:loc>
+      <image:title>How Digital Triage Can Improve Family Safety</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-founders-can-validate-multiple-app-ideas</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/business/startup-founders-whiteboard.jpg</image:loc>
+      <image:title>How Founders Can Validate Multiple App Ideas</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-students-can-study-smarter-with-ai</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/student-studying-smarter-ai-tools.jpg</image:loc>
+      <image:title>How Students Can Study Smarter With AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-studynest-is-reimagining-learning</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/studynest-connected-learning-workspace.jpg</image:loc>
+      <image:title>How StudyNest Is Reimagining Learning</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/how-technology-can-support-parents</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/education/parent-child-learning-support.jpg</image:loc>
+      <image:title>How Technology Can Support Parents</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://cin-nova-web-site.vercel.app/blog/robotics-ai-and-the-next-wave-of-automation</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/robotics/industrial-robot-arm-factory.jpg</image:loc>
+      <image:title>Robotics, AI, and the Next Wave of Automation</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=ai-study-planning-starter-guide</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/robotics-and-automation-in-2026</loc>
+    <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/robotics/robotics-automation-warehouse-2026.jpg</image:loc>
+      <image:title>Robotics and Automation in 2026</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=poison-safety-technology-white-paper</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/robotics-automation-for-everyday-businesses</loc>
+    <lastmod>2026-05-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/robotics/collaborative-robot-assembly.jpg</image:loc>
+      <image:title>Robotics Automation for Everyday Businesses</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=cin-nova-product-ecosystem-brochure</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/student-dashboards-that-actually-help</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/education/student-dashboard-notes-desk.jpg</image:loc>
+      <image:title>Student Dashboards That Actually Help</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=real-estate-deal-analysis-template</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-companies-building-the-ai-economy</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/ai/ai-economy-companies-tech-stack.jpg</image:loc>
+      <image:title>The Companies Building the AI Economy</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=techmate-ai-troubleshooting-brochure</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-complete-guide-to-ai-in-education-2026</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/ai-education-guide-2026.jpg</image:loc>
+      <image:title>The Complete Guide to AI in Education (2026)</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=kiddo-early-learning-case-study</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-complete-guide-to-artificial-intelligence-in-2026</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/ai/ai-complete-guide-2026.jpg</image:loc>
+      <image:title>The Complete Guide to Artificial Intelligence in 2026</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=newsletter-growth-playbook-for-app-companies</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-future-of-online-education-platforms</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/online-education-platform-adaptive-learning.jpg</image:loc>
+      <image:title>The Future of Online Education Platforms</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=family-safety-resource-kit</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-hidden-infrastructure-behind-chatgpt-and-ai</loc>
+    <lastmod>2026-06-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/ai/chatgpt-infrastructure-data-center.jpg</image:loc>
+      <image:title>The Hidden Infrastructure Behind ChatGPT and AI</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=ai-product-launch-checklist</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-rise-of-ai-tutors-and-personalized-learning</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/ai-tutor-personalized-learning-dashboard.jpg</image:loc>
+      <image:title>The Rise of AI Tutors and Personalized Learning</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=household-chemical-safety-checklist</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-science-behind-spaced-repetition-and-learning</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/spaced-repetition-flashcard-study-schedule.jpg</image:loc>
+      <image:title>The Science Behind Spaced Repetition and Learning</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=weekly-student-study-planner-template</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/the-technology-trends-that-will-shape-the-next-decade</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/future-tech/technology-trends-next-decade-overview.jpg</image:loc>
+      <image:title>The Technology Trends That Will Shape the Next Decade</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://cin-nova-web-site.vercel.app/?resource=real-estate-cash-flow-analysis-template</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://cin-nova-web-site.vercel.app/blog/what-small-businesses-should-know-about-ai-assistants</loc>
+    <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/ai/small-business-ai-assistants-meeting.jpg</image:loc>
+      <image:title>What Small Businesses Should Know About AI Assistants</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/why-ai-tutors-are-not-replacing-teachers</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/education/ai-tutor-teacher-classroom-partnership.jpg</image:loc>
+      <image:title>Why AI Tutors Are Not Replacing Teachers</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/why-data-centers-are-becoming-the-new-gold-rush</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/datacenters/data-center-gold-rush-facility.jpg</image:loc>
+      <image:title>Why Data Centers Are Becoming the New Gold Rush</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://cin-nova-web-site.vercel.app/blog/why-data-centers-matter-to-everyday-apps</loc>
+    <lastmod>2026-05-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://cin-nova-web-site.vercel.app/images/blog/datacenters/server-cooling-aisle.jpg</image:loc>
+      <image:title>Why Data Centers Matter to Everyday Apps</image:title>
+    </image:image>
   </url>
 </urlset>

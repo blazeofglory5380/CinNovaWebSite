@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { defaultOgImage } from "../data/seoConfig.js";
 
 function upsertMeta(attribute, key, content) {
     if (!content) return;
@@ -38,25 +39,28 @@ function upsertStructuredData(schema) {
     document.head.appendChild(script);
 }
 
-function SEO({ title, description, url, type = "website", image, schema }) {
+function SEO({ title, description, url, type = "website", image, schema, noindex = false }) {
     useEffect(() => {
         document.title = title;
 
+        const previewImage = image || defaultOgImage;
+
         upsertMeta("name", "description", description);
+        upsertMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow");
         upsertMeta("property", "og:title", title);
         upsertMeta("property", "og:description", description);
         upsertMeta("property", "og:type", type);
         upsertMeta("property", "og:url", url);
         upsertMeta("property", "og:site_name", "Cin Nova");
-        if (image) upsertMeta("property", "og:image", image);
-        upsertMeta("name", "twitter:card", image ? "summary_large_image" : "summary");
+        upsertMeta("property", "og:image", previewImage);
+        upsertMeta("name", "twitter:card", "summary_large_image");
         upsertMeta("name", "twitter:title", title);
         upsertMeta("name", "twitter:description", description);
         upsertMeta("name", "twitter:site", "@CinNova");
-        if (image) upsertMeta("name", "twitter:image", image);
+        upsertMeta("name", "twitter:image", previewImage);
         upsertCanonical(url);
         upsertStructuredData(schema);
-    }, [title, description, url, type, image, schema]);
+    }, [title, description, url, type, image, schema, noindex]);
 
     return null;
 }

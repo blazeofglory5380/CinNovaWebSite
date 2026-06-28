@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ArticleImage({ src, alt = "", caption = "", className = "" }) {
+export default function ArticleImage({ src, alt = "", caption = "", className = "", priority = false }) {
     const [failed, setFailed] = useState(false);
 
     if (!src || failed) return null;
@@ -10,7 +10,8 @@ export default function ArticleImage({ src, alt = "", caption = "", className = 
             <img
                 src={src}
                 alt={alt}
-                loading="lazy"
+                loading={priority ? "eager" : "lazy"}
+                fetchPriority={priority ? "high" : undefined}
                 decoding="async"
                 className="article-image"
                 onError={() => setFailed(true)}

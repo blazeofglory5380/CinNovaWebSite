@@ -6,18 +6,21 @@ import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
 import BusinessCTABanner from "../components/business/BusinessCTABanner.jsx";
 import BusinessContactCard from "../components/business/BusinessContactCard.jsx";
 import { partnershipsFaq, partnershipPrograms } from "../data/businessCenter.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 import { trackSponsorCtaClick } from "../utils/analytics.js";
 
-const partnershipsSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Cin Nova Partnerships",
-    description:
-        "Explore technology, education, real estate, media, affiliate, and contributor partnership opportunities with Cin Nova.",
-    url: `${siteUrl}/?page=partnerships`,
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
+const partnershipsSchema = withSchemaGraph(
+    {
+        "@type": "WebPage",
+        name: "Cin Nova Partnerships",
+        description:
+            "Explore technology, education, real estate, media, affiliate, and contributor partnership opportunities with Cin Nova.",
+        url: `${siteUrl}/?page=partnerships`,
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(partnershipsFaq),
+);
 
 function Partnerships({ onNavigate }) {
     function handleCta(cta, target) {

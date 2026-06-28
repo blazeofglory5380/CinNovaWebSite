@@ -5,20 +5,11 @@ import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import KiddoArtwork from "../components/KiddoArtwork.jsx";
 import { kiddoAssets } from "../data/kiddoAssets.js";
 import { saveSubscriber } from "../data/newsletterService.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { productMarketing } from "../data/marketingImages.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 
-const kiddoSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Kiddo",
-    applicationCategory: "EducationApplication",
-    description:
-        "Interactive early learning app for children ages 2\u20137 with reading, writing, math, science, and a parent dashboard.",
-    operatingSystem: "Web",
-    url: `${siteUrl}/?page=kiddo`,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
+const { hero } = productMarketing.kiddo;
 
 const heroHighlights = [
     { value: "Ages 2\u20137", label: "Built for early learners" },
@@ -204,6 +195,22 @@ const faqItems = [
         answer: "Kiddo is being built for tablets, phones, and web browsers so families can learn at home or on the go.",
     },
 ];
+
+const kiddoSchema = withSchemaGraph(
+    {
+        "@type": "SoftwareApplication",
+        name: "Kiddo",
+        applicationCategory: "EducationApplication",
+        description:
+            "Interactive early learning app for children ages 2\u20137 with reading, writing, math, science, and a parent dashboard.",
+        operatingSystem: "Web",
+        url: `${siteUrl}/?page=kiddo`,
+        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(faqItems),
+);
 
 function Kiddo() {
     return (

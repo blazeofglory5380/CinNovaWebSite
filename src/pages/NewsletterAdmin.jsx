@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import "../App.css";
+import SEO from "../components/SEO.jsx";
+import { siteUrl } from "../data/seoConfig.js";
 import {
     buildProviderPayload,
     clearSubscribers,
@@ -120,6 +122,12 @@ function NewsletterAdmin() {
 
     return (
         <main className="product-page newsletter-admin-page">
+            <SEO
+                title="Newsletter Admin | Cin Nova"
+                description="Internal newsletter subscriber management for Cin Nova."
+                url={`${siteUrl}/?page=newsletter-admin`}
+                noindex
+            />
             <section className="section">
                 <div className="section-heading">
                     <p className="eyebrow">NEWSLETTER ADMIN</p>

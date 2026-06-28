@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /blog-admin
 
 Sitemap: https://cin-nova-web-site.vercel.app/sitemap.xml
+Sitemap: https://cin-nova-web-site.vercel.app/sitemap-video.xml

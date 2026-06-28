@@ -7,22 +7,10 @@ import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 
 const { hero, features } = productMarketing.studynest;
-
-const studynestSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "StudyNest",
-    applicationCategory: "EducationApplication",
-    description:
-        "AI-powered study tools with notes, flashcards, quizzes, AI tutoring, and study planning for students.",
-    operatingSystem: "Web",
-    url: `${siteUrl}/?page=studynest`,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
 
 const heroStats = [
     { value: "24/7", label: "AI tutoring" },
@@ -112,6 +100,22 @@ const faqItems = [
         answer: "Yes. StudyNest will launch with a free tier for core notes and flashcards, plus Student Pro for advanced AI features.",
     },
 ];
+
+const studynestSchema = withSchemaGraph(
+    {
+        "@type": "SoftwareApplication",
+        name: "StudyNest",
+        applicationCategory: "EducationApplication",
+        description:
+            "AI-powered study tools with notes, flashcards, quizzes, AI tutoring, and study planning for students.",
+        operatingSystem: "Web",
+        url: `${siteUrl}/?page=studynest`,
+        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(faqItems),
+);
 
 function StudyNest() {
     return (

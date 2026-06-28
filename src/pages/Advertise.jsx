@@ -6,7 +6,8 @@ import BusinessStats from "../components/business/BusinessStats.jsx";
 import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
 import BusinessCTABanner from "../components/business/BusinessCTABanner.jsx";
 import { advertiseFaq, businessAudienceStats } from "../data/businessCenter.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 import { trackSponsorCtaClick } from "../utils/analytics.js";
 
 const audienceSegments = [
@@ -57,15 +58,17 @@ const newsletterOpportunities = [
     "Founding sponsor packages for brands that want early, recurring placement as the list grows",
 ];
 
-const advertiseSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Advertise With Cin Nova",
-    description:
-        "Advertise with Cin Nova through website sponsorships, sponsored articles, and newsletter sponsorship opportunities.",
-    url: `${siteUrl}/?page=advertise`,
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
+const advertiseSchema = withSchemaGraph(
+    {
+        "@type": "WebPage",
+        name: "Advertise With Cin Nova",
+        description:
+            "Advertise with Cin Nova through website sponsorships, sponsored articles, and newsletter sponsorship opportunities.",
+        url: `${siteUrl}/?page=advertise`,
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(advertiseFaq),
+);
 
 function Advertise({ onNavigate }) {
     function handleSponsorCta(cta, target) {

@@ -4,7 +4,10 @@ function MarketingPhoto({
     className = "",
     loading = "lazy",
     fetchPriority,
+    width,
+    height,
     objectPosition = "50% 50%",
+    onError,
 }) {
     if (!src) return null;
 
@@ -16,7 +19,10 @@ function MarketingPhoto({
             loading={loading}
             decoding="async"
             fetchPriority={fetchPriority}
+            width={width}
+            height={height}
             style={{ objectPosition }}
+            onError={onError}
         />
     );
 }

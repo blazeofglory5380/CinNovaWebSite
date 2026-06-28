@@ -12,22 +12,10 @@ import PoisonGuardSafetyDisclaimer from "../components/PoisonGuardSafetyDisclaim
 import { poisonGuardFeatures } from "../data/poisonGuardFeatures.js";
 import { productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl } from "../data/seoConfig.js";
+import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 
 const { hero } = productMarketing.poisonguard;
-
-const poisonguardSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "PoisonGuard",
-    applicationCategory: "HealthApplication",
-    description:
-        "Household chemical and poison safety assistant for families, pets, and schools. Scan products for hazards and get emergency guidance.",
-    operatingSystem: "Web",
-    url: `${siteUrl}/?page=poisonguard`,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
-};
 
 const heroStats = [
     { value: "Seconds", label: "To scan & assess" },
@@ -170,6 +158,22 @@ const faqItems = [
             "Yes — expanded chemical safety support and multilingual guidance are active roadmap priorities for Family, School, and Business plans.",
     },
 ];
+
+const poisonguardSchema = withSchemaGraph(
+    {
+        "@type": "SoftwareApplication",
+        name: "PoisonGuard",
+        applicationCategory: "HealthApplication",
+        description:
+            "Household chemical and poison safety assistant for families, pets, and schools. Scan products for hazards and get emergency guidance.",
+        operatingSystem: "Web",
+        url: `${siteUrl}/?page=poisonguard`,
+        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+    },
+    buildFaqSchema(faqItems),
+);
 
 function PoisonGuard() {
     const [activeFeature, setActiveFeature] = useState(null);

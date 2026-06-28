@@ -14,6 +14,7 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
             <div className="site-footer-columns">
                 <div className="site-footer-col">
                     <p className="site-footer-col-title">Products</p>
+                    <button type="button" onClick={() => onNavigate("products")}>All Products</button>
                     <button type="button" onClick={() => onNavigate("studynest")}>StudyNest</button>
                     <button type="button" onClick={() => onNavigate("poisonguard")}>PoisonGuard</button>
                     <button type="button" onClick={() => onNavigate("kiddo")}>Kiddo</button>
@@ -34,6 +35,8 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                 <div className="site-footer-col">
                     <p className="site-footer-col-title">Business</p>
                     <button type="button" onClick={() => onNavigate("about")}>About CinNova</button>
+                    <button type="button" onClick={() => onNavigate("pricing")}>Pricing</button>
+                    <button type="button" onClick={() => onNavigate("partner-with-us")}>Partner With Us</button>
                     <button type="button" onClick={() => onNavigate("advertise")}>Advertise with CinNova</button>
                     <button type="button" onClick={() => onNavigate("media-kit")}>Media Kit</button>
                     <button type="button" onClick={() => onNavigate("partnerships")}>Partnerships</button>

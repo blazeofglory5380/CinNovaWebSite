@@ -26,9 +26,17 @@ import {
     estimateArticleReadingTime,
     getArticleUrl,
     getAuthorProfile,
-    siteUrl,
+    getBlogUrl,
     slugifyCategory,
 } from "../data/blogPosts.js";
+import { defaultOgImage, siteUrl } from "../data/seoConfig.js";
+import {
+    buildBreadcrumbSchema,
+    buildImageObject,
+    buildPersonAuthor,
+    toAbsoluteUrl,
+    withSchemaGraph,
+} from "../data/schemaHelpers.js";
 import { getArticleEngagement } from "../data/articleEngagement.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
 import { trackArticleView } from "../utils/analytics.js";
@@ -259,8 +267,8 @@ function ArticlePage({
                 return new Date().toISOString();
             }
         };
-        return {
-            "@context": "https://schema.org",
+        const heroImage = post.heroImage || post.ogImage || defaultOgImage;
+        const blogPosting = {
             "@type": "BlogPosting",
             headline: post.title || "",
             description: post.excerpt || "",
@@ -270,17 +278,29 @@ function ArticlePage({
             dateModified: safeDate(post.date),
             articleSection: post.category || "",
             articleBody: sections.map((s) => `${s.heading || ""}: ${s.body || ""}`).join("\n\n"),
-            author: {
-                "@type": "Organization",
-                name: author.name,
-                url: siteUrl,
-            },
+            image: buildImageObject({
+                src: heroImage,
+                alt: post.heroImageAlt || post.title,
+                caption: post.heroImageCaption,
+            }),
+            author: buildPersonAuthor(author),
             publisher: {
                 "@type": "Organization",
                 name: "Cin Nova",
                 url: siteUrl,
+                logo: buildImageObject({ src: defaultOgImage, alt: "Cin Nova" }),
             },
         };
+
+        return withSchemaGraph(
+            blogPosting,
+            buildBreadcrumbSchema([
+                { name: "Home", url: siteUrl },
+                { name: "Blog", url: getBlogUrl() },
+                { name: post.category || "Article", url: `${getBlogUrl()}/category/${slugifyCategory(post.category)}` },
+                { name: post.title, url: articleUrl },
+            ]),
+        );
     }, [post.id, articleUrl, author.name, sections]);
 
     return (
@@ -294,7 +314,7 @@ function ArticlePage({
                 description={post.excerpt}
                 url={articleUrl}
                 type="article"
-                image={post.ogImage || `${siteUrl}/og-image.png`}
+                image={post.ogImage || toAbsoluteUrl(post.heroImage) || defaultOgImage}
                 schema={articleSchema}
             />
 
@@ -310,6 +330,7 @@ function ArticlePage({
                         alt={post.heroImageAlt || post.title}
                         caption={post.heroImageCaption || ""}
                         className="article-hero-image"
+                        priority
                     />
                 ) : (
                     <ArticleHeroVisual post={post} />

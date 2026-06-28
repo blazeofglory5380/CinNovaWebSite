@@ -6,7 +6,8 @@ import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
 import { siteMarketing } from "../data/marketingImages.js";
 import { normalizeProductStatus } from "../data/products.js";
-import { siteUrl } from "../data/blogPosts.js";
+import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
+import { buildImageObject } from "../data/schemaHelpers.js";
 
 const homeSchema = {
     "@context": "https://schema.org",
@@ -16,6 +17,7 @@ const homeSchema = {
             "@id": `${siteUrl}/#organization`,
             name: "Cin Nova",
             url: siteUrl,
+            logo: buildImageObject({ src: defaultOgImage, alt: "Cin Nova" }),
             description:
                 "Cin Nova builds practical AI software products for education, safety, real estate, and everyday decision-making.",
             sameAs: [`${siteUrl}/blog`, `${siteUrl}/?page=newsletter`],
@@ -107,6 +109,7 @@ function HomePage({
                 description="Cin Nova is the central hub for practical AI products, free resources, and editorial insights — built for students, families, professionals, and businesses."
                 url={siteUrl}
                 type="website"
+                image={defaultOgImage}
                 schema={homeSchema}
             />
 
@@ -151,6 +154,7 @@ function HomePage({
                             alt={hero.alt}
                             className="home-v12-hero-img"
                             loading="eager"
+                            fetchPriority="high"
                         />
                     </div>
                 </div>
