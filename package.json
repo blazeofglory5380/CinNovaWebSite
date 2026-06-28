@@ -14,14 +14,22 @@
     "scanner:validate": "node scripts/scanner-validate.mjs --provider sidecar --sidecar-dir data/scanner-validation/sidecars",
     "scanner:validate:live": "node scripts/scanner-validate.mjs --provider auto",
     "scanner:export": "node scripts/scanner-validation-export.mjs --format both",
-    "build": "npm run generate:sitemap && npm run audit:resource-images && vite build",
+    "setup:product-hero-posters": "node scripts/setup-product-hero-posters.mjs",
+    "build:realestate-hero-glb": "node scripts/build-realestate-hero-glb.mjs",
+    "build": "npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gltf-transform/core": "^4.4.0",
+    "@gltf-transform/extensions": "^4.4.0",
+    "@gltf-transform/functions": "^4.4.0",
+    "@google/model-viewer": "^4.3.1",
+    "canvas": "^3.2.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.17.0"
+    "react-router-dom": "^7.17.0",
+    "three": "^0.185.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
