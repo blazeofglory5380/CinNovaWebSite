@@ -15,7 +15,7 @@
     "scanner:validate:live": "node scripts/scanner-validate.mjs --provider auto",
     "scanner:export": "node scripts/scanner-validation-export.mjs --format both",
     "setup:product-hero-posters": "node scripts/setup-product-hero-posters.mjs",
-    "build:realestate-hero-glb": "node scripts/build-realestate-hero-glb.mjs",
+    "capture:realestate-hero-poster": "node scripts/capture-realestate-hero-poster.mjs",
     "build": "npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -40,6 +40,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "playwright": "^1.61.1",
     "sharp": "^0.35.2",
     "vite": "^8.0.12"
   }
