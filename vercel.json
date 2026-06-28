@@ -32,7 +32,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets/)(?!favicon\\.svg)(?!icons\\.svg)(?!robots\\.txt)(?!sitemap\\.xml).*)",
+      "source": "/((?!assets/)(?!images/)(?!models/)(?!favicon\\.svg)(?!icons\\.svg)(?!robots\\.txt)(?!sitemap\\.xml).*)",
       "destination": "/index.html"
     }
   ]

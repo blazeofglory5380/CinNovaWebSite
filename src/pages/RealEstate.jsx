@@ -1,14 +1,15 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
-import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 
-const { hero, features } = productMarketing["real-estate"];
+const { features } = productMarketing["real-estate"];
+const realEstateHero = productHero3DConfigs["real-estate"];
 
 const realestateSchema = {
     "@context": "https://schema.org",
@@ -33,25 +34,7 @@ function RealEstate() {
                 schema={realestateSchema}
             />
 
-            {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="studynest-hero hero-with-immersive-scene">
-                <ImmersiveHeroScene variant="real-estate" intensity="calm" />
-                <div>
-                    <p className="eyebrow">CIN NOVA REAL ESTATE</p>
-                    <h1>AI-powered real estate intelligence for investors and builders.</h1>
-                    <p className="hero-text">
-                        Cin Nova Real Estate gives investors, developers, and agents a full
-                        command center — analyze deals, model mortgages, forecast cash flow,
-                        search properties, and get AI guidance on every decision.
-                    </p>
-                    <div className="hero-actions">
-                        <a href="#waitlist" className="primary-btn">Join Waitlist</a>
-                        <a href="#features" className="secondary-btn">View Features</a>
-                    </div>
-                </div>
-
-                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
-            </section>
+            <ProductHero3D {...realEstateHero} className="ph3d--real-estate" />
 
             <section className="section" id="features">
                 <div className="section-heading">
