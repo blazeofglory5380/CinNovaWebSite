@@ -226,13 +226,6 @@ function buildScene() {
     shadowDisc.position.y = 0.001;
     scene.add(shadowDisc);
 
-    const backdrop = new THREE.Mesh(
-        new THREE.SphereGeometry(6, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2.2),
-        mat({ color: 0xffffff, roughness: 0.98, metalness: 0 }),
-    );
-    backdrop.position.y = -0.2;
-    scene.add(backdrop);
-
     const beforeHouse = buildBeforeHouse(scene);
     const afterHouse = buildAfterHouse(scene);
     const couple = buildCouple(scene);
