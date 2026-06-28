@@ -1,5 +1,6 @@
 /**
- * Procedural GLB builder: Real Estate AI farmhouse transformation hero.
+ * Procedural GLB builder: Real Estate AI farmhouse transformation hero (DEV ONLY).
+ * v1 REJECTED for production — use Spline/Blender v2 per docs/realestateai-farmhouse-hero-v2-workflow.md
  * Output: public/models/product-heroes/realestateai-farmhouse-transformation.glb
  */
 import fs from "node:fs/promises";

@@ -33,7 +33,9 @@ export const productHero3DConfigs = {
     },
     "real-estate": {
         key: "real-estate",
-        modelSrc: "/models/product-heroes/realestateai-farmhouse-transformation.glb",
+        // v1 procedural GLB rejected for production — poster-only until artist v2 ships.
+        // See docs/realestateai-farmhouse-hero-v2-workflow.md
+        modelSrc: "/models/product-heroes/realestateai-farmhouse-transformation-v2.glb",
         posterSrc: "/images/product-heroes/posters/realestateai-farmhouse-transformation.png",
         alt: "An aging farmhouse transforming into a modern home with AI property analysis overlays",
         eyebrow: "CIN NOVA REAL ESTATE",
