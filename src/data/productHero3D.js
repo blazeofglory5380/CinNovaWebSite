@@ -37,7 +37,8 @@ export const productHero3DConfigs = {
     },
     "real-estate": {
         key: "real-estate",
-        heroVisual: "transformation",
+        heroVisual: "poster",
+        stageHint: "AI renovation preview — interactive 3D experience coming soon.",
         posterSrc: realEstateHeroAssets.poster,
         // Reserved for merged single-GLB scene; dual-model paths live in transformation.*
         modelSrc: realEstateTransformation.combinedModelSrc,

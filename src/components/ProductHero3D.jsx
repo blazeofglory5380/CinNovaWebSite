@@ -37,6 +37,7 @@ function ProductHero3D({
     badges = null,
     stats = null,
     visualOverlay = null,
+    stageHint = null,
     onPrimaryCta,
     onSecondaryCta,
 }) {
@@ -48,9 +49,12 @@ function ProductHero3D({
     const [viewerLoaded, setViewerLoaded] = useState(false);
     const [useTransformationViewer, setUseTransformationViewer] = useState(false);
     const [transformationFailed, setTransformationFailed] = useState(false);
+    const [transformationPreviewOpen, setTransformationPreviewOpen] = useState(false);
 
     const isTransformationHero = heroVisual === "transformation" && Boolean(transformation);
-    const isPosterHero = heroVisual === "poster" || (isTransformationHero && (!useTransformationViewer || transformationFailed));
+    const canPreviewTransformation = isTransformationHero && useTransformationViewer && !transformationFailed;
+    const isPosterHero = heroVisual === "poster"
+        || (isTransformationHero && (!canPreviewTransformation || !transformationPreviewOpen));
 
     useEffect(() => {
         setReduceMotion(isReducedMotionPreferred());
@@ -87,22 +91,9 @@ function ProductHero3D({
                 return undefined;
             }
 
-            let cancelled = false;
-
-            Promise.all([
-                fetch(transformation.beforeModelSrc, { method: "HEAD" }),
-                fetch(transformation.afterModelSrc, { method: "HEAD" }),
-            ])
-                .then(([beforeResponse, afterResponse]) => {
-                    if (!cancelled) setModelAvailable(beforeResponse.ok && afterResponse.ok);
-                })
-                .catch(() => {
-                    if (!cancelled) setModelAvailable(false);
-                });
-
-            return () => {
-                cancelled = true;
-            };
+            // Dual GLB assets are shipped in-repo; skip HEAD probes on large files.
+            setModelAvailable(true);
+            return undefined;
         }
 
         let cancelled = false;
@@ -200,9 +191,9 @@ function ProductHero3D({
         );
     }
 
-    const showTransformation = isTransformationHero && useTransformationViewer && modelAvailable === true && !transformationFailed;
+    const showTransformation = canPreviewTransformation && transformationPreviewOpen;
     const showViewer = !isPosterHero && !showTransformation && modelAvailable === true && viewerLoaded;
-    const showFallback = isPosterHero || (!showTransformation && (modelAvailable !== true || !modelReady));
+    const showFallback = isPosterHero || (!isTransformationHero && (modelAvailable !== true || !modelReady));
 
     return (
         <section
@@ -287,6 +278,20 @@ function ProductHero3D({
                                         fetchPriority="high"
                                         decoding="async"
                                     />
+                                    {canPreviewTransformation && !transformationPreviewOpen ? (
+                                        <div className="ph3d__preview-launch">
+                                            <button
+                                                type="button"
+                                                className="ph3d__preview-launch-btn"
+                                                onClick={() => setTransformationPreviewOpen(true)}
+                                            >
+                                                Preview 3D transformation
+                                            </button>
+                                            <p className="ph3d__preview-launch-copy">
+                                                AI renovation reveal with scan wall — not a geometry morph.
+                                            </p>
+                                        </div>
+                                    ) : null}
                                     {!isPosterHero ? (
                                         <>
                                             <div className="ph3d__fallback-scrim" aria-hidden="true" />
@@ -310,17 +315,17 @@ function ProductHero3D({
                             {visualOverlay}
                         </div>
                         <p className="ph3d__stage-hint">
-                            {isPosterHero
-                                ? transformation
-                                    ? "Interactive 360° farmhouse transformation preview."
-                                    : "Interactive 360° farmhouse transformation — coming soon."
-                                : showTransformation
-                                  ? reduceMotion
-                                      ? "Drag to orbit the renovated farmhouse."
-                                      : "Watch the AI renovation, then drag to orbit the modern farmhouse."
-                                  : reduceMotion
-                                    ? "Drag to inspect the product scene."
-                                    : "Drag or pinch to rotate. Auto-rotate resumes when idle."}
+                            {stageHint ?? (isTransformationHero
+                                ? showTransformation
+                                    ? reduceMotion
+                                        ? "Drag to orbit the renovated farmhouse."
+                                        : "AI scan reveal — watch the renovation, then drag to orbit."
+                                    : canPreviewTransformation
+                                      ? "Poster preview active. Launch the 3D AI renovation reveal when ready."
+                                      : "Interactive farmhouse transformation preview."
+                                : reduceMotion
+                                  ? "Drag to inspect the product scene."
+                                  : "Drag or pinch to rotate. Auto-rotate resumes when idle.")}
                         </p>
                     </div>
                 </div>
