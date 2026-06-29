@@ -37,7 +37,7 @@ export const productHero3DConfigs = {
     },
     "real-estate": {
         key: "real-estate",
-        heroVisual: "poster",
+        heroVisual: "transformation",
         posterSrc: realEstateHeroAssets.poster,
         // Reserved for merged single-GLB scene; dual-model paths live in transformation.*
         modelSrc: realEstateTransformation.combinedModelSrc,

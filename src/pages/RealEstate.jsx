@@ -1,6 +1,6 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
+import RealEstateTransformationHero from "../components/RealEstateTransformationHero.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -34,7 +34,7 @@ function RealEstate() {
                 schema={realestateSchema}
             />
 
-            <ProductHero3D
+            <RealEstateTransformationHero
                 {...realEstateHero}
                 className="ph3d--real-estate"
             />

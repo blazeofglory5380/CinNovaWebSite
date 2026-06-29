@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import FarmhouseTransformationViewer, { shouldUseTransformationViewer } from "./FarmhouseTransformationViewer.jsx";
 import "./ProductHero3D.css";
 
 let modelViewerLoader;
@@ -45,6 +46,11 @@ function ProductHero3D({
     const [modelAvailable, setModelAvailable] = useState(null);
     const [reduceMotion, setReduceMotion] = useState(false);
     const [viewerLoaded, setViewerLoaded] = useState(false);
+    const [useTransformationViewer, setUseTransformationViewer] = useState(false);
+    const [transformationFailed, setTransformationFailed] = useState(false);
+
+    const isTransformationHero = heroVisual === "transformation" && Boolean(transformation);
+    const isPosterHero = heroVisual === "poster" || (isTransformationHero && (!useTransformationViewer || transformationFailed));
 
     useEffect(() => {
         setReduceMotion(isReducedMotionPreferred());
@@ -55,9 +61,48 @@ function ProductHero3D({
     }, []);
 
     useEffect(() => {
+        if (!isTransformationHero) {
+            setUseTransformationViewer(false);
+            return undefined;
+        }
+
+        setUseTransformationViewer(shouldUseTransformationViewer());
+
+        const mobileMedia = window.matchMedia("(max-width: 960px)");
+        const onViewportChange = () => setUseTransformationViewer(shouldUseTransformationViewer());
+        mobileMedia.addEventListener("change", onViewportChange);
+
+        return () => mobileMedia.removeEventListener("change", onViewportChange);
+    }, [isTransformationHero]);
+
+    useEffect(() => {
         if (heroVisual === "poster") {
             setModelAvailable(false);
             return undefined;
+        }
+
+        if (isTransformationHero) {
+            if (!useTransformationViewer) {
+                setModelAvailable(false);
+                return undefined;
+            }
+
+            let cancelled = false;
+
+            Promise.all([
+                fetch(transformation.beforeModelSrc, { method: "HEAD" }),
+                fetch(transformation.afterModelSrc, { method: "HEAD" }),
+            ])
+                .then(([beforeResponse, afterResponse]) => {
+                    if (!cancelled) setModelAvailable(beforeResponse.ok && afterResponse.ok);
+                })
+                .catch(() => {
+                    if (!cancelled) setModelAvailable(false);
+                });
+
+            return () => {
+                cancelled = true;
+            };
         }
 
         let cancelled = false;
@@ -73,9 +118,10 @@ function ProductHero3D({
         return () => {
             cancelled = true;
         };
-    }, [modelSrc, heroVisual]);
+    }, [modelSrc, heroVisual, isTransformationHero, transformation, useTransformationViewer]);
 
     useEffect(() => {
+        if (isTransformationHero) return undefined;
         if (modelAvailable !== true) return undefined;
 
         let cancelled = false;
@@ -86,7 +132,7 @@ function ProductHero3D({
         return () => {
             cancelled = true;
         };
-    }, [modelAvailable]);
+    }, [modelAvailable, isTransformationHero]);
 
     useEffect(() => {
         const viewer = viewerRef.current;
@@ -154,9 +200,9 @@ function ProductHero3D({
         );
     }
 
-    const isPosterHero = heroVisual === "poster";
-    const showViewer = !isPosterHero && modelAvailable === true && viewerLoaded;
-    const showFallback = isPosterHero || modelAvailable !== true || !modelReady;
+    const showTransformation = isTransformationHero && useTransformationViewer && modelAvailable === true && !transformationFailed;
+    const showViewer = !isPosterHero && !showTransformation && modelAvailable === true && viewerLoaded;
+    const showFallback = isPosterHero || (!showTransformation && (modelAvailable !== true || !modelReady));
 
     return (
         <section
@@ -202,6 +248,17 @@ function ProductHero3D({
 
                     <div className="ph3d__stage-wrap">
                         <div className="ph3d__stage">
+                            {showTransformation ? (
+                                <FarmhouseTransformationViewer
+                                    beforeSrc={transformation.beforeModelSrc}
+                                    afterSrc={transformation.afterModelSrc}
+                                    posterSrc={posterSrc}
+                                    alt={alt}
+                                    reduceMotion={reduceMotion}
+                                    onError={() => setTransformationFailed(true)}
+                                />
+                            ) : null}
+
                             {showViewer ? (
                                 <model-viewer
                                     ref={viewerRef}
@@ -254,10 +311,16 @@ function ProductHero3D({
                         </div>
                         <p className="ph3d__stage-hint">
                             {isPosterHero
-                                ? "Interactive 360° farmhouse transformation — coming soon."
-                                : reduceMotion
-                                  ? "Drag to inspect the product scene."
-                                  : "Drag or pinch to rotate. Auto-rotate resumes when idle."}
+                                ? transformation
+                                    ? "Interactive 360° farmhouse transformation preview."
+                                    : "Interactive 360° farmhouse transformation — coming soon."
+                                : showTransformation
+                                  ? reduceMotion
+                                      ? "Drag to orbit the renovated farmhouse."
+                                      : "Watch the AI renovation, then drag to orbit the modern farmhouse."
+                                  : reduceMotion
+                                    ? "Drag to inspect the product scene."
+                                    : "Drag or pinch to rotate. Auto-rotate resumes when idle."}
                         </p>
                     </div>
                 </div>
