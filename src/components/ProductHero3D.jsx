@@ -31,6 +31,8 @@ function ProductHero3D({
     secondaryCtaText,
     secondaryCtaHref,
     className = "",
+    heroVisual = "model",
+    transformation = null,
     badges = null,
     stats = null,
     visualOverlay = null,
@@ -53,6 +55,11 @@ function ProductHero3D({
     }, []);
 
     useEffect(() => {
+        if (heroVisual === "poster") {
+            setModelAvailable(false);
+            return undefined;
+        }
+
         let cancelled = false;
 
         fetch(modelSrc, { method: "HEAD" })
@@ -66,7 +73,7 @@ function ProductHero3D({
         return () => {
             cancelled = true;
         };
-    }, [modelSrc]);
+    }, [modelSrc, heroVisual]);
 
     useEffect(() => {
         if (modelAvailable !== true) return undefined;
@@ -147,13 +154,20 @@ function ProductHero3D({
         );
     }
 
-    const showViewer = modelAvailable === true && viewerLoaded;
-    const showFallback = modelAvailable !== true || !modelReady;
+    const isPosterHero = heroVisual === "poster";
+    const showViewer = !isPosterHero && modelAvailable === true && viewerLoaded;
+    const showFallback = isPosterHero || modelAvailable !== true || !modelReady;
 
     return (
         <section
-            className={`ph3d${className ? ` ${className}` : ""}`}
+            className={`ph3d${className ? ` ${className}` : ""}${isPosterHero ? " ph3d--poster-hero" : ""}`}
             aria-labelledby={titleId}
+            {...(transformation
+                ? {
+                      "data-transform-before-model": transformation.beforeModelSrc,
+                      "data-transform-after-model": transformation.afterModelSrc,
+                  }
+                : {})}
         >
             <div className="ph3d__ambient" aria-hidden="true">
                 <span className="ph3d__glow ph3d__glow--left" />
@@ -216,28 +230,34 @@ function ProductHero3D({
                                         fetchPriority="high"
                                         decoding="async"
                                     />
-                                    <div className="ph3d__fallback-scrim" aria-hidden="true" />
-                                    <div className="ph3d__fallback-panel">
-                                        <p className="ph3d__fallback-kicker">Interactive 3D preview</p>
-                                        <p className="ph3d__fallback-title">{title}</p>
-                                        <p className="ph3d__fallback-copy">
-                                            {modelAvailable === null
-                                                ? "Checking for the interactive 360 model..."
-                                                : modelAvailable === false
-                                                  ? "The 360 model is being prepared. Explore the scene preview while the GLB asset ships."
-                                                  : "Loading the 360 scene..."}
-                                        </p>
-                                        <span className="ph3d__fallback-chip">Poster preview active</span>
-                                    </div>
+                                    {!isPosterHero ? (
+                                        <>
+                                            <div className="ph3d__fallback-scrim" aria-hidden="true" />
+                                            <div className="ph3d__fallback-panel">
+                                                <p className="ph3d__fallback-kicker">Interactive 3D preview</p>
+                                                <p className="ph3d__fallback-title">{title}</p>
+                                                <p className="ph3d__fallback-copy">
+                                                    {modelAvailable === null
+                                                        ? "Checking for the interactive 360 model..."
+                                                        : modelAvailable === false
+                                                          ? "The 360 model is being prepared. Explore the scene preview while the GLB asset ships."
+                                                          : "Loading the 360 scene..."}
+                                                </p>
+                                                <span className="ph3d__fallback-chip">Poster preview active</span>
+                                            </div>
+                                        </>
+                                    ) : null}
                                 </div>
                             ) : null}
 
                             {visualOverlay}
                         </div>
                         <p className="ph3d__stage-hint">
-                            {reduceMotion
-                                ? "Drag to inspect the product scene."
-                                : "Drag or pinch to rotate. Auto-rotate resumes when idle."}
+                            {isPosterHero
+                                ? "Interactive 360° farmhouse transformation — coming soon."
+                                : reduceMotion
+                                  ? "Drag to inspect the product scene."
+                                  : "Drag or pinch to rotate. Auto-rotate resumes when idle."}
                         </p>
                     </div>
                 </div>

@@ -34,7 +34,10 @@ function RealEstate() {
                 schema={realestateSchema}
             />
 
-            <ProductHero3D {...realEstateHero} className="ph3d--real-estate" />
+            <ProductHero3D
+                {...realEstateHero}
+                className="ph3d--real-estate"
+            />
 
             <section className="section" id="features">
                 <div className="section-heading">

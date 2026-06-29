@@ -2,6 +2,10 @@
  * CinNova 360-degree product hero assets and copy.
  * GLB models ship later; poster images power the fallback until then.
  */
+import { getRealEstateTransformationModels, realEstateHeroAssets } from "./realEstateHeroAssets.js";
+
+const realEstateTransformation = getRealEstateTransformationModels();
+
 export const productHero3DConfigs = {
     home: {
         key: "home",
@@ -33,11 +37,12 @@ export const productHero3DConfigs = {
     },
     "real-estate": {
         key: "real-estate",
-        // v1 procedural GLB rejected for production — poster-only until artist v2 ships.
-        // See docs/realestateai-farmhouse-hero-v2-workflow.md
-        modelSrc: "/models/product-heroes/realestateai-farmhouse-transformation-v2.glb",
-        posterSrc: "/images/product-heroes/posters/realestateai-farmhouse-transformation.png",
-        alt: "An aging farmhouse transforming into a modern home with AI property analysis overlays",
+        heroVisual: "poster",
+        posterSrc: realEstateHeroAssets.poster,
+        // Reserved for merged single-GLB scene; dual-model paths live in transformation.*
+        modelSrc: realEstateTransformation.combinedModelSrc,
+        transformation: realEstateTransformation,
+        alt: "An aging farmhouse transforming into a modern renovated home with AI property analysis",
         eyebrow: "CIN NOVA REAL ESTATE",
         title: "AI-powered real estate intelligence for investors and builders.",
         description:
