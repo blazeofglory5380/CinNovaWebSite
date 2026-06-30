@@ -3016,12 +3016,18 @@ a {
     padding: 0;
     border: none;
     background: none;
-    color: #2563eb;
+    color: var(--color-accent);
     font: inherit;
     font-weight: 800;
-    text-decoration: underline;
-    text-decoration-style: dotted;
+    text-decoration: none;
     cursor: pointer;
+}
+
+.article-glossary-inline-btn:hover,
+.article-glossary-inline-btn:focus {
+    color: var(--color-accent-dark);
+    border-bottom: 1px solid var(--color-accent-dark);
+    outline: none;
 }
 
 .article-glossary-inline-popover {
@@ -8714,6 +8720,18 @@ select {
     color: var(--color-text);
     max-width: 70ch;
     margin-bottom: 0;
+}
+
+.article-content-card a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: none;
+}
+
+.article-content-card a:hover,
+.article-content-card a:focus {
+    color: var(--color-accent-dark);
+    border-bottom: 1px solid var(--color-accent-dark);
 }
 
 /* ── Section spacing and CSS counter ─────────────────────── */

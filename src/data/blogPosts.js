@@ -41,12 +41,12 @@ export function getCategoryUrl(category) {
 }
 
 export const blogAuthors = {
-    "Cin Nova Team": {
-        name: "Cin Nova Team",
+    "CinNova Team": {
+        name: "CinNova Team",
         role: "Editorial Team",
         avatarInitials: "CN",
         bio:
-            "The Cin Nova Team writes about AI software, education technology, family safety, real estate tools, product building, and the ideas behind the Cin Nova ecosystem.",
+            "The CinNova Team writes about AI software, education technology, family safety, real estate tools, product building, and the ideas behind the CinNova ecosystem.",
         socials: [
             { label: "Website", url: "https://cin-nova-web-site.vercel.app" },
             { label: "Blog", url: "https://cin-nova-web-site.vercel.app/blog" },
@@ -55,11 +55,11 @@ export const blogAuthors = {
     },
 };
 
-export function getAuthorProfile(authorName = "Cin Nova Team") {
-    return blogAuthors[authorName] || blogAuthors["Cin Nova Team"];
+export function getAuthorProfile(authorName = "CinNova Team") {
+    return blogAuthors[authorName] || blogAuthors["CinNova Team"];
 }
 
-const author = "Cin Nova Team";
+const author = "CinNova Team";
 
 const fullArticles = [
     {
@@ -932,7 +932,7 @@ const fullArticles = [
             {
                 heading: "Frequently asked questions about StudyNest",
                 body:
-                    "These are common questions about the StudyNest direction and how it fits into the Cin Nova education ecosystem.",
+                    "These are common questions about the StudyNest direction and how it fits into the CinNova education ecosystem.",
                 list: [
                     "Is StudyNest an AI tutor? It includes AI tutoring, but the broader goal is a connected study workspace with notes, flashcards, quizzes, and planning.",
                     "Does StudyNest do homework for students? No. The intended design supports understanding, practice, feedback, and planning while keeping student effort central.",
@@ -1987,7 +1987,7 @@ const cornerstoneOverrides = {
             {
                 heading: "Where application-layer companies fit in the broader economy",
                 body:
-                    "CinNova operates at the application layer with focused products in underserved but high-value domains: AI study tools for students (StudyNest), poison and chemical safety for families (PoisonGuard), early learning for young children (Kiddo), tech support assistance (TechMate AI), and real estate analysis for investors (Cin Nova Real Estate AI). Each product targets a domain where accurate, trustworthy, well-designed AI can improve real decisions and reduce real friction. The strategy is to build deep domain expertise in specific categories rather than competing broadly with general-purpose AI assistants that have the resources of trillion-dollar companies behind them.",
+                    "CinNova operates at the application layer with focused products in underserved but high-value domains: AI study tools for students (StudyNest), poison and chemical safety for families (PoisonGuard), early learning for young children (Kiddo), tech support assistance (TechMate AI), and real estate analysis for investors (CinNova Real Estate AI). Each product targets a domain where accurate, trustworthy, well-designed AI can improve real decisions and reduce real friction. The strategy is to build deep domain expertise in specific categories rather than competing broadly with general-purpose AI assistants that have the resources of trillion-dollar companies behind them.",
             },
             {
                 heading: "Frequently asked questions about the AI economy",
@@ -2635,7 +2635,7 @@ function buildCornerstoneContent(post) {
         {
             heading: "Introduction",
             body:
-                `${post.excerpt} This Cin Nova cornerstone article frames the topic for readers who want a practical view of how ${topicLabel.toLowerCase()} is changing products, markets, and everyday decisions.`,
+                `${post.excerpt} This CinNova cornerstone article frames the topic for readers who want a practical view of how ${topicLabel.toLowerCase()} is changing products, markets, and everyday decisions.`,
         },
         {
             heading: "Why It Matters",
@@ -2701,7 +2701,7 @@ cornerstoneOverrides[32] = {
         "AI tutors personalized learning",
         "StudyNest AI study tools",
     ],
-    seoTitle: "The Complete Guide to AI in Education (2026) | Cin Nova",
+    seoTitle: "The Complete Guide to AI in Education (2026) | CinNova",
     metaDescription:
         "Everything you need to know about AI in education in 2026: how students and teachers use AI, personalized learning, AI tutors, spaced repetition, online platforms, risks, and what comes next.",
     thumbnail: { label: "ED", title: "AI Education Guide 2026" },
@@ -2831,7 +2831,7 @@ cornerstoneOverrides[32] = {
                 "Will AI study tools make students dependent on technology? Good tools are designed to build independent thinking over time, not replace it. Tools that require students to retrieve answers from memory before revealing them are building capability. Tools that hand over answers without effort are creating dependence. The design of the tool matters more than the category.",
                 "How can teachers stay relevant as AI becomes more capable? Teachers who focus on mentorship, discussion facilitation, classroom culture, motivation, and complex reasoning development will remain essential. AI currently cannot build the trust relationships, emotional attunement, or social environment that effective teaching requires.",
                 "What makes StudyNest different from other study apps? StudyNest connects notes, flashcards, quizzes, AI tutoring, and study planning in one workflow. The key difference is integration — not adding one more isolated feature, but building a connected loop where each step informs the next.",
-                "Where can I read more about specific AI education topics? The Cin Nova blog has in-depth articles on AI tutors, spaced repetition, studying smarter with AI, online learning platform trends, and the broader future of education technology.",
+                "Where can I read more about specific AI education topics? The CinNova blog has in-depth articles on AI tutors, spaced repetition, studying smarter with AI, online learning platform trends, and the broader future of education technology.",
             ],
         },
         {
@@ -2864,7 +2864,7 @@ cornerstoneOverrides[31] = {
         "how AI works 2026",
         "AI in education real estate safety",
     ],
-    seoTitle: "The Complete Guide to Artificial Intelligence in 2026 | Cin Nova",
+    seoTitle: "The Complete Guide to Artificial Intelligence in 2026 | CinNova",
     metaDescription:
         "A comprehensive guide to AI in 2026: how it works, the companies building it, how AI is changing education, real estate, safety, and business, and what comes next.",
     thumbnail: { label: "AI", title: "Complete AI Guide 2026" },
@@ -2876,7 +2876,7 @@ cornerstoneOverrides[31] = {
         {
             heading: "Introduction",
             body:
-                "Artificial intelligence in 2026 is no longer a concept that lives in research papers or science fiction. It is embedded in everyday tools, consumer apps, professional workflows, and critical infrastructure. Students use AI to convert class notes into practice flashcards. Investors use AI to score property deals in seconds. Parents use AI to check whether a household product is safe for their pets. Technicians use AI to diagnose a failing device before anyone notices the problem. What makes this moment different from previous AI hype cycles is scale — more people are using AI for real work every day than at any previous point in history.\n\nThis guide covers everything you need to understand about AI in 2026: how it works, who is building it, how it fits into education, real estate, safety, and business, and where it is headed next. Whether you are a student, a professional, an investor, a parent, or a founder, the ideas here will help you navigate the AI era with more clarity and less confusion. We also point to relevant Cin Nova resources throughout so you can explore specific applications in more depth.",
+                "Artificial intelligence in 2026 is no longer a concept that lives in research papers or science fiction. It is embedded in everyday tools, consumer apps, professional workflows, and critical infrastructure. Students use AI to convert class notes into practice flashcards. Investors use AI to score property deals in seconds. Parents use AI to check whether a household product is safe for their pets. Technicians use AI to diagnose a failing device before anyone notices the problem. What makes this moment different from previous AI hype cycles is scale — more people are using AI for real work every day than at any previous point in history.\n\nThis guide covers everything you need to understand about AI in 2026: how it works, who is building it, how it fits into education, real estate, safety, and business, and where it is headed next. Whether you are a student, a professional, an investor, a parent, or a founder, the ideas here will help you navigate the AI era with more clarity and less confusion. We also point to relevant CinNova resources throughout so you can explore specific applications in more depth.",
         },
         {
             heading: "What Artificial Intelligence Means in 2026",
@@ -2906,7 +2906,7 @@ cornerstoneOverrides[31] = {
         {
             heading: "Major AI Companies and Models",
             body:
-                "The AI landscape in 2026 is dominated by a small number of frontier model providers alongside a rapidly growing ecosystem of specialized application builders. Understanding who builds what helps clarify why different AI products have different strengths, costs, and limitations.\n\nOpenAI (GPT-4o, o3) built the product that made AI mainstream with ChatGPT and continues to lead in language, reasoning, and multimodal tasks. Anthropic (Claude) focuses heavily on safety and long-context reasoning. Google (Gemini) integrates AI deeply into its workspace, search, and cloud products. Meta (Llama) is building open-weight models that any developer can download and run. Mistral, Cohere, and others serve specific enterprise and developer use cases. Apple is integrating on-device AI across iPhone, iPad, and Mac.\n\nFor application builders — including the companies building products like StudyNest, PoisonGuard, TechMate AI, and Cin Nova Real Estate AI — the strategic question is not which model to train but which foundation model to build on top of and how to add domain-specific value. A real estate AI that knows local market patterns and investor deal metrics will outperform a generic chatbot for that job even if the underlying model is the same.",
+                "The AI landscape in 2026 is dominated by a small number of frontier model providers alongside a rapidly growing ecosystem of specialized application builders. Understanding who builds what helps clarify why different AI products have different strengths, costs, and limitations.\n\nOpenAI (GPT-4o, o3) built the product that made AI mainstream with ChatGPT and continues to lead in language, reasoning, and multimodal tasks. Anthropic (Claude) focuses heavily on safety and long-context reasoning. Google (Gemini) integrates AI deeply into its workspace, search, and cloud products. Meta (Llama) is building open-weight models that any developer can download and run. Mistral, Cohere, and others serve specific enterprise and developer use cases. Apple is integrating on-device AI across iPhone, iPad, and Mac.\n\nFor application builders — including the companies building products like StudyNest, PoisonGuard, TechMate AI, and CinNova Real Estate AI — the strategic question is not which model to train but which foundation model to build on top of and how to add domain-specific value. A real estate AI that knows local market patterns and investor deal metrics will outperform a generic chatbot for that job even if the underlying model is the same.",
             list: [
                 "OpenAI (GPT-4o, o3): strongest in reasoning, coding, and broad knowledge; powers many third-party apps through API",
                 "Anthropic (Claude 3.x): strong at long document analysis, nuanced writing, and safety-first behavior",
@@ -2931,7 +2931,7 @@ cornerstoneOverrides[31] = {
         {
             heading: "AI in Real Estate",
             body:
-                "Real estate investment decisions involve a dense set of variables: purchase price, expected rent, vacancy rate, maintenance, taxes, insurance, financing terms, cap rate, cash-on-cash return, and local market conditions. Traditionally, investors worked through these calculations manually in spreadsheets — a process that was slow, error-prone, and inaccessible to beginners.\n\nAI is making real estate analysis faster, more accessible, and more contextual. Instead of asking an investor to enter every assumption manually, an AI deal analyzer can suggest reasonable defaults based on property type, location, and comparable sales. It can then show how different assumptions change the outcome, which teaches investors the math while doing the work faster.\n\nCin Nova Real Estate AI is being built as a deal intelligence platform — not just a calculator, but a system that scores opportunities, flags weak assumptions, estimates mortgage payments, models cash flow, and eventually integrates local market intelligence. The practical effect for individual investors is that the research phase of a deal can shrink from days to minutes, leaving more time for human judgment on the details that actually matter.\n\nSee our detailed articles on the future of real estate AI and how AI changes property search for more on how AI is reshaping the investment decision process.",
+                "Real estate investment decisions involve a dense set of variables: purchase price, expected rent, vacancy rate, maintenance, taxes, insurance, financing terms, cap rate, cash-on-cash return, and local market conditions. Traditionally, investors worked through these calculations manually in spreadsheets — a process that was slow, error-prone, and inaccessible to beginners.\n\nAI is making real estate analysis faster, more accessible, and more contextual. Instead of asking an investor to enter every assumption manually, an AI deal analyzer can suggest reasonable defaults based on property type, location, and comparable sales. It can then show how different assumptions change the outcome, which teaches investors the math while doing the work faster.\n\nCinNova Real Estate AI is being built as a deal intelligence platform — not just a calculator, but a system that scores opportunities, flags weak assumptions, estimates mortgage payments, models cash flow, and eventually integrates local market intelligence. The practical effect for individual investors is that the research phase of a deal can shrink from days to minutes, leaving more time for human judgment on the details that actually matter.\n\nSee our detailed articles on the future of real estate AI and how AI changes property search for more on how AI is reshaping the investment decision process.",
             list: [
                 "Deal analyzers score properties on cap rate, cash flow, cash-on-cash return, and investor fit",
                 "Mortgage calculators model financing scenarios with different down payments, rates, and loan terms",
@@ -2943,7 +2943,7 @@ cornerstoneOverrides[31] = {
         {
             heading: "AI in Safety, Pets, and Households",
             body:
-                "Household safety is an area where AI can literally save lives. Accidental poisoning — from cleaning products, medications, plants, food, or automotive chemicals — is a leading cause of emergency calls involving children, pets, and elderly family members. The challenge is not that information does not exist; it is that it is scattered, technical, and hard to access under stress.\n\nPoisonGuard is being built as a safety platform that makes hazard information fast to access, easy to understand, and connected to appropriate next steps. A parent who finds their toddler near a cleaning product should not have to search three websites to find out whether it is dangerous. A pet owner who thinks their dog may have ingested a common plant should be able to scan or look up the item and immediately see the risk level, what to watch for, and when to contact emergency services.\n\nAI makes this type of product more powerful because it can process natural-language descriptions, cross-reference product ingredients, and provide plain-language guidance rather than chemical data sheets. The key constraint — which responsible developers must respect — is that AI safety guidance should always escalate to medical or veterinary professionals for anything beyond low-risk situations. The tool should never give false confidence about a serious exposure.\n\nKiddo, another Cin Nova product, addresses child safety from a different angle: making early learning playful, rewarding, and parent-visible so families can support development without guessing what their child did in the app.",
+                "Household safety is an area where AI can literally save lives. Accidental poisoning — from cleaning products, medications, plants, food, or automotive chemicals — is a leading cause of emergency calls involving children, pets, and elderly family members. The challenge is not that information does not exist; it is that it is scattered, technical, and hard to access under stress.\n\nPoisonGuard is being built as a safety platform that makes hazard information fast to access, easy to understand, and connected to appropriate next steps. A parent who finds their toddler near a cleaning product should not have to search three websites to find out whether it is dangerous. A pet owner who thinks their dog may have ingested a common plant should be able to scan or look up the item and immediately see the risk level, what to watch for, and when to contact emergency services.\n\nAI makes this type of product more powerful because it can process natural-language descriptions, cross-reference product ingredients, and provide plain-language guidance rather than chemical data sheets. The key constraint — which responsible developers must respect — is that AI safety guidance should always escalate to medical or veterinary professionals for anything beyond low-risk situations. The tool should never give false confidence about a serious exposure.\n\nKiddo, another CinNova product, addresses child safety from a different angle: making early learning playful, rewarding, and parent-visible so families can support development without guessing what their child did in the app.",
         },
         {
             heading: "AI Infrastructure and Data Centers",
@@ -2986,7 +2986,7 @@ cornerstoneOverrides[31] = {
         {
             heading: "What AI Could Look Like by 2030",
             body:
-                "Predicting AI's trajectory is difficult because the pace of progress has consistently surprised even the researchers closest to it. But several trends are directionally clear.\n\nModels will become more capable and more efficient. The hardware improvements underway — next-generation GPU architectures, custom AI chips from major technology companies, improvements in memory bandwidth — will allow larger and more powerful models to run at lower cost. This will make AI tools more affordable and more accessible to smaller companies and individuals.\n\nAI will become more embedded in operating systems and everyday devices. Apple Intelligence on iPhone and Mac, Microsoft Copilot in Windows and Office, and Google Gemini in Android represent the shift from AI as a separate app to AI as an ambient layer in software environments. By 2030, most professional software will have AI capabilities built in rather than added on.\n\nAgentic AI will mature into practical, reliable workflows. The gap between today's capable but inconsistent AI agents and the reliable autonomous workflow assistants of 2030 will close through better planning architectures, more reliable tool use, and improved human oversight mechanisms.\n\nFor Cin Nova products, the 2030 horizon means products that are more personalized, more proactive, and more connected. A future version of StudyNest might detect that a student is falling behind before they realize it and suggest a targeted recovery plan. A future version of Cin Nova Real Estate AI might monitor a user's saved properties against live market conditions and notify them when a deal opportunity emerges. A future PoisonGuard might connect to smart home sensors to proactively flag hazards before an incident occurs.",
+                "Predicting AI's trajectory is difficult because the pace of progress has consistently surprised even the researchers closest to it. But several trends are directionally clear.\n\nModels will become more capable and more efficient. The hardware improvements underway — next-generation GPU architectures, custom AI chips from major technology companies, improvements in memory bandwidth — will allow larger and more powerful models to run at lower cost. This will make AI tools more affordable and more accessible to smaller companies and individuals.\n\nAI will become more embedded in operating systems and everyday devices. Apple Intelligence on iPhone and Mac, Microsoft Copilot in Windows and Office, and Google Gemini in Android represent the shift from AI as a separate app to AI as an ambient layer in software environments. By 2030, most professional software will have AI capabilities built in rather than added on.\n\nAgentic AI will mature into practical, reliable workflows. The gap between today's capable but inconsistent AI agents and the reliable autonomous workflow assistants of 2030 will close through better planning architectures, more reliable tool use, and improved human oversight mechanisms.\n\nFor CinNova products, the 2030 horizon means products that are more personalized, more proactive, and more connected. A future version of StudyNest might detect that a student is falling behind before they realize it and suggest a targeted recovery plan. A future version of CinNova Real Estate AI might monitor a user's saved properties against live market conditions and notify them when a deal opportunity emerges. A future PoisonGuard might connect to smart home sensors to proactively flag hazards before an incident occurs.",
         },
         {
             heading: "Frequently Asked Questions About AI in 2026",
@@ -2997,8 +2997,8 @@ cornerstoneOverrides[31] = {
                 "How do I know if an AI answer is accurate? Cross-reference AI outputs against authoritative sources, especially for health, legal, financial, or safety information. AI is most reliable for well-documented topics and least reliable for recent events, niche expertise, or anything requiring real-world verification.",
                 "Is AI safe to use for children? Well-designed AI education tools are safe and beneficial for children. The key criteria are age-appropriate content, privacy protection, parental visibility, and designs that encourage thinking rather than passive consumption.",
                 "What is the difference between AI and machine learning? Machine learning is a subset of AI that trains models on data. AI is the broader category that includes rule-based systems, expert systems, machine learning, and generative models. In common usage, 'AI' in 2026 almost always refers to machine learning-based systems.",
-                "How does Cin Nova use AI in its products? Each Cin Nova product uses AI for a specific domain: StudyNest for personalized study support, PoisonGuard for hazard identification and guidance, TechMate AI for device diagnostics, Kiddo for adaptive early learning, and Cin Nova Real Estate AI for deal analysis and property intelligence.",
-                "Where can I learn more about specific AI topics? Explore the Cin Nova blog for in-depth articles on AI infrastructure, AI in education, real estate AI tools, data center economics, and the technology trends shaping the next decade.",
+                "How does CinNova use AI in its products? Each CinNova product uses AI for a specific domain: StudyNest for personalized study support, PoisonGuard for hazard identification and guidance, TechMate AI for device diagnostics, Kiddo for adaptive early learning, and CinNova Real Estate AI for deal analysis and property intelligence.",
+                "Where can I learn more about specific AI topics? Explore the CinNova blog for in-depth articles on AI infrastructure, AI in education, real estate AI tools, data center economics, and the technology trends shaping the next decade.",
             ],
         },
         {
@@ -3064,7 +3064,7 @@ const enrichedFullArticles = fullArticles.map((post) => {
         ...mergedPost,
         content,
         coverImage: getCoverImage(mergedPost),
-        editorialByline: cornerstone ? "Cin Nova Editorial Team" : mergedPost.author,
+        editorialByline: cornerstone ? "CinNova Editorial Team" : mergedPost.author,
         publishedLabel: cornerstone ? "Published: June 2026" : `Published: ${mergedPost.date}`,
         updatedLabel: cornerstone ? "Updated: June 2026" : `Updated: ${mergedPost.date}`,
         coverageTopics: editorialCoverageTopics,
