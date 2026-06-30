@@ -81,11 +81,11 @@ function FloatingNewsletterButton({ onSubscribe, newsletterAnchorId = "newslette
                         <div className="float-nl-success">
                             <span className="float-nl-success-icon">✓</span>
                             <strong>You're in!</strong>
-                            <p>Welcome to the Cin Nova newsletter.</p>
+                            <p>Welcome to the CinNova newsletter.</p>
                         </div>
                     ) : (
                         <>
-                            <p className="float-nl-eyebrow">CIN NOVA NEWSLETTER</p>
+                            <p className="float-nl-eyebrow">CINNOVA NEWSLETTER</p>
                             <strong className="float-nl-headline">
                                 Get product updates and free guides.
                             </strong>

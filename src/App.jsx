@@ -978,7 +978,7 @@ function App() {
                     onClick={() => { goHome(); setMobileMenuOpen(false); }}
                 >
                     <span className="brand-mark">CN</span>
-                    <span>Cin Nova</span>
+                    <span>CinNova</span>
                 </button>
 
                 <div className={`nav-links${mobileMenuOpen ? " nav-mobile-open" : ""}`}>
@@ -1105,7 +1105,7 @@ function App() {
             {page === "studynest" && (
                 <>
                     <div className="back-bar">
-                        <button onClick={goHome}>Back to Cin Nova</button>
+                        <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
                             All Products
                         </button>
@@ -1118,7 +1118,7 @@ function App() {
             {page === "poisonguard" && (
                 <>
                     <div className="back-bar">
-                        <button onClick={goHome}>Back to Cin Nova</button>
+                        <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
                             All Products
                         </button>
@@ -1131,7 +1131,7 @@ function App() {
             {page === "real-estate" && (
                 <>
                     <div className="back-bar">
-                        <button onClick={goHome}>Back to Cin Nova</button>
+                        <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
                             All Products
                         </button>
@@ -1144,7 +1144,7 @@ function App() {
             {page === "techmate" && (
                 <>
                     <div className="back-bar">
-                        <button onClick={goHome}>Back to Cin Nova</button>
+                        <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
                             All Products
                         </button>
@@ -1157,7 +1157,7 @@ function App() {
             {page === "kiddo" && (
                 <>
                     <div className="back-bar">
-                        <button onClick={goHome}>Back to Cin Nova</button>
+                        <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
                             All Products
                         </button>

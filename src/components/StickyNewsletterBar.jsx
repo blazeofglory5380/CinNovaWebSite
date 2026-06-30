@@ -29,7 +29,7 @@ function StickyNewsletterBar({ onSubscribe, onDismiss }) {
             {subscribed ? (
                 <>
                     <p className="sticky-bar-subscribed">
-                        You're subscribed! Welcome to the Cin Nova newsletter.
+                        You're subscribed! Welcome to the CinNova newsletter.
                     </p>
                     <button className="sticky-bar-close" onClick={onDismiss} aria-label="Close">
                         ✕
@@ -53,7 +53,7 @@ function StickyNewsletterBar({ onSubscribe, onDismiss }) {
                             <span className="sticky-bar-mark">CN</span>
                         </div>
                         <div className="sticky-bar-copy">
-                            <strong>Join the Cin Nova newsletter</strong>
+                            <strong>Join the CinNova newsletter</strong>
                             <span>Get AI, education, real estate, and app updates.</span>
                         </div>
                         <form className="sticky-bar-form" onSubmit={handleSubmit}>

@@ -24,7 +24,7 @@ function ArticleCTA({ onSubscribe }) {
             <p className="article-cta-eyebrow">STAY IN THE LOOP</p>
             <h3>Enjoying this article?</h3>
             <p>
-                Join the Cin Nova Newsletter for AI, Education, Real Estate,
+                Join the CinNova Newsletter for AI, Education, Real Estate,
                 and Technology insights.
             </p>
 

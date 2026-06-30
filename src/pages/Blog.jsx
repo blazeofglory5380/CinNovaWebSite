@@ -97,22 +97,22 @@ function Blog({
 
     const seoTitle =
         activeCategory === "All"
-            ? "Cin Nova Blog | AI, Apps, Education, Safety, and Real Estate"
-            : `${activeCategory} Articles | Cin Nova Blog`;
+            ? "CinNova Blog | AI, Apps, Education, Safety, and Real Estate"
+            : `${activeCategory} Articles | CinNova Blog`;
     const seoDescription =
         activeCategory === "All"
-            ? "Read Cin Nova articles about AI software, education, real estate, safety, parenting, product updates, and building useful app businesses."
-            : `Read Cin Nova ${activeCategory} articles from the company blog and app ecosystem.`;
+            ? "Read CinNova articles about AI software, education, real estate, safety, parenting, product updates, and building useful app businesses."
+            : `Read CinNova ${activeCategory} articles from the company blog and app ecosystem.`;
     const pageUrl = activeCategory === "All" ? getBlogUrl() : getCategoryUrl(activeCategory);
     const blogSchema = {
         "@context": "https://schema.org",
         "@type": "Blog",
-        name: "Cin Nova Blog",
+        name: "CinNova Blog",
         url: pageUrl,
         description: seoDescription,
         publisher: {
             "@type": "Organization",
-            name: "Cin Nova",
+            name: "CinNova",
             url: siteUrl,
         },
         blogPost: posts.map((post) => ({
@@ -205,11 +205,10 @@ function Blog({
 
             <section className="section blog-hero-section">
                 <div className="section-heading blog-hero-copy">
-                    <p className="eyebrow">CIN NOVA BLOG</p>
-                    <h2>Ideas for building, learning, safety, and smarter software.</h2>
+                    <p className="eyebrow">CINNOVA BLOG</p>
+                    <h2>Latest CinNova Articles</h2>
                     <p>
-                        Practical articles about AI, education, real estate, family safety,
-                        parenting, product updates, and the work behind the Cin Nova ecosystem.
+                        AI, education, safety apps, real estate AI, kids learning, and future tech — from the CinNova team.
                     </p>
                 </div>
             </section>
@@ -301,7 +300,7 @@ function Blog({
                     <div className="section-heading">
                         <p className="eyebrow">WHAT'S TRENDING</p>
                         <h2>Articles people are reading now.</h2>
-                        <p>The articles getting the most attention across the Cin Nova blog this week.</p>
+                        <p>The articles getting the most attention across the CinNova blog this week.</p>
                     </div>
                     <div className="article-grid">
                         {trendingPosts.map((post) => (
@@ -379,7 +378,7 @@ function Blog({
                     </div>
                     <div className="guide-cta-copy">
                         <p className="eyebrow">FREE DOWNLOAD</p>
-                        <h2>Get the Cin Nova AI Guide — free.</h2>
+                        <h2>Get the CinNova AI Guide — free.</h2>
                         <p>
                             A practical breakdown of five ways AI is changing education, home
                             safety, real estate, tech support, and early learning. Enter your
@@ -399,7 +398,7 @@ function Blog({
                             Download Free Guide →
                         </button>
                         <p className="guide-cta-note">
-                            Free download. No credit card. Subscribes you to the Cin Nova newsletter.
+                            Free download. No credit card. Subscribes you to the CinNova newsletter.
                         </p>
                     </div>
                 </div>
@@ -442,7 +441,7 @@ function Blog({
             <section className="section showcase-section" id="articles">
                 <div className="section-heading">
                     <p className="eyebrow">LATEST ARTICLES</p>
-                    <h2>Fresh from the Cin Nova blog.</h2>
+                    <h2>Fresh from the CinNova blog.</h2>
                     <p>
                         Browse articles covering AI, education, real estate, safety, parenting,
                         product updates, and entrepreneurship.
@@ -523,7 +522,7 @@ function Blog({
                     <h2>Get new articles and product updates in your inbox.</h2>
                     <p className="newsletter-copy">
                         Get launch notes, article drops, and behind-the-scenes updates as
-                        Cin Nova builds its app ecosystem.
+                        CinNova builds its app ecosystem.
                     </p>
                     <NewsletterSignup
                         onSubscribe={onSubscribe}

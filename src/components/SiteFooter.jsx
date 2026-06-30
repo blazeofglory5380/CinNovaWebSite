@@ -4,7 +4,7 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
             <div className="site-footer-brand-col">
                 <button type="button" className="brand footer-brand" onClick={onGoHome}>
                     <span className="brand-mark">CN</span>
-                    <span>Cin Nova</span>
+                    <span>CinNova</span>
                 </button>
                 <p className="site-footer-tagline">
                     Building practical AI products for education, family safety, technology, and real estate.

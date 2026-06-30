@@ -175,7 +175,7 @@ function ArticleHeroVisual({ post }) {
             <figcaption>
                 <small>{cover.kicker}</small>
                 <strong>{cover.title}</strong>
-                <span>Cin Nova Editorial</span>
+                <span>CinNova Editorial</span>
             </figcaption>
         </figure>
     );
@@ -310,7 +310,7 @@ function ArticlePage({
                 <SponsoredDisclosure sponsor={post.sponsor} />
             )}
             <SEO
-                title={`${post.title} | Cin Nova Blog`}
+                title={`${post.title} | CinNova Blog`}
                 description={post.excerpt}
                 url={articleUrl}
                 type="article"
@@ -452,7 +452,7 @@ function ArticlePage({
                         <p className="affiliate-block-eyebrow">RECOMMENDED TOOLS</p>
                         <h2>Tools mentioned or related to this article.</h2>
                         <p className="affiliate-disclosure-note">
-                            Some links below are affiliate links — Cin Nova earns a small
+                            Some links below are affiliate links — CinNova earns a small
                             commission at no extra cost to you when you use them.
                         </p>
                         <div className="affiliate-links-grid">

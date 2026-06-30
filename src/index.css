@@ -1,3 +1,15 @@
+:root {
+    --color-bg: #ffffff;
+    --color-surface: #F7F5EF;
+    --color-text: #1E1E1E;
+    --color-text-secondary: #5F6368;
+    --color-accent: #0F7A5A;
+    --color-accent-dark: #064E3B;
+    --color-gold: #C9A227;
+    --color-gold-light: #F3E7B3;
+    --color-border: #E5E2D8;
+}
+
 * {
     margin: 0;
     padding: 0;

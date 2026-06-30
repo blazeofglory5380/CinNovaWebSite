@@ -1,11 +1,10 @@
 import { useMemo } from "react";
 import SEO from "../components/SEO.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
-import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
-import { siteMarketing } from "../data/marketingImages.js";
 import { normalizeProductStatus } from "../data/products.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
 
@@ -48,7 +47,7 @@ const whyCinNovaPillars = [
     {
         title: "Professionals move faster",
         description:
-            "TechMate AI and Cin Nova Real Estate reduce friction in everyday troubleshooting and investment analysis with clear, guided workflows.",
+            "TechMate AI and CinNova Real Estate reduce friction in everyday troubleshooting and investment analysis with clear, guided workflows.",
     },
     {
         title: "Businesses grow with clarity",
@@ -95,7 +94,7 @@ function HomePage({
         [posts],
     );
     const featuredProducts = products.filter((product) => FEATURED_PRODUCT_PAGES.includes(product.page));
-    const hero = siteMarketing.homeHero;
+    const homeHero = productHero3DConfigs.home;
 
     function openProduct(page) {
         onNavigate?.(page);
@@ -113,52 +112,28 @@ function HomePage({
                 schema={homeSchema}
             />
 
-            <section className="home-v12-hero section hero-with-immersive-scene" aria-labelledby="home-v12-hero-title">
-                <ImmersiveHeroScene variant="home" intensity="calm" />
-                <div className="home-v12-hero-grid">
-                    <div className="home-v12-hero-copy">
-                        <p className="eyebrow">THE CIN NOVA ECOSYSTEM</p>
-                        <h1 id="home-v12-hero-title">
-                            Practical AI that helps people learn, stay safe, and make better decisions.
-                        </h1>
-                        <p className="home-v12-hero-lead">
-                            Cin Nova builds connected software for education, family safety, technology support,
-                            early learning, and real estate — plus a growing library of free guides and research.
-                        </p>
-                        <div className="home-v12-hero-actions">
-                            <button type="button" className="primary-btn" onClick={() => onNavigate?.("products")}>
-                                Explore Products
-                            </button>
-                            <button type="button" className="secondary-btn" onClick={onGoResources}>
-                                Browse Free Resources
-                            </button>
+            <ProductHero3D
+                {...homeHero}
+                className="ph3d--home"
+                onPrimaryCta={() => onNavigate?.("products")}
+                onSecondaryCta={onGoResources}
+                stats={(
+                    <div className="ph3d__stats" role="list" aria-label="Cin Nova at a glance">
+                        <div className="ph3d__stat" role="listitem">
+                            <strong>5</strong>
+                            <span>Products</span>
                         </div>
-                        <div className="home-v12-hero-stats" role="list" aria-label="Cin Nova at a glance">
-                            <div role="listitem">
-                                <strong>5</strong>
-                                <span>Products</span>
-                            </div>
-                            <div role="listitem">
-                                <strong>12</strong>
-                                <span>Free resources</span>
-                            </div>
-                            <div role="listitem">
-                                <strong>1</strong>
-                                <span>Connected ecosystem</span>
-                            </div>
+                        <div className="ph3d__stat" role="listitem">
+                            <strong>12</strong>
+                            <span>Free resources</span>
+                        </div>
+                        <div className="ph3d__stat" role="listitem">
+                            <strong>1</strong>
+                            <span>Connected ecosystem</span>
                         </div>
                     </div>
-                    <div className="home-v12-hero-visual">
-                        <MarketingPhoto
-                            src={hero.src}
-                            alt={hero.alt}
-                            className="home-v12-hero-img"
-                            loading="eager"
-                            fetchPriority="high"
-                        />
-                    </div>
-                </div>
-            </section>
+                )}
+            />
 
             <section className="section home-v12-ecosystem" id="ecosystem" aria-labelledby="home-v12-ecosystem-title">
                 <div className="home-v12-section-head">
@@ -210,10 +185,10 @@ function HomePage({
 
             <section className="section home-v12-why" aria-labelledby="home-v12-why-title">
                 <div className="home-v12-section-head">
-                    <p className="eyebrow">WHY CIN NOVA</p>
+                    <p className="eyebrow">WHY CINNOVA</p>
                     <h2 id="home-v12-why-title">Software that works together for real people.</h2>
                     <p>
-                        Cin Nova is not a collection of disconnected apps. It is a mission-driven ecosystem designed to
+                        CinNova is not a collection of disconnected apps. It is a mission-driven ecosystem designed to
                         help students, families, professionals, and businesses move from confusion to confident action.
                     </p>
                 </div>
@@ -267,7 +242,7 @@ function HomePage({
                 <div className="home-v12-section-head">
                     <p className="eyebrow">LATEST RESOURCES</p>
                     <h2 id="home-v12-resources-title">Fresh guides, templates, and checklists.</h2>
-                    <p>Free publications from the Cin Nova Resources Center — updated as new assets ship.</p>
+                    <p>Free publications from the CinNova Resources Center — updated as new assets ship.</p>
                 </div>
                 <div className="home-v12-resources-grid">
                     {latestResources.map((resource) => (
@@ -295,7 +270,7 @@ function HomePage({
             <section className="section home-v12-articles" aria-labelledby="home-v12-articles-title">
                 <div className="home-v12-section-head">
                     <p className="eyebrow">LATEST ARTICLES</p>
-                    <h2 id="home-v12-articles-title">Research and insights from the Cin Nova blog.</h2>
+                    <h2 id="home-v12-articles-title">Research and insights from the CinNova blog.</h2>
                     <p>Editorial coverage of AI, education, safety, real estate, and product building.</p>
                 </div>
                 <div className="home-v12-articles-grid">
@@ -328,13 +303,13 @@ function HomePage({
                         <p className="eyebrow">STAY IN THE LOOP</p>
                         <h2 id="home-v12-newsletter-title">Product launches, free resources, and practical AI insights.</h2>
                         <p>
-                            Join the Cin Nova newsletter for launch announcements, new resource drops, and editorial
+                            Join the CinNova newsletter for launch announcements, new resource drops, and editorial
                             highlights — no spam, unsubscribe anytime.
                         </p>
                         <ul className="home-v12-newsletter-perks">
                             <li>Early access to product betas</li>
                             <li>New guides and templates as they publish</li>
-                            <li>Curated articles from the Cin Nova blog</li>
+                            <li>Curated articles from the CinNova blog</li>
                         </ul>
                     </div>
                     <div className="home-v12-newsletter-form-wrap">
