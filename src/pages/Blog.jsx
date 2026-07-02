@@ -13,6 +13,7 @@ import {
 } from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const categoryConfig = {
     "Artificial Intelligence": { icon: "AI", desc: "AI tools, assistants, safety, and workflows" },
@@ -518,7 +519,7 @@ function Blog({
             </section>
 
             <section className="section" id="newsletter">
-                <div className="newsletter-card">
+                <MotionSectionWrap className="newsletter-card">
                     <p className="eyebrow">STAY IN THE LOOP</p>
                     <h2>Get new articles and product updates in your inbox.</h2>
                     <p className="newsletter-copy">
@@ -530,7 +531,7 @@ function Blog({
                         source="Blog"
                         tags={["Blog Reader"]}
                     />
-                </div>
+                </MotionSectionWrap>
             </section>
         </main>
     );

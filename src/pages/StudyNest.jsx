@@ -1,16 +1,21 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
-import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { productMarketing } from "../data/marketingImages.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
+import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
-const { hero, features } = productMarketing.studynest;
+const { features } = productMarketing.studynest;
+const studyNestHero = productHero3DConfigs.studynest;
 
 const heroStats = [
     { value: "24/7", label: "AI tutoring" },
@@ -110,7 +115,7 @@ const studynestSchema = withSchemaGraph(
             "AI-powered study tools with notes, flashcards, quizzes, AI tutoring, and study planning for students.",
         operatingSystem: "Web",
         url: `${siteUrl}/?page=studynest`,
-        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        screenshot: buildImageObject({ src: studyNestHero.posterSrc, alt: studyNestHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
@@ -128,42 +133,28 @@ function StudyNest() {
                 schema={studynestSchema}
             />
 
-            <section className="sn-hero section hero-with-immersive-scene" aria-labelledby="sn-hero-title">
-                <ImmersiveHeroScene variant="studynest" intensity="calm" />
-                <div className="sn-hero-grid">
-                    <div className="sn-hero-copy">
+            <MotionHeroWrap>
+                <ProductHero3D
+                    {...studyNestHero}
+                    className="ph3d--studynest"
+                    badges={(
                         <div className="sn-hero-badges">
-                            <span className="sn-status-badge">Beta — In Development</span>
+                            <span className="sn-status-badge">Beta - In Development</span>
                             <span className="sn-category-badge">Education AI</span>
                         </div>
-                        <p className="eyebrow">STUDYNEST</p>
-                        <h1 id="sn-hero-title">The study workspace that helps learning actually stick.</h1>
-                        <p className="sn-hero-lead">
-                            StudyNest connects notes, flashcards, quizzes, study guides, and AI tutoring in one
-                            place — so students spend less time organizing and more time remembering.
-                        </p>
-                        <div className="sn-hero-actions">
-                            <a href="#waitlist" className="primary-btn sn-btn-primary">
-                                Join Waitlist
-                            </a>
-                            <a href="#features" className="secondary-btn">
-                                Explore Features
-                            </a>
-                        </div>
-                        <div className="sn-hero-stats" role="list" aria-label="StudyNest highlights">
+                    )}
+                    stats={(
+                        <div className="ph3d__stats" role="list" aria-label="StudyNest highlights">
                             {heroStats.map((stat) => (
-                                <div key={stat.label} role="listitem" className="sn-hero-stat">
+                                <div key={stat.label} role="listitem" className="ph3d__stat">
                                     <strong>{stat.value}</strong>
                                     <span>{stat.label}</span>
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    <div className="sn-hero-visual">
-                        <ProductHeroPhoto src={hero.src} alt={hero.alt} />
-                    </div>
-                </div>
-            </section>
+                    )}
+                />
+            </MotionHeroWrap>
 
             <section className="sn-trust-bar" aria-label="StudyNest value highlights">
                 <div className="sn-trust-inner">
@@ -222,11 +213,11 @@ function StudyNest() {
                 </div>
                 <div className="sn-how-grid">
                     {howItWorks.map((item) => (
-                        <article key={item.step} className="sn-how-card">
+                        <MotionCardWrap as="article" key={item.step} className="sn-how-card">
                             <span className="sn-how-step">{item.step}</span>
                             <h3>{item.title}</h3>
                             <p>{item.description}</p>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -238,26 +229,26 @@ function StudyNest() {
                     <p>Early interface concepts showing how StudyNest supports explanation, recall, and planning.</p>
                 </div>
                 <div className="sn-preview-grid">
-                    <article className="sn-preview-card">
+                    <MotionCardWrap as="article" className="sn-preview-card">
                         <p className="sn-preview-label">AI Tutor</p>
                         <h3>Ask questions in plain language</h3>
                         <div className="sn-chat">
                             <div className="sn-chat-user">What is photosynthesis?</div>
-                            <div className="sn-chat-ai">
+                            <MotionAiPanelWrap className="sn-chat-ai">
                                 Plants use sunlight, water, and carbon dioxide to produce glucose and oxygen. Think of
                                 it as the plant&apos;s way of making food from light.
-                            </div>
+                            </MotionAiPanelWrap>
                         </div>
-                    </article>
-                    <article className="sn-preview-card">
+                    </MotionCardWrap>
+                    <MotionCardWrap as="article" className="sn-preview-card">
                         <p className="sn-preview-label">Flashcards</p>
                         <h3>Active recall built in</h3>
                         <div className="sn-flashcard">
                             <p className="sn-flashcard-prompt">What is active recall?</p>
                             <p className="sn-flashcard-answer">Testing yourself instead of only rereading notes.</p>
                         </div>
-                    </article>
-                    <article className="sn-preview-card sn-preview-card-wide">
+                    </MotionCardWrap>
+                    <MotionCardWrap as="article" className="sn-preview-card sn-preview-card-wide">
                         <p className="sn-preview-label">Study Planner</p>
                         <h3>See what to review next</h3>
                         <div className="sn-planner-rows">
@@ -274,7 +265,7 @@ function StudyNest() {
                                 <strong>Thu · 25 min</strong>
                             </div>
                         </div>
-                    </article>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -301,7 +292,8 @@ function StudyNest() {
                 </div>
                 <div className="sn-pricing-grid">
                     {pricingPlans.map((plan) => (
-                        <article
+                        <MotionCardWrap
+                            as="article"
                             key={plan.name}
                             className={`sn-pricing-card${plan.featured ? " sn-pricing-card--featured" : ""}`}
                         >
@@ -312,7 +304,7 @@ function StudyNest() {
                             <a href="#waitlist" className={plan.featured ? "primary-btn sn-btn-primary" : "secondary-btn"}>
                                 Join Waitlist
                             </a>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -333,7 +325,7 @@ function StudyNest() {
             </section>
 
             <section className="section sn-waitlist" id="waitlist" aria-labelledby="sn-waitlist-title">
-                <div className="sn-waitlist-card">
+                <MotionSectionWrap className="sn-waitlist-card">
                     <div className="sn-waitlist-copy">
                         <p className="eyebrow">JOIN THE WAITLIST</p>
                         <h2 id="sn-waitlist-title">Be first to try StudyNest when it launches.</h2>
@@ -350,7 +342,7 @@ function StudyNest() {
                             buttonLabel="Join Waitlist"
                         />
                     </div>
-                </div>
+                </MotionSectionWrap>
             </section>
         </main>
     );

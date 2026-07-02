@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import PoisonGuardFeatureVisual from "./PoisonGuardFeatureVisual.jsx";
+import { MotionCardWrap } from "../../motion/MotionCardWrap.jsx";
 
 function PoisonGuardFeatureCard({ feature, onOpen }) {
     const buttonRef = useRef(null);
 
     return (
-        <article className="pg-feature-card-v2">
+        <MotionCardWrap className="pg-feature-card-v2">
             <button
                 ref={buttonRef}
                 type="button"
@@ -23,7 +24,7 @@ function PoisonGuardFeatureCard({ feature, onOpen }) {
                     <span className="pg-feature-card-cta">View feature →</span>
                 </div>
             </button>
-        </article>
+        </MotionCardWrap>
     );
 }
 

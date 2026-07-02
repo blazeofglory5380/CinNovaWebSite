@@ -1,15 +1,18 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import KiddoArtwork from "../components/KiddoArtwork.jsx";
 import { kiddoAssets } from "../data/kiddoAssets.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
-import { productMarketing } from "../data/marketingImages.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
-const { hero } = productMarketing.kiddo;
+const kiddoHero = productHero3DConfigs.kiddo;
 
 const heroHighlights = [
     { value: "Ages 2\u20137", label: "Built for early learners" },
@@ -205,7 +208,7 @@ const kiddoSchema = withSchemaGraph(
             "Interactive early learning app for children ages 2\u20137 with reading, writing, math, science, and a parent dashboard.",
         operatingSystem: "Web",
         url: `${siteUrl}/?page=kiddo`,
-        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        screenshot: buildImageObject({ src: kiddoHero.posterSrc, alt: kiddoHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
@@ -223,51 +226,28 @@ function Kiddo() {
                 schema={kiddoSchema}
             />
 
-            <section className="kd-hero section hero-with-immersive-scene" aria-labelledby="kd-hero-title">
-                <ImmersiveHeroScene variant="kiddo" intensity="medium" />
-                <div className="kd-hero-blobs" aria-hidden="true">
-                    <span className="kd-blob kd-blob--1" />
-                    <span className="kd-blob kd-blob--2" />
-                    <span className="kd-blob kd-blob--3" />
-                </div>
-                <div className="kd-hero-grid">
-                    <div className="kd-hero-copy">
+            <MotionHeroWrap>
+                <ProductHero3D
+                    {...kiddoHero}
+                    className="ph3d--kiddo"
+                    badges={(
                         <div className="kd-hero-badges">
                             <span className="kd-status-badge">Adventure Awaits</span>
                             <span className="kd-category-badge">Early Learning</span>
                         </div>
-                        <p className="eyebrow">KIDDO</p>
-                        <h1 id="kd-hero-title">Learning becomes an adventure.</h1>
-                        <p className="kd-hero-lead">
-                            Kiddo turns ABCs, reading, math, and curiosity into colorful worlds your child will
-                            actually want to explore — with a parent dashboard that keeps you confidently in control.
-                        </p>
-                        <div className="kd-hero-actions">
-                            <a href="#waitlist" className="primary-btn kd-btn-primary">
-                                Join Waitlist
-                            </a>
-                            <a href="#worlds" className="secondary-btn kd-btn-secondary">
-                                Explore Learning Worlds
-                            </a>
-                        </div>
-                        <div className="kd-hero-stats" role="list" aria-label="Kiddo highlights">
+                    )}
+                    stats={(
+                        <div className="ph3d__stats" role="list" aria-label="Kiddo highlights">
                             {heroHighlights.map((stat) => (
-                                <div key={stat.label} role="listitem" className="kd-hero-stat">
+                                <div key={stat.label} role="listitem" className="ph3d__stat">
                                     <strong>{stat.value}</strong>
                                     <span>{stat.label}</span>
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    <div className="kd-hero-visual">
-                        <div className="kd-hero-frame">
-                            <KiddoArtwork asset={kiddoAssets.hero} className="kd-hero-artwork" />
-                            <span className="kd-hero-sparkle kd-hero-sparkle--1" />
-                            <span className="kd-hero-sparkle kd-hero-sparkle--2" />
-                        </div>
-                    </div>
-                </div>
-            </section>
+                    )}
+                />
+            </MotionHeroWrap>
 
             <section className="section kd-worlds" id="worlds" aria-labelledby="kd-worlds-title">
                 <div className="kd-section-head">
@@ -277,7 +257,8 @@ function Kiddo() {
                 </div>
                 <div className="kd-worlds-grid">
                     {learningWorlds.map((world) => (
-                        <article
+                        <MotionCardWrap
+                            as="article"
                             key={world.name}
                             className="kd-world-card"
                             style={{ "--kd-world-accent": world.accent }}
@@ -291,7 +272,7 @@ function Kiddo() {
                                 <h3>{world.name}</h3>
                                 <p>{world.description}</p>
                             </div>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -304,7 +285,7 @@ function Kiddo() {
                 </div>
                 <div className="kd-characters-grid">
                     {characters.map((character) => (
-                        <article key={character.name} className={`kd-character-card kd-character-card--${character.variant}`}>
+                        <MotionCardWrap as="article" key={character.name} className={`kd-character-card kd-character-card--${character.variant}`}>
                             <div className="kd-character-portrait-wrap">
                                 <KiddoArtwork
                                     asset={character.asset}
@@ -318,7 +299,7 @@ function Kiddo() {
                             <p className="kd-character-teaches">
                                 <strong>Teaches:</strong> {character.teaches}
                             </p>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -332,17 +313,17 @@ function Kiddo() {
                 <div className="kd-gameplay-layout">
                     <div className="kd-gameplay-grid">
                         {gameplayFeatures.map((item) => (
-                            <article key={item.title} className="kd-gameplay-chip">
+                            <MotionCardWrap as="article" key={item.title} className="kd-gameplay-chip">
                                 <h3>{item.title}</h3>
                                 <p>{item.copy}</p>
-                            </article>
+                            </MotionCardWrap>
                         ))}
                     </div>
                     <div className="kd-gameplay-mocks">
-                        <article className="kd-mock-card kd-mock-card-visual">
+                        <MotionCardWrap as="article" className="kd-mock-card kd-mock-card-visual">
                             <KiddoArtwork asset={kiddoAssets.gameplay} className="kd-gameplay-preview-art" />
-                        </article>
-                        <article className="kd-mock-card">
+                        </MotionCardWrap>
+                        <MotionCardWrap as="article" className="kd-mock-card">
                             <p className="kd-mock-label">Treasure Map</p>
                             <h3>Find the hidden letter gems</h3>
                             <div className="kd-mock-map">
@@ -353,8 +334,8 @@ function Kiddo() {
                                 <span className="kd-mock-node">C</span>
                             </div>
                             <p className="kd-mock-caption">2 of 3 clues found in Alphabet Forest</p>
-                        </article>
-                        <article className="kd-mock-card">
+                        </MotionCardWrap>
+                        <MotionCardWrap as="article" className="kd-mock-card">
                             <p className="kd-mock-label">Daily Challenge</p>
                             <h3>Star streak unlocked</h3>
                             <div className="kd-mock-streak">
@@ -365,7 +346,7 @@ function Kiddo() {
                                 <span className="kd-mock-star" />
                             </div>
                             <p className="kd-mock-caption">Come back tomorrow for a surprise badge</p>
-                        </article>
+                        </MotionCardWrap>
                     </div>
                 </div>
             </section>
@@ -379,10 +360,10 @@ function Kiddo() {
                 <div className="kd-parents-layout">
                     <div className="kd-parent-features">
                         {parentFeatures.map((item) => (
-                            <article key={item.title} className="kd-parent-feature">
+                            <MotionCardWrap as="article" key={item.title} className="kd-parent-feature">
                                 <h3>{item.title}</h3>
                                 <p>{item.copy}</p>
-                            </article>
+                            </MotionCardWrap>
                         ))}
                     </div>
                     <div className="kd-parent-visual">
@@ -446,7 +427,8 @@ function Kiddo() {
                 </div>
                 <div className="kd-pricing-grid">
                     {pricingPlans.map((plan) => (
-                        <article
+                        <MotionCardWrap
+                            as="article"
                             key={plan.name}
                             className={`kd-pricing-card${plan.featured ? " kd-pricing-card--featured" : ""}`}
                         >
@@ -457,7 +439,7 @@ function Kiddo() {
                             <a href="#waitlist" className={plan.featured ? "primary-btn kd-btn-primary" : "secondary-btn kd-btn-secondary"}>
                                 Join Waitlist
                             </a>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -478,7 +460,7 @@ function Kiddo() {
             </section>
 
             <section className="section kd-waitlist" id="waitlist" aria-labelledby="kd-waitlist-title">
-                <div className="kd-waitlist-card">
+                <MotionSectionWrap className="kd-waitlist-card">
                     <div className="kd-waitlist-copy">
                         <p className="eyebrow">JOIN THE WAITLIST</p>
                         <h2 id="kd-waitlist-title">Give your child a head start on the adventure.</h2>
@@ -495,7 +477,7 @@ function Kiddo() {
                             buttonLabel="Join Waitlist"
                         />
                     </div>
-                </div>
+                </MotionSectionWrap>
             </section>
         </main>
     );

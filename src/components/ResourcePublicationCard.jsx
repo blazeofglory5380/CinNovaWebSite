@@ -4,6 +4,7 @@ import ResourceThumbnail from "./ResourceThumbnail.jsx";
 import { defaultResourceCover, resourceProductBrands } from "../data/marketingImages.js";
 import { resourceCategoryConfig, formatResourceReadTime } from "../data/resources.js";
 import { highlightSearchText } from "../utils/highlightSearch.js";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 
 function MetaIcon({ type }) {
     const icons = {
@@ -74,7 +75,7 @@ function ResourcePublicationCardInner({
     const isFeatured = variant === "hero" || variant === "featured";
 
     return (
-        <article
+        <MotionCardWrap
             className={`resource-pub-card resource-pub-card--${variant}${isFeatured ? " resource-pub-card--featured" : ""}`}
             style={{
                 "--rpc-accent": catConfig?.accentColor || "#38bdf8",
@@ -190,7 +191,7 @@ function ResourcePublicationCardInner({
                     </button>
                 </div>
             </div>
-        </article>
+        </MotionCardWrap>
     );
 }
 

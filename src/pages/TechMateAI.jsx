@@ -1,14 +1,19 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
-import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
+import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
-const { hero, features } = productMarketing.techmate;
+const { features } = productMarketing.techmate;
+const techmateHero = productHero3DConfigs.techmate;
 
 const techmateSchema = {
     "@context": "https://schema.org",
@@ -33,25 +38,9 @@ function TechMateAI() {
                 schema={techmateSchema}
             />
 
-            {/* ── Hero ───────────────────────────────────────────── */}
-            <section className="studynest-hero hero-with-immersive-scene">
-                <ImmersiveHeroScene variant="techmate" intensity="calm" />
-                <div>
-                    <p className="eyebrow">TECHMATE AI</p>
-                    <h1>AI-powered tech support for every device and problem.</h1>
-                    <p className="hero-text">
-                        TechMate AI gives you instant, expert-level troubleshooting for
-                        devices, software, networks, and error codes — no hold music,
-                        no wait times, no confusion.
-                    </p>
-                    <div className="hero-actions">
-                        <a href="#waitlist" className="primary-btn">Join Waitlist</a>
-                        <a href="#features" className="secondary-btn">View Features</a>
-                    </div>
-                </div>
-
-                <ProductHeroPhoto src={hero.src} alt={hero.alt} />
-            </section>
+            <MotionHeroWrap>
+                <ProductHero3D {...techmateHero} className="ph3d--techmate" />
+            </MotionHeroWrap>
 
             <section className="section" id="features">
                 <div className="section-heading">
@@ -78,12 +67,12 @@ function TechMateAI() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Device Troubleshooting</h3>
                         <div className="chat-user">
                             My laptop shuts down randomly after about 20 minutes of use.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             This pattern usually points to one of three causes: overheating,
                             a failing battery, or a corrupt power profile. Let's check them
                             in order.
@@ -94,15 +83,15 @@ function TechMateAI() {
                             <br />
                             <strong>Step 2:</strong> Run <code>powercfg /batteryreport</code>
                             in Command Prompt. Share the Design Capacity vs Full Charge Capacity.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Error Code Lookup</h3>
                         <div className="chat-user">
                             WHEA_UNCORRECTABLE_ERROR — Blue Screen on Windows 11
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             <strong>WHEA_UNCORRECTABLE_ERROR (0x00000124)</strong>
                             <br /><br />
                             This is a hardware-level error, usually RAM, CPU, or a failing
@@ -117,8 +106,8 @@ function TechMateAI() {
                             4. Run <code>chkdsk /f /r</code> on all drives
                             <br />
                             5. Reseat RAM sticks if issues persist
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -130,7 +119,7 @@ function TechMateAI() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Network Diagnostics</h3>
                         <div className="preview-grid" style={{ marginTop: "14px" }}>
                             <div><strong>72 ms</strong><span>Ping to DNS</span></div>
@@ -147,14 +136,14 @@ function TechMateAI() {
                                 improvement: 40–60% drop reduction.
                             </span>
                         </div>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>AI Chat Assistant</h3>
                         <div className="chat-user">
                             My printer shows as online but won't print anything.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             Classic print queue issue. Here's the fastest fix:
                             <br /><br />
                             1. Press <strong>Win + R</strong>, type <code>services.msc</code>, find
@@ -166,15 +155,15 @@ function TechMateAI() {
                             3. Go back to services, start Print Spooler again
                             <br />
                             4. Try printing — this resolves the issue in about 85% of cases
-                        </div>
+                        </MotionAiPanelWrap>
                         <div className="chat-user" style={{ marginTop: "10px" }}>
                             That worked! Also, how do I set it as the default printer?
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             Settings → Bluetooth &amp; devices → Printers &amp; scanners →
                             click your printer → Set as default. Done in under 30 seconds.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -186,7 +175,7 @@ function TechMateAI() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Step-by-Step Repair Guide</h3>
                         <div className="flashcard-preview">
                             <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
@@ -211,9 +200,9 @@ function TechMateAI() {
                                 20 seconds. Releases on second startup chime. Clears stored input device settings.
                             </p>
                         </div>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>IT Help Desk Assistant</h3>
                         <div className="preview-grid" style={{ marginTop: "14px" }}>
                             <div><strong>134</strong><span>Tickets Today</span></div>
@@ -230,7 +219,7 @@ function TechMateAI() {
                                 to all affected users with ETA. Zero manual handling required.
                             </span>
                         </div>
-                    </div>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -242,12 +231,12 @@ function TechMateAI() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Software Support</h3>
                         <div className="chat-user">
                             Adobe Premiere crashes on export every time — Windows 11, RTX 4070.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             GPU-accelerated export conflicts with Premiere Pro 24.x on RTX
                             40-series are a known issue. Three fixes ranked by success rate:
                             <br /><br />
@@ -259,10 +248,10 @@ function TechMateAI() {
                             <br />
                             <strong>Fix 3 (8%):</strong> Delete Adobe Media Encoder cache at
                             <code> %AppData%\Adobe\Common\Media Cache</code>
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Top Searched Guides This Week</h3>
                         <div className="flashcard-preview">
                             <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "12px" }}>
@@ -285,7 +274,7 @@ function TechMateAI() {
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -298,7 +287,7 @@ function TechMateAI() {
                 </div>
 
                 <div className="pricing-grid">
-                    <div className="pricing-card">
+                    <MotionCardWrap as="div" className="pricing-card">
                         <p className="product-category">PERSONAL</p>
                         <h3>Free</h3>
                         <div className="price">$0</div>
@@ -306,9 +295,9 @@ function TechMateAI() {
                             AI chat assistant, error code lookup, basic troubleshooting guides,
                             and 20 support sessions per month. Perfect for personal devices.
                         </p>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="pricing-card featured">
+                    <MotionCardWrap as="div" className="pricing-card featured">
                         <p className="product-category">PRO</p>
                         <h3>TechMate Pro</h3>
                         <div className="price">$9.99/mo</div>
@@ -317,9 +306,9 @@ function TechMateAI() {
                             software support, step-by-step repair guides, and knowledge base
                             access. Best for power users and remote workers.
                         </p>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="pricing-card">
+                    <MotionCardWrap as="div" className="pricing-card">
                         <p className="product-category">BUSINESS</p>
                         <h3>IT Help Desk</h3>
                         <div className="price">$49/mo</div>
@@ -328,13 +317,13 @@ function TechMateAI() {
                             triage, auto-documentation, multi-user support, and priority
                             response. Built for small IT teams and MSPs.
                         </p>
-                    </div>
+                    </MotionCardWrap>
                 </div>
             </section>
 
             {/* ── CTA / Waitlist ───────────────────────────────────── */}
             <section className="section" id="waitlist">
-                <div className="newsletter-card">
+                <MotionSectionWrap className="newsletter-card">
                     <p className="eyebrow">JOIN THE WAITLIST</p>
                     <h2>Be first to try TechMate AI when it launches.</h2>
                     <NewsletterSignup
@@ -343,7 +332,7 @@ function TechMateAI() {
                         tags={["TechMate AI", "Waitlist"]}
                         buttonLabel="Join Waitlist"
                     />
-                </div>
+                </MotionSectionWrap>
             </section>
 
         </div>

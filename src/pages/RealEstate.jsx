@@ -7,6 +7,10 @@ import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
+import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
 const { features } = productMarketing["real-estate"];
 const realEstateHero = productHero3DConfigs["real-estate"];
@@ -34,10 +38,12 @@ function RealEstate() {
                 schema={realestateSchema}
             />
 
-            <ProductHero3D
-                {...realEstateHero}
-                className="ph3d--real-estate"
-            />
+            <MotionHeroWrap>
+                <ProductHero3D
+                    {...realEstateHero}
+                    className="ph3d--real-estate"
+                />
+            </MotionHeroWrap>
 
             <section className="section" id="features">
                 <div className="section-heading">
@@ -56,7 +62,6 @@ function RealEstate() {
                 </div>
             </section>
 
-            {/* ── Deal Analyzer + Mortgage Calculator Preview ─────── */}
             <section className="section showcase-section" id="tools">
                 <div className="section-heading">
                     <p className="eyebrow">DEAL ANALYZER &amp; FINANCING</p>
@@ -64,19 +69,19 @@ function RealEstate() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Deal Analyzer</h3>
                         <div className="chat-user">
                             Analyze 742 Birchwood Ave — asking $385,000, estimated rehab $45,000, ARV $510,000.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             <strong>Projected Profit: $47,200</strong> after all costs.
                             All-in cost: $462,800 vs ARV $510,000. Spread is solid at 9.3%.
                             Recommend targeting $365K offer to hit 12% margin.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Mortgage Calculator</h3>
                         <div className="flashcard-preview">
                             <p style={{ color: "#1d4ed8", fontWeight: 900, fontSize: "0.8rem", letterSpacing: "1px", marginBottom: "10px" }}>
@@ -97,11 +102,10 @@ function RealEstate() {
                                 Save $187,400 in interest over life of loan
                             </p>
                         </div>
-                    </div>
+                    </MotionCardWrap>
                 </div>
             </section>
 
-            {/* ── Cash Flow + AI Advisor Preview ──────────────────── */}
             <section className="section" id="cashflow">
                 <div className="section-heading">
                     <p className="eyebrow">CASH FLOW &amp; AI ADVISOR</p>
@@ -109,7 +113,7 @@ function RealEstate() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Cash Flow Analyzer</h3>
                         <div className="preview-grid" style={{ marginTop: "14px" }}>
                             <div><strong>$2,100</strong><span>Gross Rent</span></div>
@@ -125,32 +129,31 @@ function RealEstate() {
                                 Vacancy modeled at 6%.
                             </span>
                         </div>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>AI Advisor</h3>
                         <div className="chat-user">
                             Should I 1031 exchange into a multifamily or keep my SFR portfolio?
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             A 1031 into a small multifamily (4–12 units) lets you defer capital
                             gains while scaling cash flow per dollar deployed. With your current
                             equity and a 7–8% cap rate target, a 6-unit in a Class B market
                             would outperform three additional SFRs on cash-on-cash in year one.
-                        </div>
+                        </MotionAiPanelWrap>
                         <div className="chat-user" style={{ marginTop: "10px" }}>
                             What markets should I target?
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             Mid-sized Sunbelt metros with job growth above 2.5% YoY: Huntsville AL,
                             Greenville SC, and Boise ID show strong rent growth with cap rates
                             still above 6.5%.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
                 </div>
             </section>
 
-            {/* ── Market Intelligence Preview ──────────────────────── */}
             <section className="section showcase-section" id="market">
                 <div className="section-heading">
                     <p className="eyebrow">MARKET INTELLIGENCE</p>
@@ -158,7 +161,7 @@ function RealEstate() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Market Snapshot</h3>
                         <div className="preview-grid" style={{ marginTop: "14px" }}>
                             <div><strong>+6.2%</strong><span>YoY Rent Growth</span></div>
@@ -174,14 +177,14 @@ function RealEstate() {
                                 $342K with cap rates averaging 6.8%. Favorable entry window.
                             </span>
                         </div>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Neighborhood Scoring</h3>
                         <div className="chat-user">
                             Score the investment potential of 32607 zip code.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             <strong>Overall Score: 78/100</strong>
                             <br /><br />
                             Rent growth: 82 &nbsp;|&nbsp; Job market: 74 &nbsp;|&nbsp;
@@ -190,12 +193,11 @@ function RealEstate() {
                             <br /><br />
                             Strong for long-term hold. Watch infrastructure score — road
                             expansion planned for Q3 2026 which may push values 5–8%.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
                 </div>
             </section>
 
-            {/* ── Architecture & Commercial & Land ─────────────────── */}
             <section className="section" id="advanced">
                 <div className="section-heading">
                     <p className="eyebrow">ADVANCED TOOLS</p>
@@ -203,21 +205,21 @@ function RealEstate() {
                 </div>
 
                 <div className="showcase-grid">
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Architecture &amp; BIM Intelligence</h3>
                         <div className="chat-user">
                             Estimate construction cost for a 4,200 sq ft duplex in Nashville, TN.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             <strong>Estimated Build Cost: $714,000 – $882,000</strong>
                             <br /><br />
                             $170–$210/sq ft for standard residential construction in Nashville
                             metro. Includes foundation, framing, MEP, finishes, and permits.
                             BIM integration can reduce waste cost by 8–12%. Timeline: 10–14 months.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Commercial RE Analysis</h3>
                         <div className="preview-grid" style={{ marginTop: "14px" }}>
                             <div><strong>$4.8M</strong><span>Asset Value</span></div>
@@ -233,41 +235,40 @@ function RealEstate() {
                                 converting 4 units to stabilize DSCR above 1.40x before refi.
                             </span>
                         </div>
-                    </div>
+                    </MotionCardWrap>
                 </div>
 
                 <div className="showcase-grid" style={{ marginTop: "24px" }}>
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Land Development Tools</h3>
                         <div className="chat-user">
                             I have 14 acres in a suburban county zoned R-2. What's the highest and best use?
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             <strong>Recommended: 22-lot single-family subdivision</strong>
                             <br /><br />
                             R-2 allows 1.5 units/acre minimum lot size. At 14 acres with
                             ~15% roads/green space, you can yield 18–22 buildable lots.
                             At $85K/lot wholesale or $310K finished lot, projected gross
                             margin: $2.1M–$3.8M. Entitlement timeline: 14–22 months.
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
 
-                    <div className="showcase-card">
+                    <MotionCardWrap as="div" className="showcase-card">
                         <h3>Property Search</h3>
                         <div className="chat-user">
                             Find multifamily properties under $1M in Chattanooga with cap rate above 6%.
                         </div>
-                        <div className="chat-ai">
+                        <MotionAiPanelWrap className="chat-ai">
                             Found <strong>14 matches</strong>. Top result: 8-unit on Brainerd Rd,
                             asking $795,000 — cap rate 7.2%, gross rent $7,400/mo, 96% occupancy.
                             Off-market duplex on MLK Blvd at $410K also flagged — estimated cap 6.8%
                             based on neighborhood comps. Would you like a full deal report?
-                        </div>
-                    </div>
+                        </MotionAiPanelWrap>
+                    </MotionCardWrap>
                 </div>
             </section>
 
-            {/* ── Pricing ─────────────────────────────────────────── */}
             <section className="section pricing-section" id="pricing">
                 <div className="section-heading">
                     <p className="eyebrow">PRICING</p>
@@ -276,7 +277,7 @@ function RealEstate() {
                 </div>
 
                 <div className="pricing-grid">
-                    <div className="pricing-card">
+                    <MotionCardWrap as="div" className="pricing-card">
                         <p className="product-category">STARTER</p>
                         <h3>Free</h3>
                         <div className="price">$0</div>
@@ -284,9 +285,9 @@ function RealEstate() {
                             Property search, basic mortgage calculator, and 10 AI advisor
                             queries per month. Perfect for first-time buyers exploring options.
                         </p>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="pricing-card featured">
+                    <MotionCardWrap as="div" className="pricing-card featured">
                         <p className="product-category">INVESTOR PRO</p>
                         <h3>Pro</h3>
                         <div className="price">$29/mo</div>
@@ -295,9 +296,9 @@ function RealEstate() {
                             comparison, market intelligence dashboards, and unlimited
                             AI advisor access. Built for active investors.
                         </p>
-                    </div>
+                    </MotionCardWrap>
 
-                    <div className="pricing-card">
+                    <MotionCardWrap as="div" className="pricing-card">
                         <p className="product-category">DEVELOPER</p>
                         <h3>Enterprise</h3>
                         <div className="price">$99/mo</div>
@@ -306,13 +307,12 @@ function RealEstate() {
                             commercial RE analysis, land development tools, team
                             collaboration, and priority support. Built for developers.
                         </p>
-                    </div>
+                    </MotionCardWrap>
                 </div>
             </section>
 
-            {/* ── CTA / Waitlist ───────────────────────────────────── */}
             <section className="section" id="waitlist">
-                <div className="newsletter-card">
+                <MotionSectionWrap className="newsletter-card">
                     <p className="eyebrow">JOIN THE WAITLIST</p>
                     <h2>Be first to access Cin Nova Real Estate when it launches.</h2>
                     <NewsletterSignup
@@ -321,7 +321,7 @@ function RealEstate() {
                         tags={["Real Estate", "Waitlist"]}
                         buttonLabel="Join Waitlist"
                     />
-                </div>
+                </MotionSectionWrap>
             </section>
 
         </div>

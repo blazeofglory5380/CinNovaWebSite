@@ -9,6 +9,7 @@ import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
 import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const homeSchema = {
     "@context": "https://schema.org",
@@ -250,7 +251,7 @@ function HomePage({
                 </div>
                 <div className="home-v12-resources-grid">
                     {latestResources.map((resource) => (
-                        <article key={resource.id} className="home-v12-resource-card">
+                        <MotionCardWrap key={resource.id} className="home-v12-resource-card">
                             <p className="home-v12-resource-category">{resource.category}</p>
                             <h3>{resource.title}</h3>
                             <p>{resource.description}</p>
@@ -261,7 +262,7 @@ function HomePage({
                             <button type="button" className="secondary-btn" onClick={() => onOpenResource?.(resource)}>
                                 View resource
                             </button>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
                 <div className="home-v12-section-action">
@@ -302,7 +303,7 @@ function HomePage({
             </section>
 
             <section className="section home-v12-newsletter" id="newsletter" aria-labelledby="home-v12-newsletter-title">
-                <div className="home-v12-newsletter-card">
+                <MotionSectionWrap className="home-v12-newsletter-card">
                     <div className="home-v12-newsletter-copy">
                         <p className="eyebrow">STAY IN THE LOOP</p>
                         <h2 id="home-v12-newsletter-title">Product launches, free resources, and practical AI insights.</h2>
@@ -323,7 +324,7 @@ function HomePage({
                             tags={["Homepage", "Product Updates", "Resource Reader"]}
                         />
                     </div>
-                </div>
+                </MotionSectionWrap>
             </section>
         </main>
     );

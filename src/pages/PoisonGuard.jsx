@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ImmersiveHeroScene from "../components/ImmersiveHeroScene.jsx";
-import ProductHeroPhoto from "../components/ProductHeroPhoto.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
 import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
 import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
@@ -10,12 +9,15 @@ import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import PoisonGuardSafetyDisclaimer from "../components/PoisonGuardSafetyDisclaimer.jsx";
 import { poisonGuardFeatures } from "../data/poisonGuardFeatures.js";
-import { productMarketing } from "../data/marketingImages.js";
+import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
-const { hero } = productMarketing.poisonguard;
+const poisonGuardHero = productHero3DConfigs.poisonguard;
 
 const heroStats = [
     { value: "Seconds", label: "To scan & assess" },
@@ -168,7 +170,7 @@ const poisonguardSchema = withSchemaGraph(
             "Household chemical and poison safety assistant for families, pets, and schools. Scan products for hazards and get emergency guidance.",
         operatingSystem: "Web",
         url: `${siteUrl}/?page=poisonguard`,
-        screenshot: buildImageObject({ src: hero.src, alt: hero.alt }),
+        screenshot: buildImageObject({ src: poisonGuardHero.posterSrc, alt: poisonGuardHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
@@ -198,53 +200,39 @@ function PoisonGuard() {
                 schema={poisonguardSchema}
             />
 
-            <section className="pg-hero section hero-with-immersive-scene" aria-labelledby="pg-hero-title">
-                <ImmersiveHeroScene variant="poisonguard" intensity="calm" />
-                <div className="pg-hero-grid">
-                    <div className="pg-hero-copy">
+            <MotionHeroWrap>
+                <ProductHero3D
+                    {...poisonGuardHero}
+                    className="ph3d--poisonguard"
+                    badges={(
                         <div className="pg-hero-badges">
-                            <span className="pg-status-badge">Beta — In Development</span>
+                            <span className="pg-status-badge">Beta - In Development</span>
                             <span className="pg-category-badge">Safety Technology</span>
                         </div>
-                        <p className="eyebrow">POISONGUARD</p>
-                        <h1 id="pg-hero-title">Know what you&apos;re dealing with — before panic sets in.</h1>
-                        <p className="pg-hero-lead">
-                            PoisonGuard helps families, pet owners, schools, and households scan unknown substances,
-                            understand risk levels, and get clear next-step guidance when every second counts.
-                        </p>
-                        <div className="pg-hero-actions">
-                            <a href="#waitlist" className="primary-btn pg-btn-primary">
-                                Join Waitlist
-                            </a>
-                            <a href="/?page=resources" className="secondary-btn">
-                                View Safety Resources
-                            </a>
-                        </div>
-                        <div className="pg-hero-stats" role="list" aria-label="PoisonGuard highlights">
+                    )}
+                    stats={(
+                        <div className="ph3d__stats" role="list" aria-label="PoisonGuard highlights">
                             {heroStats.map((stat) => (
-                                <div key={stat.label} role="listitem" className="pg-hero-stat">
+                                <div key={stat.label} role="listitem" className="ph3d__stat">
                                     <strong>{stat.value}</strong>
                                     <span>{stat.label}</span>
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    <div className="pg-hero-visual">
-                        <div className="pg-scanner-shell">
-                            <ProductHeroPhoto src={hero.src} alt={hero.alt} />
-                            <div className="pg-scanner-overlay" aria-hidden="true">
-                                <div className="pg-scanner-frame">
-                                    <span className="pg-scanner-corner pg-scanner-corner--tl" />
-                                    <span className="pg-scanner-corner pg-scanner-corner--tr" />
-                                    <span className="pg-scanner-corner pg-scanner-corner--bl" />
-                                    <span className="pg-scanner-corner pg-scanner-corner--br" />
-                                </div>
-                                <div className="pg-scanner-chip">Scanning…</div>
+                    )}
+                    visualOverlay={(
+                        <div className="pg-scanner-overlay" aria-hidden="true">
+                            <div className="pg-scanner-frame">
+                                <span className="pg-scanner-corner pg-scanner-corner--tl" />
+                                <span className="pg-scanner-corner pg-scanner-corner--tr" />
+                                <span className="pg-scanner-corner pg-scanner-corner--bl" />
+                                <span className="pg-scanner-corner pg-scanner-corner--br" />
                             </div>
+                            <div className="pg-scanner-chip">Scanning...</div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    )}
+                />
+            </MotionHeroWrap>
 
             <div className="pg-disclaimer-wrap">
                 <PoisonGuardSafetyDisclaimer variant="prominent" />
@@ -266,11 +254,11 @@ function PoisonGuard() {
                 </div>
                 <div className="pg-how-grid">
                     {howItWorks.map((item) => (
-                        <article key={item.step} className="pg-how-card">
+                        <MotionCardWrap as="article" key={item.step} className="pg-how-card">
                             <span className="pg-how-step">{item.step}</span>
                             <h3>{item.title}</h3>
                             <p>{item.description}</p>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -282,10 +270,10 @@ function PoisonGuard() {
                 </div>
                 <div className="pg-use-cases-grid">
                     {useCases.map((item) => (
-                        <article key={item.title} className="pg-use-case-card">
+                        <MotionCardWrap as="article" key={item.title} className="pg-use-case-card">
                             <h3>{item.title}</h3>
                             <p>{item.description}</p>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -326,7 +314,7 @@ function PoisonGuard() {
                     <p>Early interface concepts showing scan flow, hazard results, and emergency guidance.</p>
                 </div>
                 <div className="pg-preview-grid">
-                    <article className="pg-preview-card">
+                    <MotionCardWrap as="article" className="pg-preview-card">
                         <p className="pg-preview-label">Scanner</p>
                         <h3>Point, scan, and identify</h3>
                         <div className="pg-mock-scanner">
@@ -341,8 +329,8 @@ function PoisonGuard() {
                                 <span>Align item in frame</span>
                             </div>
                         </div>
-                    </article>
-                    <article className="pg-preview-card">
+                    </MotionCardWrap>
+                    <MotionCardWrap as="article" className="pg-preview-card">
                         <p className="pg-preview-label">Hazard result</p>
                         <h3>Clear risk at a glance</h3>
                         <div className="pg-mock-result">
@@ -363,8 +351,8 @@ function PoisonGuard() {
                                 </div>
                             </div>
                         </div>
-                    </article>
-                    <article className="pg-preview-card pg-preview-card-wide">
+                    </MotionCardWrap>
+                    <MotionCardWrap as="article" className="pg-preview-card pg-preview-card-wide">
                         <p className="pg-preview-label">Safety guidance</p>
                         <h3>Next steps you can act on</h3>
                         <div className="pg-guidance-grid">
@@ -383,7 +371,7 @@ function PoisonGuard() {
                                 </a>
                             </div>
                         </div>
-                    </article>
+                    </MotionCardWrap>
                 </div>
             </section>
 
@@ -395,10 +383,10 @@ function PoisonGuard() {
                 </div>
                 <div className="pg-trust-grid">
                     {trustPillars.map((item) => (
-                        <article key={item.title} className="pg-trust-card">
+                        <MotionCardWrap as="article" key={item.title} className="pg-trust-card">
                             <h3>{item.title}</h3>
                             <p>{item.description}</p>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -411,7 +399,8 @@ function PoisonGuard() {
                 </div>
                 <div className="pg-pricing-grid">
                     {pricingPlans.map((plan) => (
-                        <article
+                        <MotionCardWrap
+                            as="article"
                             key={plan.name}
                             className={`pg-pricing-card${plan.featured ? " pg-pricing-card--featured" : ""}`}
                         >
@@ -422,7 +411,7 @@ function PoisonGuard() {
                             <a href="#waitlist" className={plan.featured ? "primary-btn pg-btn-primary" : "secondary-btn"}>
                                 Join Waitlist
                             </a>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>
@@ -443,7 +432,7 @@ function PoisonGuard() {
             </section>
 
             <section className="section pg-waitlist" id="waitlist" aria-labelledby="pg-waitlist-title">
-                <div className="pg-waitlist-card">
+                <MotionSectionWrap className="pg-waitlist-card">
                     <div className="pg-waitlist-copy">
                         <p className="eyebrow">JOIN THE WAITLIST</p>
                         <h2 id="pg-waitlist-title">Be first to try PoisonGuard when it launches.</h2>
@@ -460,7 +449,7 @@ function PoisonGuard() {
                             buttonLabel="Join Waitlist"
                         />
                     </div>
-                </div>
+                </MotionSectionWrap>
             </section>
         </main>
     );
