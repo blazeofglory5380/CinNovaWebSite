@@ -1,10 +1,11 @@
 import { normalizeProductStatus } from "../data/products.js";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 
 function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary-btn" }) {
     const status = normalizeProductStatus(product.status);
 
     return (
-        <article className="home-v12-ecosystem-card product-catalog-card">
+        <MotionCardWrap className="home-v12-ecosystem-card product-catalog-card">
             {product.image && (
                 <div className="home-v12-ecosystem-photo">
                     <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
@@ -26,7 +27,7 @@ function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary
                     Learn More
                 </button>
             </div>
-        </article>
+        </MotionCardWrap>
     );
 }
 

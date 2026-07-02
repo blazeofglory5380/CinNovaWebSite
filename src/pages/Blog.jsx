@@ -12,6 +12,7 @@ import {
     siteUrl,
 } from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 
 const categoryConfig = {
     "Artificial Intelligence": { icon: "AI", desc: "AI tools, assistants, safety, and workflows" },
@@ -304,7 +305,7 @@ function Blog({
                     </div>
                     <div className="article-grid">
                         {trendingPosts.map((post) => (
-                            <article
+                            <MotionCardWrap
                                 className="article-card article-card-clickable"
                                 key={post.id}
                                 onClick={() => onOpenArticle(post)}
@@ -332,7 +333,7 @@ function Blog({
                                 >
                                     Read Article
                                 </a>
-                            </article>
+                            </MotionCardWrap>
                         ))}
                     </div>
                 </section>
@@ -449,7 +450,7 @@ function Blog({
                 </div>
                 <div className="article-grid">
                     {filteredPosts.map((post) => (
-                        <article
+                        <MotionCardWrap
                             className="article-card article-card-clickable"
                             key={post.id}
                             onClick={() => onOpenArticle(post)}
@@ -478,7 +479,7 @@ function Blog({
                             >
                                 Read More
                             </a>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
             </section>

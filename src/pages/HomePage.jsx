@@ -7,6 +7,8 @@ import { normalizeProductStatus } from "../data/products.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 
 const homeSchema = {
     "@context": "https://schema.org",
@@ -112,28 +114,30 @@ function HomePage({
                 schema={homeSchema}
             />
 
-            <ProductHero3D
-                {...homeHero}
-                className="ph3d--home"
-                onPrimaryCta={() => onNavigate?.("products")}
-                onSecondaryCta={onGoResources}
-                stats={(
-                    <div className="ph3d__stats" role="list" aria-label="Cin Nova at a glance">
-                        <div className="ph3d__stat" role="listitem">
-                            <strong>5</strong>
-                            <span>Products</span>
+            <MotionHeroWrap>
+                <ProductHero3D
+                    {...homeHero}
+                    className="ph3d--home"
+                    onPrimaryCta={() => onNavigate?.("products")}
+                    onSecondaryCta={onGoResources}
+                    stats={(
+                        <div className="ph3d__stats" role="list" aria-label="Cin Nova at a glance">
+                            <div className="ph3d__stat" role="listitem">
+                                <strong>5</strong>
+                                <span>Products</span>
+                            </div>
+                            <div className="ph3d__stat" role="listitem">
+                                <strong>12</strong>
+                                <span>Free resources</span>
+                            </div>
+                            <div className="ph3d__stat" role="listitem">
+                                <strong>1</strong>
+                                <span>Connected ecosystem</span>
+                            </div>
                         </div>
-                        <div className="ph3d__stat" role="listitem">
-                            <strong>12</strong>
-                            <span>Free resources</span>
-                        </div>
-                        <div className="ph3d__stat" role="listitem">
-                            <strong>1</strong>
-                            <span>Connected ecosystem</span>
-                        </div>
-                    </div>
-                )}
-            />
+                    )}
+                />
+            </MotionHeroWrap>
 
             <section className="section home-v12-ecosystem" id="ecosystem" aria-labelledby="home-v12-ecosystem-title">
                 <div className="home-v12-section-head">
@@ -150,7 +154,7 @@ function HomePage({
                         const audience = productDetails[product.page]?.whoFor?.[0] || product.category;
 
                         return (
-                            <article key={product.name} className="home-v12-ecosystem-card">
+                            <MotionCardWrap key={product.name} className="home-v12-ecosystem-card">
                                 {product.image && (
                                     <div className="home-v12-ecosystem-photo">
                                         <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
@@ -177,7 +181,7 @@ function HomePage({
                                         Learn More
                                     </button>
                                 </div>
-                            </article>
+                            </MotionCardWrap>
                         );
                     })}
                 </div>
@@ -212,7 +216,7 @@ function HomePage({
                     {featuredProducts.map((product) => {
                         const status = normalizeProductStatus(product.status);
                         return (
-                            <article key={product.name} className="home-v12-featured-card">
+                            <MotionCardWrap key={product.name} className="home-v12-featured-card">
                                 <div className="home-v12-featured-photo">
                                     <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
                                     <span
@@ -232,7 +236,7 @@ function HomePage({
                                         Learn More
                                     </button>
                                 </div>
-                            </article>
+                            </MotionCardWrap>
                         );
                     })}
                 </div>
@@ -275,7 +279,7 @@ function HomePage({
                 </div>
                 <div className="home-v12-articles-grid">
                     {latestArticles.map((post) => (
-                        <article key={post.id} className="home-v12-article-card">
+                        <MotionCardWrap key={post.id} className="home-v12-article-card">
                             <ArticleThumb post={post} />
                             <p className="home-v12-article-category">{post.category}</p>
                             <h3>{post.title}</h3>
@@ -287,7 +291,7 @@ function HomePage({
                             <button type="button" className="secondary-btn" onClick={() => onOpenArticle?.(post)}>
                                 Read article
                             </button>
-                        </article>
+                        </MotionCardWrap>
                     ))}
                 </div>
                 <div className="home-v12-section-action">
