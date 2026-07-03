@@ -28,7 +28,6 @@ import Partnerships from "./pages/Partnerships.jsx";
 import PressCenter from "./pages/PressCenter.jsx";
 import SponsorNewsletter from "./pages/SponsorNewsletter.jsx";
 import NotFound from "./pages/NotFound.jsx";
-import EarthHeroTest from "./pages/EarthHeroTest.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 import NewsletterPopup from "./components/NewsletterPopup.jsx";
 import ExitIntentPopup from "./components/ExitIntentPopup.jsx";
@@ -87,10 +86,6 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         return { page: "blog-manager", article: null, resource: null, category: null };
     }
 
-    if (path === "/earth-hero-test") {
-        return { page: "earth-hero-test", article: null, resource: null, category: null };
-    }
-
     const categoryMatch = path.match(/^\/blog\/category\/([^/]+)$/);
     if (categoryMatch) {
         const category = getCategoryBySlug(decodeURIComponent(categoryMatch[1]));
@@ -127,7 +122,6 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         path === "/" ||
         path === "/blog" ||
         path === "/blog-admin" ||
-        path === "/earth-hero-test" ||
         path.startsWith("/blog/");
 
     if (!isKnownPath) {
@@ -575,10 +569,6 @@ function App() {
                     <Kiddo />
                     <ProductEcosystemSection currentPage="kiddo" onNavigate={openPage} />
                 </>
-            )}
-
-            {page === "earth-hero-test" && (
-                <EarthHeroTest onNavigate={openPage} onGoHome={goHome} />
             )}
 
             {page === "not-found" && <NotFound onGoHome={goHome} />}
