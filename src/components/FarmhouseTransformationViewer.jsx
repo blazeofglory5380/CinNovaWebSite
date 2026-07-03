@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./FarmhouseTransformationViewer.css";
 
 let modelViewerLoader;
@@ -23,26 +23,19 @@ function canUseWebGL() {
     }
 }
 
-const SCAN_START = 0.18;
-const SCAN_END = 0.72;
-const TRANSITION_MS = 6800;
-const HOLD_BEFORE_MS = 1200;
+const HOLD_BEFORE_MS = 2400;
+const SWEEP_MS = 5600;
+const TRANSITION_MS = HOLD_BEFORE_MS + SWEEP_MS;
+const SCAN_WALL_BLEND = 10;
 
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - ((-2 * t + 2) ** 3) / 2;
 }
 
-function scanProgressForTime(elapsedMs) {
-    if (elapsedMs < HOLD_BEFORE_MS) return 0;
-    const scanWindow = TRANSITION_MS - HOLD_BEFORE_MS;
-    const t = Math.min(1, (elapsedMs - HOLD_BEFORE_MS) / scanWindow);
-    return SCAN_START + (SCAN_END - SCAN_START) * easeInOutCubic(t);
-}
-
-function blendProgressForScan(scan) {
-    if (scan <= SCAN_START) return 0;
-    if (scan >= SCAN_END) return 1;
-    return (scan - SCAN_START) / (SCAN_END - SCAN_START);
+function scanPositionForTime(elapsedMs) {
+    if (elapsedMs < HOLD_BEFORE_MS) return -12;
+    const sweepT = Math.min(1, (elapsedMs - HOLD_BEFORE_MS) / SWEEP_MS);
+    return -12 + 124 * easeInOutCubic(sweepT);
 }
 
 function FarmhouseTransformationViewer({
@@ -57,19 +50,34 @@ function FarmhouseTransformationViewer({
     const afterRef = useRef(null);
     const rafRef = useRef(0);
     const startRef = useRef(0);
-    const syncingRef = useRef(false);
 
+    const [playKey, setPlayKey] = useState(0);
     const [viewerReady, setViewerReady] = useState(false);
-    const [beforeReady, setBeforeReady] = useState(false);
-    const [afterReady, setAfterReady] = useState(false);
-    const [scanX, setScanX] = useState(0);
-    const [beforeOpacity, setBeforeOpacity] = useState(1);
-    const [afterOpacity, setAfterOpacity] = useState(0);
-    const [scanVisible, setScanVisible] = useState(false);
+    const [beforeLoaded, setBeforeLoaded] = useState(false);
+    const [afterLoaded, setAfterLoaded] = useState(false);
+    const [aligned, setAligned] = useState(false);
+    const [scanX, setScanX] = useState(-12);
+    const [scanActive, setScanActive] = useState(false);
     const [transitionDone, setTransitionDone] = useState(false);
     const [loadError, setLoadError] = useState(false);
 
-    const modelsReady = beforeReady && afterReady;
+    const modelsReady = beforeLoaded && afterLoaded && aligned;
+
+    const resetPlayback = useCallback(() => {
+        cancelAnimationFrame(rafRef.current);
+        setBeforeLoaded(false);
+        setAfterLoaded(false);
+        setAligned(false);
+        setScanX(-12);
+        setScanActive(false);
+        setTransitionDone(false);
+        setLoadError(false);
+    }, []);
+
+    const handleReplay = useCallback(() => {
+        resetPlayback();
+        setPlayKey((key) => key + 1);
+    }, [resetPlayback]);
 
     useEffect(() => {
         let cancelled = false;
@@ -86,8 +94,8 @@ function FarmhouseTransformationViewer({
         const after = afterRef.current;
         if (!viewerReady || !before || !after) return undefined;
 
-        const onBeforeLoad = () => setBeforeReady(true);
-        const onAfterLoad = () => setAfterReady(true);
+        const onBeforeLoad = () => setBeforeLoaded(true);
+        const onAfterLoad = () => setAfterLoaded(true);
         const onFail = () => {
             setLoadError(true);
             onError?.();
@@ -104,80 +112,65 @@ function FarmhouseTransformationViewer({
             before.removeEventListener("error", onFail);
             after.removeEventListener("error", onFail);
         };
-    }, [viewerReady, onError]);
+    }, [viewerReady, playKey, onError]);
 
     useEffect(() => {
-        if (!modelsReady) return undefined;
+        if (!beforeLoaded || !afterLoaded || loadError) return undefined;
 
         const before = beforeRef.current;
         const after = afterRef.current;
         if (!before || !after) return undefined;
 
-        const syncCamera = (source, target) => {
-            if (syncingRef.current || !source || !target) return;
-            syncingRef.current = true;
-            const orbit = source.getCameraOrbit();
-            const targetOrbit = target.getCameraOrbit();
-            targetOrbit.theta = orbit.theta;
-            targetOrbit.phi = orbit.phi;
-            targetOrbit.radius = orbit.radius;
-            target.updateFraming();
-            target.jumpCameraToGoal();
-            syncingRef.current = false;
-        };
+        let cancelled = false;
 
-        const onBeforeCamera = () => syncCamera(before, after);
-        const onAfterCamera = () => syncCamera(after, before);
-
-        before.addEventListener("camera-change", onBeforeCamera);
-        after.addEventListener("camera-change", onAfterCamera);
-
-        before.autoRotate = false;
-        after.autoRotate = false;
+        import("../utils/normalizeModelViewer.js")
+            .then(({ normalizeTransformationPair }) => {
+                if (cancelled) return;
+                const result = normalizeTransformationPair(before, after);
+                if (!result) {
+                    setLoadError(true);
+                    onError?.();
+                    return;
+                }
+                setAligned(true);
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setLoadError(true);
+                    onError?.();
+                }
+            });
 
         return () => {
-            before.removeEventListener("camera-change", onBeforeCamera);
-            after.removeEventListener("camera-change", onAfterCamera);
+            cancelled = true;
         };
-    }, [modelsReady]);
+    }, [beforeLoaded, afterLoaded, loadError, playKey, onError]);
 
     useEffect(() => {
         if (!modelsReady || loadError) return undefined;
 
         if (reduceMotion) {
-            setBeforeOpacity(0);
-            setAfterOpacity(1);
-            setScanVisible(false);
+            setScanActive(false);
             setTransitionDone(true);
             return undefined;
         }
 
         startRef.current = performance.now();
-        setBeforeOpacity(1);
-        setAfterOpacity(0);
-        setScanVisible(true);
+        setScanX(-12);
+        setScanActive(false);
         setTransitionDone(false);
 
         const tick = (now) => {
             const elapsed = now - startRef.current;
-            const scan = scanProgressForTime(elapsed);
-            const blend = easeInOutCubic(blendProgressForScan(scan));
+            const scan = scanPositionForTime(elapsed);
 
-            setScanX(scan * 100);
-            setBeforeOpacity(1 - blend);
-            setAfterOpacity(blend);
+            setScanActive(elapsed >= HOLD_BEFORE_MS && elapsed < TRANSITION_MS);
+            setScanX(scan);
 
             if (elapsed >= TRANSITION_MS) {
-                setBeforeOpacity(0);
-                setAfterOpacity(1);
-                setScanVisible(false);
+                setScanX(112);
+                setScanActive(false);
                 setTransitionDone(true);
-
-                const after = afterRef.current;
-                if (after) {
-                    after.autoRotate = true;
-                    after.rotationPerSecond = "18deg";
-                }
                 return;
             }
 
@@ -189,7 +182,18 @@ function FarmhouseTransformationViewer({
         return () => {
             cancelAnimationFrame(rafRef.current);
         };
-    }, [modelsReady, loadError, reduceMotion]);
+    }, [modelsReady, loadError, reduceMotion, playKey]);
+
+    useEffect(() => {
+        const after = afterRef.current;
+        if (!after || !transitionDone) return undefined;
+
+        after.cameraControls = true;
+        after.autoRotate = !reduceMotion;
+        after.rotationPerSecond = reduceMotion ? "0deg" : "18deg";
+
+        return undefined;
+    }, [transitionDone, reduceMotion, playKey]);
 
     if (loadError) {
         return (
@@ -201,20 +205,30 @@ function FarmhouseTransformationViewer({
 
     const sharedViewerProps = {
         loading: "eager",
-        "camera-controls": !transitionDone && !reduceMotion ? false : transitionDone,
         "touch-action": "pan-y",
         "interaction-prompt": "none",
         "shadow-intensity": "0.45",
         exposure: "1.05",
         "environment-image": "neutral",
-        "tone-mapping": "neutral",
         poster: posterSrc,
         alt,
         "aria-label": alt,
     };
 
+    const beforeMask = transitionDone
+        ? "none"
+        : `linear-gradient(90deg, #000 0%, #000 calc(${scanX - SCAN_WALL_BLEND}%), transparent calc(${scanX + 2}%))`;
+    const afterMask = transitionDone
+        ? "none"
+        : `linear-gradient(90deg, transparent calc(${scanX - 2}%), #000 calc(${scanX + SCAN_WALL_BLEND}%), #000 100%)`;
+
     return (
-        <div className="re-tf-viewer" data-transition-done={transitionDone ? "true" : "false"}>
+        <div
+            className="re-tf-viewer"
+            data-transition-done={transitionDone ? "true" : "false"}
+            data-scan-active={scanActive ? "true" : "false"}
+            style={{ "--scan-x": `${scanX}%` }}
+        >
             {!modelsReady ? (
                 <img
                     src={posterSrc}
@@ -227,30 +241,56 @@ function FarmhouseTransformationViewer({
             ) : null}
 
             {viewerReady ? (
-                <>
-                    <model-viewer
-                        ref={beforeRef}
-                        className="re-tf-viewer__layer re-tf-viewer__layer--before"
-                        src={beforeSrc}
-                        style={{ opacity: beforeOpacity }}
-                        {...sharedViewerProps}
-                    />
+                <div className="re-tf-viewer__stack" key={playKey}>
+                    {!transitionDone ? (
+                        <model-viewer
+                            ref={beforeRef}
+                            className="re-tf-viewer__layer re-tf-viewer__layer--before"
+                            src={beforeSrc}
+                            style={{ WebkitMaskImage: beforeMask, maskImage: beforeMask }}
+                            {...sharedViewerProps}
+                        />
+                    ) : null}
                     <model-viewer
                         ref={afterRef}
                         className="re-tf-viewer__layer re-tf-viewer__layer--after"
                         src={afterSrc}
-                        style={{ opacity: afterOpacity }}
+                        style={{
+                            opacity: transitionDone ? 1 : 0.98,
+                            WebkitMaskImage: afterMask,
+                            maskImage: afterMask,
+                        }}
                         {...sharedViewerProps}
+                        {...(transitionDone ? { "camera-controls": true } : {})}
                     />
-                </>
-            ) : null}
-
-            {scanVisible ? (
-                <div className="re-tf-scan" style={{ left: `${scanX}%` }} aria-hidden="true">
-                    <span className="re-tf-scan__core" />
-                    <span className="re-tf-scan__glow" />
                 </div>
             ) : null}
+
+            {scanActive ? (
+                <div className="re-tf-scanwall" style={{ left: `${scanX}%` }} aria-hidden="true">
+                    <span className="re-tf-scanwall__trail" />
+                    <span className="re-tf-scanwall__beam" />
+                    <span className="re-tf-scanwall__core" />
+                    <span className="re-tf-scanwall__bloom" />
+                    <span className="re-tf-scanwall__flare" />
+                </div>
+            ) : null}
+
+            {scanActive ? <div className="re-tf-renovation-glow" aria-hidden="true" /> : null}
+
+            {transitionDone ? (
+                <button type="button" className="re-tf-replay" onClick={handleReplay}>
+                    Replay transformation
+                </button>
+            ) : null}
+
+            <p className="re-tf-kicker" aria-live="polite">
+                {transitionDone
+                    ? "AI renovation reveal complete — drag to orbit."
+                    : scanActive
+                      ? "AI scan in progress — renovation reveal, not a mesh morph."
+                      : "Studying the property before AI renovation…"}
+            </p>
         </div>
     );
 }
