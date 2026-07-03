@@ -21,6 +21,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "/?page=resources",
     },
     poisonguard: {
+        heroVisual: "poster",
         modelSrc: "/models/product-heroes/poisonguard-decaying-poison-oak.glb",
         posterSrc: "/images/product-heroes/posters/poisonguard-decaying-poison-oak.png",
         alt: "Poison oak leaves decaying safely as PoisonGuard analyzes household plant hazards",
@@ -51,6 +52,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#features",
     },
     kiddo: {
+        heroVisual: "poster",
         modelSrc: "/models/product-heroes/kiddo-kids-learning-play.glb",
         posterSrc: "/images/product-heroes/posters/kiddo-kids-learning-play.png",
         alt: "Children playing and learning with the Kiddo early learning app",
@@ -64,6 +66,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#worlds",
     },
     studynest: {
+        heroVisual: "poster",
         modelSrc: "/models/product-heroes/studynest-campus-library.glb",
         posterSrc: "/images/product-heroes/posters/studynest-campus-library.png",
         alt: "University campus library with modern AI study tools and collaborative learning",
@@ -77,6 +80,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#features",
     },
     techmate: {
+        heroVisual: "poster",
         modelSrc: "/models/product-heroes/techmate-data-center.glb",
         posterSrc: "/images/product-heroes/posters/techmate-data-center.png",
         alt: "Data center servers and cloud infrastructure powering AI technology support",
