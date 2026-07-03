@@ -7,7 +7,17 @@ let modelViewerLoader;
 
 function loadModelViewer() {
     if (!modelViewerLoader) {
-        modelViewerLoader = import("@google/model-viewer");
+        modelViewerLoader = import("@google/model-viewer").then((mod) => {
+            // Decode Draco-compressed *.web.glb heroes with the locally hosted
+            // decoder at /draco/ instead of model-viewer's default gstatic CDN.
+            // This keeps 3D loading self-hosted and CSP-safe. Poster-only
+            // products never reach this loader, so they are unaffected.
+            const Element = mod?.ModelViewerElement;
+            if (Element && Element.dracoDecoderLocation !== "/draco/") {
+                Element.dracoDecoderLocation = "/draco/";
+            }
+            return mod;
+        });
     }
     return modelViewerLoader;
 }

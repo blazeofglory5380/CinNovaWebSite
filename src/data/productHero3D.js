@@ -66,8 +66,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#worlds",
     },
     studynest: {
-        heroVisual: "poster",
-        modelSrc: "/models/product-heroes/studynest-campus-library.glb",
+        modelSrc: "/models/product-heroes/studynest-campus-library.web.glb",
         posterSrc: "/images/product-heroes/posters/studynest-campus-library.png",
         alt: "University campus library with modern AI study tools and collaborative learning",
         eyebrow: "STUDYNEST",
