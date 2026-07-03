@@ -343,7 +343,7 @@ function App() {
     const isSuccessPage = page === "newsletter-success";
 
     return (
-        <div className="site">
+        <div className={`site${page === "earth-hero-test" ? " site--earth-hero" : ""}`}>
             {/* â”€â”€ Lead capture overlays â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
             {showNewsletterPopup && !isSuccessPage && (
                 <NewsletterPopup

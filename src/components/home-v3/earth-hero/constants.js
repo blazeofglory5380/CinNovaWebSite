@@ -1,5 +1,5 @@
 /** Shared tuning knobs for the Earth hero prototype. */
-export const EARTH_MODEL_SRC = "/models/homepage/cinnova-earth.glb";
+export const EARTH_MODEL_SRC = "/models/homepage/cinnova-earth.web.glb";
 export const MOBILE_MAX_WIDTH = 768;
 
 /** One full revolution every ~105 seconds (within the 90–120s brief). */
@@ -21,7 +21,7 @@ export const STARFIELD_LAYERS = [
 ];
 
 export const BLOOM_SETTINGS = {
-    strength: 0.28,
-    radius: 0.42,
-    threshold: 0.92,
+    strength: 0.22,
+    radius: 0.5,
+    threshold: 0.9,
 };

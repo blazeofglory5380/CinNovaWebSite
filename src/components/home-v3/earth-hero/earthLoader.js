@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { EARTH_MODEL_SRC } from "./constants.js";
 import { createAtmosphere } from "./atmosphere.js";
 
@@ -69,7 +70,16 @@ export function loadEarthSystem({ onError }) {
     surfaceGroup.name = "earth-surface";
     spinGroup.add(surfaceGroup);
 
+    // The served Earth asset is a Draco-compressed *.web.glb, so a DRACOLoader
+    // with the decoder hosted at /draco/ is required to decode geometry. Plain
+    // (uncompressed) masters would load without it.
     const loader = new GLTFLoader();
+    let dracoLoader = null;
+    if (/\.web\.glb$/i.test(EARTH_MODEL_SRC)) {
+        dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath("/draco/");
+        loader.setDRACOLoader(dracoLoader);
+    }
     let cloudController = null;
     let atmosphere = null;
     let surfaceMeshes = [];
@@ -132,6 +142,7 @@ export function loadEarthSystem({ onError }) {
                 const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
                 materials.forEach((material) => material?.dispose());
             });
+            dracoLoader?.dispose();
         },
     };
 }

@@ -41,7 +41,10 @@ const { dedup, prune, weld, draco, textureCompress } = await import("@gltf-trans
 const { default: draco3d } = await import("draco3dgltf");
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dir = path.join(root, "public", "models", "cinnova-core");
+// `--dir` selects the model subdirectory (default cinnova-core); the same
+// dedup→prune→weld→WebP→Draco pipeline is reused for other large web models
+// (e.g. the homepage Earth GLB). argValue is hoisted, so it can be used here.
+const dir = path.join(root, "public", "models", argValue("--dir", "cinnova-core"));
 
 function argValue(flag, fallback) {
     const i = process.argv.indexOf(flag);

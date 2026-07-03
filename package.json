@@ -12,6 +12,7 @@
     "audit:blog-images": "node scripts/audit-blog-images.mjs",
     "audit:resource-images": "node scripts/audit-resource-images.mjs",
     "optimize:core-model": "node scripts/optimize-core-model.mjs",
+    "optimize:earth-model": "node scripts/optimize-core-model.mjs --dir homepage --in cinnova-earth.glb --out cinnova-earth.web.glb",
     "scanner:validate": "node scripts/scanner-validate.mjs --provider sidecar --sidecar-dir data/scanner-validation/sidecars",
     "scanner:validate:live": "node scripts/scanner-validate.mjs --provider auto",
     "scanner:export": "node scripts/scanner-validation-export.mjs --format both",

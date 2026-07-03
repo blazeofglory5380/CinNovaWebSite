@@ -53,18 +53,21 @@ function createAtmosphereShell(radius, { color, intensity, falloff, opacity }) {
  * Dual-shell atmospheric rim glow — inner cyan haze + outer soft bloom halo.
  */
 export function createAtmosphere(radius) {
-    const inner = createAtmosphereShell(radius * 1.03, {
-        color: 0x7ec8ff,
-        intensity: 0.42,
-        falloff: 2.8,
+    // Softer, thinner falloff so the rim reads as glow rather than a hard
+    // outline. Higher falloff hugs the limb; lower intensity keeps bloom from
+    // over-amplifying the edge into a bright ring.
+    const inner = createAtmosphereShell(radius * 1.022, {
+        color: 0x8ad0ff,
+        intensity: 0.3,
+        falloff: 3.6,
         opacity: 1,
     });
     inner.mesh.name = "atmosphere-inner";
 
-    const outer = createAtmosphereShell(radius * 1.08, {
-        color: 0x4da6ff,
-        intensity: 0.22,
-        falloff: 4.6,
+    const outer = createAtmosphereShell(radius * 1.055, {
+        color: 0x3f8de8,
+        intensity: 0.12,
+        falloff: 5.6,
         opacity: 1,
     });
     outer.mesh.name = "atmosphere-outer";

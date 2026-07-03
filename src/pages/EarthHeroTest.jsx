@@ -20,62 +20,66 @@ function EarthHeroTest({ onNavigate, onGoHome }) {
     }, []);
 
     return (
-        <main className="earth-hero-test">
+        <main className="earth-hero-test brand-dna">
             <SEO
                 title="Earth Hero Prototype | Cin Nova"
                 description="Internal prototype for a cinematic Earth hero experience."
                 noindex
             />
 
-            <div className="earth-hero-test__backdrop" aria-hidden="true">
-                <span className="earth-hero-test__nebula earth-hero-test__nebula--left" />
-                <span className="earth-hero-test__nebula earth-hero-test__nebula--right" />
-                <span className="earth-hero-test__vignette" />
+            {/* Cinematic Earth stage — globe sits to the right; a left dark scrim
+                keeps the copy readable, mirroring the production Core hero. */}
+            <div className="earth-hero-test__visual" aria-hidden="true">
+                <EarthHeroScene reduceMotion={reduceMotion} />
+                <span className="earth-hero-test__tint" />
+                <span className="earth-hero-test__scrim" />
+                <span className="earth-hero-test__fade" />
             </div>
 
-            <EarthHeroScene reduceMotion={reduceMotion} />
-
-            <div className="earth-hero-test__shell">
+            <div className="earth-hero-test__wrap">
                 <button
                     type="button"
-                    className="earth-hero-test__back"
+                    className="earth-hero-test__back bdna-btn bdna-btn--ghost"
                     onClick={() => onGoHome?.()}
                 >
-                    Back to CinNova
+                    ← Back to CinNova
                 </button>
 
-                <div className="earth-hero-test__content">
-                    <p className="earth-hero-test__eyebrow">PROTOTYPE · EARTH HERO</p>
-                    <h1 className="earth-hero-test__headline">
-                        One intelligence. Infinite possibilities.
+                <div className="earth-hero-test__copy">
+                    <span className="bdna-eyebrow">Prototype · Earth Hero</span>
+
+                    <h1 className="earth-hero-test__title">
+                        One intelligence.
+                        <b> Infinite possibilities.</b>
                     </h1>
-                    <p className="earth-hero-test__lede">
+
+                    <p className="earth-hero-test__sub">
                         A cinematic preview of CinNova&apos;s connected AI ecosystem — built for
                         learning, safety, real estate, and everyday decisions across the globe.
                     </p>
 
-                    <div className="earth-hero-test__actions">
+                    <div className="earth-hero-test__ctas">
                         <button
                             type="button"
-                            className="earth-hero-test__cta earth-hero-test__cta--primary"
+                            className="bdna-btn bdna-btn--solid"
                             onClick={() => onNavigate?.("products")}
                         >
                             Explore Products
                         </button>
                         <button
                             type="button"
-                            className="earth-hero-test__cta earth-hero-test__cta--secondary"
+                            className="bdna-btn bdna-btn--ghost"
                             onClick={() => onNavigate?.("resources")}
                         >
                             Free Resources
                         </button>
                     </div>
 
-                    <p className="earth-hero-test__hint">
-                        {reduceMotion
-                            ? "Reduced motion is on — Earth holds still for a calmer view."
-                            : "Drag is not required. Earth rotates slowly on its own."}
-                    </p>
+                    <div className="earth-hero-test__meta">
+                        <span><b>Experimental</b> route</span>
+                        <span><b>3D</b> auto-rotate</span>
+                        <span>{reduceMotion ? "Reduced motion on" : "Motion enabled"}</span>
+                    </div>
                 </div>
             </div>
         </main>

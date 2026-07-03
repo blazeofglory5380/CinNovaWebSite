@@ -40,6 +40,11 @@ public/models/cinnova-core/CinNova_AI_Core_v1.0.web.glb
 public/models/cinnova-core/CinNova_AI_Core_v2.glb
 public/models/cinnova-core/*.png
 
+# Homepage Earth master (large, uncompressed). Only the Draco-compressed web
+# GLB is tracked; regenerate the web asset from the master via:
+#   npm run optimize:earth-model
+public/models/homepage/cinnova-earth.glb
+
 # Local agent tooling
 .agents/
 skills-lock.json
