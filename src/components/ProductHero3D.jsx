@@ -7,17 +7,19 @@ let modelViewerLoader;
 
 function loadModelViewer() {
     if (!modelViewerLoader) {
-        modelViewerLoader = import("@google/model-viewer").then((mod) => {
-            // Decode Draco-compressed *.web.glb heroes with the locally hosted
-            // decoder at /draco/ instead of model-viewer's default gstatic CDN.
-            // This keeps 3D loading self-hosted and CSP-safe. Poster-only
-            // products never reach this loader, so they are unaffected.
-            const Element = mod?.ModelViewerElement;
-            if (Element && Element.dracoDecoderLocation !== "/draco/") {
-                Element.dracoDecoderLocation = "/draco/";
-            }
-            return mod;
-        });
+        // model-viewer bakes its Draco decoder path at module-evaluation time
+        // from `self.ModelViewerElement.dracoDecoderLocation`, falling back to
+        // the gstatic CDN — which our production CSP blocks. Setting the static
+        // property AFTER import races with that and loses on production, so we
+        // configure the global BEFORE the dynamic import. This is model-viewer's
+        // documented, race-free way to self-host the decoder at /draco/ (already
+        // shipped for the Core/Earth heroes). Poster-only products never call
+        // this loader, so they are unaffected.
+        if (typeof self !== "undefined") {
+            self.ModelViewerElement = self.ModelViewerElement || {};
+            self.ModelViewerElement.dracoDecoderLocation = "/draco/";
+        }
+        modelViewerLoader = import("@google/model-viewer");
     }
     return modelViewerLoader;
 }
