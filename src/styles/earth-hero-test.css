@@ -1,0 +1,275 @@
+.earth-hero-test {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 120% 80% at 50% 0%, rgba(36, 72, 140, 0.35), transparent 58%),
+        radial-gradient(circle at 78% 42%, rgba(18, 48, 96, 0.45), transparent 42%),
+        linear-gradient(180deg, #02040d 0%, #050816 42%, #03050c 100%);
+    color: #f4f7ff;
+}
+
+.earth-hero-test__backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.earth-hero-test__nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(72px);
+    opacity: 0.55;
+}
+
+.earth-hero-test__nebula--left {
+    width: 42vw;
+    height: 42vw;
+    top: 8%;
+    left: -8%;
+    background: radial-gradient(circle, rgba(56, 120, 255, 0.45), transparent 70%);
+}
+
+.earth-hero-test__nebula--right {
+    width: 48vw;
+    height: 48vw;
+    right: -10%;
+    bottom: -8%;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.28), transparent 72%);
+}
+
+.earth-hero-test__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(2, 4, 12, 0.72) 100%);
+}
+
+.earth-hero-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.earth-hero-scene__canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.earth-hero-scene--fallback {
+    display: grid;
+    place-items: center;
+}
+
+.earth-hero-scene__space {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(1px 1px at 30% 65%, rgba(255, 255, 255, 0.55), transparent),
+        radial-gradient(1px 1px at 72% 28%, rgba(255, 255, 255, 0.65), transparent),
+        radial-gradient(1px 1px at 88% 72%, rgba(255, 255, 255, 0.45), transparent),
+        radial-gradient(1px 1px at 52% 48%, rgba(255, 255, 255, 0.5), transparent);
+    opacity: 0.8;
+}
+
+.earth-hero-scene__orb {
+    position: relative;
+    width: min(58vw, 420px);
+    aspect-ratio: 1;
+}
+
+.earth-hero-scene__orb-core {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 30%, #8fd0ff 0%, #2f7fd4 28%, #0d3f78 58%, #041428 100%);
+    box-shadow:
+        inset -18px -24px 48px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(56, 140, 255, 0.25);
+}
+
+.earth-hero-scene__orb-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(94, 184, 255, 0.35), transparent 68%);
+    filter: blur(10px);
+    animation: earth-hero-orb-pulse 6s ease-in-out infinite;
+}
+
+.earth-hero-test__shell {
+    position: relative;
+    z-index: 2;
+    width: min(1120px, calc(100% - 2.5rem));
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+    min-height: calc(100vh - 72px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.earth-hero-test__back {
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(15, 23, 42, 0.45);
+    color: #dbeafe;
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.earth-hero-test__back:hover {
+    border-color: rgba(148, 196, 255, 0.65);
+    background: rgba(30, 41, 59, 0.65);
+}
+
+.earth-hero-test__content {
+    max-width: 38rem;
+    padding: 1.5rem 0;
+}
+
+.earth-hero-test__eyebrow {
+    margin-bottom: 1rem;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #93c5fd;
+}
+
+.earth-hero-test__headline {
+    font-size: clamp(2.2rem, 4.8vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    text-wrap: balance;
+    color: #f8fbff;
+    text-shadow: 0 8px 32px rgba(2, 6, 23, 0.55);
+}
+
+.earth-hero-test__lede {
+    max-width: 34rem;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    line-height: 1.65;
+    color: rgba(226, 232, 240, 0.88);
+    margin-bottom: 1.75rem;
+}
+
+.earth-hero-test__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.earth-hero-test__cta {
+    border-radius: 999px;
+    padding: 0.85rem 1.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.earth-hero-test__cta--primary {
+    background: linear-gradient(135deg, #38bdf8, #2563eb);
+    color: #f8fafc;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+}
+
+.earth-hero-test__cta--secondary {
+    background: rgba(15, 23, 42, 0.55);
+    color: #e2e8f0;
+    border-color: rgba(148, 163, 184, 0.45);
+    backdrop-filter: blur(8px);
+}
+
+.earth-hero-test__cta:hover {
+    transform: translateY(-1px);
+}
+
+.earth-hero-test__hint {
+    font-size: 0.85rem;
+    color: rgba(148, 163, 184, 0.95);
+}
+
+@keyframes earth-hero-orb-pulse {
+    0%,
+    100% {
+        opacity: 0.75;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+@media (min-width: 900px) {
+    .earth-hero-test__shell {
+        padding-top: 3rem;
+    }
+
+    .earth-hero-test__content {
+        max-width: 34rem;
+    }
+
+    .earth-hero-scene {
+        clip-path: polygon(38% 0, 100% 0, 100% 100%, 18% 100%);
+    }
+}
+
+@media (max-width: 768px) {
+    .earth-hero-test {
+        min-height: auto;
+    }
+
+    .earth-hero-test__shell {
+        min-height: auto;
+        padding-bottom: 2.5rem;
+    }
+
+    .earth-hero-scene {
+        position: relative;
+        height: min(52vw, 320px);
+        margin: 0 auto 1rem;
+        width: min(100%, 420px);
+    }
+
+    .earth-hero-test__content {
+        max-width: none;
+    }
+
+    .earth-hero-test__actions {
+        flex-direction: column;
+    }
+
+    .earth-hero-test__cta {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .earth-hero-scene__orb-glow {
+        animation: none;
+    }
+
+    .earth-hero-test__cta {
+        transition: none;
+    }
+
+    .earth-hero-test__cta:hover {
+        transform: none;
+    }
+}
