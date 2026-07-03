@@ -1,0 +1,16 @@
+.cn-m-3d-scene {
+  position: relative;
+  min-height: 200px;
+  contain: layout style paint;
+}
+
+.cn-m-3d-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: inherit;
+  background: var(--cn-color-bg-surface-subtle, #f1f5f9);
+  color: var(--cn-color-text-muted, #64748b);
+  border: 1px dashed var(--cn-color-border-default, #e2e8f0);
+  border-radius: var(--cn-radius-lg, 0.75rem);
+  font-size: 0.875rem;
+}

@@ -22,7 +22,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cinnova/motion": "file:G:/CinNova Projects/cinnova-motion",
+    "@cinnova/motion": "file:packages/cinnova-motion",
     "@gltf-transform/core": "^4.4.0",
     "@gltf-transform/extensions": "^4.4.0",
     "@gltf-transform/functions": "^4.4.0",
