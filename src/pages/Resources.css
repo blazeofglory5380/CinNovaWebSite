@@ -1,0 +1,262 @@
+/*
+ * Resources page — Brand DNA visual upgrade (scoped, in-place).
+ *
+ * Resources.jsx keeps all of its markup, state, filters, preview/download/gate
+ * behavior, aria, ids, and SEO untouched — this file only retints the existing
+ * `.resource-*` / `.resources-library-*` classes to the dark cinematic Brand DNA
+ * language, scoped under `main.resources-v2` so nothing else is affected.
+ * Per-category accents (--rpc-accent / --rcc-accent) are preserved for identity.
+ */
+
+main.resources-v2 {
+    background: var(--bdna-bg);
+    color: var(--bdna-ink);
+    overflow-x: hidden;
+}
+
+/* ── Editorial atoms ──────────────────────────────────────────────── */
+main.resources-v2 .eyebrow {
+    font-family: var(--bdna-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bdna-emerald-glow);
+}
+
+main.resources-v2 h1,
+main.resources-v2 h2,
+main.resources-v2 h3 {
+    color: var(--bdna-ink);
+    letter-spacing: -0.02em;
+}
+
+main.resources-v2 h1 { font-weight: 300; }
+main.resources-v2 .resource-library-strip-head h2,
+main.resources-v2 .resource-search-panel-head h2 { font-weight: 300; }
+
+main.resources-v2 .resource-library-strip-head p,
+main.resources-v2 .resources-library-hero-copy > p,
+main.resources-v2 .resource-search-panel-head p {
+    color: var(--bdna-dim);
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+main.resources-v2 .resources-library-hero {
+    background:
+        radial-gradient(90% 80% at 88% 0%, rgba(10, 191, 140, 0.14), transparent 60%),
+        linear-gradient(180deg, var(--bdna-bg), var(--bdna-bg-lift));
+    border-bottom: 1px solid var(--bdna-panel-edge);
+}
+
+main.resources-v2 .resources-library-hero-copy h1 {
+    font-size: clamp(2rem, 4.6vw, 3.4rem);
+    line-height: 1.05;
+}
+
+main.resources-v2 .resources-library-stat {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: var(--bdna-radius);
+}
+
+main.resources-v2 .resources-library-stat strong { color: var(--bdna-emerald-glow); }
+main.resources-v2 .resources-library-stat span {
+    font-family: var(--bdna-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+main.resources-v2 .resources-library-hero-img,
+main.resources-v2 .resources-library-hero-photo {
+    border-radius: var(--bdna-radius-lg, 22px);
+    overflow: hidden;
+    border: 1px solid var(--bdna-panel-edge);
+}
+
+/* ── Category cards ───────────────────────────────────────────────── */
+main.resources-v2 .resource-category-card {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
+    backdrop-filter: blur(var(--bdna-glass-blur));
+    color: var(--bdna-ink);
+    transition: transform 0.3s var(--bdna-ease), border-color 0.3s var(--bdna-ease), box-shadow 0.3s var(--bdna-ease);
+}
+
+main.resources-v2 .resource-category-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--rcc-accent, var(--bdna-emerald)) 55%, transparent);
+    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
+}
+
+main.resources-v2 .resource-category-card.is-active {
+    border-color: var(--rcc-accent, var(--bdna-emerald));
+    box-shadow: 0 0 0 1px var(--rcc-accent, var(--bdna-emerald)), 0 14px 44px rgba(0, 0, 0, 0.4);
+}
+
+main.resources-v2 .resource-category-card-eyebrow {
+    font-family: var(--bdna-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rcc-accent, var(--bdna-emerald-glow));
+}
+
+main.resources-v2 .resource-category-card-copy h3 { color: var(--bdna-ink); }
+main.resources-v2 .resource-category-card-copy p { color: var(--bdna-dim); }
+main.resources-v2 .resource-category-card-action { color: var(--rcc-accent, var(--bdna-emerald-glow)); font-weight: 600; }
+
+/* ── Search + filter panel ────────────────────────────────────────── */
+main.resources-v2 .resource-search-panel-card {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
+    backdrop-filter: blur(var(--bdna-glass-blur));
+    box-shadow: var(--bdna-shadow);
+    color: var(--bdna-ink);
+}
+
+main.resources-v2 .resource-search-input-wrap {
+    background: rgba(10, 14, 23, 0.6);
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: 999px;
+}
+
+main.resources-v2 .resource-search-input-wrap:focus-within { border-color: var(--bdna-emerald); }
+main.resources-v2 .resource-search-icon { color: var(--bdna-dim); }
+main.resources-v2 .resource-search-input-wrap input { color: var(--bdna-ink); background: transparent; }
+main.resources-v2 .resource-search-input-wrap input::placeholder { color: var(--bdna-dim); }
+
+main.resources-v2 .resource-filter-pill-label {
+    font-family: var(--bdna-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+main.resources-v2 .resource-filter-pill {
+    font-family: var(--bdna-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bdna-dim2);
+    background: var(--bdna-glass, rgba(255, 255, 255, 0.045));
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: 999px;
+    transition: color 0.25s var(--bdna-ease), border-color 0.25s var(--bdna-ease);
+}
+
+main.resources-v2 .resource-filter-pill:hover { color: var(--bdna-emerald-glow); border-color: rgba(63, 232, 192, 0.4); }
+main.resources-v2 .resource-filter-pill.is-active {
+    color: var(--bdna-bg);
+    background: var(--bdna-emerald);
+    border-color: transparent;
+}
+
+main.resources-v2 .resource-library-results-bar { color: var(--bdna-dim); border-top: 1px solid var(--bdna-panel-edge); }
+main.resources-v2 .resource-library-results-bar strong { color: var(--bdna-ink); }
+main.resources-v2 .resource-library-clear {
+    color: var(--bdna-emerald-glow);
+    background: transparent;
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: 999px;
+}
+main.resources-v2 .resource-library-clear:hover { border-color: var(--bdna-emerald); }
+
+/* ── Publication cards ────────────────────────────────────────────── */
+main.resources-v2 .resource-pub-card {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
+    backdrop-filter: blur(var(--bdna-glass-blur));
+    box-shadow: var(--bdna-shadow);
+    color: var(--bdna-ink);
+    transition: transform 0.3s var(--bdna-ease), border-color 0.3s var(--bdna-ease), box-shadow 0.3s var(--bdna-ease);
+}
+
+main.resources-v2 .resource-pub-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--rpc-accent, var(--bdna-emerald)) 50%, transparent);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+}
+
+main.resources-v2 .resource-pub-cover { border-bottom: 1px solid var(--bdna-panel-edge); }
+
+main.resources-v2 .resource-pub-labels .resource-pub-category,
+main.resources-v2 .resource-pub-labels .resource-pub-product {
+    font-family: var(--bdna-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+main.resources-v2 .resource-pub-category { color: var(--rpc-accent, var(--bdna-emerald-glow)); }
+main.resources-v2 .resource-pub-product { color: var(--bdna-dim); }
+
+main.resources-v2 .resource-pub-title { color: var(--bdna-ink); }
+main.resources-v2 .resource-pub-description { color: var(--bdna-dim); }
+
+main.resources-v2 .resource-search-hit {
+    background: rgba(10, 191, 140, 0.22);
+    color: var(--bdna-emerald-glow);
+    border-radius: 3px;
+}
+
+main.resources-v2 .resource-pub-meta dt { color: var(--bdna-dim); }
+main.resources-v2 .resource-pub-meta dd { color: var(--bdna-dim2); }
+
+main.resources-v2 .resource-pub-flag {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+    font-family: var(--bdna-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+main.resources-v2 .resource-pub-flag--top,
+main.resources-v2 .resource-editors-pick-badge {
+    background: var(--bdna-gold-soft);
+    border: 1px solid rgba(201, 169, 98, 0.3);
+    color: var(--bdna-gold);
+}
+main.resources-v2 .resource-pub-rank { color: var(--rpc-accent, var(--bdna-emerald-glow)); }
+
+/* ── Buttons (scoped) ─────────────────────────────────────────────── */
+main.resources-v2 .primary-btn {
+    background: linear-gradient(135deg, var(--rpc-accent, var(--bdna-emerald)), color-mix(in srgb, var(--rpc-accent, var(--bdna-emerald)) 55%, #04100b));
+    color: #04100b;
+    border: 1px solid transparent;
+    box-shadow: 0 0 34px color-mix(in srgb, var(--rpc-accent, var(--bdna-emerald)) 30%, transparent);
+}
+main.resources-v2 .primary-btn:hover { transform: translateY(-2px); }
+
+main.resources-v2 .secondary-btn {
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--bdna-ink);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+main.resources-v2 .secondary-btn:hover { border-color: var(--bdna-emerald); color: var(--bdna-emerald-glow); }
+
+/* ── Empty state ──────────────────────────────────────────────────── */
+main.resources-v2 .resource-empty-state {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
+    backdrop-filter: blur(var(--bdna-glass-blur));
+    color: var(--bdna-ink);
+}
+main.resources-v2 .resource-empty-state h2,
+main.resources-v2 .resource-empty-state h3 { color: var(--bdna-ink); }
+main.resources-v2 .resource-empty-state p { color: var(--bdna-dim); }
+
+/* ── Modal guard ──────────────────────────────────────────────────── */
+/* The preview + email-gate modals are intentionally kept in their existing
+ * light-panel design. They render inside main.resources-v2, so re-assert a
+ * dark text color inside the panels to prevent the page's light-ink cascade
+ * from washing out any inherited text. (Other site modals use .modal-panel
+ * too but are outside this scope, so they are unaffected.) */
+main.resources-v2 .modal-panel { color: #1e293b; }
+main.resources-v2 .modal-panel .eyebrow { color: #0f7a5a; }

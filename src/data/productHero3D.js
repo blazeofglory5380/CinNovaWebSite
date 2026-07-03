@@ -8,7 +8,6 @@ const realEstateTransformation = getRealEstateTransformationModels();
 
 export const productHero3DConfigs = {
     home: {
-        key: "home",
         modelSrc: "/models/product-heroes/home-ai-customer-communication.glb",
         posterSrc: "/images/product-heroes/posters/home-ai-customer-communication.png",
         alt: "Artificial intelligence interface communicating with a customer in a modern workspace",
@@ -22,7 +21,6 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "/?page=resources",
     },
     poisonguard: {
-        key: "poisonguard",
         modelSrc: "/models/product-heroes/poisonguard-decaying-poison-oak.glb",
         posterSrc: "/images/product-heroes/posters/poisonguard-decaying-poison-oak.png",
         alt: "Poison oak leaves decaying safely as PoisonGuard analyzes household plant hazards",
@@ -36,7 +34,6 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "/?page=resources",
     },
     "real-estate": {
-        key: "real-estate",
         heroVisual: "poster",
         stageHint: "AI renovation preview — interactive 3D experience coming soon.",
         posterSrc: realEstateHeroAssets.poster,
@@ -54,7 +51,6 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#features",
     },
     kiddo: {
-        key: "kiddo",
         modelSrc: "/models/product-heroes/kiddo-kids-learning-play.glb",
         posterSrc: "/images/product-heroes/posters/kiddo-kids-learning-play.png",
         alt: "Children playing and learning with the Kiddo early learning app",
@@ -68,7 +64,6 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#worlds",
     },
     studynest: {
-        key: "studynest",
         modelSrc: "/models/product-heroes/studynest-campus-library.glb",
         posterSrc: "/images/product-heroes/posters/studynest-campus-library.png",
         alt: "University campus library with modern AI study tools and collaborative learning",
@@ -82,7 +77,6 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "#features",
     },
     techmate: {
-        key: "techmate",
         modelSrc: "/models/product-heroes/techmate-data-center.glb",
         posterSrc: "/images/product-heroes/posters/techmate-data-center.png",
         alt: "Data center servers and cloud infrastructure powering AI technology support",

@@ -1,0 +1,209 @@
+/*
+ * CinNovaCoreHero — cinematic hero layout, WebGL stage, CSS emerald-orb
+ * fallback. Consumes the shared `--bdna-*` tokens (requires a `.brand-dna`
+ * ancestor). Composition follows the AI Core prototype; palette follows the
+ * Brand DNA Style Guide.
+ */
+
+.cn-core-hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--bdna-bg);
+}
+
+.cn-core-hero__visual {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Canvas host fades in once the Core is ready */
+.cn-core-scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+}
+
+.cn-core-scene--ready {
+    opacity: 1;
+}
+
+.cn-core-scene canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* CSS fallback: a breathing emerald orb where the Core appears */
+.cn-core-hero__orb {
+    position: absolute;
+    top: 46%;
+    left: 66%;
+    width: min(46vh, 40vw);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 38% 34%, rgba(63, 232, 192, 0.5), rgba(10, 95, 71, 0.25) 45%, transparent 70%),
+        radial-gradient(circle, rgba(27, 108, 242, 0.14), transparent 66%),
+        radial-gradient(circle, rgba(63, 232, 192, 0.16), transparent 65%);
+    filter: blur(2px);
+    animation: cn-orb-breathe 5s var(--bdna-ease-soft) infinite;
+}
+
+@keyframes cn-orb-breathe {
+    0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.03); }
+}
+
+.cn-core-hero__tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(55% 50% at 66% 46%, rgba(10, 191, 140, 0.1), transparent 70%);
+}
+
+.cn-core-hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        rgba(10, 14, 23, 0.94) 0%,
+        rgba(10, 14, 23, 0.78) 28%,
+        rgba(10, 14, 23, 0.38) 48%,
+        transparent 66%
+    );
+}
+
+.cn-core-hero__fade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 140px;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(0deg, var(--bdna-bg), transparent);
+}
+
+.cn-core-hero__wrap {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+}
+
+.cn-core-hero__copy {
+    max-width: 600px;
+    text-shadow: 0 1px 22px rgba(10, 14, 23, 0.85);
+}
+
+.cn-core-hero__title {
+    margin: 24px 0 0;
+    font-size: clamp(44px, 6.4vw, 84px);
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    color: var(--bdna-ink);
+}
+
+.cn-core-hero__title b {
+    font-weight: 750;
+    background: linear-gradient(100deg, var(--bdna-ink) 25%, var(--bdna-emerald-glow) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.cn-core-hero__sub {
+    margin: 20px 0 0;
+    font-size: clamp(15px, 1.35vw, 18px);
+    color: var(--bdna-dim2);
+    max-width: 46ch;
+    line-height: 1.7;
+}
+
+.cn-core-hero__ctas {
+    margin-top: 34px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.cn-core-hero__meta {
+    margin-top: 56px;
+    display: flex;
+    gap: 26px;
+    font-family: var(--bdna-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+.cn-core-hero__meta b {
+    color: var(--bdna-emerald-glow);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Optional stats row (homepage) */
+.cn-core-hero__stats {
+    margin: 52px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, 4vw, 52px);
+    padding-top: 28px;
+    border-top: 1px solid var(--bdna-glass-border, rgba(255, 255, 255, 0.1));
+}
+
+.cn-core-hero__stat dt {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    font-weight: 800;
+    color: var(--bdna-emerald-glow);
+    line-height: 1;
+}
+
+.cn-core-hero__stat dd {
+    margin: 6px 0 0;
+    font-family: var(--bdna-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+@media (max-width: 760px) {
+    .cn-core-hero__stats { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cn-core-hero__orb { animation: none; }
+    .cn-core-scene { transition: none; }
+}
+
+@media (max-width: 760px) {
+    .cn-core-hero {
+        min-height: 78vh;
+        align-items: flex-end;
+        padding-bottom: 64px;
+    }
+    .cn-core-hero__scrim {
+        background: linear-gradient(
+            0deg,
+            rgba(10, 14, 23, 0.95) 0%,
+            rgba(10, 14, 23, 0.7) 36%,
+            transparent 64%
+        );
+    }
+    .cn-core-hero__meta { display: none; }
+    .cn-core-hero__orb { left: 50%; top: 34%; }
+}

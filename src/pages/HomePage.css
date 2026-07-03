@@ -1,0 +1,235 @@
+/*
+ * Homepage (v2) — Brand DNA flagship composition.
+ * Dark cinematic scope under `main.homepage-v2` so it overrides the light
+ * global rules without touching them. Tokens/materials come from `.brand-dna`;
+ * cards reuse the shared `.bdna-card` primitive (GlassCard), headers use
+ * SectionHead, the newsletter uses Dispatch. No duplicated card/section code.
+ */
+
+main.homepage-v2 {
+    background: var(--bdna-bg);
+    color: var(--bdna-ink);
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.home-v2__section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(56px, 9vh, 104px) clamp(20px, 4vw, 48px);
+}
+
+.home-v2__lead {
+    margin-top: -18px;
+    margin-bottom: clamp(28px, 4vw, 44px);
+    max-width: 62ch;
+    color: var(--bdna-dim);
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.65;
+}
+
+/* ── Grids ───────────────────────────────────────────────────────── */
+.home-v2__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+@media (max-width: 1000px) {
+    .home-v2__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .home-v2__grid { grid-template-columns: 1fr; }
+}
+
+/* ── Cards (GlassCard bodies) ───────────────────────────────────── */
+.home-v2__product-card .bdna-card__media,
+.home-v2__article-card .bdna-card__media {
+    aspect-ratio: 16 / 10;
+}
+
+.home-v2__product-card .bdna-card__media img,
+.home-v2__article-card .bdna-card__media img,
+.home-v2__thumb,
+.home-v2__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.home-v2__thumb--fallback {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(150deg, var(--bdna-bg-lift), var(--bdna-bg));
+}
+
+.home-v2__thumb--fallback span {
+    font-family: var(--bdna-mono);
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: var(--bdna-emerald-glow);
+}
+
+.home-v2__card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-v2__cat {
+    font-family: var(--bdna-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bdna-accent, var(--bdna-emerald-glow));
+}
+
+.home-v2__status {
+    font-family: var(--bdna-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+}
+
+.home-v2__status--available {
+    color: var(--bdna-emerald-glow);
+    border-color: rgba(63, 232, 192, 0.3);
+    background: rgba(10, 191, 140, 0.1);
+}
+
+.home-v2__status--beta {
+    color: var(--bdna-gold);
+    border-color: rgba(201, 169, 98, 0.3);
+    background: var(--bdna-gold-soft);
+}
+
+.home-v2__status--coming-soon {
+    color: var(--bdna-dim2);
+}
+
+.home-v2__product-card h3,
+.home-v2__article-card h3,
+.home-v2__text-card h3 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--bdna-ink);
+}
+
+.home-v2__product-card p,
+.home-v2__article-card p,
+.home-v2__text-card p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--bdna-dim);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.home-v2__audience {
+    font-size: 0.82rem !important;
+    color: var(--bdna-dim2) !important;
+    -webkit-line-clamp: 2 !important;
+}
+
+.home-v2__audience strong {
+    color: var(--bdna-ink);
+    font-weight: 600;
+}
+
+.home-v2__card-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: var(--bdna-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+.home-v2__cue {
+    margin-top: auto;
+    padding-top: 4px;
+    font-family: var(--bdna-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bdna-accent, var(--bdna-emerald-glow));
+}
+
+/* ── Why pillars ─────────────────────────────────────────────────── */
+.home-v2__pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+@media (max-width: 720px) {
+    .home-v2__pillars { grid-template-columns: 1fr; }
+}
+
+.home-v2__pillar {
+    padding: clamp(22px, 3vw, 32px);
+}
+
+.home-v2__pillar h3 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    color: var(--bdna-ink);
+    margin-bottom: 10px;
+}
+
+.home-v2__pillar p {
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--bdna-dim);
+}
+
+/* ── Section action ──────────────────────────────────────────────── */
+.home-v2__section-action {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ── Perks (dispatch) ────────────────────────────────────────────── */
+.home-v2__perks {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 22px;
+}
+
+.home-v2__perks li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 0.88rem;
+    color: var(--bdna-dim2);
+}
+
+.home-v2__perks li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background: var(--bdna-emerald-glow);
+    box-shadow: 0 0 8px var(--bdna-emerald-glow);
+}

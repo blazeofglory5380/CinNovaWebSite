@@ -28,3 +28,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*
+
+# CinNova Core model masters/archives — large binaries. Only the served,
+# Draco-compressed web GLB is tracked; regenerate masters/web via:
+#   npm run optimize:core-model -- --in <master>.glb --out <name>.web.glb
+public/models/cinnova-core/CinNova_AI_Core_v1.0.glb
+public/models/cinnova-core/CinNova_AI_Core_v1.0.web.glb
+public/models/cinnova-core/CinNova_AI_Core_v2.glb
+public/models/cinnova-core/*.png

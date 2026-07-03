@@ -1,0 +1,311 @@
+/*
+ * CinNova Brand DNA — shared design language layer.
+ *
+ * Source of truth: Brand DNA Style Guide v1.0
+ *   Emerald  #0ABF8C   Sapphire #1B6CF2   Gold #C9A962
+ *   Midnight #0A0E17   White    #F8FAFC
+ * Materials: emerald optical glass, sapphire refraction, gold intelligence
+ * core, dark studio / museum lighting, rim light, volumetric glow, concentric
+ * rings, glass layers, floating elements.
+ *
+ * Everything is scoped under `.brand-dna` so it never leaks into the light
+ * global theme (App.css `--color-*` / `--cn-*`). Reusable across the CinNova
+ * ecosystem: any region can opt in by wrapping in `.brand-dna`.
+ */
+
+.brand-dna {
+    /* Canvas — Midnight Black */
+    --bdna-bg: #0a0e17;
+    --bdna-bg-lift: #0d1522;
+    --bdna-panel: rgba(15, 24, 38, 0.55);
+    --bdna-panel-edge: rgba(10, 191, 140, 0.14);
+
+    /* Ink — White */
+    --bdna-ink: #f8fafc;
+    --bdna-dim: #9fb0bd;
+    --bdna-dim2: #c4d3dd;
+
+    /* Emerald (primary) — optical glass + glow */
+    --bdna-emerald: #0abf8c;
+    --bdna-emerald-glow: #3fe8c0;
+    --bdna-emerald-deep: #0a5f47;
+
+    /* Sapphire (refraction accent) */
+    --bdna-sapphire: #1b6cf2;
+    --bdna-sapphire-soft: rgba(27, 108, 242, 0.16);
+
+    /* Gold (intelligence core accent) */
+    --bdna-gold: #c9a962;
+    --bdna-gold-soft: rgba(201, 169, 98, 0.16);
+
+    /*
+     * Per-product accent. Emerald is the ecosystem base; each product scope
+     * (e.g. .ph3d--studynest, a future .studynest-v2 page) overrides
+     * --bdna-accent to keep its own identity. Derived tints use color-mix so
+     * only --bdna-accent needs to change.
+     */
+    --bdna-accent: var(--bdna-emerald);
+    --bdna-accent-glow: color-mix(in srgb, var(--bdna-accent) 34%, transparent);
+    --bdna-accent-soft: color-mix(in srgb, var(--bdna-accent) 14%, transparent);
+
+    --bdna-line: rgba(10, 191, 140, 0.14);
+
+    /* Materials */
+    --bdna-glass-blur: 14px;
+    --bdna-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    --bdna-glow-emerald: 0 0 60px rgba(10, 191, 140, 0.32);
+
+    /* Radii */
+    --bdna-radius: 16px;
+    --bdna-radius-lg: 22px;
+
+    /* Premium spacing scale */
+    --bdna-space-3: 28px;
+    --bdna-space-4: 44px;
+    --bdna-space-5: 72px;
+    --bdna-space-6: 112px;
+
+    /* Type */
+    --bdna-font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --bdna-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    /* Motion language — idle / pulse / reveal / rotate / float / particle flow */
+    --bdna-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --bdna-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+    --bdna-dur: 0.7s;
+
+    color: var(--bdna-ink);
+    font-family: var(--bdna-font);
+}
+
+/* ── Glass primitive ─────────────────────────────────────────────── */
+.bdna-glass {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: var(--bdna-radius);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+    backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+    transition:
+        transform var(--bdna-dur) var(--bdna-ease),
+        border-color 0.3s var(--bdna-ease),
+        box-shadow 0.3s var(--bdna-ease);
+}
+
+.bdna-glass--lit {
+    border-color: rgba(63, 232, 192, 0.32);
+    box-shadow:
+        var(--bdna-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 40px rgba(10, 191, 140, 0.12);
+}
+
+.bdna-glass--interactive {
+    cursor: pointer;
+}
+
+.bdna-glass--interactive:hover {
+    transform: translateY(-4px);
+    border-color: rgba(63, 232, 192, 0.35);
+    box-shadow: 0 14px 50px rgba(10, 191, 140, 0.14);
+}
+
+/* ── Shared atoms ────────────────────────────────────────────────── */
+.bdna-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bdna-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bdna-emerald-glow);
+    padding: 7px 12px;
+    border: 1px solid var(--bdna-line);
+    border-radius: 100px;
+    background: rgba(10, 14, 23, 0.4);
+}
+
+.bdna-eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--bdna-emerald-glow);
+    box-shadow: 0 0 10px var(--bdna-emerald-glow);
+    animation: bdna-beat 2.6s var(--bdna-ease-soft) infinite;
+}
+
+@keyframes bdna-beat {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Section furniture — editorial header rule */
+.bdna-sect-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 34px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--bdna-line);
+}
+
+.bdna-sect-head--center {
+    justify-content: center;
+    text-align: center;
+}
+
+.bdna-sect-label {
+    font-family: var(--bdna-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bdna-accent, var(--bdna-emerald-glow));
+}
+
+.bdna-sect-title {
+    margin-top: 14px;
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--bdna-ink);
+}
+
+.bdna-sect-more {
+    font-family: var(--bdna-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+    text-decoration: none;
+    transition: color 0.25s var(--bdna-ease);
+}
+
+.bdna-sect-more:hover {
+    color: var(--bdna-accent, var(--bdna-emerald-glow));
+}
+
+/* Dispatch — reusable newsletter/CTA block */
+.bdna-dispatch {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: clamp(36px, 5vw, 72px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background:
+        radial-gradient(70% 120% at 50% 130%, var(--bdna-accent-soft), transparent 60%),
+        var(--bdna-panel);
+}
+
+.bdna-dispatch::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bdna-accent-glow), transparent);
+}
+
+.bdna-dispatch__title {
+    font-size: clamp(26px, 3.4vw, 42px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--bdna-ink);
+}
+
+.bdna-dispatch__copy {
+    max-width: 52ch;
+    color: var(--bdna-dim);
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+/* Card primitive (GlassCard) — media on top, body below */
+.bdna-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
+    padding: 0;
+    border: 1px solid var(--bdna-panel-edge);
+    background: var(--bdna-panel);
+    font-family: var(--bdna-font);
+}
+
+.bdna-card__media {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--bdna-panel-edge);
+}
+
+.bdna-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 22px 24px;
+}
+
+.bdna-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 15px 24px;
+    border-radius: 100px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: var(--bdna-font);
+    transition:
+        transform 0.25s var(--bdna-ease),
+        box-shadow 0.25s var(--bdna-ease),
+        border-color 0.25s var(--bdna-ease),
+        color 0.25s var(--bdna-ease);
+}
+
+.bdna-btn--solid {
+    color: var(--bdna-bg);
+    background: var(--bdna-emerald);
+}
+
+.bdna-btn--solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 34px rgba(10, 191, 140, 0.35);
+}
+
+.bdna-btn--ghost {
+    color: var(--bdna-ink);
+    border-color: var(--bdna-line);
+    background: rgba(10, 14, 23, 0.35);
+}
+
+.bdna-btn--ghost:hover {
+    transform: translateY(-2px);
+    border-color: var(--bdna-emerald);
+    color: var(--bdna-emerald-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-dna * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+    .brand-dna .bdna-btn:hover,
+    .brand-dna .bdna-glass--interactive:hover {
+        transform: none;
+    }
+}

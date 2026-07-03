@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import "../App.css";
+import "../styles/brand-dna.css";
 import SEO from "../components/SEO.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import ResourceEmailGate from "../components/ResourceEmailGate.jsx";
@@ -22,6 +23,7 @@ import {
     resources,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
+import "./Resources.css";
 
 function FilterPillGroup({ label, value, options, onChange }) {
     return (
@@ -179,7 +181,7 @@ function Resources({ onOpenResource, onSubscribe }) {
     const hero = siteMarketing.resourcesHero;
 
     return (
-        <main className="product-page resources-page resources-library-page">
+        <main className="product-page resources-page resources-library-page resources-v2 brand-dna">
             <SEO
                 title="Resources Center | Cin Nova"
                 description="Free guides, checklists, templates, white papers, product brochures, and case studies from Cin Nova."

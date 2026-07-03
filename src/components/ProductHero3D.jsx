@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import FarmhouseTransformationViewer, { shouldUseTransformationViewer } from "./FarmhouseTransformationViewer.jsx";
+import "../styles/brand-dna.css";
 import "./ProductHero3D.css";
 
 let modelViewerLoader;
@@ -100,7 +101,12 @@ function ProductHero3D({
 
         fetch(modelSrc, { method: "HEAD" })
             .then((response) => {
-                if (!cancelled) setModelAvailable(response.ok);
+                const contentType = response.headers.get("content-type") || "";
+                // A dev server answering a missing .glb with index.html (200) must
+                // count as "no model" — otherwise model-viewer tries to parse HTML
+                // as glTF and logs a GLTFLoader error. Poster fallback then renders.
+                const modelOk = response.ok && !contentType.includes("text/html");
+                if (!cancelled) setModelAvailable(modelOk);
             })
             .catch(() => {
                 if (!cancelled) setModelAvailable(false);
@@ -197,7 +203,7 @@ function ProductHero3D({
 
     return (
         <section
-            className={`ph3d${className ? ` ${className}` : ""}${isPosterHero ? " ph3d--poster-hero" : ""}`}
+            className={`ph3d brand-dna${className ? ` ${className}` : ""}${isPosterHero ? " ph3d--poster-hero" : ""}`}
             aria-labelledby={titleId}
             {...(transformation
                 ? {

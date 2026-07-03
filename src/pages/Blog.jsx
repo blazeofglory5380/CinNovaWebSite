@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import "../App.css";
+import "../styles/brand-dna.css";
+import "./Blog.css";
 import SEO from "../components/SEO.jsx";
 import AdSlot from "../components/AdSlot.jsx";
+import CinNovaCoreHero from "../components/brand-dna/CinNovaCoreHero.jsx";
+import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
+import GlassCard from "../components/brand-dna/GlassCard.jsx";
 import {
     blogCategories,
     estimateArticleReadingTime,
@@ -12,7 +17,6 @@ import {
     siteUrl,
 } from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const categoryConfig = {
@@ -138,6 +142,10 @@ function Blog({
         document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
     }
 
+    function scrollToArticles() {
+        document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
+    }
+
     function handleArticleLink(event, post) {
         event.preventDefault();
         event.stopPropagation();
@@ -167,7 +175,7 @@ function Blog({
             label: post.thumbnail?.label || config.icon,
             kicker: post.category,
             title: post.thumbnail?.title || post.category,
-            accent: "blue",
+            accent: "emerald",
             alt: `${post.title} article cover`,
         };
 
@@ -175,7 +183,7 @@ function Blog({
             <figure
                 className={`article-cover article-cover-${variant}`}
                 data-category={slugifyCategory(post.category)}
-                data-accent={cover.accent || "blue"}
+                data-accent={cover.accent || "emerald"}
                 aria-label={cover.alt}
             >
                 <div className="article-cover-grid" aria-hidden="true">
@@ -195,8 +203,13 @@ function Blog({
         );
     }
 
+    const heroSubtitle =
+        activeCategory === "All"
+            ? "Ideas, tutorials, product stories, and AI research from across the CinNova ecosystem."
+            : `${activeCategory} — articles and research from the CinNova ecosystem.`;
+
     return (
-        <main className="product-page blog-page">
+        <main className="product-page blog-page blog-v2 brand-dna">
             <SEO
                 title={seoTitle}
                 description={seoDescription}
@@ -205,89 +218,80 @@ function Blog({
                 schema={blogSchema}
             />
 
-            <section className="section blog-hero-section">
-                <div className="section-heading blog-hero-copy">
-                    <p className="eyebrow">CINNOVA BLOG</p>
-                    <h2>Latest CinNova Articles</h2>
-                    <p>
-                        AI, education, safety apps, real estate AI, kids learning, and future tech — from the CinNova team.
-                    </p>
-                </div>
-            </section>
+            {/* ── Hero ─────────────────────────────────────────────── */}
+            <CinNovaCoreHero
+                eyebrow="CinNova Research · Publication"
+                titleA="CinNova"
+                titleB="Blog"
+                subtitle={heroSubtitle}
+                primaryCta={{ label: "Explore Articles", onClick: scrollToArticles }}
+                secondaryCta={{ label: "Free AI Guide", onClick: onOpenGuide }}
+            />
 
+            {/* ── Featured article section ─────────────────────────── */}
             {cornerstonePost && (
-                <section className="section newspaper-featured-section">
-                    <div className="newspaper-featured-inner">
-                        <div className="newspaper-featured-header">
-                            <span className="newspaper-featured-label">Featured Story</span>
-                        </div>
-                        <div className="newspaper-featured-body">
-                            <div className="newspaper-featured-visual">
+                <section className="blog-v2__section blog-v2__featured">
+                    <div className="blog-v2__heading">
+                        <p className="bdna-eyebrow">Featured Story</p>
+                    </div>
+                    <div className="blog-v2__featured-grid">
+                        <GlassPanel
+                            as="a"
+                            lit
+                            interactive
+                            className="blog-v2__feature-lead"
+                            href={`/blog/${cornerstonePost.slug}`}
+                            onClick={(event) => handleArticleLink(event, cornerstonePost)}
+                        >
+                            <div className="blog-v2__feature-media">
                                 <ArticleVisual post={cornerstonePost} variant="newspaper" />
                             </div>
-                            <div className="newspaper-featured-text">
-                                <div className="newspaper-meta-row">
-                                    <span className="newspaper-category">{cornerstonePost.category}</span>
-                                    <span className="newspaper-date">{cornerstonePost.date}</span>
-                                    <span className="newspaper-readtime">{getReadTime(cornerstonePost)}</span>
+                            <div className="blog-v2__feature-body">
+                                <div className="blog-v2__meta-row">
+                                    <span className="blog-v2__chip">{cornerstonePost.category}</span>
+                                    <span>{cornerstonePost.date}</span>
+                                    <span>{getReadTime(cornerstonePost)}</span>
                                 </div>
-                                <h2 className="newspaper-headline">{cornerstonePost.title}</h2>
-                                <p className="newspaper-summary">{cornerstonePost.excerpt}</p>
-                                <div className="newspaper-byline">By {cornerstonePost.author}</div>
-                                <a
-                                    href={`/blog/${cornerstonePost.slug}`}
-                                    className="primary-btn newspaper-cta"
-                                    onClick={(event) => handleArticleLink(event, cornerstonePost)}
-                                >
-                                    Read Article →
-                                </a>
+                                <h2 className="blog-v2__feature-title">{cornerstonePost.title}</h2>
+                                <p className="blog-v2__feature-excerpt">{cornerstonePost.excerpt}</p>
+                                <span className="blog-v2__byline">By {cornerstonePost.author}</span>
+                                <span className="blog-v2__read-link">Read Article →</span>
                             </div>
-                        </div>
-                    </div>
-                </section>
-            )}
+                        </GlassPanel>
 
-            {featuredPost && (
-                <section className="section blog-featured-section">
-                    <div className="blog-featured blog-featured-clickable">
-                        <div>
-                            <ArticleVisual post={featuredPost} variant="featured" />
-                            <p className="eyebrow">{featuredPost.category.toUpperCase()}</p>
-                            <h2>{featuredPost.title}</h2>
-                            <p>{featuredPost.excerpt}</p>
-                            <div className="article-meta-row">
-                                <span>{featuredPost.date}</span>
-                                <span>{getReadTime(featuredPost)}</span>
-                                <span>{featuredPost.author}</span>
-                            </div>
-                            <a
+                        {featuredPost && featuredPost.id !== cornerstonePost.id && (
+                            <GlassPanel
+                                as="a"
+                                interactive
+                                className="blog-v2__feature-secondary"
                                 href={`/blog/${featuredPost.slug}`}
-                                className="primary-btn"
                                 onClick={(event) => handleArticleLink(event, featuredPost)}
                             >
-                                Read Featured Article
-                            </a>
-                        </div>
-                        <div className="blog-featured-panel">
-                            <ArticleVisual post={featuredPost} variant="panel" />
-                            <p className="product-category">FEATURED ARTICLE</p>
-                            <strong>{featuredPost.category}</strong>
-                            <span>{getReadTime(featuredPost)}</span>
-                            <span>{featuredPost.date}</span>
-                            <span>By {featuredPost.author}</span>
-                        </div>
+                                <ArticleVisual post={featuredPost} variant="featured" />
+                                <div className="blog-v2__feature-secondary-body">
+                                    <span className="blog-v2__chip">{featuredPost.category}</span>
+                                    <h3>{featuredPost.title}</h3>
+                                    <p>{featuredPost.excerpt}</p>
+                                    <div className="blog-v2__meta-row">
+                                        <span>{featuredPost.date}</span>
+                                        <span>{getReadTime(featuredPost)}</span>
+                                    </div>
+                                </div>
+                            </GlassPanel>
+                        )}
                     </div>
+
                     {secondaryFeaturedPosts.length > 0 && (
-                        <div className="featured-article-strip">
+                        <div className="blog-v2__strip">
                             {secondaryFeaturedPosts.map((post) => (
                                 <a
                                     href={`/blog/${post.slug}`}
-                                    className="featured-strip-item"
+                                    className="blog-v2__strip-item bdna-glass bdna-glass--interactive"
                                     key={post.id}
                                     onClick={(event) => handleArticleLink(event, post)}
                                 >
                                     <ArticleVisual post={post} />
-                                    <span>{post.category}</span>
+                                    <span className="blog-v2__chip">{post.category}</span>
                                     <strong>{post.title}</strong>
                                     <small>{getReadTime(post)}</small>
                                 </a>
@@ -297,52 +301,10 @@ function Blog({
                 </section>
             )}
 
-            {trendingPosts.length > 0 && (
-                <section className="section trending-section">
-                    <div className="section-heading">
-                        <p className="eyebrow">WHAT'S TRENDING</p>
-                        <h2>Articles people are reading now.</h2>
-                        <p>The articles getting the most attention across the CinNova blog this week.</p>
-                    </div>
-                    <div className="article-grid">
-                        {trendingPosts.map((post) => (
-                            <MotionCardWrap
-                                className="article-card article-card-clickable"
-                                key={post.id}
-                                onClick={() => onOpenArticle(post)}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
-                            >
-                                <div className="article-card-top-row trending-badge-row">
-                                    <span className="article-category-badge">{post.category}</span>
-                                    <span className="trending-badge">Trending</span>
-                                    {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
-                                </div>
-                                <ArticleVisual post={post} />
-                                <h3>{post.title}</h3>
-                                <p>{post.excerpt}</p>
-                                <div className="article-card-meta">
-                                    <small>{post.author}</small>
-                                    <small>{post.date}</small>
-                                    <small>{getReadTime(post)}</small>
-                                </div>
-                                <a
-                                    href={`/blog/${post.slug}`}
-                                    className="article-card-action"
-                                    onClick={(event) => handleArticleLink(event, post)}
-                                >
-                                    Read Article
-                                </a>
-                            </MotionCardWrap>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            <section className="section blog-tools-section">
-                <div className="blog-tools">
-                    <label className="blog-search">
+            {/* ── Category rail (search + topics) ──────────────────── */}
+            <section className="blog-v2__section blog-v2__rail">
+                <GlassPanel className="blog-v2__rail-inner">
+                    <label className="blog-v2__search">
                         <span>Search articles</span>
                         <input
                             type="search"
@@ -352,13 +314,11 @@ function Blog({
                             maxLength={120}
                         />
                     </label>
-                    <div className="blog-categories">
+                    <div className="blog-v2__pills">
                         {["All", ...blogCategories].map((category) => (
                             <a
                                 href={category === "All" ? "/blog" : `/blog/category/${slugifyCategory(category)}`}
-                                className={`blog-category-pill ${
-                                    activeCategory === category ? "active" : ""
-                                }`}
+                                className={`blog-v2__pill ${activeCategory === category ? "is-active" : ""}`}
                                 key={category}
                                 onClick={(event) => {
                                     event.preventDefault();
@@ -369,68 +329,103 @@ function Blog({
                             </a>
                         ))}
                     </div>
-                </div>
+                </GlassPanel>
             </section>
 
-            <section className="section guide-cta-section">
-                <div className="guide-cta-card">
-                    <div className="guide-cta-cover">
-                        <span>CN</span>
-                        <small>Free Guide</small>
+            {/* ── Trending ─────────────────────────────────────────── */}
+            {trendingPosts.length > 0 && (
+                <section className="blog-v2__section">
+                    <div className="blog-v2__heading">
+                        <p className="bdna-eyebrow">What's trending</p>
+                        <h2>Articles people are reading now</h2>
                     </div>
-                    <div className="guide-cta-copy">
-                        <p className="eyebrow">FREE DOWNLOAD</p>
-                        <h2>Get the CinNova AI Guide — free.</h2>
-                        <p>
-                            A practical breakdown of five ways AI is changing education, home
-                            safety, real estate, tech support, and early learning. Enter your
-                            email and the guide downloads instantly.
-                        </p>
-                        <div className="guide-cta-bullets">
-                            <span>AI in Education</span>
-                            <span>AI in Safety</span>
-                            <span>AI in Real Estate</span>
-                            <span>AI in Tech</span>
-                            <span>AI in Early Learning</span>
-                        </div>
-                        <button
-                            className="primary-btn guide-cta-btn"
-                            onClick={onOpenGuide}
+                    <div className="blog-v2__grid">
+                        {trendingPosts.map((post) => (
+                            <GlassCard
+                                key={post.id}
+                                className="blog-v2__card"
+                                media={<ArticleVisual post={post} />}
+                                onClick={() => onOpenArticle(post)}
+                                onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
+                            >
+                                <div className="blog-v2__card-top">
+                                    <span className="blog-v2__cat">{post.category}</span>
+                                    <span className="blog-v2__chip blog-v2__chip--trend">Trending</span>
+                                    {post.sponsored && <span className="blog-v2__chip blog-v2__chip--gold">Sponsored</span>}
+                                </div>
+                                <h3>{post.title}</h3>
+                                <p>{post.excerpt}</p>
+                                <div className="blog-v2__card-meta">
+                                    <small>{post.author}</small>
+                                    <small>{getReadTime(post)}</small>
+                                </div>
+                            </GlassCard>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Article grid ─────────────────────────────────────── */}
+            <section className="blog-v2__section" id="articles">
+                <div className="blog-v2__heading">
+                    <p className="bdna-eyebrow">Latest articles</p>
+                    <h2>Fresh from the CinNova blog</h2>
+                    <p className="blog-v2__heading-copy">
+                        {activeCategory === "All"
+                            ? "AI, education, real estate, safety, parenting, product updates, and entrepreneurship."
+                            : `Showing ${activeCategory} articles.`}
+                    </p>
+                </div>
+                <div className="blog-v2__grid">
+                    {filteredPosts.map((post) => (
+                        <GlassCard
+                            key={post.id}
+                            className="blog-v2__card"
+                            media={<ArticleVisual post={post} />}
+                            onClick={() => onOpenArticle(post)}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter") onOpenArticle(post);
+                            }}
                         >
-                            Download Free Guide →
-                        </button>
-                        <p className="guide-cta-note">
-                            Free download. No credit card. Subscribes you to the CinNova newsletter.
-                        </p>
-                    </div>
+                            <div className="blog-v2__card-top">
+                                <span className="blog-v2__cat">{post.category}</span>
+                                {post.sponsored && <span className="blog-v2__chip blog-v2__chip--gold">Sponsored</span>}
+                            </div>
+                            <h3>{post.title}</h3>
+                            <p>{post.excerpt}</p>
+                            <div className="blog-v2__card-meta">
+                                <small>{post.author}</small>
+                                <small>{getReadTime(post)}</small>
+                            </div>
+                        </GlassCard>
+                    ))}
+                    {filteredPosts.length === 0 && (
+                        <p className="blog-v2__empty">No articles match your search yet.</p>
+                    )}
                 </div>
             </section>
 
-            <section className="section blog-ad-section">
-                <AdSlot placement="banner" onNavigate={onNavigate} />
-            </section>
-
-            <section className="section categories-section">
-                <div className="section-heading">
-                    <p className="eyebrow">BROWSE BY TOPIC</p>
-                    <h2>Featured Categories.</h2>
-                    <p>Find articles by the topics that matter most to you.</p>
+            {/* ── Browse by topic (restyled) ───────────────────────── */}
+            <section className="blog-v2__section">
+                <div className="blog-v2__heading">
+                    <p className="bdna-eyebrow">Browse by topic</p>
+                    <h2>Featured categories</h2>
                 </div>
-                <div className="categories-grid">
+                <div className="blog-v2__topics">
                     {blogCategories.map((cat) => {
                         const config = categoryConfig[cat] || { icon: "CN", desc: "" };
                         const count = posts.filter((p) => p.category === cat).length;
                         return (
                             <a
                                 href={`/blog/category/${slugifyCategory(cat)}`}
-                                className="category-card"
+                                className="blog-v2__topic bdna-glass bdna-glass--interactive"
                                 key={cat}
                                 onClick={(event) => {
                                     event.preventDefault();
                                     jumpToArticles(cat);
                                 }}
                             >
-                                <span className="category-icon">{config.icon}</span>
+                                <span className="blog-v2__topic-icon">{config.icon}</span>
                                 <strong>{cat}</strong>
                                 <p>{config.desc}</p>
                                 <small>{count} {count === 1 ? "article" : "articles"}</small>
@@ -440,90 +435,80 @@ function Blog({
                 </div>
             </section>
 
-            <section className="section showcase-section" id="articles">
-                <div className="section-heading">
-                    <p className="eyebrow">LATEST ARTICLES</p>
-                    <h2>Fresh from the CinNova blog.</h2>
-                    <p>
-                        Browse articles covering AI, education, real estate, safety, parenting,
-                        product updates, and entrepreneurship.
-                    </p>
-                </div>
-                <div className="article-grid">
-                    {filteredPosts.map((post) => (
-                        <MotionCardWrap
-                            className="article-card article-card-clickable"
-                            key={post.id}
-                            onClick={() => onOpenArticle(post)}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(event) => {
-                                if (event.key === "Enter") onOpenArticle(post);
-                            }}
-                        >
-                            <div className="article-card-top-row">
-                                <span className="article-category-badge">{post.category}</span>
-                                {post.sponsored && <span className="sponsored-card-badge">Sponsored</span>}
-                            </div>
-                            <ArticleVisual post={post} />
-                            <h3>{post.title}</h3>
-                            <p>{post.excerpt}</p>
-                            <div className="article-card-meta">
-                                <small>{post.author}</small>
-                                <small>{post.date}</small>
-                                <small>{getReadTime(post)}</small>
-                            </div>
-                            <a
-                                href={`/blog/${post.slug}`}
-                                className="article-card-action"
-                                onClick={(event) => handleArticleLink(event, post)}
+            {/* ── Editor picks (restyled) ──────────────────────────── */}
+            {popularPosts.length > 0 && (
+                <section className="blog-v2__section">
+                    <div className="blog-v2__heading">
+                        <p className="bdna-eyebrow">Editor picks</p>
+                        <h2>Start with these practical reads</h2>
+                    </div>
+                    <div className="blog-v2__picks">
+                        {popularPosts.map((post, i) => (
+                            <article
+                                className="blog-v2__pick bdna-glass bdna-glass--interactive"
+                                key={post.id}
+                                onClick={() => onOpenArticle(post)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
                             >
-                                Read More
-                            </a>
-                        </MotionCardWrap>
-                    ))}
-                </div>
-            </section>
-
-            <section className="section popular-section">
-                <div className="section-heading">
-                    <p className="eyebrow">EDITOR PICKS</p>
-                    <h2>Start with these practical reads.</h2>
-                    <p>Selected articles that introduce the core CinNova product lanes and technology themes.</p>
-                </div>
-                <div className="popular-articles-list">
-                    {popularPosts.map((post, i) => (
-                        <article
-                            className="popular-article-item"
-                            key={post.id}
-                            onClick={() => onOpenArticle(post)}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
-                        >
-                            <span className="popular-rank">
-                                {String(i + 1).padStart(2, "0")}
-                            </span>
-                            <div className="popular-info">
-                                <span>{post.category}</span>
-                                <h3>{post.title}</h3>
-                                <p>{post.excerpt}</p>
-                                <div className="article-card-meta">
-                                    <small>{post.author}</small>
-                                    <small>{getReadTime(post)}</small>
+                                <span className="blog-v2__pick-rank">
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div className="blog-v2__pick-info">
+                                    <span className="blog-v2__chip">{post.category}</span>
+                                    <h3>{post.title}</h3>
+                                    <p>{post.excerpt}</p>
+                                    <div className="blog-v2__card-meta">
+                                        <small>{post.author}</small>
+                                        <small>{getReadTime(post)}</small>
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ── Free guide CTA (restyled) ────────────────────────── */}
+            <section className="blog-v2__section">
+                <GlassPanel lit className="blog-v2__guide">
+                    <div className="blog-v2__guide-cover">
+                        <span>CN</span>
+                        <small>Free Guide</small>
+                    </div>
+                    <div className="blog-v2__guide-copy">
+                        <p className="bdna-eyebrow">Free download</p>
+                        <h2>Get the CinNova AI Guide — free</h2>
+                        <p>
+                            A practical breakdown of five ways AI is changing education, home
+                            safety, real estate, tech support, and early learning.
+                        </p>
+                        <button
+                            className="bdna-btn bdna-btn--primary"
+                            onClick={onOpenGuide}
+                        >
+                            Download Free Guide →
+                        </button>
+                        <p className="blog-v2__guide-note">
+                            Free download. No credit card. Subscribes you to the CinNova newsletter.
+                        </p>
+                    </div>
+                </GlassPanel>
             </section>
 
-            <section className="section" id="newsletter">
-                <MotionSectionWrap className="newsletter-card">
-                    <p className="eyebrow">STAY IN THE LOOP</p>
-                    <h2>Get new articles and product updates in your inbox.</h2>
-                    <p className="newsletter-copy">
-                        Get launch notes, article drops, and behind-the-scenes updates as
+            {/* ── Ad slot (preserved, restyled wrapper) ────────────── */}
+            <section className="blog-v2__section blog-v2__ad">
+                <AdSlot placement="banner" onNavigate={onNavigate} />
+            </section>
+
+            {/* ── Dispatch (newsletter) ────────────────────────────── */}
+            <section className="blog-v2__section" id="newsletter">
+                <MotionSectionWrap className="blog-v2__dispatch bdna-glass bdna-glass--lit">
+                    <p className="bdna-eyebrow">The Dispatch</p>
+                    <h2>New articles and product updates in your inbox</h2>
+                    <p className="blog-v2__dispatch-copy">
+                        Launch notes, article drops, and behind-the-scenes updates as
                         CinNova builds its app ecosystem.
                     </p>
                     <NewsletterSignup

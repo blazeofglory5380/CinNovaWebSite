@@ -1,15 +1,18 @@
 import { useMemo } from "react";
 import SEO from "../components/SEO.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import CinNovaCoreHero from "../components/brand-dna/CinNovaCoreHero.jsx";
+import GlassCard from "../components/brand-dna/GlassCard.jsx";
+import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
+import SectionHead from "../components/brand-dna/SectionHead.jsx";
+import Dispatch from "../components/brand-dna/Dispatch.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
 import { normalizeProductStatus } from "../data/products.js";
-import { productHero3DConfigs } from "../data/productHero3D.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
-import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
-import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
+import "../styles/brand-dna.css";
+import "./HomePage.css";
 
 const homeSchema = {
     "@context": "https://schema.org",
@@ -67,14 +70,14 @@ function parsePostDate(dateString = "") {
 function ArticleThumb({ post }) {
     if (post.heroImage) {
         return (
-            <div className="home-v12-article-thumb">
+            <div className="home-v2__thumb">
                 <img src={post.heroImage} alt={post.heroImageAlt || post.title} loading="lazy" decoding="async" />
             </div>
         );
     }
 
     return (
-        <div className="home-v12-article-thumb home-v12-article-thumb-fallback" aria-hidden="true">
+        <div className="home-v2__thumb home-v2__thumb--fallback" aria-hidden="true">
             <span>{post.category.slice(0, 2).toUpperCase()}</span>
         </div>
     );
@@ -97,7 +100,6 @@ function HomePage({
         [posts],
     );
     const featuredProducts = products.filter((product) => FEATURED_PRODUCT_PAGES.includes(product.page));
-    const homeHero = productHero3DConfigs.home;
 
     function openProduct(page) {
         onNavigate?.(page);
@@ -105,7 +107,7 @@ function HomePage({
     }
 
     return (
-        <main className="homepage-v12">
+        <main className="homepage-v2 brand-dna">
             <SEO
                 title="Cin Nova | Practical AI for Learning, Safety, and Smarter Decisions"
                 description="Cin Nova is the central hub for practical AI products, free resources, and editorial insights — built for students, families, professionals, and businesses."
@@ -115,216 +117,190 @@ function HomePage({
                 schema={homeSchema}
             />
 
-            <MotionHeroWrap>
-                <ProductHero3D
-                    {...homeHero}
-                    className="ph3d--home"
-                    onPrimaryCta={() => onNavigate?.("products")}
-                    onSecondaryCta={onGoResources}
-                    stats={(
-                        <div className="ph3d__stats" role="list" aria-label="Cin Nova at a glance">
-                            <div className="ph3d__stat" role="listitem">
-                                <strong>5</strong>
-                                <span>Products</span>
-                            </div>
-                            <div className="ph3d__stat" role="listitem">
-                                <strong>12</strong>
-                                <span>Free resources</span>
-                            </div>
-                            <div className="ph3d__stat" role="listitem">
-                                <strong>1</strong>
-                                <span>Connected ecosystem</span>
-                            </div>
-                        </div>
-                    )}
-                />
-            </MotionHeroWrap>
+            {/* ── Hero — the CinNova Core centerpiece ─────────────────── */}
+            <CinNovaCoreHero
+                eyebrow="The CinNova Ecosystem"
+                titleA="Enter the CinNova"
+                titleB="ecosystem"
+                subtitle="Practical AI that helps people learn, stay safe, and make better decisions — connected software for education, family safety, technology support, early learning, and real estate, plus free guides and research."
+                primaryCta={{ label: "Explore Products", onClick: () => onNavigate?.("products") }}
+                secondaryCta={{ label: "Browse Resources", onClick: onGoResources }}
+                stats={[
+                    { value: "5", label: "Products" },
+                    { value: "12", label: "Free resources" },
+                    { value: "1", label: "Connected ecosystem" },
+                ]}
+            />
 
-            <section className="section home-v12-ecosystem" id="ecosystem" aria-labelledby="home-v12-ecosystem-title">
-                <div className="home-v12-section-head">
-                    <p className="eyebrow">CIN NOVA ECOSYSTEM</p>
-                    <h2 id="home-v12-ecosystem-title">Five products. One mission.</h2>
-                    <p>
-                        Each platform solves a different real-world problem — and together they form a practical AI
-                        ecosystem for everyday life.
-                    </p>
-                </div>
-                <div className="home-v12-ecosystem-grid">
+            {/* ── Ecosystem — all products ────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" id="ecosystem" aria-label="Cin Nova ecosystem">
+                <SectionHead eyebrow="CinNova Ecosystem" title="Five products. One mission." />
+                <p className="home-v2__lead">
+                    Each platform solves a different real-world problem — and together they form a practical AI
+                    ecosystem for everyday life.
+                </p>
+                <div className="home-v2__grid">
                     {products.map((product) => {
                         const status = normalizeProductStatus(product.status);
                         const audience = productDetails[product.page]?.whoFor?.[0] || product.category;
-
                         return (
-                            <MotionCardWrap key={product.name} className="home-v12-ecosystem-card">
-                                {product.image && (
-                                    <div className="home-v12-ecosystem-photo">
+                            <GlassCard
+                                key={product.name}
+                                className="home-v2__product-card"
+                                media={
+                                    product.image ? (
                                         <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
-                                        <span
-                                            className={`home-v12-product-brand${product.name.length > 14 ? " home-v12-product-brand--compact" : ""}`}
-                                        >
-                                            {product.name}
-                                        </span>
-                                    </div>
-                                )}
-                                <div className="home-v12-ecosystem-body">
-                                    <div className="home-v12-ecosystem-meta">
-                                        <span className={`home-v12-status home-v12-status--${status.variant}`}>
-                                            {status.label}
-                                        </span>
-                                        <span className="home-v12-ecosystem-category">{product.category}</span>
-                                    </div>
-                                    <h3>{product.name}</h3>
-                                    <p>{product.description}</p>
-                                    <p className="home-v12-ecosystem-audience">
-                                        <strong>Audience:</strong> {audience}
-                                    </p>
-                                    <button type="button" className="secondary-btn" onClick={() => openProduct(product.page)}>
-                                        Learn More
-                                    </button>
+                                    ) : null
+                                }
+                                onClick={() => openProduct(product.page)}
+                                aria-label={`${product.name} — learn more`}
+                            >
+                                <div className="home-v2__card-meta">
+                                    <span className={`home-v2__status home-v2__status--${status.variant}`}>{status.label}</span>
+                                    <span className="home-v2__cat">{product.category}</span>
                                 </div>
-                            </MotionCardWrap>
+                                <h3>{product.name}</h3>
+                                <p>{product.description}</p>
+                                <p className="home-v2__audience"><strong>Audience:</strong> {audience}</p>
+                                <span className="home-v2__cue">Learn More →</span>
+                            </GlassCard>
                         );
                     })}
                 </div>
-            </section>
+            </MotionSectionWrap>
 
-            <section className="section home-v12-why" aria-labelledby="home-v12-why-title">
-                <div className="home-v12-section-head">
-                    <p className="eyebrow">WHY CINNOVA</p>
-                    <h2 id="home-v12-why-title">Software that works together for real people.</h2>
-                    <p>
-                        CinNova is not a collection of disconnected apps. It is a mission-driven ecosystem designed to
-                        help students, families, professionals, and businesses move from confusion to confident action.
-                    </p>
-                </div>
-                <div className="home-v12-why-grid">
+            {/* ── Why CinNova ─────────────────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="Why CinNova">
+                <SectionHead eyebrow="Why CinNova" title="Software that works together for real people." />
+                <p className="home-v2__lead">
+                    CinNova is not a collection of disconnected apps. It is a mission-driven ecosystem designed to
+                    help students, families, professionals, and businesses move from confusion to confident action.
+                </p>
+                <div className="home-v2__pillars">
                     {whyCinNovaPillars.map((pillar) => (
-                        <article key={pillar.title} className="home-v12-why-card">
+                        <GlassPanel key={pillar.title} as="article" className="home-v2__pillar">
                             <h3>{pillar.title}</h3>
                             <p>{pillar.description}</p>
-                        </article>
+                        </GlassPanel>
                     ))}
                 </div>
-            </section>
+            </MotionSectionWrap>
 
-            <section className="section home-v12-featured" aria-labelledby="home-v12-featured-title">
-                <div className="home-v12-section-head">
-                    <p className="eyebrow">FEATURED PRODUCTS</p>
-                    <h2 id="home-v12-featured-title">Start with the platforms leading the ecosystem.</h2>
-                    <p>Explore the products getting the most traction across education, safety, and real estate.</p>
-                </div>
-                <div className="home-v12-featured-grid">
+            {/* ── Featured products ───────────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="Featured products">
+                <SectionHead eyebrow="Featured Products" title="Start with the platforms leading the ecosystem." />
+                <p className="home-v2__lead">
+                    Explore the products getting the most traction across education, safety, and real estate.
+                </p>
+                <div className="home-v2__grid home-v2__grid--featured">
                     {featuredProducts.map((product) => {
                         const status = normalizeProductStatus(product.status);
                         return (
-                            <MotionCardWrap key={product.name} className="home-v12-featured-card">
-                                <div className="home-v12-featured-photo">
+                            <GlassCard
+                                key={product.name}
+                                className="home-v2__product-card"
+                                media={
                                     <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
-                                    <span
-                                        className={`home-v12-product-brand home-v12-product-brand--featured${product.name.length > 14 ? " home-v12-product-brand--compact" : ""}`}
-                                    >
-                                        {product.name}
-                                    </span>
+                                }
+                                onClick={() => openProduct(product.page)}
+                                aria-label={`${product.name} — learn more`}
+                            >
+                                <div className="home-v2__card-meta">
+                                    <span className={`home-v2__status home-v2__status--${status.variant}`}>{status.label}</span>
+                                    <span className="home-v2__cat">{product.category}</span>
                                 </div>
-                                <div className="home-v12-featured-body">
-                                    <span className={`home-v12-status home-v12-status--${status.variant}`}>
-                                        {status.label}
-                                    </span>
-                                    <p className="home-v12-featured-category">{product.category}</p>
-                                    <h3>{product.name}</h3>
-                                    <p>{product.description}</p>
-                                    <button type="button" className="primary-btn" onClick={() => openProduct(product.page)}>
-                                        Learn More
-                                    </button>
-                                </div>
-                            </MotionCardWrap>
+                                <h3>{product.name}</h3>
+                                <p>{product.description}</p>
+                                <span className="home-v2__cue">Learn More →</span>
+                            </GlassCard>
                         );
                     })}
                 </div>
-            </section>
+            </MotionSectionWrap>
 
-            <section className="section home-v12-resources" aria-labelledby="home-v12-resources-title">
-                <div className="home-v12-section-head">
-                    <p className="eyebrow">LATEST RESOURCES</p>
-                    <h2 id="home-v12-resources-title">Fresh guides, templates, and checklists.</h2>
-                    <p>Free publications from the CinNova Resources Center — updated as new assets ship.</p>
-                </div>
-                <div className="home-v12-resources-grid">
+            {/* ── Latest resources ────────────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="Latest resources">
+                <SectionHead eyebrow="Latest Resources" title="Fresh guides, templates, and checklists." />
+                <p className="home-v2__lead">
+                    Free publications from the CinNova Resources Center — updated as new assets ship.
+                </p>
+                <div className="home-v2__grid">
                     {latestResources.map((resource) => (
-                        <MotionCardWrap key={resource.id} className="home-v12-resource-card">
-                            <p className="home-v12-resource-category">{resource.category}</p>
+                        <GlassCard
+                            key={resource.id}
+                            className="home-v2__text-card"
+                            onClick={() => onOpenResource?.(resource)}
+                            aria-label={`${resource.title} — view resource`}
+                        >
+                            <span className="home-v2__cat">{resource.category}</span>
                             <h3>{resource.title}</h3>
                             <p>{resource.description}</p>
-                            <div className="home-v12-resource-meta">
+                            <div className="home-v2__card-foot">
                                 <span>{resource.product}</span>
                                 <span>{resource.readTime}</span>
                             </div>
-                            <button type="button" className="secondary-btn" onClick={() => onOpenResource?.(resource)}>
-                                View resource
-                            </button>
-                        </MotionCardWrap>
+                            <span className="home-v2__cue">View resource →</span>
+                        </GlassCard>
                     ))}
                 </div>
-                <div className="home-v12-section-action">
-                    <button type="button" className="secondary-btn" onClick={onGoResources}>
+                <div className="home-v2__section-action">
+                    <button type="button" className="bdna-btn bdna-btn--ghost" onClick={onGoResources}>
                         Browse all resources →
                     </button>
                 </div>
-            </section>
+            </MotionSectionWrap>
 
-            <section className="section home-v12-articles" aria-labelledby="home-v12-articles-title">
-                <div className="home-v12-section-head">
-                    <p className="eyebrow">LATEST ARTICLES</p>
-                    <h2 id="home-v12-articles-title">Research and insights from the CinNova blog.</h2>
-                    <p>Editorial coverage of AI, education, safety, real estate, and product building.</p>
-                </div>
-                <div className="home-v12-articles-grid">
+            {/* ── Latest articles ─────────────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="Latest articles">
+                <SectionHead eyebrow="Latest Articles" title="Research and insights from the CinNova blog." />
+                <p className="home-v2__lead">
+                    Editorial coverage of AI, education, safety, real estate, and product building.
+                </p>
+                <div className="home-v2__grid">
                     {latestArticles.map((post) => (
-                        <MotionCardWrap key={post.id} className="home-v12-article-card">
-                            <ArticleThumb post={post} />
-                            <p className="home-v12-article-category">{post.category}</p>
+                        <GlassCard
+                            key={post.id}
+                            className="home-v2__article-card"
+                            media={<ArticleThumb post={post} />}
+                            onClick={() => onOpenArticle?.(post)}
+                            aria-label={`${post.title} — read article`}
+                        >
+                            <span className="home-v2__cat">{post.category}</span>
                             <h3>{post.title}</h3>
                             <p>{post.excerpt}</p>
-                            <div className="home-v12-article-meta">
+                            <div className="home-v2__card-foot">
                                 <span>{post.readTime}</span>
                                 <span>{post.date}</span>
                             </div>
-                            <button type="button" className="secondary-btn" onClick={() => onOpenArticle?.(post)}>
-                                Read article
-                            </button>
-                        </MotionCardWrap>
+                            <span className="home-v2__cue">Read article →</span>
+                        </GlassCard>
                     ))}
                 </div>
-                <div className="home-v12-section-action">
-                    <button type="button" className="primary-btn" onClick={onGoBlog}>
+                <div className="home-v2__section-action">
+                    <button type="button" className="bdna-btn bdna-btn--solid" onClick={onGoBlog}>
                         Visit the blog →
                     </button>
                 </div>
-            </section>
+            </MotionSectionWrap>
 
-            <section className="section home-v12-newsletter" id="newsletter" aria-labelledby="home-v12-newsletter-title">
-                <MotionSectionWrap className="home-v12-newsletter-card">
-                    <div className="home-v12-newsletter-copy">
-                        <p className="eyebrow">STAY IN THE LOOP</p>
-                        <h2 id="home-v12-newsletter-title">Product launches, free resources, and practical AI insights.</h2>
-                        <p>
-                            Join the CinNova newsletter for launch announcements, new resource drops, and editorial
-                            highlights — no spam, unsubscribe anytime.
-                        </p>
-                        <ul className="home-v12-newsletter-perks">
-                            <li>Early access to product betas</li>
-                            <li>New guides and templates as they publish</li>
-                            <li>Curated articles from the CinNova blog</li>
-                        </ul>
-                    </div>
-                    <div className="home-v12-newsletter-form-wrap">
-                        <NewsletterSignup
-                            onSubscribe={onSubscribe}
-                            source="Homepage"
-                            tags={["Homepage", "Product Updates", "Resource Reader"]}
-                        />
-                    </div>
-                </MotionSectionWrap>
+            {/* ── Newsletter (Dispatch) ───────────────────────────────── */}
+            <section className="home-v2__section" id="newsletter" aria-label="Newsletter">
+                <Dispatch
+                    eyebrow="Stay in the loop"
+                    title="Product launches, free resources, and practical AI insights."
+                    copy="Join the CinNova newsletter for launch announcements, new resource drops, and editorial highlights — no spam, unsubscribe anytime."
+                >
+                    <ul className="home-v2__perks">
+                        <li>Early access to product betas</li>
+                        <li>New guides and templates as they publish</li>
+                        <li>Curated articles from the CinNova blog</li>
+                    </ul>
+                    <NewsletterSignup
+                        onSubscribe={onSubscribe}
+                        source="Homepage"
+                        tags={["Homepage", "Product Updates", "Resource Reader"]}
+                    />
+                </Dispatch>
             </section>
         </main>
     );
