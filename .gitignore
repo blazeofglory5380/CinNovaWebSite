@@ -49,3 +49,7 @@ skills-lock.json
 # is kept tracked (negated below).
 public/images/product-heroes/posters/
 !public/images/product-heroes/posters/realestateai-farmhouse-transformation.png
+
+# Generated sitemap — rebuilt from data by `npm run generate:sitemap` (runs
+# first in the build). Untracked to avoid per-build lastmod churn.
+public/sitemap.xml
