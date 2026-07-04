@@ -1,11 +1,7 @@
 /*
  * TechMateHero — animated AI tech-support hero (PROTOTYPE).
- *
- * Standalone, React + CSS only. Every selector is scoped under `.tmx-hero` and
- * every keyframe is `tmx-`-prefixed, so nothing leaks into the rest of the app.
- * No external libraries, no images, no 3D — the scene (glowing robot-face core,
- * floating status cards, laptop/phone, desk-edge glow) is pure CSS + inline SVG.
- * Honors prefers-reduced-motion. Not wired into production.
+ * Scoped under `.tmx-hero`; keyframes are `tmx-`-prefixed. React + CSS only,
+ * no images/3D. Honors prefers-reduced-motion. Not wired into production.
  */
 
 .tmx-hero {

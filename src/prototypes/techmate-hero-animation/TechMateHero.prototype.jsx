@@ -2,15 +2,12 @@ import "./TechMateHero.prototype.css";
 
 /*
  * TechMateHero — animated AI tech-support hero (PROTOTYPE).
+ * Standalone React + CSS. No external libraries, no images, no 3D: the scene
+ * (glowing robot-face core, floating status cards, laptop / phone, desk-edge
+ * glow) is pure CSS + inline SVG, scoped under `.tmx-hero`. Honors
+ * prefers-reduced-motion and is responsive. Not wired into production.
  *
- * Standalone React + CSS component. No external libraries, no images, no 3D:
- * the cinematic scene (glowing robot-face core, floating status cards, laptop /
- * phone, desk-edge glow) is pure CSS + inline SVG, all scoped under
- * `.tmx-hero`. Honors prefers-reduced-motion and is responsive. Not wired into
- * production — this is a visual/animation reference only.
- *
- * Usage:  import TechMateHero from "./TechMateHero.prototype.jsx";
- *         <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
+ * Usage:  <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
  */
 
 const PARTICLES = [
