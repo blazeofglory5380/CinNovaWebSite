@@ -1,6 +1,9 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
+// Experiment-branch review only: TechMate hero swapped to the approved review
+// prototype. ProductHero3D is kept imported (still used in production/main).
+import TechMateHeroReview from "../prototypes/techmate-hero-animation/TechMateHeroReview.prototype.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -38,9 +41,10 @@ function TechMateAI() {
                 schema={techmateSchema}
             />
 
-            <MotionHeroWrap>
-                <ProductHero3D {...techmateHero} className="ph3d--techmate" />
-            </MotionHeroWrap>
+            {/* Experiment-branch review only: approved animated hero (real left
+                copy + cropped image scene). Production/main still uses the
+                ProductHero3D hero via <MotionHeroWrap>. */}
+            <TechMateHeroReview primaryHref="#waitlist" secondaryHref="#waitlist" />
 
             <section className="section" id="features">
                 <div className="section-heading">
