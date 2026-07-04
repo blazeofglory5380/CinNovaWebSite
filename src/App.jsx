@@ -6,10 +6,6 @@ import StudyNest from "./pages/StudyNest.jsx";
 import PoisonGuard from "./pages/PoisonGuard.jsx";
 import RealEstate from "./pages/RealEstate.jsx";
 import TechMateAI from "./pages/TechMateAI.jsx";
-// Experiment-branch-only preview of the TechMate hero animation prototype.
-import TechMateHero from "./prototypes/techmate-hero-animation/TechMateHero.prototype.jsx";
-// Experiment-branch-only production-review hero (real left copy + cropped scene).
-import TechMateHeroReview from "./prototypes/techmate-hero-animation/TechMateHeroReview.prototype.jsx";
 import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
@@ -113,16 +109,6 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         const resource = getResourceBySlug(resourceSlug);
         if (resource) return { page: "resource", article: null, resource, category: null };
         return { page: "not-found", article: null, resource: null, category: null };
-    }
-
-    // Experiment-branch-only preview route for the TechMate hero animation
-    // prototype. Handled here (not via VALID_PAGE_KEYS) so SEO config, the
-    // sitemap, and production routing stay untouched.
-    if (routedPage === "techmate-hero-prototype") {
-        return { page: "techmate-hero-prototype", article: null, resource: null, category: null };
-    }
-    if (routedPage === "techmate-hero-review") {
-        return { page: "techmate-hero-review", article: null, resource: null, category: null };
     }
 
     if (routedPage) {
@@ -572,32 +558,6 @@ function App() {
                 </>
             )}
 
-            {/* Experiment-branch-only preview of the TechMate hero animation
-                prototype. Not a production route; not in the sitemap/SEO. */}
-            {page === "techmate-hero-prototype" && (
-                <>
-                    <div className="back-bar">
-                        <button onClick={goHome}>Back to CinNova</button>
-                        <button type="button" className="back-bar-secondary" onClick={() => openPage("techmate")}>
-                            Live TechMate
-                        </button>
-                    </div>
-                    <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
-                </>
-            )}
-
-            {/* Experiment-branch-only production-review hero (real left copy). */}
-            {page === "techmate-hero-review" && (
-                <>
-                    <div className="back-bar">
-                        <button onClick={goHome}>Back to CinNova</button>
-                        <button type="button" className="back-bar-secondary" onClick={() => openPage("techmate")}>
-                            Live TechMate
-                        </button>
-                    </div>
-                    <TechMateHeroReview primaryHref="#waitlist" secondaryHref="#waitlist" />
-                </>
-            )}
 
             {page === "kiddo" && (
                 <>

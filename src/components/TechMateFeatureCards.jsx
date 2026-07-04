@@ -1,14 +1,14 @@
-import { MotionCardWrap } from "../../motion/MotionCardWrap.jsx";
-import "./TechMateFeatureCards.prototype.css";
+import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import "./TechMateFeatureCards.css";
 
 /*
  * TechMateFeatureCards — TechMate feature grid with glowing icon panels
- * (PROTOTYPE / experiment branch review only).
+ *
  *
  * Renders the same feature data (title/category/description) but swaps each
  * card's blank image area for a dark-navy, blue/purple-glow panel with a cyan
  * line icon matched to the topic — matching the approved TechMate hero. No
- * images/stock photos. Scoped under `.tmf-card`; not wired into production.
+ * images/stock photos. Scoped under `.tmf-card`.
  */
 
 // Topic-matched cyan line icons (24x24, stroke = currentColor).

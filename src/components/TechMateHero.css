@@ -1,15 +1,15 @@
 /*
- * TechMateHeroReview — production-review TechMate hero (PROTOTYPE).
+ * TechMateHero — animated TechMate product hero.
  *
  * Left = REAL HTML copy/buttons (crisp, selectable, clickable). Right = the
  * approved animated image scene, cropped to the right ~68% so the baked-in left
  * text is clipped out (the real copy replaces it), while the full desk edge and
  * top-right corner stay visible. Animated `mix-blend-mode: screen` overlays +
- * cursor-follow eye/core glow are carried over from the approved prototype.
+ * cursor-follow eye/core glow are carried over from the approved design.
  *
  * Everything is scoped under `.tmxr-hero`; keyframes are `tmxr-`-prefixed, so it
- * never collides with the existing `.tmx-hero` prototype. React + CSS only,
- * responsive, prefers-reduced-motion aware. Review-only — not wired into prod.
+ * never collides with other heroes. React + CSS only,
+ * responsive, prefers-reduced-motion aware.
  */
 
 .tmxr-hero {
@@ -134,7 +134,7 @@
     background: linear-gradient(90deg, #070b18 0%, rgba(7, 11, 24, 0.55) 3.5%, transparent 10%);
 }
 
-/* overlays — positioned as % of the full image (same as approved prototype) */
+/* overlays — positioned as % of the full image (same as approved design) */
 .tmxr-hero .tmxr-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; }
 .tmxr-hero .tmxr-ov--radial { border-radius: 50%; transform: translate(-50%, -50%); aspect-ratio: 1 / 1; }
 

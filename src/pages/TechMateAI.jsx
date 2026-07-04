@@ -1,23 +1,16 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
-// Experiment-branch review only: TechMate hero swapped to the approved review
-// prototype. ProductHero3D is kept imported (still used in production/main).
-import TechMateHeroReview from "../prototypes/techmate-hero-animation/TechMateHeroReview.prototype.jsx";
-import TechMateFeatureCards from "../prototypes/techmate-hero-animation/TechMateFeatureCards.prototype.jsx";
-import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import TechMateHero from "../components/TechMateHero.jsx";
+import TechMateFeatureCards from "../components/TechMateFeatureCards.jsx";
 import { productMarketing } from "../data/marketingImages.js";
-import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
 const { features } = productMarketing.techmate;
-const techmateHero = productHero3DConfigs.techmate;
 
 const techmateSchema = {
     "@context": "https://schema.org",
@@ -42,10 +35,7 @@ function TechMateAI() {
                 schema={techmateSchema}
             />
 
-            {/* Experiment-branch review only: approved animated hero (real left
-                copy + cropped image scene). Production/main still uses the
-                ProductHero3D hero via <MotionHeroWrap>. */}
-            <TechMateHeroReview primaryHref="#waitlist" secondaryHref="#waitlist" />
+            <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
 
             <section className="section" id="features">
                 <div className="section-heading">
@@ -57,8 +47,6 @@ function TechMateAI() {
                     </p>
                 </div>
 
-                {/* Experiment-branch review: glowing icon panels instead of the
-                    blank photo areas. Production/main uses FeaturePhotoCard. */}
                 <TechMateFeatureCards features={features} />
             </section>
 

@@ -1,22 +1,22 @@
 import { useRef } from "react";
-import "./TechMateHeroReview.prototype.css";
+import "./TechMateHero.css";
 
 /*
- * TechMateHeroReview — production-review TechMate hero (PROTOTYPE).
+ * TechMateHero — animated TechMate product hero.
  *
  * Left column is REAL HTML (crisp text, real clickable buttons). Right column is
  * the approved animated image scene, cropped to the right ~68% so the baked-in
  * left text is clipped out and replaced by the real copy — the full desk edge
- * and top-right corner stay visible. Carries over the approved prototype's
+ * and top-right corner stay visible. Carries over the approved design's
  * animated glow overlays and cursor-follow eye/core glow.
  *
  * React + CSS only. Scoped under `.tmxr-hero`. Responsive +
- * prefers-reduced-motion. Review-only — not wired into production.
+ * prefers-reduced-motion.
  *
- * Usage:  <TechMateHeroReview primaryHref="#waitlist" secondaryHref="#waitlist" />
+ * Usage:  <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
  */
 
-const IMAGE_SRC = "/prototypes/techmate/techmate-hero-approved-v1.png";
+const IMAGE_SRC = "/images/products/techmate/techmate-hero-approved-v1.png";
 
 const CARD_GLOWS = [
     { key: "wifi", left: "50%", top: "19.5%", delay: "0s" },
@@ -40,7 +40,7 @@ function prefersReducedMotion() {
         : false;
 }
 
-function TechMateHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
+function TechMateHero({ primaryHref = "#", secondaryHref = "#" }) {
     const sceneRef = useRef(null);
     const rafRef = useRef(0);
 
@@ -147,4 +147,4 @@ function TechMateHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
     );
 }
 
-export default TechMateHeroReview;
+export default TechMateHero;
