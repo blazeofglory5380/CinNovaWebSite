@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import PoisonGuardHero from "../components/PoisonGuardHero.jsx";
+import ProductHero3D from "../components/ProductHero3D.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
 import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
 import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
@@ -13,6 +13,7 @@ import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
+import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
@@ -193,14 +194,13 @@ function PoisonGuard() {
                 schema={poisonguardSchema}
             />
 
-            {/* Main Poison Guard hero — animated AI hazard-scanning scene,
-                renders the page <h1>. Primary CTA -> features; secondary ->
-                the on-page Cin Nova ecosystem section. */}
-            <PoisonGuardHero
-                headingLevel="h1"
-                primaryHref="#features"
-                secondaryHref="#product-ecosystem-title"
-            />
+            {/* Main Poison Guard hero — 3D scanning-platform model (self-hosted
+                Draco) with poster fallback, rendering the page <h1>. Driven by
+                productHero3DConfigs.poisonguard; matches the TechMate/RealEstate
+                ProductHero3D pattern. */}
+            <MotionHeroWrap>
+                <ProductHero3D {...poisonGuardHero} className="ph3d--poisonguard" />
+            </MotionHeroWrap>
 
             <div className="pg-disclaimer-wrap">
                 <PoisonGuardSafetyDisclaimer variant="prominent" />

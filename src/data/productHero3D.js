@@ -21,8 +21,7 @@ export const productHero3DConfigs = {
         secondaryCtaHref: "/?page=resources",
     },
     poisonguard: {
-        heroVisual: "poster",
-        modelSrc: "/models/product-heroes/poisonguard-decaying-poison-oak.glb",
+        modelSrc: "/models/product-heroes/poisonguard-plant-scanner.web.glb",
         posterSrc: "/images/product-heroes/posters/poisonguard-decaying-poison-oak.png",
         alt: "Poison oak leaves decaying safely as PoisonGuard analyzes household plant hazards",
         eyebrow: "POISONGUARD",
