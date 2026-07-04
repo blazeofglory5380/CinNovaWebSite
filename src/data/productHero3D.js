@@ -23,6 +23,11 @@ export const productHero3DConfigs = {
     poisonguard: {
         modelSrc: "/models/product-heroes/poisonguard-plant-scanner.web.glb",
         posterSrc: "/images/product-heroes/posters/poisonguard-decaying-poison-oak.png",
+        // Skip the pre-model poster (both model-viewer's poster and the fallback
+        // image) so the boxed stage shows only the dark loading panel until the
+        // 3D scanner is ready. posterSrc is kept for SEO/schema; just not shown
+        // before the model. Boxed stage + loading panel are unchanged.
+        hidePosterBeforeModel: true,
         alt: "Poison oak leaves decaying safely as PoisonGuard analyzes household plant hazards",
         eyebrow: "POISONGUARD",
         title: "Know what you are dealing with before panic sets in.",

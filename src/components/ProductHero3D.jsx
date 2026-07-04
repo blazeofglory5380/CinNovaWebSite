@@ -48,6 +48,11 @@ function ProductHero3D({
     heroVisual = "model",
     viewer = {},
     minPosterMs = 0,
+    // When true (PoisonGuard), suppress the pre-model poster image — both
+    // model-viewer's `poster` and the fallback <img> — so the boxed stage shows
+    // only the dark loading panel until the 3D model is revealed. On model
+    // failure the loading panel remains (never the static poster image).
+    hidePosterBeforeModel = false,
     transformation = null,
     badges = null,
     stats = null,
@@ -306,7 +311,7 @@ function ProductHero3D({
                                     ref={viewerRef}
                                     className="ph3d__viewer"
                                     src={modelSrc}
-                                    poster={posterSrc}
+                                    {...(hidePosterBeforeModel ? {} : { poster: posterSrc })}
                                     alt={alt}
                                     loading="lazy"
                                     camera-controls
@@ -330,14 +335,16 @@ function ProductHero3D({
                                     role="img"
                                     aria-label={alt}
                                 >
-                                    <img
-                                        src={posterSrc}
-                                        alt=""
-                                        className="ph3d__fallback-image"
-                                        loading="eager"
-                                        fetchPriority="high"
-                                        decoding="async"
-                                    />
+                                    {hidePosterBeforeModel ? null : (
+                                        <img
+                                            src={posterSrc}
+                                            alt=""
+                                            className="ph3d__fallback-image"
+                                            loading="eager"
+                                            fetchPriority="high"
+                                            decoding="async"
+                                        />
+                                    )}
                                     {canPreviewTransformation && !transformationPreviewOpen ? (
                                         <div className="ph3d__preview-launch">
                                             <button
