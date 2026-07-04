@@ -322,6 +322,25 @@
 .ph3d--real-estate { --bdna-accent: #2563eb; }
 .ph3d--techmate    { --bdna-accent: #0284c7; }
 
+/* ── PoisonGuard — no white pre-model flash ───────────────────────────
+ * PoisonGuard sets no `poster` (hidePosterBeforeModel), so model-viewer would
+ * otherwise show its internal #default-poster, whose default background-color is
+ * white — a white box before the 3D model paints. Force that shadow part (and
+ * the host) transparent so the dark boxed stage shows through instead. Targeting
+ * ::part(default-poster) directly is more robust than relying on --poster-color
+ * inheritance reaching the shadow DOM. Scoped to PoisonGuard; the boxed stage,
+ * loading panel, camera, and model are unchanged. */
+.ph3d--poisonguard .ph3d__viewer {
+    background: transparent;
+    background-color: transparent;
+    --poster-color: transparent;
+}
+
+.ph3d--poisonguard .ph3d__viewer::part(default-poster) {
+    background-color: transparent;
+    background-image: none;
+}
+
 /* ── Kiddo — lighter / playful variant (premium, not dark) ────────── */
 .ph3d--kiddo {
     --bdna-accent: #f59e0b;
