@@ -200,7 +200,13 @@
 
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-    .poison-guard-hero .pgh-inner { flex-direction: column; align-items: stretch; }
+    /* Clean vertical stack. `flex-wrap: nowrap` + `min-width: 0` stop the long
+       <h1> / copy / scan panel from blowing out the flex column and overflowing
+       (which `overflow: hidden` would silently clip — cutting off the headline,
+       lede, secondary button, and the panel's right-side labels on mobile). */
+    .poison-guard-hero .pgh-inner { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+    .poison-guard-hero .pgh-copy,
+    .poison-guard-hero .pgh-scene-col { min-width: 0; }
     .poison-guard-hero .pgh-scene-col { order: -1; }
 }
 
