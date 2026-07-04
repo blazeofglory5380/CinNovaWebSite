@@ -8,6 +8,8 @@ import RealEstate from "./pages/RealEstate.jsx";
 import TechMateAI from "./pages/TechMateAI.jsx";
 // Experiment-branch-only preview of the TechMate hero animation prototype.
 import TechMateHero from "./prototypes/techmate-hero-animation/TechMateHero.prototype.jsx";
+// Experiment-branch-only production-review hero (real left copy + cropped scene).
+import TechMateHeroReview from "./prototypes/techmate-hero-animation/TechMateHeroReview.prototype.jsx";
 import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
@@ -118,6 +120,9 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     // sitemap, and production routing stay untouched.
     if (routedPage === "techmate-hero-prototype") {
         return { page: "techmate-hero-prototype", article: null, resource: null, category: null };
+    }
+    if (routedPage === "techmate-hero-review") {
+        return { page: "techmate-hero-review", article: null, resource: null, category: null };
     }
 
     if (routedPage) {
@@ -578,6 +583,19 @@ function App() {
                         </button>
                     </div>
                     <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
+                </>
+            )}
+
+            {/* Experiment-branch-only production-review hero (real left copy). */}
+            {page === "techmate-hero-review" && (
+                <>
+                    <div className="back-bar">
+                        <button onClick={goHome}>Back to CinNova</button>
+                        <button type="button" className="back-bar-secondary" onClick={() => openPage("techmate")}>
+                            Live TechMate
+                        </button>
+                    </div>
+                    <TechMateHeroReview primaryHref="#waitlist" secondaryHref="#waitlist" />
                 </>
             )}
 
