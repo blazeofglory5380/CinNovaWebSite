@@ -44,6 +44,7 @@ public/models/cinnova-core/*.png
 # Draco-compressed *.web.glb is tracked; the master stays a local archive.
 public/models/product-heroes/studynest-campus-library.glb
 public/models/product-heroes/studynest-campus-library-reference.png
+public/models/product-heroes/poisonguard-plant-scanner.glb
 
 # Local agent tooling
 .agents/
