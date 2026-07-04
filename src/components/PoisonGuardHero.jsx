@@ -65,13 +65,12 @@ function PoisonGuardHero({
                     </div>
 
                     <Heading className="pgh-title">
-                        Poison Guard: AI{" "}Safety for Everyday{" "}Homes
+                        Poison Guard: AI Detection for Poison Risks
                     </Heading>
 
                     <p className="pgh-lede">
-                        An intelligent home safety assistant that helps families identify
-                        household hazards, toxic items, and child safety risks before accidents
-                        happen.
+                        Poison Guard helps identify poisonous animals, toxic plants, and
+                        hazardous chemicals using AI-powered visual risk detection.
                     </p>
 
                     <div className="pgh-actions">
@@ -86,11 +85,11 @@ function PoisonGuardHero({
                     <div className="pgh-tags">
                         <span className="pgh-tag">
                             <span className="pgh-tag__dot" style={{ background: "#34D399" }} />
-                            Real-time hazard scanning
+                            Real-time risk scanning
                         </span>
                         <span className="pgh-tag">
                             <span className="pgh-tag__dot" style={{ background: "#4D9FFF" }} />
-                            Child-safe zone mapping
+                            Animals, plants & chemicals
                         </span>
                     </div>
                 </div>
@@ -116,12 +115,39 @@ function PoisonGuardHero({
 
                         {hazardActive ? <div className="pgh-beam" /> : null}
 
+                        {/* Poisonous animal specimen (spider silhouette) */}
+                        <div className="pgh-specimen pgh-specimen--animal">
+                            <svg viewBox="0 0 64 44" className="pgh-svg pgh-svg--animal">
+                                <g className="pgh-svg-animal__legs">
+                                    <path d="M32 22 C22 14 13 13 6 8" />
+                                    <path d="M32 24 C20 22 11 23 4 21" />
+                                    <path d="M32 26 C20 28 11 31 5 36" />
+                                    <path d="M32 24 C25 30 19 35 15 41" />
+                                    <path d="M32 22 C42 14 51 13 58 8" />
+                                    <path d="M32 24 C44 22 53 23 60 21" />
+                                    <path d="M32 26 C44 28 53 31 59 36" />
+                                    <path d="M32 24 C39 30 45 35 49 41" />
+                                </g>
+                                <ellipse className="pgh-svg-animal__body" cx="32" cy="26" rx="9" ry="11" />
+                                <circle className="pgh-svg-animal__head" cx="32" cy="15" r="5" />
+                            </svg>
+                        </div>
+
+                        {/* Toxic plant specimen */}
+                        <div className="pgh-specimen pgh-specimen--plant">
+                            <svg viewBox="0 0 48 60" className="pgh-svg pgh-svg--plant">
+                                <path className="pgh-svg-plant__pot" d="M15 44 H33 L30 58 H18 Z" />
+                                <path className="pgh-svg-plant__stem" d="M24 46 V22" />
+                                <path className="pgh-svg-plant__leaf" d="M24 36 C13 32 9 22 12 15 C21 17 25 27 24 36 Z" />
+                                <path className="pgh-svg-plant__leaf" d="M24 30 C35 26 39 16 36 9 C27 11 23 21 24 30 Z" />
+                                <path className="pgh-svg-plant__leaf" d="M24 24 C20 16 22 8 27 4 C31 10 29 19 24 24 Z" />
+                            </svg>
+                        </div>
+
+                        {/* Matched-safe container */}
                         <div className="pgh-bottle-safe pgh-bottle-safe--1">
                             <div className="pgh-bottle-safe__cap" />
                             <div className="pgh-bottle-safe__band" />
-                        </div>
-                        <div className="pgh-bottle-safe pgh-bottle-safe--2">
-                            <div className="pgh-bottle-safe__cap" />
                         </div>
 
                         <div className="pgh-hazard">
@@ -145,25 +171,29 @@ function PoisonGuardHero({
 
                         {showLabels ? (
                             <>
+                                <div className="pgh-label pgh-label--scan">
+                                    <span className="pgh-label__dot" />
+                                    <span className="pgh-label__text">AI Risk Scan</span>
+                                </div>
                                 {hazardActive ? (
                                     <>
-                                        <div className="pgh-label pgh-label--hazard">
+                                        <div className="pgh-label pgh-label--animal">
                                             <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">Hazard Detected</span>
+                                            <span className="pgh-label__text">Poisonous Animal</span>
                                         </div>
-                                        <div className="pgh-label pgh-label--toxic">
+                                        <div className="pgh-label pgh-label--chem">
                                             <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">Toxic Item · Cleaning Agent</span>
+                                            <span className="pgh-label__text">Chemical Hazard</span>
                                         </div>
-                                        <div className="pgh-label pgh-label--alert">
+                                        <div className="pgh-label pgh-label--plant">
                                             <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">AI Alert · Child Safety Risk</span>
+                                            <span className="pgh-label__text">Toxic Plant</span>
                                         </div>
                                     </>
                                 ) : null}
                                 <div className="pgh-label pgh-label--safe">
                                     <span className="pgh-label__dot" />
-                                    <span className="pgh-label__text">Safe Zone</span>
+                                    <span className="pgh-label__text">Safe Match</span>
                                 </div>
                             </>
                         ) : null}

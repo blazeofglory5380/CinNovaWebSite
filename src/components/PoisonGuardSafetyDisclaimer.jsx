@@ -1,5 +1,5 @@
 const DISCLAIMER_TEXT =
-    "Poison Guard is not a substitute for professional medical, veterinary, emergency, or poison-control advice. In an emergency, call 911 or Poison Control at 1-800-222-1222 in the U.S.";
+    "Poison Guard is not a substitute for emergency services, poison control, veterinary care, or professional medical advice. If someone may have been exposed to a poisonous animal, toxic plant, or hazardous chemical, contact emergency services or poison control immediately.";
 
 function PoisonGuardSafetyDisclaimer({ variant = "prominent" }) {
     return (
