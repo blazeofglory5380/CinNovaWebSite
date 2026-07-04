@@ -318,7 +318,7 @@
 /* ── Per-product accent identity (only sets --bdna-accent) ─────────── */
 .ph3d--home        { --bdna-accent: var(--bdna-emerald); }
 .ph3d--poisonguard { --bdna-accent: #10b981; }
-.ph3d--studynest   { --bdna-accent: #7c3aed; }
+.ph3d--studynest   { --bdna-accent: var(--bdna-emerald); }
 .ph3d--real-estate { --bdna-accent: #2563eb; }
 .ph3d--techmate    { --bdna-accent: #0284c7; }
 
@@ -342,6 +342,83 @@
 
 .ph3d--kiddo .ph3d__cta--primary {
     color: #ffffff;
+}
+
+/* ── StudyNest — cinematic ecosystem hero (matches the homepage Core) ──
+ * The GLB is a single baked material, so the premium/dark look comes from
+ * composition: a deep-black section, emerald + sapphire atmosphere, an
+ * under-model glow plate, and grounded shadow. All glow lives in the stage
+ * background (behind the transparent model-viewer canvas) — no extra DOM,
+ * no z-index fights, and the poster fallback stays untouched. Scoped to
+ * .ph3d--studynest so nothing else is affected. */
+.ph3d--studynest {
+    background:
+        radial-gradient(60% 55% at 80% 6%, color-mix(in srgb, var(--bdna-emerald) 20%, transparent), transparent 60%),
+        radial-gradient(55% 50% at 5% 98%, color-mix(in srgb, var(--bdna-sapphire) 18%, transparent), transparent 64%),
+        linear-gradient(180deg, #04070d 0%, #060a12 55%, #04070d 100%);
+}
+
+.ph3d--studynest .ph3d__glow--left {
+    background: color-mix(in srgb, var(--bdna-emerald) 40%, transparent);
+    opacity: 0.5;
+}
+
+.ph3d--studynest .ph3d__glow--right {
+    background: color-mix(in srgb, var(--bdna-sapphire) 30%, transparent);
+    opacity: 0.42;
+}
+
+.ph3d--studynest .ph3d__title {
+    text-shadow: 0 2px 30px rgba(2, 6, 14, 0.7);
+}
+
+/* Larger, premium stage with layered atmosphere + under-model glow plate */
+.ph3d--studynest .ph3d__stage {
+    min-height: clamp(22rem, 50vw, 38rem);
+    border-color: color-mix(in srgb, var(--bdna-emerald) 22%, transparent);
+    background:
+        radial-gradient(50% 20% at 50% 80%,
+            color-mix(in srgb, var(--bdna-emerald-glow) 55%, transparent),
+            color-mix(in srgb, var(--bdna-sapphire) 22%, transparent) 45%, transparent 72%),
+        radial-gradient(46% 42% at 50% 40%, color-mix(in srgb, var(--bdna-emerald) 30%, transparent), transparent 72%),
+        radial-gradient(58% 46% at 50% 88%, color-mix(in srgb, var(--bdna-sapphire) 22%, transparent), transparent 74%),
+        radial-gradient(1.5px 1.5px at 22% 28%, rgba(255, 255, 255, 0.45), transparent),
+        radial-gradient(1.5px 1.5px at 74% 22%, rgba(255, 255, 255, 0.38), transparent),
+        radial-gradient(1.5px 1.5px at 84% 66%, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(1.5px 1.5px at 30% 74%, rgba(255, 255, 255, 0.28), transparent),
+        radial-gradient(120% 95% at 50% 24%, #0a131d 0%, #05080f 60%, #03050a 100%);
+    box-shadow:
+        var(--bdna-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 60px color-mix(in srgb, var(--bdna-emerald) 14%, transparent);
+}
+
+/* Minimum-poster crossfade: the poster sits over the loading model-viewer and
+   fades out once the model is revealed (~2.8s gate). Smooth, no layout shift. */
+.ph3d--studynest .ph3d__fallback {
+    transition: opacity 750ms var(--bdna-ease);
+    will-change: opacity;
+}
+
+.ph3d--studynest .ph3d__fallback--revealing {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Dark Brand DNA glow/overlay over the poster while it is visible (sits under
+   the loading panel text, so copy stays legible). */
+.ph3d--studynest .ph3d__fallback-scrim {
+    background:
+        radial-gradient(55% 45% at 50% 40%, color-mix(in srgb, var(--bdna-emerald) 18%, transparent), transparent 70%),
+        radial-gradient(62% 52% at 50% 100%, color-mix(in srgb, var(--bdna-sapphire) 16%, transparent), transparent 72%),
+        linear-gradient(180deg, rgba(4, 7, 13, 0.35), rgba(4, 7, 13, 0.78)),
+        linear-gradient(90deg, rgba(4, 7, 13, 0.5), transparent 46%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ph3d--studynest .ph3d__fallback {
+        transition: opacity 200ms linear;
+    }
 }
 
 /* ── Poster hero + transformation preview (structure preserved) ───── */

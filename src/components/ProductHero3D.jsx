@@ -46,6 +46,8 @@ function ProductHero3D({
     secondaryCtaHref,
     className = "",
     heroVisual = "model",
+    viewer = {},
+    minPosterMs = 0,
     transformation = null,
     badges = null,
     stats = null,
@@ -63,6 +65,10 @@ function ProductHero3D({
     const [useTransformationViewer, setUseTransformationViewer] = useState(false);
     const [transformationFailed, setTransformationFailed] = useState(false);
     const [transformationPreviewOpen, setTransformationPreviewOpen] = useState(false);
+    // Minimum-poster-display gate (opt-in per product via minPosterMs > 0).
+    // Keeps the poster on screen for a set time, then crossfades to the model.
+    const [posterMinElapsed, setPosterMinElapsed] = useState(false);
+    const [posterUnmounted, setPosterUnmounted] = useState(false);
 
     const isTransformationHero = heroVisual === "transformation" && Boolean(transformation);
     const canPreviewTransformation = isTransformationHero && useTransformationViewer && !transformationFailed;
@@ -165,6 +171,23 @@ function ProductHero3D({
         };
     }, [viewerLoaded, modelSrc, reduceMotion]);
 
+    // Start the minimum-poster timer on mount (opt-in via minPosterMs).
+    useEffect(() => {
+        if (!(minPosterMs > 0)) return undefined;
+        const timer = setTimeout(() => setPosterMinElapsed(true), minPosterMs);
+        return () => clearTimeout(timer);
+    }, [minPosterMs]);
+
+    // Once the model is revealed, unmount the poster only after the crossfade
+    // has finished so there is no flash or layout shift.
+    useEffect(() => {
+        const gated = minPosterMs > 0 && heroVisual !== "poster" && !isTransformationHero;
+        if (!gated) return undefined;
+        if (!(modelReady && posterMinElapsed)) return undefined;
+        const timer = setTimeout(() => setPosterUnmounted(true), 850);
+        return () => clearTimeout(timer);
+    }, [minPosterMs, heroVisual, isTransformationHero, modelReady, posterMinElapsed]);
+
     function handleCtaClick(event, href, handler) {
         if (!handler) return;
         event.preventDefault();
@@ -209,9 +232,19 @@ function ProductHero3D({
         );
     }
 
+    // Minimum poster display: only a model hero that opts in (minPosterMs > 0,
+    // i.e. StudyNest) holds the poster for a set time before crossfading to the
+    // model. All other products keep the exact original reveal behavior.
+    const posterGated = minPosterMs > 0 && !isPosterHero && !isTransformationHero;
+    const modelRevealed = modelReady && (posterGated ? posterMinElapsed : true);
+
     const showTransformation = canPreviewTransformation && transformationPreviewOpen;
     const showViewer = !isPosterHero && !showTransformation && modelAvailable === true && viewerLoaded;
-    const showFallback = isPosterHero || (!isTransformationHero && (modelAvailable !== true || !modelReady));
+    // Gated: keep the poster mounted (over the loading model-viewer) until the
+    // crossfade completes; on model failure it simply stays visible (safe).
+    const showFallback = posterGated
+        ? !posterUnmounted
+        : isPosterHero || (!isTransformationHero && (modelAvailable !== true || !modelReady));
 
     return (
         <section
@@ -279,15 +312,24 @@ function ProductHero3D({
                                     camera-controls
                                     touch-action="pan-y"
                                     interaction-prompt="none"
-                                    shadow-intensity="0.45"
-                                    exposure="1.05"
-                                    environment-image="neutral"
+                                    shadow-intensity={viewer.shadowIntensity ?? "0.45"}
+                                    exposure={viewer.exposure ?? "1.05"}
+                                    environment-image={viewer.environmentImage ?? "neutral"}
+                                    {...(viewer.shadowSoftness ? { "shadow-softness": viewer.shadowSoftness } : {})}
+                                    {...(viewer.cameraOrbit ? { "camera-orbit": viewer.cameraOrbit } : {})}
+                                    {...(viewer.cameraTarget ? { "camera-target": viewer.cameraTarget } : {})}
+                                    {...(viewer.fieldOfView ? { "field-of-view": viewer.fieldOfView } : {})}
+                                    {...(viewer.toneMapping ? { "tone-mapping": viewer.toneMapping } : {})}
                                     aria-label={alt}
                                 />
                             ) : null}
 
                             {showFallback ? (
-                                <div className="ph3d__fallback" role="img" aria-label={alt}>
+                                <div
+                                    className={`ph3d__fallback${posterGated && modelRevealed ? " ph3d__fallback--revealing" : ""}`}
+                                    role="img"
+                                    aria-label={alt}
+                                >
                                     <img
                                         src={posterSrc}
                                         alt=""

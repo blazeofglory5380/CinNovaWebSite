@@ -68,6 +68,22 @@ export const productHero3DConfigs = {
     studynest: {
         modelSrc: "/models/product-heroes/studynest-campus-library.web.glb",
         posterSrc: "/images/product-heroes/posters/studynest-campus-library.png",
+        // Hold the poster ~2.8s before crossfading to the 3D model (StudyNest
+        // only). ProductHero3D reveals the model only once it has loaded AND
+        // this time has elapsed. Other products leave this unset (no delay).
+        minPosterMs: 2800,
+        // Cinematic model-viewer tuning (StudyNest only). Darker exposure +
+        // grounded soft shadow + forward-facing, larger framing so the baked
+        // model reads as a premium hero. Other heroes keep component defaults.
+        viewer: {
+            exposure: "0.82",
+            shadowIntensity: "1.15",
+            shadowSoftness: "1",
+            cameraOrbit: "0deg 74deg 96%",
+            fieldOfView: "26deg",
+            environmentImage: "neutral",
+            toneMapping: "aces",
+        },
         alt: "University campus library with modern AI study tools and collaborative learning",
         eyebrow: "STUDYNEST",
         title: "The study workspace that helps learning actually stick.",
