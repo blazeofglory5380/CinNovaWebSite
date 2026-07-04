@@ -14007,7 +14007,9 @@ button.product-hero-pill {
 
 .pg-disclaimer-wrap {
     max-width: 1180px;
-    margin: 0 auto;
+    /* Breathing room after the animated hero before the disclaimer, toward the
+       upper end of the target ranges: ~28px mobile → ~35px tablet → 48px desktop. */
+    margin: clamp(28px, 4.5vw, 48px) auto 0;
     padding: 0 7% 8px;
 }
 

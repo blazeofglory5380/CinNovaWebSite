@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
+import PoisonGuardHero from "../components/PoisonGuardHero.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
 import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
 import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
@@ -13,17 +13,10 @@ import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
-import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const poisonGuardHero = productHero3DConfigs.poisonguard;
-
-const heroStats = [
-    { value: "Seconds", label: "To scan & assess" },
-    { value: "24/7", label: "Emergency links" },
-    { value: "Families", label: "Pets & schools" },
-];
 
 const howItWorks = [
     {
@@ -200,39 +193,14 @@ function PoisonGuard() {
                 schema={poisonguardSchema}
             />
 
-            <MotionHeroWrap>
-                <ProductHero3D
-                    {...poisonGuardHero}
-                    className="ph3d--poisonguard"
-                    badges={(
-                        <div className="pg-hero-badges">
-                            <span className="pg-status-badge">Beta - In Development</span>
-                            <span className="pg-category-badge">Safety Technology</span>
-                        </div>
-                    )}
-                    stats={(
-                        <div className="ph3d__stats" role="list" aria-label="PoisonGuard highlights">
-                            {heroStats.map((stat) => (
-                                <div key={stat.label} role="listitem" className="ph3d__stat">
-                                    <strong>{stat.value}</strong>
-                                    <span>{stat.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    visualOverlay={(
-                        <div className="pg-scanner-overlay" aria-hidden="true">
-                            <div className="pg-scanner-frame">
-                                <span className="pg-scanner-corner pg-scanner-corner--tl" />
-                                <span className="pg-scanner-corner pg-scanner-corner--tr" />
-                                <span className="pg-scanner-corner pg-scanner-corner--bl" />
-                                <span className="pg-scanner-corner pg-scanner-corner--br" />
-                            </div>
-                            <div className="pg-scanner-chip">Scanning...</div>
-                        </div>
-                    )}
-                />
-            </MotionHeroWrap>
+            {/* Main Poison Guard hero — animated AI hazard-scanning scene,
+                renders the page <h1>. Primary CTA -> features; secondary ->
+                the on-page Cin Nova ecosystem section. */}
+            <PoisonGuardHero
+                headingLevel="h1"
+                primaryHref="#features"
+                secondaryHref="#product-ecosystem-title"
+            />
 
             <div className="pg-disclaimer-wrap">
                 <PoisonGuardSafetyDisclaimer variant="prominent" />
