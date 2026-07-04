@@ -1,6 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
+import KiddoHero from "../components/KiddoHero.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import KiddoArtwork from "../components/KiddoArtwork.jsx";
 import { kiddoAssets } from "../data/kiddoAssets.js";
@@ -13,12 +13,6 @@ import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const kiddoHero = productHero3DConfigs.kiddo;
-
-const heroHighlights = [
-    { value: "Ages 2\u20137", label: "Built for early learners" },
-    { value: "Reading + Math", label: "Core skill worlds" },
-    { value: "Safe", label: "Ad-free learning" },
-];
 
 const learningWorlds = [
     {
@@ -227,26 +221,7 @@ function Kiddo() {
             />
 
             <MotionHeroWrap>
-                <ProductHero3D
-                    {...kiddoHero}
-                    className="ph3d--kiddo"
-                    badges={(
-                        <div className="kd-hero-badges">
-                            <span className="kd-status-badge">Adventure Awaits</span>
-                            <span className="kd-category-badge">Early Learning</span>
-                        </div>
-                    )}
-                    stats={(
-                        <div className="ph3d__stats" role="list" aria-label="Kiddo highlights">
-                            {heroHighlights.map((stat) => (
-                                <div key={stat.label} role="listitem" className="ph3d__stat">
-                                    <strong>{stat.value}</strong>
-                                    <span>{stat.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                />
+                <KiddoHero />
             </MotionHeroWrap>
 
             <section className="section kd-worlds" id="worlds" aria-labelledby="kd-worlds-title">

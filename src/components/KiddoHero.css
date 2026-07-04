@@ -1,0 +1,227 @@
+/*
+ * KiddoHero — dark cinematic 3D companion hero.
+ *
+ * Every selector is scoped under `.kiddo-hero` (kh- prefixed) so it cannot leak
+ * into the rest of the site. Colors follow the CinNova dark palette with an
+ * emerald/cyan glow plus warm lavender + soft gold accents. No external font
+ * loading (production CSP blocks fonts.googleapis.com) — the system stack is
+ * used, matching the other product heroes.
+ */
+
+.kiddo-hero {
+    --kh-emerald: #16e29a;
+    --kh-cyan: #22d3ee;
+    --kh-lavender: #a78bfa;
+    --kh-gold: #fbbf24;
+    --kh-ink: #f2f7fb;
+    --kh-dim: rgba(196, 206, 224, 0.9);
+    --kh-font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --kh-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    position: relative;
+    overflow: hidden;
+    min-height: 760px;
+    background: radial-gradient(1200px 720px at 72% 42%, #0c1526 0%, #080d1a 46%, #05070f 100%);
+    font-family: var(--kh-font);
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+}
+
+/* ── Keyframes (kh- prefixed) ─────────────────────────────────────── */
+@keyframes kh-fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kh-scene-in { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes kh-card-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+@keyframes kh-star-drift { 0% { transform: translate3d(0, 0, 0); opacity: 0; } 14% { opacity: 0.9; } 86% { opacity: 0.7; } 100% { transform: translate3d(10px, -96px, 0); opacity: 0; } }
+@keyframes kh-shield-pulse { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.04); } }
+@keyframes kh-ring-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes kh-platform-pulse { 0%, 100% { opacity: 0.65; } 50% { opacity: 1; } }
+
+/* ── Ambient background ───────────────────────────────────────────── */
+.kiddo-hero .kh-bg { position: absolute; inset: 0; pointer-events: none; }
+.kiddo-hero .kh-glow { position: absolute; border-radius: 50%; }
+.kiddo-hero .kh-glow--emerald { top: 6%; right: 10%; width: 560px; height: 560px; background: radial-gradient(circle, rgba(22, 226, 154, 0.16) 0%, rgba(22, 226, 154, 0) 62%); }
+.kiddo-hero .kh-glow--cyan { bottom: -12%; right: 24%; width: 620px; height: 480px; background: radial-gradient(circle, rgba(34, 211, 238, 0.14) 0%, rgba(34, 211, 238, 0) 60%); }
+.kiddo-hero .kh-glow--lavender { top: -16%; left: -4%; width: 520px; height: 520px; background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, rgba(167, 139, 250, 0) 62%); }
+/* warm lavender-gold halo centered on the companion so Kiddo feels warmer */
+.kiddo-hero .kh-glow--warm { top: 20%; right: 16%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, rgba(196, 165, 255, 0.1) 40%, rgba(196, 165, 255, 0) 68%); animation: kh-platform-pulse 6s ease-in-out infinite; }
+.kiddo-hero .kh-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(120, 180, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 180, 255, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(720px 520px at 70% 46%, rgba(0, 0, 0, 0.9), transparent 78%);
+    mask-image: radial-gradient(720px 520px at 70% 46%, rgba(0, 0, 0, 0.9), transparent 78%);
+}
+.kiddo-hero .kh-stars { position: absolute; inset: 0; }
+.kiddo-hero .kh-star { position: absolute; border-radius: 50%; opacity: 0; animation-name: kh-star-drift; animation-timing-function: linear; animation-iteration-count: infinite; }
+
+/* ── Inner grid ──────────────────────────────────────────────────── */
+.kiddo-hero .kh-inner {
+    position: relative;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(60px, 8vw, 104px) clamp(24px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: clamp(32px, 5vw, 68px);
+    align-items: center;
+}
+
+/* ── Copy column ─────────────────────────────────────────────────── */
+.kiddo-hero .kh-copy { display: flex; flex-direction: column; gap: 22px; max-width: 620px; position: relative; z-index: 3; }
+.kiddo-hero .kh-copy > * { opacity: 0; animation: kh-fade-up 1s var(--kh-ease) forwards; }
+.kiddo-hero .kh-copy > *:nth-child(1) { animation-delay: 0.15s; }
+.kiddo-hero .kh-copy > *:nth-child(2) { animation-delay: 0.3s; }
+.kiddo-hero .kh-copy > *:nth-child(3) { animation-delay: 0.5s; }
+.kiddo-hero .kh-copy > *:nth-child(4) { animation-delay: 0.75s; }
+
+.kiddo-hero .kh-eyebrow { display: flex; align-items: center; gap: 10px; }
+.kiddo-hero .kh-eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kh-emerald); box-shadow: 0 0 12px 2px rgba(22, 226, 154, 0.7); }
+.kiddo-hero .kh-eyebrow__text { font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(180, 196, 220, 0.85); font-weight: 600; }
+
+.kiddo-hero .kh-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(36px, 4.6vw, 62px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--kh-ink);
+    text-wrap: balance;
+}
+.kiddo-hero .kh-title__accent {
+    background: linear-gradient(96deg, var(--kh-emerald) 8%, var(--kh-cyan) 60%, var(--kh-lavender) 120%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.kiddo-hero .kh-lede { margin: 0; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.65; color: var(--kh-dim); max-width: 520px; text-wrap: pretty; }
+
+.kiddo-hero .kh-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+.kiddo-hero .kh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.kiddo-hero .kh-btn--primary {
+    background: linear-gradient(120deg, #0fbf84 0%, var(--kh-emerald) 52%, var(--kh-cyan) 128%);
+    color: #04120c;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 8px 30px -6px rgba(22, 226, 154, 0.45), 0 0 0 1px rgba(22, 226, 154, 0.4) inset;
+}
+.kiddo-hero .kh-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px -6px rgba(22, 226, 154, 0.6), 0 0 0 1px rgba(22, 226, 154, 0.5) inset; }
+.kiddo-hero .kh-btn--ghost {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    color: #e7e0fb;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+.kiddo-hero .kh-btn--ghost:hover { border-color: rgba(167, 139, 250, 0.6); background: rgba(167, 139, 250, 0.1); transform: translateY(-2px); }
+
+/* ── Companion stage ─────────────────────────────────────────────── */
+.kiddo-hero .kh-scene {
+    position: relative;
+    height: clamp(440px, 46vw, 600px);
+    min-width: 0;
+    opacity: 0;
+    animation: kh-scene-in 1.4s var(--kh-ease) 0.4s forwards;
+}
+
+/* soft protective dome / bubble around Kiddo — a visible, intentional
+   "safe AI" shield: faint glassy fill, a crisp glowing rim, a top sheen, and a
+   slowly-orbiting dashed lavender ring. */
+.kiddo-hero .kh-shield {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    width: min(440px, 82%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle,
+        rgba(34, 211, 238, 0.07) 0%,
+        rgba(22, 226, 154, 0.04) 44%,
+        rgba(34, 211, 238, 0.18) 62%,
+        rgba(140, 240, 225, 0.34) 70%,
+        rgba(22, 226, 154, 0) 76%);
+    box-shadow: 0 0 90px -6px rgba(34, 211, 238, 0.5), inset 0 0 74px -16px rgba(22, 226, 154, 0.65);
+    border: 1.5px solid rgba(140, 240, 225, 0.42);
+    animation: kh-shield-pulse 5.5s ease-in-out infinite;
+    pointer-events: none;
+}
+/* glossy top highlight → reads as a rounded protective dome */
+.kiddo-hero .kh-shield::before {
+    content: "";
+    position: absolute;
+    inset: 5%;
+    border-radius: 50%;
+    background: radial-gradient(120% 80% at 50% 16%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 46%);
+    pointer-events: none;
+}
+/* orbiting dashed guard ring */
+.kiddo-hero .kh-shield::after {
+    content: "";
+    position: absolute;
+    inset: -9%;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(167, 139, 250, 0.42);
+    animation: kh-ring-spin 26s linear infinite;
+}
+
+/* glowing platform underneath */
+.kiddo-hero .kh-platform {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(360px, 70%);
+    height: 84px;
+    border-radius: 50%;
+    filter: blur(2px);
+    background: radial-gradient(ellipse at center, rgba(22, 226, 154, 0.55) 0%, rgba(34, 211, 238, 0.24) 42%, rgba(22, 226, 154, 0) 72%);
+    box-shadow: 0 0 70px 8px rgba(22, 226, 154, 0.28);
+    animation: kh-platform-pulse 4.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.kiddo-hero .kh-stage { position: absolute; inset: 0; z-index: 2; }
+.kiddo-hero .kh-stage canvas { display: block; width: 100% !important; height: 100% !important; touch-action: pan-y; }
+
+/* CSS fallback shown until WebGL marks the stage ready */
+.kiddo-hero .kh-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease; }
+.kiddo-hero .kh-stage--ready .kh-fallback { opacity: 0; pointer-events: none; }
+.kiddo-hero .kh-fallback__buddy { font-size: clamp(90px, 16vw, 150px); filter: drop-shadow(0 0 28px rgba(34, 211, 238, 0.6)); animation: kh-card-bob 5s ease-in-out infinite; }
+
+/* bottom fade into page content */
+.kiddo-hero .kh-fade-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to bottom, rgba(5, 7, 15, 0), #05070f); pointer-events: none; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .kiddo-hero { min-height: auto; }
+    .kiddo-hero .kh-scene { height: clamp(360px, 82vw, 460px); order: -1; }
+}
+
+/* ── Reduced motion: hold final states, drop looping motion ──────── */
+@media (prefers-reduced-motion: reduce) {
+    .kiddo-hero *,
+    .kiddo-hero *::before,
+    .kiddo-hero *::after {
+        animation-duration: 0.001ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+    }
+    .kiddo-hero .kh-copy > *,
+    .kiddo-hero .kh-scene { opacity: 1 !important; }
+}
