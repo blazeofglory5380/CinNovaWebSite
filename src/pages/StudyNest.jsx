@@ -1,6 +1,5 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
 import StudyNestHero from "../components/StudyNestHero.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -10,19 +9,12 @@ import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
-import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
 const { features } = productMarketing.studynest;
 const studyNestHero = productHero3DConfigs.studynest;
-
-const heroStats = [
-    { value: "24/7", label: "AI tutoring" },
-    { value: "5+", label: "Study tools" },
-    { value: "1", label: "Connected workspace" },
-];
 
 const howItWorks = [
     {
@@ -134,28 +126,15 @@ function StudyNest() {
                 schema={studynestSchema}
             />
 
-            <MotionHeroWrap>
-                <ProductHero3D
-                    {...studyNestHero}
-                    className="ph3d--studynest"
-                    badges={(
-                        <div className="sn-hero-badges">
-                            <span className="sn-status-badge">Beta - In Development</span>
-                            <span className="sn-category-badge">Education AI</span>
-                        </div>
-                    )}
-                    stats={(
-                        <div className="ph3d__stats" role="list" aria-label="StudyNest highlights">
-                            {heroStats.map((stat) => (
-                                <div key={stat.label} role="listitem" className="ph3d__stat">
-                                    <strong>{stat.value}</strong>
-                                    <span>{stat.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                />
-            </MotionHeroWrap>
+            {/* Main StudyNest hero — animated glowing-book spotlight. Renders
+                the page <h1>. Primary CTA uses a placeholder anchor until a
+                StudyNest articles route exists (see TODO in StudyNestHero);
+                secondary links to the on-page Cin Nova ecosystem section. */}
+            <StudyNestHero
+                headingLevel="h1"
+                primaryHref="#studynest-articles"
+                secondaryHref="#product-ecosystem-title"
+            />
 
             <section className="sn-trust-bar" aria-label="StudyNest value highlights">
                 <div className="sn-trust-inner">
@@ -164,11 +143,6 @@ function StudyNest() {
                     <span>Part of the Cin Nova ecosystem</span>
                 </div>
             </section>
-
-            {/* Primary CTA uses a placeholder anchor until a StudyNest
-                articles route exists (see TODO in StudyNestHero). Secondary
-                links to the on-page Cin Nova ecosystem section. */}
-            <StudyNestHero primaryHref="#studynest-articles" secondaryHref="#product-ecosystem-title" />
 
             <section className="section sn-problem" aria-labelledby="sn-problem-title">
                 <div className="sn-problem-grid">

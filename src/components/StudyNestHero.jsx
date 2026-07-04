@@ -64,12 +64,17 @@ function StudyNestHero({
     parallaxStrength = 1,
     showConnections = true,
     showLabels = true,
+    // Heading tag for the title — use "h1" when this is the page's main hero,
+    // "h2" when it is a secondary spotlight section. Styling is class-based, so
+    // the visual is identical regardless of tag.
+    headingLevel = "h2",
     // TODO: replace "#studynest-articles" with the real StudyNest articles
     // route/collection once it exists (no article route ships yet — this is a
     // safe in-page placeholder anchor so the CTA is never a dead external link).
     primaryHref = "#studynest-articles",
     secondaryHref = "#product-ecosystem-title",
 }) {
+    const Heading = headingLevel;
     const sectionRef = useRef(null);
     const rafRef = useRef(0);
     const [pointer, setPointer] = useState({ x: 0, y: 0 });
@@ -120,9 +125,9 @@ function StudyNestHero({
                         <span className="snh-eyebrow__text">CinNova Blog · Product Spotlight</span>
                     </div>
 
-                    <h2 className="snh-title snh-reveal" style={{ animationDelay: "0.3s" }}>
+                    <Heading className="snh-title snh-reveal" style={{ animationDelay: "0.3s" }}>
                         StudyNest: Where <span className="snh-title__accent">Learning Evolves</span>
-                    </h2>
+                    </Heading>
 
                     <p className="snh-lede snh-reveal" style={{ animationDelay: "0.5s" }}>
                         An AI-powered study companion that turns notes, books, and lessons into
