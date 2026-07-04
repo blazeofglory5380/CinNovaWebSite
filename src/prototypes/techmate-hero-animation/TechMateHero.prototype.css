@@ -1,13 +1,14 @@
 /*
  * TechMateHero — approved-image hero with animated glow overlays (PROTOTYPE).
  *
- * The right visual is the actual approved PNG
- * (public/prototypes/techmate/techmate-hero-approved-v1.png) shown as the base
- * layer. Animated overlays are layered on top with `mix-blend-mode: screen`, so
- * they only ADD light (glow/shimmer) over the flattened art without obscuring
- * the baked-in headline or covering the desk. React + CSS only, scoped under
- * `.tmx-hero`, `tmx-`-prefixed keyframes. Responsive + prefers-reduced-motion.
- * Not wired into production.
+ * The base layer is the actual approved PNG
+ * (public/prototypes/techmate/techmate-hero-approved-v1.png). Animated overlays
+ * are layered on top with `mix-blend-mode: screen`, so they only ADD light
+ * (glow/shimmer) without obscuring the baked-in headline or desk. The AI core /
+ * eye glows also parallax toward the cursor (set via JS CSS vars) so the robot
+ * appears to follow the mouse, easing back to center on leave. React + CSS only,
+ * scoped under `.tmx-hero`, `tmx-`-prefixed keyframes. Responsive +
+ * prefers-reduced-motion. Not wired into production.
  */
 
 .tmx-hero {
@@ -30,6 +31,10 @@
 
 /* ── Image stage: the approved PNG + overlay layers ────────────────── */
 .tmx-hero .tmx-photo {
+    /* cursor-parallax offsets (px), updated by JS; 0 = centered/idle */
+    --tmx-ex: 0px; --tmx-ey: 0px;   /* eye glow (stronger) */
+    --tmx-px: 0px; --tmx-py: 0px;   /* core/orb glow (subtler) */
+
     position: relative;
     width: 100%;
     max-width: 1360px;
@@ -68,83 +73,107 @@
 .tmx-hero .tmx-ov--shimmer {
     inset: 0;
     background: linear-gradient(115deg,
-        transparent 38%,
-        rgba(140, 190, 255, 0.10) 47%,
-        rgba(170, 130, 255, 0.09) 53%,
-        transparent 62%);
+        transparent 36%,
+        rgba(150, 200, 255, 0.14) 47%,
+        rgba(180, 140, 255, 0.12) 53%,
+        transparent 64%);
     background-size: 220% 100%;
-    animation: tmx-shim 9s linear infinite;
+    animation: tmx-shim 8s linear infinite;
 }
 
-/* blue ambient pulse (upper-right, behind the top cards) */
+/* blue ambient — stronger + breathing */
 .tmx-hero .tmx-ov--blue {
-    left: 76%; top: 16%; width: 36%;
-    background: radial-gradient(circle, rgba(70, 150, 255, 0.5), transparent 66%);
-    filter: blur(10px);
-    animation: tmx-pulse 9s ease-in-out infinite;
-}
-/* purple ambient pulse (lower area around the platform) */
-.tmx-hero .tmx-ov--purple {
-    left: 66%; top: 60%; width: 44%;
-    background: radial-gradient(circle, rgba(150, 90, 255, 0.42), transparent 68%);
+    left: 76%; top: 16%; width: 42%;
+    background: radial-gradient(circle, rgba(80, 165, 255, 0.62), transparent 66%);
     filter: blur(12px);
-    animation: tmx-pulse 11s ease-in-out 1.4s infinite;
+    animation: tmx-breathe 9s ease-in-out infinite;
+}
+/* purple ambient — stronger + breathing */
+.tmx-hero .tmx-ov--purple {
+    left: 66%; top: 60%; width: 50%;
+    background: radial-gradient(circle, rgba(165, 100, 255, 0.55), transparent 68%);
+    filter: blur(14px);
+    animation: tmx-breathe 11s ease-in-out 1.4s infinite;
 }
 /* soft glow over the floating status-card band */
 .tmx-hero .tmx-ov--cards {
-    left: 66%; top: 22%; width: 50%;
-    background: radial-gradient(ellipse 60% 44% at 50% 50%, rgba(90, 190, 255, 0.18), transparent 70%);
+    left: 66%; top: 22%; width: 52%;
+    background: radial-gradient(ellipse 60% 44% at 50% 50%, rgba(100, 200, 255, 0.22), transparent 70%);
     filter: blur(6px);
     animation: tmx-pulse 7s ease-in-out 0.6s infinite;
 }
-/* AI core / orb glow */
+
+/* AI core / orb glow — parallaxes subtly toward the cursor */
 .tmx-hero .tmx-ov--orb {
-    left: 68.5%; top: 42%; width: 24%;
-    background: radial-gradient(circle, rgba(90, 210, 255, 0.5) 0%, rgba(130, 100, 255, 0.28) 46%, transparent 70%);
+    left: 68.5%; top: 42%; width: 25%;
+    background: radial-gradient(circle, rgba(100, 215, 255, 0.55) 0%, rgba(140, 110, 255, 0.3) 46%, transparent 70%);
     filter: blur(5px);
     animation: tmx-core 4.2s ease-in-out infinite;
+    transform: translate(calc(-50% + var(--tmx-px)), calc(-50% + var(--tmx-py)));
+    transition: transform 0.6s ease-out;
 }
-/* bright robot eye glow (small, sits over the baked eyes) */
+/* bright robot eye glow — parallaxes more (the robot "looks" at the cursor) */
 .tmx-hero .tmx-ov--eyes {
-    left: 68.5%; top: 40.5%; width: 8%;
-    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(160, 250, 255, 0.95), rgba(120, 220, 255, 0.4) 45%, transparent 68%);
+    left: 68.5%; top: 40.5%; width: 9%;
+    background: radial-gradient(ellipse 62% 42% at 50% 50%, rgba(180, 252, 255, 1), rgba(120, 220, 255, 0.55) 42%, transparent 70%);
     filter: blur(1.5px);
-    animation: tmx-eye 4.6s ease-in-out infinite;
+    animation: tmx-eye 4.4s ease-in-out infinite;
+    transform: translate(calc(-50% + var(--tmx-ex)), calc(-50% + var(--tmx-ey)));
+    transition: transform 0.45s ease-out;
 }
-/* expanding energy ring from the core — reads as pulsing connection lines */
+/* expanding energy rings from the core — reads as pulsing connection lines */
 .tmx-hero .tmx-ov--pulse {
     left: 68.5%; top: 42%; width: 30%;
     border-radius: 50%;
-    border: 2px solid rgba(120, 200, 255, 0.45);
+    border: 2px solid rgba(130, 205, 255, 0.5);
     transform: translate(-50%, -50%) scale(0.42);
     aspect-ratio: 1 / 1;
     animation: tmx-ring 4.4s ease-out infinite;
 }
 .tmx-hero .tmx-ov--pulse.tmx-ov--pulse-2 {
     animation-delay: 2.2s;
-    border-color: rgba(150, 120, 255, 0.4);
+    border-color: rgba(160, 130, 255, 0.45);
 }
+
+/* per-icon status-card glow (Wi-Fi, Laptop, Security, Phone, Smart Home, Printer) */
+.tmx-hero .tmx-ov--card {
+    width: 5%;
+    background: radial-gradient(circle, rgba(110, 220, 255, 0.85) 0%, rgba(130, 160, 255, 0.32) 44%, transparent 70%);
+    filter: blur(3px);
+    animation: tmx-cardpulse 3.4s ease-in-out infinite;
+}
+
 /* laptop "System Scan" screen glow (lower-left) */
 .tmx-hero .tmx-ov--laptop {
     left: 44%; top: 62%; width: 17%;
-    background: radial-gradient(circle, rgba(70, 200, 255, 0.32), transparent 66%);
+    background: radial-gradient(circle, rgba(80, 210, 255, 0.36), transparent 66%);
     filter: blur(5px);
     animation: tmx-pulse 5.5s ease-in-out infinite;
 }
 /* phone "Device Care" screen glow (lower-right) */
 .tmx-hero .tmx-ov--phone {
     left: 80.5%; top: 66%; width: 11%;
-    background: radial-gradient(circle, rgba(70, 200, 255, 0.34), transparent 64%);
+    background: radial-gradient(circle, rgba(80, 210, 255, 0.38), transparent 64%);
     filter: blur(4px);
     animation: tmx-pulse 6.5s ease-in-out 0.8s infinite;
 }
-/* purple desk-edge glow along the front/bottom of the desk */
+/* purple desk-edge glow — stronger, premium pulsing neon */
 .tmx-hero .tmx-ov--desk {
-    left: 3%; right: 0; bottom: 2%; height: 16%;
+    left: 2%; right: 0; bottom: 1%; height: 20%;
     transform: none;
-    background: radial-gradient(75% 100% at 58% 100%, rgba(200, 90, 255, 0.55) 0%, rgba(150, 80, 255, 0.28) 40%, transparent 72%);
-    filter: blur(5px);
-    animation: tmx-desk 5s ease-in-out infinite;
+    background: radial-gradient(80% 100% at 57% 100%, rgba(214, 112, 255, 0.72) 0%, rgba(160, 88, 255, 0.4) 38%, transparent 72%);
+    filter: blur(6px);
+    animation: tmx-desk 4.4s ease-in-out infinite;
+}
+.tmx-hero .tmx-ov--desk::after {
+    content: "";
+    position: absolute;
+    left: 4%; right: 3%; bottom: 12%;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, rgba(230, 140, 255, 0.85) 45%, rgba(217, 70, 239, 0.9) 70%, transparent);
+    filter: blur(0.6px);
+    animation: tmx-desk 4.4s ease-in-out infinite;
 }
 
 /* ── Clickable CTA hotspots over the baked-in buttons ──────────────── */
@@ -165,10 +194,12 @@
 /* ── Keyframes ─────────────────────────────────────────────────────── */
 @keyframes tmx-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes tmx-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
-@keyframes tmx-core { 0%, 100% { opacity: 0.6; filter: blur(5px) brightness(1); } 50% { opacity: 1; filter: blur(5px) brightness(1.35); } }
-@keyframes tmx-eye { 0%, 100% { opacity: 0.9; } 44% { opacity: 1; } 48% { opacity: 0.35; } 52% { opacity: 1; } }
+@keyframes tmx-cardpulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+@keyframes tmx-breathe { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+@keyframes tmx-core { 0%, 100% { opacity: 0.65; filter: blur(5px) brightness(1); } 50% { opacity: 1; filter: blur(5px) brightness(1.4); } }
+@keyframes tmx-eye { 0%, 100% { opacity: 0.92; } 42% { opacity: 1; } 47% { opacity: 0.3; } 52% { opacity: 1; } }
 @keyframes tmx-ring { 0% { transform: translate(-50%, -50%) scale(0.42); opacity: 0; } 12% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0; } }
-@keyframes tmx-desk { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+@keyframes tmx-desk { 0%, 100% { opacity: 0.62; } 50% { opacity: 1; } }
 @keyframes tmx-shim { 0% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
 
 /* ── Responsive ────────────────────────────────────────────────────── */
@@ -180,11 +211,14 @@
 /* ── Reduced motion: hold a calm, glowing idle state ───────────────── */
 @media (prefers-reduced-motion: reduce) {
     .tmx-hero .tmx-photo,
-    .tmx-hero .tmx-ov {
+    .tmx-hero .tmx-ov,
+    .tmx-hero .tmx-ov--desk::after {
         animation: none !important;
     }
     .tmx-hero .tmx-photo { opacity: 1 !important; transform: none !important; }
-    /* keep the additive glows visible (just not moving); hide the expanding rings */
+    /* keep glows visible but static; drop cursor parallax + expanding rings */
+    .tmx-hero .tmx-ov--eyes,
+    .tmx-hero .tmx-ov--orb { transform: translate(-50%, -50%) !important; transition: none !important; }
     .tmx-hero .tmx-ov--pulse { display: none; }
     .tmx-hero .tmx-ov--shimmer { opacity: 0.5; }
 }
