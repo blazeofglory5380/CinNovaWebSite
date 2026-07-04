@@ -1,0 +1,78 @@
+/*
+ * TechMateFeatureCards — glowing icon panels for the TechMate feature cards
+ * (PROTOTYPE / experiment branch review only).
+ *
+ * Reuses the page's `.product-card.product-card-photo` layout but replaces the
+ * blank `.feature-photo-wrap` image area with a dark-navy, blue/purple-glow
+ * panel + subtle grid + cyan line icon, matching the approved TechMate hero.
+ * Scoped under `.tmf-card` (higher specificity than `.feature-photo-wrap`), so
+ * it overrides only these cards and never affects other products. CSS only.
+ */
+
+.tmf-card .feature-photo-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(120% 130% at 28% 18%, #14264f 0%, #0a1428 55%, #050a16 100%) !important;
+    border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+/* subtle circuit/grid backdrop */
+.tmf-card .tmf-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(96, 165, 250, 0.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.11) 1px, transparent 1px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(120% 100% at 50% 42%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(120% 100% at 50% 42%, #000 0%, transparent 78%);
+    opacity: 0.7;
+}
+
+/* soft blue/purple glow behind the icon */
+.tmf-card .tmf-glow {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(139, 92, 246, 0.3) 45%, transparent 70%);
+    filter: blur(16px);
+    animation: tmf-pulse 5s ease-in-out infinite;
+}
+
+/* cyan line-icon chip */
+.tmf-card .tmf-icon {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border-radius: 17px;
+    color: #7df3ff;
+    background: linear-gradient(160deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.16));
+    border: 1px solid rgba(125, 175, 255, 0.38);
+    box-shadow: 0 0 26px rgba(59, 130, 246, 0.4), inset 0 0 16px rgba(59, 130, 246, 0.2);
+}
+.tmf-card .tmf-icon svg {
+    width: 30px;
+    height: 30px;
+    filter: drop-shadow(0 0 6px rgba(125, 243, 255, 0.55));
+}
+
+/* corner accents for a premium SaaS feel */
+.tmf-card .tmf-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(125, 175, 255, 0.4);
+}
+.tmf-card .tmf-corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.tmf-card .tmf-corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+
+@keyframes tmf-pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .tmf-card .tmf-glow { animation: none; }
+}

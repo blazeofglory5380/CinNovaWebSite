@@ -4,6 +4,7 @@ import ProductHero3D from "../components/ProductHero3D.jsx";
 // Experiment-branch review only: TechMate hero swapped to the approved review
 // prototype. ProductHero3D is kept imported (still used in production/main).
 import TechMateHeroReview from "../prototypes/techmate-hero-animation/TechMateHeroReview.prototype.jsx";
+import TechMateFeatureCards from "../prototypes/techmate-hero-animation/TechMateFeatureCards.prototype.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -56,11 +57,9 @@ function TechMateAI() {
                     </p>
                 </div>
 
-                <div className="product-grid product-grid-photo">
-                    {features.map((feature) => (
-                        <FeaturePhotoCard key={feature.title} {...feature} />
-                    ))}
-                </div>
+                {/* Experiment-branch review: glowing icon panels instead of the
+                    blank photo areas. Production/main uses FeaturePhotoCard. */}
+                <TechMateFeatureCards features={features} />
             </section>
 
             {/* ── Device Troubleshooting + Error Code Preview ──────── */}
