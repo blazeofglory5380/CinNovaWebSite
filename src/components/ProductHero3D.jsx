@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import FarmhouseTransformationViewer, { shouldUseTransformationViewer } from "./FarmhouseTransformationViewer.jsx";
+import { trackProductCtaClick } from "../utils/analytics.js";
 import "../styles/brand-dna.css";
 import "./ProductHero3D.css";
 
@@ -62,6 +63,9 @@ function ProductHero3D({
     onSecondaryCta,
 }) {
     const titleId = useId();
+    // Product slug from the per-product class (e.g. "ph3d--poisonguard"), used
+    // for hero CTA analytics. Empty for the generic/home hero.
+    const productSlug = (className.match(/ph3d--([a-z0-9-]+)/) || [])[1] || "";
     const viewerRef = useRef(null);
     const [modelReady, setModelReady] = useState(false);
     const [modelAvailable, setModelAvailable] = useState(null);
@@ -209,6 +213,7 @@ function ProductHero3D({
                     type="button"
                     className={classNames}
                     onClick={(event) => {
+                        trackProductCtaClick({ product: productSlug, category: label, location: "product_hero" });
                         if (handler) {
                             handler();
                             return;
@@ -229,7 +234,10 @@ function ProductHero3D({
             <a
                 href={href}
                 className={classNames}
-                onClick={(event) => handleCtaClick(event, href, handler)}
+                onClick={(event) => {
+                    trackProductCtaClick({ product: productSlug, category: label, location: "product_hero" });
+                    handleCtaClick(event, href, handler);
+                }}
                 {...(isInternalAppHref(href) ? { "data-spa-link": "true" } : {})}
             >
                 {label}

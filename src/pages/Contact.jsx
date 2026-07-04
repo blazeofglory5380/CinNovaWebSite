@@ -5,6 +5,7 @@ import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { contactProductGuide, contactTopics, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
+import { trackContactSubmit } from "../utils/analytics.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 
@@ -30,12 +31,16 @@ const contactSchema = {
 function Contact() {
     const [error, setError] = useState("");
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+        // Capture the form node before any await (event target is reset after
+        // the handler yields).
+        const form = e.currentTarget;
+        const formData = new FormData(form);
         const name = sanitizeText(formData.get("name"), 100);
         const email = normalizeEmailInput(formData.get("email"));
         const message = sanitizeText(formData.get("message"), 1500);
+        const inquiryType = sanitizeText(formData.get("inquiryType"), 80);
 
         if (!name || !isValidEmail(email) || message.length < 10) {
             setError("Please enter your name, a valid email, and a message of at least 10 characters.");
@@ -43,8 +48,34 @@ function Contact() {
         }
 
         setError("");
-        alert("Thanks! Your message has been received.");
-        e.currentTarget.reset();
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    message,
+                    inquiryType,
+                    source: "contact_form",
+                    page: window.location.pathname + window.location.search,
+                }),
+            });
+            const data = await response.json().catch(() => ({}));
+            if (response.ok && data.ok) {
+                trackContactSubmit({ page: "contact", status: "sent" });
+                // Thank-you only after a confirmed successful send — the message
+                // is delivered, no longer discarded.
+                alert("Thanks! Your message has been received.");
+                form.reset();
+            } else {
+                trackContactSubmit({ page: "contact", status: "error" });
+                setError("Sorry, we couldn't send your message right now. Please try again, or email us directly.");
+            }
+        } catch {
+            trackContactSubmit({ page: "contact", status: "error" });
+            setError("Sorry, we couldn't send your message right now. Please try again, or email us directly.");
+        }
     }
 
     return (

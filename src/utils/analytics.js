@@ -190,3 +190,18 @@ export function trackSponsorCtaClick({ page = "", cta = "", target = "" } = {}) 
         cta_target: target,
     });
 }
+
+export function trackContactSubmit({ page = "", status = "unknown" } = {}) {
+    trackEvent("contact_submit", {
+        contact_page: page,
+        contact_status: status,
+    });
+}
+
+export function trackLeadDelivery({ source = "", ok = false, status = 0 } = {}) {
+    trackEvent("lead_delivery", {
+        lead_source: source,
+        delivery_ok: ok,
+        delivery_status: status,
+    });
+}

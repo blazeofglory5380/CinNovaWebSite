@@ -6,7 +6,7 @@ import {
     sanitizeTags,
     sanitizeText,
 } from "../utils/security.js";
-import { trackNewsletterSignup } from "../utils/analytics.js";
+import { trackNewsletterSignup, trackLeadDelivery } from "../utils/analytics.js";
 
 const STORAGE_KEY = "cinNovaNewsletterSubscribers";
 
@@ -59,6 +59,62 @@ export function getSubscribers() {
     return readSubscribers().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
+// Maps a subscriber tag/source to a product slug for lead routing/reporting.
+const PRODUCT_TAG_MAP = {
+    poisonguard: "poisonguard",
+    studynest: "studynest",
+    kiddo: "kiddo",
+    techmate: "techmate",
+    "techmate ai": "techmate",
+    "real estate": "real-estate",
+    "cin nova real estate": "real-estate",
+    realestate: "real-estate",
+};
+
+function deriveProduct(tags = [], source = "") {
+    const candidates = [...(Array.isArray(tags) ? tags : []), source];
+    for (const value of candidates) {
+        const key = String(value || "").toLowerCase().trim();
+        if (PRODUCT_TAG_MAP[key]) return PRODUCT_TAG_MAP[key];
+    }
+    return "";
+}
+
+// Fire-and-forget lead delivery to the serverless endpoint. Never awaited by the
+// UI: localStorage remains the source of truth for the on-screen message, and a
+// failure here only records a separate analytics signal (no false "delivered"
+// claim). Only runs in the browser.
+function postLeadToServer({ email, source, tags, status }) {
+    if (typeof window === "undefined" || typeof fetch !== "function") return;
+    const payload = {
+        email,
+        source,
+        tags,
+        status,
+        product: deriveProduct(tags, source),
+        page: window.location ? window.location.pathname + window.location.search : "",
+        referrer: typeof document !== "undefined" ? document.referrer : "",
+        userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+        timestamp: new Date().toISOString(),
+    };
+    try {
+        fetch("/api/subscribe", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            keepalive: true,
+        })
+            .then((response) => {
+                trackLeadDelivery({ source, ok: response.ok, status: response.status });
+            })
+            .catch(() => {
+                trackLeadDelivery({ source, ok: false, status: 0 });
+            });
+    } catch {
+        trackLeadDelivery({ source, ok: false, status: 0 });
+    }
+}
+
 export function saveSubscriber({ email, source = "Website", tags = [] }) {
     const normalizedEmail = normalizeEmail(email);
     if (!isValidEmail(normalizedEmail)) {
@@ -84,6 +140,7 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
 
         writeSubscribers(updatedSubscribers);
         trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "existing" });
+        postLeadToServer({ email: normalizedEmail, source: safeSource, tags: safeTags, status: "existing" });
         return { status: "existing", subscriber: updatedSubscribers.find((item) => item.email === normalizedEmail) };
     }
 
@@ -101,6 +158,7 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
 
     writeSubscribers([subscriber, ...subscribers]);
     trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "created" });
+    postLeadToServer({ email: normalizedEmail, source: safeSource, tags: safeTags, status: "created" });
     return { status: "created", subscriber };
 }
 
