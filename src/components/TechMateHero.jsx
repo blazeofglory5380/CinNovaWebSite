@@ -120,6 +120,13 @@ function TechMateHero({ primaryHref = "#", secondaryHref = "#" }) {
                             alt="TechMate AI diagnostics scene: an AI assistant core surrounded by device status cards, with a system-scan laptop and phone on a futuristic desk."
                             loading="eager"
                             decoding="async"
+                            // Graceful degrade: if the image ever fails to load
+                            // (e.g. a stale cached bundle requesting an old path),
+                            // hide the broken icon/alt text so only the dark
+                            // scene + glow overlays remain — never alt sprawl.
+                            onError={(e) => {
+                                e.currentTarget.style.visibility = "hidden";
+                            }}
                         />
                         <div className="tmxr-ov tmxr-ov--shimmer" aria-hidden="true" />
                         <div className="tmxr-ov tmxr-ov--radial tmxr-ov--blue" aria-hidden="true" />

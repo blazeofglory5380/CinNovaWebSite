@@ -111,6 +111,9 @@
     border-radius: clamp(10px, 1.2vw, 18px);
     overflow: hidden;
     isolation: isolate;
+    /* dark scene base so the area is never white/empty (avoids a load flash and
+       degrades gracefully if the image is ever unavailable) */
+    background: radial-gradient(120% 120% at 60% 30%, #0c1732 0%, #070d1c 60%, #050a16 100%);
     box-shadow: 0 26px 80px rgba(0, 0, 0, 0.5);
     animation: tmxr-fade 1.1s ease-out 0.1s both;
 }
@@ -122,7 +125,7 @@
     height: 100%;
     aspect-ratio: 1672 / 941;      /* full image; wider than window -> left clipped */
 }
-.tmxr-hero .tmxr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 0; }
+.tmxr-hero .tmxr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 0; background-color: #060b18; }
 /* Fade the window's left edge into the section so any residual baked-in left
    text from the source image is masked cleanly. */
 .tmxr-hero .tmxr-window::after {
