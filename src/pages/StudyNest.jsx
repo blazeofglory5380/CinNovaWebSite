@@ -1,6 +1,7 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
+import StudyNestHero from "../components/StudyNestHero.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
@@ -163,6 +164,11 @@ function StudyNest() {
                     <span>Part of the Cin Nova ecosystem</span>
                 </div>
             </section>
+
+            {/* Primary CTA uses a placeholder anchor until a StudyNest
+                articles route exists (see TODO in StudyNestHero). Secondary
+                links to the on-page Cin Nova ecosystem section. */}
+            <StudyNestHero primaryHref="#studynest-articles" secondaryHref="#product-ecosystem-title" />
 
             <section className="section sn-problem" aria-labelledby="sn-problem-title">
                 <div className="sn-problem-grid">

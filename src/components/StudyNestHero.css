@@ -1,0 +1,216 @@
+/*
+ * StudyNestHero — animated cinematic StudyNest spotlight hero.
+ *
+ * Converted from the approved Claude Design export ("StudyNest Hero Animation").
+ * Every selector is scoped under .studynest-hero-animation so it cannot leak
+ * into the rest of the site. NOTE: the plain `.studynest-hero` class is already
+ * owned by legacy App.css rules, so this component namespaces under
+ * `.studynest-hero-animation` to avoid any collision.
+ *
+ * No external font loading (production CSP blocks fonts.googleapis.com); the
+ * design's Sora/Manrope are referenced as optional first choices and fall back
+ * to the system stack.
+ */
+
+.studynest-hero-animation {
+    --snh-emerald: #16e29a;
+    --snh-blue: #3ea8ff;
+    --snh-ink: #f2f7fb;
+    --snh-dim: rgba(158, 178, 198, 0.92);
+    --snh-font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --snh-display: "Sora", var(--snh-font);
+    --snh-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    position: relative;
+    overflow: hidden;
+    min-height: 780px;
+    background: radial-gradient(1200px 700px at 72% 42%, #0a1626 0%, #060d18 46%, #04080f 100%);
+    font-family: var(--snh-font);
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+}
+
+/* ── Keyframes (snh- prefixed to avoid any collision) ─────────────── */
+@keyframes snh-fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes snh-book-enter { from { opacity: 0; transform: translateY(46px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes snh-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes snh-page-glow { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+@keyframes snh-page-turn {
+    0% { transform: rotateY(-8deg); opacity: 0; }
+    8% { opacity: 0.9; }
+    42% { transform: rotateY(-168deg); opacity: 0.9; }
+    50% { transform: rotateY(-172deg); opacity: 0; }
+    100% { transform: rotateY(-172deg); opacity: 0; }
+}
+@keyframes snh-card-rise { from { opacity: 0; transform: translateY(38px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes snh-card-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes snh-orb-pulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.08); filter: brightness(1.35); } }
+@keyframes snh-ring-spin { from { transform: rotateX(72deg) rotateZ(0deg); } to { transform: rotateX(72deg) rotateZ(360deg); } }
+@keyframes snh-line-pulse { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+@keyframes snh-line-dash { from { background-position: 0 0; } to { background-position: 0 -48px; } }
+@keyframes snh-particle-drift {
+    0% { transform: translate3d(0, 0, 0); opacity: 0; }
+    12% { opacity: 0.9; }
+    88% { opacity: 0.7; }
+    100% { transform: translate3d(14px, -110px, 0); opacity: 0; }
+}
+@keyframes snh-shimmer { 0% { transform: translateX(-120%) skewX(-18deg); } 100% { transform: translateX(220%) skewX(-18deg); } }
+@keyframes snh-spine-glow {
+    0%, 100% { opacity: 0.55; box-shadow: 0 0 18px 4px rgba(30, 240, 170, 0.35); }
+    50% { opacity: 1; box-shadow: 0 0 34px 10px rgba(30, 240, 170, 0.6); }
+}
+
+/* ── Ambient background (back parallax layer) ─────────────────────── */
+.studynest-hero-animation .snh-bg { position: absolute; inset: 0; pointer-events: none; will-change: transform; }
+.studynest-hero-animation .snh-bg__glow { position: absolute; border-radius: 50%; }
+.studynest-hero-animation .snh-bg__glow--a { top: 8%; right: 6%; width: 560px; height: 560px; filter: blur(10px); background: radial-gradient(circle, rgba(46, 155, 255, 0.14) 0%, rgba(46, 155, 255, 0) 62%); }
+.studynest-hero-animation .snh-bg__glow--b { bottom: -14%; right: 26%; width: 640px; height: 480px; background: radial-gradient(circle, rgba(22, 226, 154, 0.12) 0%, rgba(22, 226, 154, 0) 60%); }
+.studynest-hero-animation .snh-bg__glow--c { top: -18%; left: -6%; width: 520px; height: 520px; background: radial-gradient(circle, rgba(46, 155, 255, 0.08) 0%, rgba(46, 155, 255, 0) 60%); }
+.studynest-hero-animation .snh-bg__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(120, 180, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 180, 255, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(720px 520px at 70% 45%, rgba(0, 0, 0, 0.9), transparent 78%);
+    mask-image: radial-gradient(720px 520px at 70% 45%, rgba(0, 0, 0, 0.9), transparent 78%);
+}
+
+/* ── Inner grid ──────────────────────────────────────────────────── */
+.studynest-hero-animation .snh-inner {
+    position: relative;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(64px, 8vw, 110px) clamp(24px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+}
+
+/* ── Copy column ─────────────────────────────────────────────────── */
+.studynest-hero-animation .snh-copy { display: flex; flex-direction: column; gap: 24px; max-width: 620px; position: relative; z-index: 3; }
+.studynest-hero-animation .snh-reveal { opacity: 0; animation: snh-fade-up 1s var(--snh-ease) forwards; }
+.studynest-hero-animation .snh-eyebrow { display: flex; align-items: center; gap: 10px; }
+.studynest-hero-animation .snh-eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--snh-emerald); box-shadow: 0 0 12px 2px rgba(22, 226, 154, 0.7); }
+.studynest-hero-animation .snh-eyebrow__text { font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(160, 190, 214, 0.85); font-weight: 600; }
+.studynest-hero-animation .snh-title {
+    margin: 0;
+    font-family: var(--snh-display);
+    font-weight: 700;
+    font-size: clamp(38px, 4.6vw, 64px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--snh-ink);
+    text-wrap: balance;
+}
+.studynest-hero-animation .snh-title__accent {
+    background: linear-gradient(96deg, #16e29a 10%, #3ea8ff 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.studynest-hero-animation .snh-lede { margin: 0; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.65; color: var(--snh-dim); max-width: 520px; text-wrap: pretty; }
+.studynest-hero-animation .snh-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+.studynest-hero-animation .snh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.studynest-hero-animation .snh-btn--primary {
+    background: linear-gradient(120deg, #0fbf84 0%, #16e29a 55%, #2e9bff 130%);
+    color: #04120c;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 8px 30px -6px rgba(22, 226, 154, 0.45), 0 0 0 1px rgba(22, 226, 154, 0.4) inset;
+}
+.studynest-hero-animation .snh-btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px -6px rgba(22, 226, 154, 0.6), 0 0 0 1px rgba(22, 226, 154, 0.5) inset;
+}
+.studynest-hero-animation .snh-btn--ghost {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(140, 190, 255, 0.22);
+    color: #d7e6f2;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+.studynest-hero-animation .snh-btn--ghost:hover { border-color: rgba(62, 168, 255, 0.55); background: rgba(62, 168, 255, 0.09); transform: translateY(-2px); }
+
+/* ── Scene ───────────────────────────────────────────────────────── */
+.studynest-hero-animation .snh-scene { position: relative; height: clamp(440px, 46vw, 600px); min-width: 0; opacity: 0; animation: snh-book-enter 1.4s var(--snh-ease) 0.4s forwards; }
+
+.studynest-hero-animation .snh-particles { position: absolute; inset: 0; pointer-events: none; will-change: transform; }
+.studynest-hero-animation .snh-particle { position: absolute; border-radius: 50%; opacity: 0; animation-name: snh-particle-drift; animation-timing-function: linear; animation-iteration-count: infinite; }
+
+/* mid parallax — book */
+.studynest-hero-animation .snh-mid { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; will-change: transform; }
+.studynest-hero-animation .snh-book-wrap { position: relative; width: min(460px, 92%); height: 84%; animation: snh-bob 7s ease-in-out 2s infinite; }
+.studynest-hero-animation .snh-underglow { position: absolute; bottom: 2%; left: 50%; transform: translateX(-50%); width: 78%; height: 90px; border-radius: 50%; filter: blur(14px); background: radial-gradient(ellipse, rgba(22, 226, 154, 0.4) 0%, rgba(22, 226, 154, 0) 68%); animation: snh-page-glow 5s ease-in-out infinite; }
+.studynest-hero-animation .snh-connections { position: absolute; inset: 0; pointer-events: none; }
+.studynest-hero-animation .snh-conn { position: absolute; width: 2px; }
+
+.studynest-hero-animation .snh-book { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); width: 82%; perspective: 1100px; }
+.studynest-hero-animation .snh-book__inner { position: relative; height: 220px; display: flex; transform-style: preserve-3d; transform: rotateX(52deg); }
+.studynest-hero-animation .snh-book__stack { position: absolute; inset: -4px -6px -14px -6px; border-radius: 10px; background: linear-gradient(180deg, #0e1b2c 0%, #091423 100%); box-shadow: 0 22px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(90, 150, 220, 0.14), 0 0 44px -6px rgba(22, 226, 154, 0.22); }
+.studynest-hero-animation .snh-book__edge { position: absolute; left: -3px; right: -3px; bottom: -10px; height: 10px; border-radius: 0 0 8px 8px; background: repeating-linear-gradient(180deg, rgba(180, 214, 255, 0.16) 0 1px, rgba(10, 20, 34, 0.9) 1px 3px); }
+.studynest-hero-animation .snh-page { position: relative; flex: 0 0 50%; height: 220px; overflow: hidden; }
+.studynest-hero-animation .snh-page--left { transform-origin: right center; transform: rotateY(26deg); border-radius: 8px 2px 2px 8px; background: linear-gradient(112deg, #0d2136 0%, #123049 58%, #17415e 100%); box-shadow: inset -18px 0 34px -14px rgba(22, 226, 154, 0.35), inset 2px 2px 0 rgba(170, 210, 255, 0.1); }
+.studynest-hero-animation .snh-page--right { transform-origin: left center; transform: rotateY(-26deg); border-radius: 2px 8px 8px 2px; background: linear-gradient(248deg, #0d2136 0%, #123049 58%, #17415e 100%); box-shadow: inset 18px 0 34px -14px rgba(62, 168, 255, 0.4), inset -2px 2px 0 rgba(170, 210, 255, 0.1); }
+.studynest-hero-animation .snh-page__lines { position: absolute; inset: 18px 20px; display: flex; flex-direction: column; }
+.studynest-hero-animation .snh-line-text { height: 5px; border-radius: 3px; animation: snh-page-glow 4s ease-in-out infinite; }
+.studynest-hero-animation .snh-block { height: 34px; border-radius: 6px; animation: snh-page-glow 4.5s ease-in-out infinite; }
+.studynest-hero-animation .snh-shimmer { position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(190, 235, 255, 0.14), transparent); animation: snh-shimmer 5.5s ease-in-out infinite; }
+.studynest-hero-animation .snh-page-turn { position: absolute; top: 0; left: 50%; width: 50%; height: 220px; transform-origin: left center; border-radius: 2px 8px 8px 2px; background: linear-gradient(248deg, rgba(120, 220, 255, 0.16), rgba(22, 226, 154, 0.1)); border: 1px solid rgba(150, 230, 255, 0.3); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); opacity: 0; animation: snh-page-turn 9s ease-in-out 3s infinite; pointer-events: none; }
+.studynest-hero-animation .snh-spine { position: absolute; top: -2px; bottom: -2px; left: 50%; width: 3px; transform: translateX(-50%); border-radius: 3px; background: linear-gradient(180deg, #16e29a, #3ea8ff); animation: snh-spine-glow 4s ease-in-out infinite; }
+.studynest-hero-animation .snh-lightcol { position: absolute; bottom: 24%; left: 50%; transform: translateX(-50%); width: 120px; height: 46%; filter: blur(16px); background: linear-gradient(to top, rgba(22, 226, 154, 0.22), rgba(62, 168, 255, 0.06) 60%, transparent); animation: snh-page-glow 6s ease-in-out infinite; pointer-events: none; }
+
+/* front parallax — orb + cards */
+.studynest-hero-animation .snh-front { position: absolute; inset: 0; pointer-events: none; will-change: transform; }
+.studynest-hero-animation .snh-orb { position: absolute; top: 4%; left: 50%; transform: translateX(-50%); width: 84px; height: 84px; opacity: 0; animation: snh-card-rise 1.2s var(--snh-ease) 2.6s forwards; }
+.studynest-hero-animation .snh-orb__inner { position: relative; width: 100%; height: 100%; animation: snh-card-bob 6s ease-in-out infinite; }
+.studynest-hero-animation .snh-orb__core { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #bff6e4 0%, #16e29a 34%, #0e8cd8 78%, #063a63 100%); box-shadow: 0 0 44px 8px rgba(22, 226, 154, 0.45), 0 0 90px 16px rgba(62, 168, 255, 0.25), inset -6px -10px 22px rgba(4, 20, 40, 0.6); animation: snh-orb-pulse 3.6s ease-in-out infinite; }
+.studynest-hero-animation .snh-orb__ring { position: absolute; border-radius: 50%; }
+.studynest-hero-animation .snh-orb__ring--1 { inset: -14px; border: 1px solid rgba(120, 230, 200, 0.35); animation: snh-ring-spin 9s linear infinite; }
+.studynest-hero-animation .snh-orb__ring--2 { inset: -26px; border: 1px dashed rgba(62, 168, 255, 0.28); animation: snh-ring-spin 14s linear infinite reverse; }
+
+.studynest-hero-animation .snh-card { position: absolute; opacity: 0; animation: snh-card-rise 1s var(--snh-ease) forwards; }
+.studynest-hero-animation .snh-card__chip { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 12px; background: rgba(14, 30, 50, 0.55); border: 1px solid rgba(140, 190, 255, 0.26); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 10px 32px -8px rgba(0, 0, 0, 0.6); }
+.studynest-hero-animation .snh-card__dot { width: 9px; height: 9px; }
+.studynest-hero-animation .snh-card__label { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #d9f5ea; }
+.studynest-hero-animation .snh-bars { display: flex; align-items: flex-end; gap: 2px; }
+.studynest-hero-animation .snh-bars > span { width: 3px; border-radius: 1px; }
+
+/* bottom fade into page content */
+.studynest-hero-animation .snh-fade-bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to bottom, rgba(4, 8, 15, 0), #04080f); pointer-events: none; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .studynest-hero-animation { min-height: auto; }
+    .studynest-hero-animation .snh-scene { height: clamp(360px, 78vw, 460px); order: -1; }
+}
+
+/* ── Reduced motion: hold final states, drop looping motion ──────── */
+@media (prefers-reduced-motion: reduce) {
+    .studynest-hero-animation *,
+    .studynest-hero-animation *::before,
+    .studynest-hero-animation *::after {
+        animation-duration: 0.001ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+    }
+    .studynest-hero-animation .snh-reveal,
+    .studynest-hero-animation .snh-scene,
+    .studynest-hero-animation .snh-orb,
+    .studynest-hero-animation .snh-card { opacity: 1 !important; }
+}
