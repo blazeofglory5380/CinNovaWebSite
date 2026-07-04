@@ -1,42 +1,239 @@
+import { useEffect, useRef } from "react";
 import "./PoisonGuardHero.css";
 
 /*
- * PoisonGuardHero — animated AI hazard-scanning hero.
- * Converted from the approved Claude Design export "PoisonGuard Hero Animation".
- * Self-contained, scoped under `.poison-guard-hero`, lightweight CSS-only
- * animations, no external/paid deps. Renders an <h2> by default; pass
- * headingLevel="h1" when it is the page's main hero.
+ * PoisonGuardHero — full-width cinematic AI hazard-scanning hero.
+ *
+ * The optimized poisonous-spider GLB floats directly inside the hero
+ * background (no card/box): a boxless scan stage with AI radar/ground scan
+ * rings, an emerald/cyan shield glow, a scan line, soft particles, and subtle
+ * orange hazard accents plus a "Poisonous Spider / 1 hazard flagged" callout.
+ * The copy column (headline + subheadline + CTAs) stays on the left.
+ *
+ * three.js + addons are DYNAMICALLY imported inside the effect (same pattern as
+ * CinNovaCoreScene / KiddoHero) so the library only downloads when this hero
+ * mounts and a capable browser is present. The Draco decoder is self-hosted at
+ * /draco/. Capped pixel ratio, fully disposed on unmount. If three, WebGL, or
+ * the GLB fail, no spider is shown — only the cinematic scan environment (there
+ * is deliberately no creature/emoji/image placeholder that could flash first).
+ *
+ * The spider material is fully metallic PBR, so a PMREM RoomEnvironment map is
+ * required — without a reflected environment the metal shows no baked detail
+ * and reads as a flat purple silhouette. With the env map it renders as the
+ * intended black/charcoal body with cyan emissive markings.
+ *
+ * The spider is a STATIC scanned specimen: rendered once (on load and on
+ * resize) in a fixed display pose — no animation loop, no bob/breathe/sway/
+ * cursor-follow. All motion lives in the surrounding scan environment (CSS):
+ * pulsing radar/ground rings, a sweeping scan line, a soft orange hazard pulse,
+ * drifting particles, and a softly glowing callout. Scoped under
+ * `.poison-guard-hero`.
  */
 
-// Fixed particle field. Kept to the right (scene) half so none land in the
-// copy column under the subheadline and read as an accidental stray dot.
+const MODEL_SRC = "/models/poisonguard/poisonguard-spider.glb";
+
+// Fixed particle field, kept to the right (scene) half so none land under the
+// copy column and read as an accidental stray dot.
 const PARTICLES = [
-    { left: "58%", top: "70%", size: 4, dur: 9, delay: 0, blue: false },
-    { left: "66%", top: "85%", size: 3, dur: 11, delay: 2, blue: true },
-    { left: "74%", top: "78%", size: 4, dur: 10, delay: 4, blue: false },
-    { left: "55%", top: "88%", size: 3, dur: 12, delay: 1, blue: true },
-    { left: "68%", top: "75%", size: 5, dur: 9.5, delay: 3, blue: false },
-    { left: "80%", top: "82%", size: 3, dur: 11.5, delay: 5, blue: true },
-    { left: "90%", top: "68%", size: 4, dur: 10.5, delay: 2.5, blue: false },
-    { left: "84%", top: "92%", size: 4, dur: 13, delay: 6, blue: true },
+    { left: "58%", top: "62%", size: 4, dur: 9, delay: 0, blue: false },
+    { left: "66%", top: "80%", size: 3, dur: 11, delay: 2, blue: true },
+    { left: "74%", top: "70%", size: 4, dur: 10, delay: 4, blue: false },
+    { left: "55%", top: "84%", size: 3, dur: 12, delay: 1, blue: true },
+    { left: "68%", top: "40%", size: 5, dur: 9.5, delay: 3, blue: false },
+    { left: "80%", top: "78%", size: 3, dur: 11.5, delay: 5, blue: true },
+    { left: "90%", top: "56%", size: 4, dur: 10.5, delay: 2.5, blue: false },
+    { left: "84%", top: "88%", size: 4, dur: 13, delay: 6, blue: true },
+    { left: "62%", top: "30%", size: 3, dur: 12.5, delay: 4.5, blue: false },
+    { left: "78%", top: "24%", size: 3, dur: 11, delay: 1.5, blue: true },
 ];
 
 function PoisonGuardHero({
-    alertState = "hazard",
     scanSpeed = 8,
-    showLabels = true,
     headingLevel = "h2",
     primaryHref = "#features",
     secondaryHref = "#product-ecosystem-title",
 }) {
     const Heading = headingLevel;
-    const hazardActive = alertState === "hazard";
-    const statusText = hazardActive
-        ? "Poison Guard · 1 hazard flagged"
-        : "Poison Guard · all clear";
+    const hostRef = useRef(null);
+
+    useEffect(() => {
+        const host = hostRef.current;
+        if (!host) return undefined;
+
+        let disposed = false;
+        let cleanup = () => {};
+
+        (async () => {
+            let THREE, GLTFLoader, RoomEnvironment;
+            try {
+                THREE = await import("three");
+                ({ GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js"));
+                ({ RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js"));
+            } catch {
+                return; // keep CSS fallback
+            }
+            if (disposed) return;
+
+            let renderer;
+            try {
+                // The spider is a static scanned specimen — we render on load and
+                // on resize only (no animation loop), so preserve the drawing
+                // buffer to keep the frame on screen between renders.
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+            } catch {
+                return; // no WebGL — keep CSS fallback
+            }
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.08;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            host.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+
+            // The spider material is fully metallic (metalness = 1). A metal
+            // surface shows its reflected ENVIRONMENT — without one the baked
+            // charcoal detail is invisible and the body only picks up the
+            // colored lights (reading as a flat purple silhouette). A neutral
+            // PMREM studio environment makes the charcoal/cyan detail appear.
+            const pmrem = new THREE.PMREMGenerator(renderer);
+            const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+            scene.environment = envTex;
+            if ("environmentIntensity" in scene) scene.environmentIntensity = 0.7;
+            pmrem.dispose();
+
+            // Dark scan/radar key + accents layered over the environment: neutral
+            // key, a subtle emerald rim sheen, and a warm orange hazard accent.
+            const key = new THREE.DirectionalLight(0xf2fbff, 1.5);
+            key.position.set(2.5, 4, 3);
+            scene.add(key);
+            const rim = new THREE.DirectionalLight(0x3fe8c0, 0.9); // emerald rim sheen
+            rim.position.set(-3.5, 1.5, -2.5);
+            scene.add(rim);
+            const warn = new THREE.PointLight(0xff7a4a, 0.8, 24); // orange hazard accent
+            warn.position.set(2, -1.2, 3.5);
+            scene.add(warn);
+
+            const root = new THREE.Group();
+            const lean = new THREE.Group();
+            root.add(lean);
+            scene.add(root);
+
+            let modelRadius = 1;
+
+            const gltfLoader = new GLTFLoader();
+            let dracoLoader = null;
+            try {
+                const { DRACOLoader } = await import("three/addons/loaders/DRACOLoader.js");
+                dracoLoader = new DRACOLoader();
+                dracoLoader.setDecoderPath("/draco/");
+                gltfLoader.setDRACOLoader(dracoLoader);
+            } catch {
+                // Optimized web GLB may be Draco-compressed; without the decoder
+                // the load errors below and the CSS fallback stays.
+            }
+
+            gltfLoader.load(
+                MODEL_SRC,
+                (gltf) => {
+                    if (disposed) return;
+                    const model = gltf.scene;
+
+                    const box = new THREE.Box3().setFromObject(model);
+                    const sphere = box.getBoundingSphere(new THREE.Sphere());
+                    model.position.sub(sphere.center);
+                    modelRadius = sphere.radius || 1;
+
+                    model.traverse((o) => {
+                        if (o.isMesh && o.material) {
+                            // Stronger env reflections reveal the charcoal metal;
+                            // keep the emissive markings at full intensity.
+                            o.material.envMapIntensity = 1.4;
+                            if (o.material.emissiveMap) {
+                                o.material.emissive = new THREE.Color(0xffffff);
+                                o.material.emissiveIntensity = 1.15;
+                            }
+                            o.material.needsUpdate = true;
+                        }
+                    });
+
+                    lean.add(model);
+                    // Fixed display pose — a calm, slightly-turned scanned
+                    // specimen. The spider itself does not animate; only the
+                    // surrounding scan environment (CSS) moves.
+                    root.rotation.y = 0.16;
+                    lean.rotation.x = 0.05;
+                    // Frame + render the correct spider into the buffer FIRST
+                    // (stage still opacity 0), then flip `ready` to crossfade in a
+                    // frame that is already fully framed — never a partial pop-in.
+                    onResize();
+                    host.classList.add("pgh-stage--ready");
+                },
+                undefined,
+                () => {}, // load error — CSS fallback stays
+            );
+
+            const render = () => renderer.render(scene, camera);
+
+            function onResize() {
+                const w = host.clientWidth || 1;
+                const h = host.clientHeight || 1;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                // Fit the bounding sphere on BOTH axes so the spider never crops
+                // on tall/narrow stages; a small factor keeps it large in frame.
+                const wide = w > 620;
+                const fit = wide ? 0.86 : 1.12;
+                const vFov = (camera.fov * Math.PI) / 180;
+                const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+                const dist = Math.max(
+                    modelRadius / Math.sin(vFov / 2),
+                    modelRadius / Math.sin(hFov / 2),
+                ) * fit;
+                camera.position.set(0, modelRadius * 0.5, dist);
+                camera.lookAt(0, 0, 0);
+                render();
+            }
+            const ro = new ResizeObserver(onResize);
+            ro.observe(host);
+            onResize();
+
+            // Re-render if the tab returns to the foreground (some browsers can
+            // drop the composited frame). No continuous animation loop runs.
+            const onVisible = () => {
+                if (!document.hidden) render();
+            };
+            document.addEventListener("visibilitychange", onVisible);
+
+            cleanup = () => {
+                document.removeEventListener("visibilitychange", onVisible);
+                ro.disconnect();
+                dracoLoader?.dispose();
+                envTex?.dispose();
+                renderer.dispose();
+                renderer.domElement.remove();
+                scene.traverse((o) => {
+                    o.geometry?.dispose?.();
+                    const mats = Array.isArray(o.material) ? o.material : [o.material];
+                    mats.forEach((m) => {
+                        if (!m) return;
+                        Object.values(m).forEach((v) => v?.isTexture && v.dispose());
+                        m.dispose?.();
+                    });
+                });
+            };
+        })();
+
+        return () => {
+            disposed = true;
+            cleanup();
+        };
+    }, []);
 
     return (
-        <section className={`poison-guard-hero ${hazardActive ? "pgh--hazard" : "pgh--clear"}`}>
+        <section className="poison-guard-hero pgh--hazard">
             <div className="pgh-glow pgh-glow--a" aria-hidden="true" />
             <div className="pgh-glow pgh-glow--b" aria-hidden="true" />
             {PARTICLES.map((p, i) => (
@@ -56,8 +253,58 @@ function PoisonGuardHero({
                 />
             ))}
 
+            {/* full-width scrim so the spider blends into the background and the
+                copy stays legible (spans the whole hero → no vertical seam) */}
+            <div className="pgh-scrim" aria-hidden="true" />
+
+            {/* ── Boxless spider scan scene, blended into the hero background ── */}
+            <div className="pgh-scene" aria-hidden="true">
+                <div className="pgh-radar">
+                    <span className="pgh-radar__glow" />
+                    <span className="pgh-floor-ring pgh-floor-ring--1" />
+                    <span className="pgh-floor-ring pgh-floor-ring--2" />
+                    <span className="pgh-floor-ring pgh-floor-ring--3" />
+                </div>
+
+                {/* soft orange hazard pulse */}
+                <span className="pgh-warn-ring pgh-warn-ring--1" />
+                <span className="pgh-warn-ring pgh-warn-ring--2" />
+
+                {/* WebGL spider canvas mounts here. It starts hidden (opacity 0)
+                    and fades in only once the GLB has loaded AND been framed
+                    (host gains `pgh-stage--ready`) — so no unframed/placeholder
+                    spider ever flashes. No creature/emoji/image fallback. */}
+                <div ref={hostRef} className="pgh-stage" />
+
+                {/* "AI scan initializing" glow shown only while the GLB loads;
+                    it fades out once the stage is ready. */}
+                <span className="pgh-init" />
+
+                <div className="pgh-scan" style={{ animationDuration: `${scanSpeed}s` }} />
+
+                <div className="pgh-label pgh-label--scan">
+                    <span className="pgh-label__dot" />
+                    <span className="pgh-label__text">AI Risk Scan</span>
+                </div>
+
+                <div className="pgh-callout">
+                    <svg className="pgh-callout__icon" viewBox="0 0 24 24">
+                        <path d="M12 3.2 22 20.5 H2 Z" />
+                        <line x1="12" y1="10" x2="12" y2="15" />
+                        <circle cx="12" cy="17.8" r="0.9" />
+                    </svg>
+                    <span className="pgh-callout__text">
+                        <strong>Poisonous Spider</strong>
+                        <span className="pgh-callout__sub">
+                            <span className="pgh-callout__dot" />
+                            1 hazard flagged
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            {/* ── Copy column ── */}
             <div className="pgh-inner">
-                {/* ── Copy column ── */}
                 <div className="pgh-copy">
                     <div className="pgh-eyebrow">
                         <span className="pgh-eyebrow__dot" />
@@ -91,120 +338,6 @@ function PoisonGuardHero({
                             <span className="pgh-tag__dot" style={{ background: "#4D9FFF" }} />
                             Animals, plants & chemicals
                         </span>
-                    </div>
-                </div>
-
-                {/* ── Scan panel scene (decorative) ── */}
-                <div className="pgh-scene-col">
-                    <div className="pgh-panel" aria-hidden="true">
-                        <div className="pgh-wall" />
-                        <div className="pgh-cabinet pgh-cabinet--l">
-                            <div className="pgh-cabinet__handle" />
-                        </div>
-                        <div className="pgh-cabinet pgh-cabinet--r">
-                            <div className="pgh-cabinet__handle" />
-                        </div>
-                        <div className="pgh-counter" />
-                        <div className="pgh-floor" />
-
-                        <div className="pgh-orb">
-                            <div className="pgh-orb__ring pgh-orb__ring--1" />
-                            <div className="pgh-orb__ring pgh-orb__ring--2" />
-                            <div className="pgh-orb__core" />
-                        </div>
-
-                        {hazardActive ? <div className="pgh-beam" /> : null}
-
-                        {/* Poisonous animal specimen (spider silhouette) */}
-                        <div className="pgh-specimen pgh-specimen--animal">
-                            <svg viewBox="0 0 64 44" className="pgh-svg pgh-svg--animal">
-                                <g className="pgh-svg-animal__legs">
-                                    <path d="M32 22 C22 14 13 13 6 8" />
-                                    <path d="M32 24 C20 22 11 23 4 21" />
-                                    <path d="M32 26 C20 28 11 31 5 36" />
-                                    <path d="M32 24 C25 30 19 35 15 41" />
-                                    <path d="M32 22 C42 14 51 13 58 8" />
-                                    <path d="M32 24 C44 22 53 23 60 21" />
-                                    <path d="M32 26 C44 28 53 31 59 36" />
-                                    <path d="M32 24 C39 30 45 35 49 41" />
-                                </g>
-                                <ellipse className="pgh-svg-animal__body" cx="32" cy="26" rx="9" ry="11" />
-                                <circle className="pgh-svg-animal__head" cx="32" cy="15" r="5" />
-                            </svg>
-                        </div>
-
-                        {/* Toxic plant specimen */}
-                        <div className="pgh-specimen pgh-specimen--plant">
-                            <svg viewBox="0 0 48 60" className="pgh-svg pgh-svg--plant">
-                                <path className="pgh-svg-plant__pot" d="M15 44 H33 L30 58 H18 Z" />
-                                <path className="pgh-svg-plant__stem" d="M24 46 V22" />
-                                <path className="pgh-svg-plant__leaf" d="M24 36 C13 32 9 22 12 15 C21 17 25 27 24 36 Z" />
-                                <path className="pgh-svg-plant__leaf" d="M24 30 C35 26 39 16 36 9 C27 11 23 21 24 30 Z" />
-                                <path className="pgh-svg-plant__leaf" d="M24 24 C20 16 22 8 27 4 C31 10 29 19 24 24 Z" />
-                            </svg>
-                        </div>
-
-                        {/* Matched-safe container */}
-                        <div className="pgh-bottle-safe pgh-bottle-safe--1">
-                            <div className="pgh-bottle-safe__cap" />
-                            <div className="pgh-bottle-safe__band" />
-                        </div>
-
-                        <div className="pgh-hazard">
-                            <div className="pgh-shield" />
-                            {hazardActive ? (
-                                <>
-                                    <div className="pgh-warn pgh-warn--1" />
-                                    <div className="pgh-warn pgh-warn--2" />
-                                </>
-                            ) : null}
-                            <div className="pgh-bottle">
-                                <div className="pgh-bottle__cap" />
-                                <div className="pgh-bottle__label">
-                                    <span>CHEM</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="pgh-scan" style={{ animationDuration: `${scanSpeed}s` }} />
-                        <div className="pgh-grid" />
-
-                        {showLabels ? (
-                            <>
-                                <div className="pgh-label pgh-label--scan">
-                                    <span className="pgh-label__dot" />
-                                    <span className="pgh-label__text">AI Risk Scan</span>
-                                </div>
-                                {hazardActive ? (
-                                    <>
-                                        <div className="pgh-label pgh-label--animal">
-                                            <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">Poisonous Animal</span>
-                                        </div>
-                                        <div className="pgh-label pgh-label--chem">
-                                            <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">Chemical Hazard</span>
-                                        </div>
-                                        <div className="pgh-label pgh-label--plant">
-                                            <span className="pgh-label__dot" />
-                                            <span className="pgh-label__text">Toxic Plant</span>
-                                        </div>
-                                    </>
-                                ) : null}
-                                <div className="pgh-label pgh-label--safe">
-                                    <span className="pgh-label__dot" />
-                                    <span className="pgh-label__text">Safe Match</span>
-                                </div>
-                            </>
-                        ) : null}
-
-                        <div className="pgh-status">
-                            <span className="pgh-status__left">
-                                <span className="pgh-status__dot" />
-                                {statusText}
-                            </span>
-                            <span className="pgh-status__cycle">Scan cycle · continuous</span>
-                        </div>
                     </div>
                 </div>
             </div>
