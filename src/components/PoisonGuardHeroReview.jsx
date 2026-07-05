@@ -1,23 +1,25 @@
 import { useRef } from "react";
-import "./PoisonGuardHeroReview.prototype.css";
+import "./PoisonGuardHeroReview.css";
 
 /*
- * PoisonGuardHeroReview — approved-image PoisonGuard hero (PROTOTYPE).
+ * PoisonGuardHeroReview — approved image-based PoisonGuard hero.
  *
  * Left column is REAL HTML (crisp text, real buttons). Right column is the
- * approved PoisonGuard concept image, cropped to the right ~68% so the baked-in
+ * approved PoisonGuard scene image, cropped to the right ~70% so the baked-in
  * left text is clipped out and replaced by the real copy — the full scanner
- * platform stays visible. Animated emerald/amber overlays (scan rings + beam,
- * leaf pulse, amber base lights, status-card glow, hologrid shimmer, lens glow)
- * sit on top; the lens/core glow parallax toward the cursor.
+ * platform stays visible. The scene is frameless: an all-edge mask feathers it
+ * into the hero background (no card/box). Animated emerald/amber overlays (scan
+ * rings + beam, leaf breeze, amber base lights, status-card glow, hologrid
+ * shimmer, lens/logo glow, drifting particles) sit on top; the lens/core glow
+ * parallax toward the cursor.
  *
  * React + CSS only, scoped under `.pgr-hero`. Responsive +
- * prefers-reduced-motion. Review-only — not wired into production.
+ * prefers-reduced-motion.
  *
  * Usage:  <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
  */
 
-const IMAGE_SRC = "/prototypes/poisonguard/poisonguard-hero-approved-v1.png";
+const IMAGE_SRC = "/images/products/poisonguard/poisonguard-hero-approved-v1.png";
 
 // Glow positions over each baked-in status-card (% of the image).
 const CARD_GLOWS = [

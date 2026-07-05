@@ -1,40 +1,33 @@
-# PoisonGuard Hero Prototypes — experiment branch only
+# PoisonGuard Hero Prototypes
 
-Two isolated PoisonGuard hero prototypes live here. **Neither is wired into
-production** — the live PoisonGuard page uses the 3D `ProductHero3D` hero
-(`src/data/productHero3D.js` `poisonguard` config, rendered by
-`src/pages/PoisonGuard.jsx`).
+## 1. Approved image-based hero — PROMOTED TO PRODUCTION
 
-## 1. Approved-image review hero (current)
+The approved-image review hero that used to live here has been promoted to a
+production component:
 
-Built from the approved concept image
-`design-exports/poisonguard-hero-concept/poisonguard-hero-approved-v1.png`
-(copied to `public/prototypes/poisonguard/poisonguard-hero-approved-v1.png`,
-served at `/prototypes/poisonguard/...`).
-
-| File | Purpose |
+| Now (production) | Was (prototype) |
 | --- | --- |
-| `PoisonGuardHeroReview.prototype.jsx` | Hero component (`<PoisonGuardHeroReview />`) |
-| `PoisonGuardHeroReview.prototype.css` | Cropped-image layout + animated overlays |
+| `src/components/PoisonGuardHeroReview.jsx` | `PoisonGuardHeroReview.prototype.jsx` |
+| `src/components/PoisonGuardHeroReview.css` | `PoisonGuardHeroReview.prototype.css` |
+| `public/images/products/poisonguard/poisonguard-hero-approved-v1.png` | `public/prototypes/poisonguard/poisonguard-hero-approved-v1.png` |
 
-- **Base visual = the actual approved PNG** (cropped to the right ~68% so the
-  baked-in left text is clipped out and replaced by real HTML copy).
+It renders the PoisonGuard page hero (`?page=poisonguard`) via
+`src/pages/PoisonGuard.jsx`. Source concept image:
+`design-exports/poisonguard-hero-concept/poisonguard-hero-approved-v1.png`.
+
+- **Base visual = the approved PNG** (cropped to the right ~70%; baked-in left
+  text clipped out and replaced by real HTML copy). Frameless — an all-edge mask
+  feathers the scene into the hero background.
 - **Real HTML left column:** eyebrow, headline, subtext, real Join Waitlist /
   Safety Resources buttons, and the Families / Pets / Schools benefits.
-- **Animated overlays** (`mix-blend-mode: screen`, additive light): emerald scan
-  rings + beam, leaf pulse, amber base warning lights, per-card glow, hologrid
-  shimmer, ambient emerald/amber breathing, and a lens/core glow that parallaxes
-  toward the cursor.
+- **Animated overlays** (`mix-blend-mode: screen`): emerald scan rings + beam,
+  leaf breeze, amber base warning lights, per-card glow, hologrid shimmer,
+  ambient emerald/amber breathing, drifting particles, and a lens/logo/core glow
+  that parallaxes toward the cursor.
 - React + CSS only, scoped under `.pgr-hero`, responsive,
   `prefers-reduced-motion` aware.
 
-Preview route (experiment branch only): **`?page=poisonguard-hero-review`**
-
-```jsx
-import PoisonGuardHeroReview from "./prototypes/poisonguard-hero-animation/PoisonGuardHeroReview.prototype.jsx";
-
-<PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
-```
+The temporary `?page=poisonguard-hero-review` preview route has been removed.
 
 ## 2. Archived CSS animation (reference)
 
@@ -43,5 +36,5 @@ snapshot (scoped under `.poison-guard-hero`), kept for reference. Not routed.
 
 ## Not production
 
-Do not swap either prototype into the live PoisonGuard page without an explicit,
-reviewed branch.
+The archived CSS animation (section 2) is reference-only. Do not swap it into the
+live PoisonGuard page without an explicit, reviewed branch.

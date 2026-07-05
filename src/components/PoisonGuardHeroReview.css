@@ -1,16 +1,17 @@
 /*
- * PoisonGuardHeroReview — approved-image PoisonGuard hero with animated overlays
- * (PROTOTYPE / experiment branch review only).
+ * PoisonGuardHeroReview — approved image-based PoisonGuard hero with animated
+ * overlays.
  *
- * Left = REAL HTML copy/buttons. Right = the approved PoisonGuard concept image
- * (public/prototypes/poisonguard/poisonguard-hero-approved-v1.png), cropped to
- * the right ~68% so the baked-in left text is clipped out and replaced by the
- * real copy, while the full scanner platform stays visible. Animated
- * `mix-blend-mode: screen` overlays (emerald scan rings/beam, leaf pulse, amber
- * base lights, status-card glow, hologrid shimmer, lens glow) sit on top; the
- * lens/core glow parallax toward the cursor. Scoped under `.pgr-hero`;
- * `pgr-`-prefixed keyframes. React + CSS only, responsive,
- * prefers-reduced-motion aware. Not wired into production.
+ * Left = REAL HTML copy/buttons. Right = the approved PoisonGuard scene image
+ * (public/images/products/poisonguard/poisonguard-hero-approved-v1.png), cropped
+ * to the right ~70% so the baked-in left text is clipped out and replaced by the
+ * real copy, while the full scanner platform stays visible. The scene is
+ * frameless — an all-edge mask feathers it into the hero background. Animated
+ * `mix-blend-mode: screen` overlays (emerald scan rings/beam, leaf breeze, amber
+ * base lights, status-card glow, hologrid shimmer, lens/logo glow, particles)
+ * sit on top; the lens/core glow parallax toward the cursor. Scoped under
+ * `.pgr-hero`; `pgr-`-prefixed keyframes. React + CSS only, responsive,
+ * prefers-reduced-motion aware.
  */
 
 .pgr-hero {
