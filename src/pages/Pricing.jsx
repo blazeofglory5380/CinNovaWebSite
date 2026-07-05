@@ -164,7 +164,7 @@ function Pricing() {
             <section className="section" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading" style={{ marginBottom: "0" }}>
                     <p className="eyebrow">PRICING</p>
-                    <h2>Flexible plans for every Cin Nova product</h2>
+                    <h1>Flexible plans for every Cin Nova product</h1>
                     <p>
                         Choose the tools that fit your learning, safety, technology,
                         and real estate goals. Start free on any product — upgrade

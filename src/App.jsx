@@ -335,6 +335,10 @@ function App() {
     }
 
     const isSuccessPage = page === "newsletter-success";
+    // The sticky newsletter bar is redundant on pages whose primary purpose is
+    // newsletter signup, so suppress it there (keep it on marketing/product/blog).
+    const isNewsletterFocusedPage =
+        page === "newsletter" || page === "sponsor-newsletter" || isSuccessPage;
 
     return (
         <div className="site">
@@ -357,7 +361,7 @@ function App() {
                     onClose={() => setShowGuideModal(false)}
                 />
             )}
-            {showStickyBar && !stickyDismissed && !isSuccessPage && (
+            {showStickyBar && !stickyDismissed && !isNewsletterFocusedPage && (
                 <StickyNewsletterBar
                     onSubscribe={showNewsletterAlert}
                     onDismiss={dismissStickyBar}
