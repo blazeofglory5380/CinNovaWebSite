@@ -120,6 +120,27 @@
 }
 .pgr-hero .pgr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 0; background-color: #050f0a; }
 
+/* Breeze layer: a masked duplicate of the image revealing only the leaf, gently
+   swaying/floating so the leaf reads as moving in a soft breeze while the rest
+   of the (flat) scene stays still. Rotates from the stem base. */
+.pgr-hero .pgr-leaf-layer {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    display: block; z-index: 0; pointer-events: none;
+    -webkit-mask-image: radial-gradient(ellipse 14% 19% at 65% 45%, #000 46%, transparent 80%);
+    mask-image: radial-gradient(ellipse 14% 19% at 65% 45%, #000 46%, transparent 80%);
+    transform-origin: 65% 61%;
+    will-change: transform;
+    animation: pgr-breeze 8.5s ease-in-out infinite;
+}
+
+/* drifting emerald light particles for ambient life */
+.pgr-hero .pgr-particle {
+    position: absolute; z-index: 1; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--pgr-emerald-lt); box-shadow: 0 0 8px 1px currentColor;
+    mix-blend-mode: screen; opacity: 0; pointer-events: none;
+    animation: pgr-drift linear infinite;
+}
+
 /* ── Overlays (positioned as % of the full image) ──────────────────── */
 .pgr-hero .pgr-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; }
 .pgr-hero .pgr-ov--radial { border-radius: 50%; transform: translate(-50%, -50%); aspect-ratio: 1 / 1; }
@@ -131,33 +152,53 @@
     background-size: 220% 100%;
     animation: pgr-shim 8s linear infinite;
 }
-/* ambient emerald + amber breathing glows */
-.pgr-hero .pgr-ov--emerald { left: 66%; top: 55%; width: 52%; background: radial-gradient(circle, rgba(46, 200, 140, 0.5), transparent 68%); filter: blur(14px); animation: pgr-breathe 9s ease-in-out infinite; }
-.pgr-hero .pgr-ov--amber { left: 66%; top: 80%; width: 44%; background: radial-gradient(circle, rgba(245, 158, 11, 0.34), transparent 70%); filter: blur(12px); animation: pgr-breathe 11s ease-in-out 1.2s infinite; }
+/* ambient emerald atmosphere — cinematic background breathing glow */
+.pgr-hero .pgr-ov--emerald { left: 64%; top: 52%; width: 64%; background: radial-gradient(circle, rgba(46, 205, 145, 0.6) 0%, rgba(34, 170, 120, 0.24) 44%, transparent 70%); filter: blur(20px); animation: pgr-breathe 10s ease-in-out infinite; }
+/* a wider, slower emerald wash so the whole scene feels alive */
+.pgr-hero .pgr-ov--emerald-wide { left: 62%; top: 46%; width: 92%; background: radial-gradient(circle, rgba(30, 150, 105, 0.28) 0%, transparent 66%); filter: blur(28px); animation: pgr-breathe 15s ease-in-out 1.5s infinite; }
+/* amber ambient wash + bloom on the base/warning accents */
+.pgr-hero .pgr-ov--amber { left: 66%; top: 80%; width: 50%; background: radial-gradient(circle, rgba(245, 158, 11, 0.46) 0%, rgba(245, 158, 11, 0.16) 45%, transparent 72%); filter: blur(14px); animation: pgr-bloom 4.6s ease-in-out 0.6s infinite; }
 /* card-band soft glow */
 .pgr-hero .pgr-ov--cards { left: 68%; top: 30%; width: 56%; background: radial-gradient(ellipse 60% 46% at 50% 50%, rgba(90, 220, 160, 0.18), transparent 70%); filter: blur(6px); animation: pgr-pulse 7s ease-in-out 0.6s infinite; }
 
-/* floating scanner lens glow (parallaxes toward the cursor) */
+/* floating scanner lens glow — brighter luminous bloom (parallaxes to cursor) */
 .pgr-hero .pgr-ov--lens {
-    left: 68%; top: 18.5%; width: 12%;
-    background: radial-gradient(circle, rgba(120, 255, 210, 0.85) 0%, rgba(46, 200, 140, 0.4) 46%, transparent 70%);
+    left: 68%; top: 18.5%; width: 15%;
+    background: radial-gradient(circle, rgba(180, 255, 235, 0.95) 0%, rgba(120, 255, 210, 0.6) 32%, rgba(46, 205, 145, 0.32) 55%, transparent 72%);
     filter: blur(3px);
     animation: pgr-lens 3.6s ease-in-out infinite;
     transform: translate(calc(-50% + var(--pgr-lx)), calc(-50% + var(--pgr-ly)));
     transition: transform 0.5s ease-out;
 }
-/* scan beam from the lens down onto the leaves */
+/* scan beam from the lens down onto the leaves — luminous, slightly volumetric */
 .pgr-hero .pgr-ov--beam {
-    left: 67.5%; top: 22%; width: 5.5%; height: 30%;
+    left: 67.5%; top: 21%; width: 7.5%; height: 34%;
     transform: translate(calc(-50% + var(--pgr-lx)), 0);
     transition: transform 0.5s ease-out;
-    background: linear-gradient(180deg, rgba(120, 255, 210, 0.6) 0%, rgba(46, 200, 140, 0.28) 55%, transparent 100%);
-    filter: blur(4px);
-    border-radius: 50% 50% 40% 40%;
+    background: linear-gradient(180deg, rgba(190, 255, 235, 0.7) 0%, rgba(120, 255, 210, 0.5) 34%, rgba(46, 205, 145, 0.24) 66%, transparent 100%);
+    filter: blur(5px);
+    border-radius: 46% 46% 40% 40%;
     animation: pgr-beam 3.2s ease-in-out infinite;
 }
+/* tight inner beam core for a brighter volumetric shaft */
+.pgr-hero .pgr-ov--beam-core {
+    left: 67.5%; top: 21%; width: 2.6%; height: 32%;
+    transform: translate(calc(-50% + var(--pgr-lx)), 0);
+    transition: transform 0.5s ease-out;
+    background: linear-gradient(180deg, rgba(220, 255, 245, 0.9) 0%, rgba(150, 255, 220, 0.5) 45%, transparent 100%);
+    filter: blur(2px);
+    border-radius: 50%;
+    animation: pgr-beam 3.2s ease-in-out 0.2s infinite;
+}
+/* soft light spill where the beam lands on the leaf + platform */
+.pgr-hero .pgr-ov--spill {
+    left: 65.5%; top: 52%; width: 30%;
+    background: radial-gradient(ellipse 60% 70% at 50% 46%, rgba(150, 255, 215, 0.4) 0%, rgba(46, 205, 145, 0.2) 42%, transparent 72%);
+    filter: blur(7px);
+    animation: pgr-lens 5s ease-in-out 0.4s infinite;
+}
 /* emerald leaf scan pulse */
-.pgr-hero .pgr-ov--leaf { left: 66%; top: 50%; width: 20%; background: radial-gradient(circle, rgba(80, 240, 170, 0.4), transparent 66%); filter: blur(5px); animation: pgr-pulse 4.4s ease-in-out infinite; }
+.pgr-hero .pgr-ov--leaf { left: 66%; top: 50%; width: 20%; background: radial-gradient(circle, rgba(80, 240, 170, 0.44), transparent 66%); filter: blur(5px); animation: pgr-pulse 4.4s ease-in-out infinite; }
 /* emerald core glow around scanner (parallax) */
 .pgr-hero .pgr-ov--core {
     left: 66%; top: 58%; width: 26%;
@@ -175,12 +216,20 @@
     animation: pgr-ringpulse 4.4s ease-out infinite;
 }
 .pgr-hero .pgr-ov--ring.pgr-ov--ring-2 { animation-delay: 2.2s; border-color: rgba(52, 211, 153, 0.45); }
-/* amber warning lights along the scanner base */
+/* amber warning lights along the scanner base — soft bloom pulse */
 .pgr-hero .pgr-ov--base {
-    left: 47%; right: 12%; bottom: 8%; height: 14%; transform: none;
-    background: radial-gradient(80% 100% at 55% 60%, rgba(251, 191, 36, 0.55) 0%, rgba(245, 158, 11, 0.3) 40%, transparent 74%);
+    left: 47%; right: 12%; bottom: 8%; height: 16%; transform: none;
+    background: radial-gradient(80% 100% at 55% 60%, rgba(253, 200, 70, 0.7) 0%, rgba(245, 158, 11, 0.38) 38%, transparent 74%);
     filter: blur(5px);
-    animation: pgr-warn 2.6s ease-in-out infinite;
+    animation: pgr-bloom 3.2s ease-in-out infinite;
+}
+/* subtle emerald glow on the "POISONGUARD" platform logo mark */
+.pgr-hero .pgr-ov--logo {
+    left: 65%; top: 68%; width: 16%; height: 6%;
+    border-radius: 50%; transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(110, 231, 183, 0.4) 0%, rgba(52, 211, 153, 0.16) 45%, transparent 74%);
+    filter: blur(4px);
+    animation: pgr-pulse 5.4s ease-in-out 0.8s infinite;
 }
 
 /* per-card glow spots (5 emerald + 1 amber for TOXIC PLANT) */
@@ -200,6 +249,23 @@
 @keyframes pgr-ringpulse { 0% { transform: translate(-50%, -50%) scale(0.42); opacity: 0; } 12% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0; } }
 @keyframes pgr-warn { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 @keyframes pgr-shim { 0% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+/* soft bloom: opacity + brightness swell (amber accents / base lights) */
+@keyframes pgr-bloom { 0%, 100% { opacity: 0.5; filter: blur(5px) brightness(0.95); } 50% { opacity: 1; filter: blur(6px) brightness(1.55); } }
+/* gentle breeze: slow sway + tiny float + micro-rotation from the stem base */
+@keyframes pgr-breeze {
+    0%   { transform: rotate(-0.7deg) translate(0, 0) scale(1); }
+    25%  { transform: rotate(0.35deg) translate(0.8px, -1.2px) scale(1.004); }
+    50%  { transform: rotate(0.75deg) translate(-0.6px, -0.4px) scale(1.006); }
+    75%  { transform: rotate(-0.15deg) translate(0.5px, -1.4px) scale(1.003); }
+    100% { transform: rotate(-0.7deg) translate(0, 0) scale(1); }
+}
+/* drifting light particle: rise + fade in/out */
+@keyframes pgr-drift {
+    0%   { opacity: 0; transform: translateY(6px) scale(0.7); }
+    20%  { opacity: 0.85; }
+    80%  { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-34px) scale(1.1); }
+}
 
 /* ── Responsive ────────────────────────────────────────────────────── */
 @media (max-width: 980px) {
@@ -224,4 +290,7 @@
     .pgr-hero .pgr-ov--beam { transform: none !important; }
     .pgr-hero .pgr-ov--ring { display: none; }
     .pgr-hero .pgr-ov--shimmer { opacity: 0.5; }
+    /* hold the leaf still and drop drifting particles */
+    .pgr-hero .pgr-leaf-layer { animation: none !important; transform: none !important; }
+    .pgr-hero .pgr-particle { display: none; }
 }

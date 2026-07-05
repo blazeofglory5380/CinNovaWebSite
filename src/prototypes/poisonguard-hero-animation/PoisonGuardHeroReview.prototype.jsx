@@ -31,6 +31,17 @@ const CARD_GLOWS = [
 
 const BENEFITS = ["Families", "Pets", "Schools"];
 
+// Drifting emerald light motes (positions in % of the image, over the scene).
+const PARTICLES = [
+    { left: "58%", top: "40%", dur: 7.5, delay: 0 },
+    { left: "72%", top: "34%", dur: 9, delay: 1.4 },
+    { left: "64%", top: "56%", dur: 8.2, delay: 2.6 },
+    { left: "80%", top: "50%", dur: 10, delay: 0.8 },
+    { left: "55%", top: "62%", dur: 8.8, delay: 3.4 },
+    { left: "76%", top: "66%", dur: 9.6, delay: 1.9 },
+    { left: "68%", top: "28%", dur: 7.8, delay: 4.2 },
+];
+
 function prefersReducedMotion() {
     return typeof window !== "undefined" && window.matchMedia
         ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -112,9 +123,30 @@ function PoisonGuardHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
                                 e.currentTarget.style.visibility = "hidden";
                             }}
                         />
+                        {/* swaying leaf layer: same image masked to the leaf, gentle breeze */}
+                        <img
+                            className="pgr-leaf-layer"
+                            src={IMAGE_SRC}
+                            alt=""
+                            aria-hidden="true"
+                            loading="eager"
+                            decoding="async"
+                            onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                            }}
+                        />
                         <div className="pgr-ov pgr-ov--shimmer" aria-hidden="true" />
+                        <div className="pgr-ov pgr-ov--radial pgr-ov--emerald-wide" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--radial pgr-ov--emerald" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--radial pgr-ov--amber" aria-hidden="true" />
+                        {PARTICLES.map((p, i) => (
+                            <span
+                                key={i}
+                                className="pgr-particle"
+                                style={{ left: p.left, top: p.top, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s` }}
+                                aria-hidden="true"
+                            />
+                        ))}
                         <div className="pgr-ov pgr-ov--radial pgr-ov--cards" aria-hidden="true" />
                         {CARD_GLOWS.map((c) => (
                             <div
@@ -124,12 +156,15 @@ function PoisonGuardHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
                                 aria-hidden="true"
                             />
                         ))}
+                        <div className="pgr-ov pgr-ov--radial pgr-ov--spill" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--radial pgr-ov--leaf" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--radial pgr-ov--core" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--ring" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--ring pgr-ov--ring-2" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--beam" aria-hidden="true" />
+                        <div className="pgr-ov pgr-ov--beam-core" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--radial pgr-ov--lens" aria-hidden="true" />
+                        <div className="pgr-ov pgr-ov--radial pgr-ov--logo" aria-hidden="true" />
                         <div className="pgr-ov pgr-ov--base" aria-hidden="true" />
                     </div>
                 </div>
