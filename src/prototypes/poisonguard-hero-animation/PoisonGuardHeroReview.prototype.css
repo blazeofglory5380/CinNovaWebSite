@@ -1,0 +1,227 @@
+/*
+ * PoisonGuardHeroReview — approved-image PoisonGuard hero with animated overlays
+ * (PROTOTYPE / experiment branch review only).
+ *
+ * Left = REAL HTML copy/buttons. Right = the approved PoisonGuard concept image
+ * (public/prototypes/poisonguard/poisonguard-hero-approved-v1.png), cropped to
+ * the right ~68% so the baked-in left text is clipped out and replaced by the
+ * real copy, while the full scanner platform stays visible. Animated
+ * `mix-blend-mode: screen` overlays (emerald scan rings/beam, leaf pulse, amber
+ * base lights, status-card glow, hologrid shimmer, lens glow) sit on top; the
+ * lens/core glow parallax toward the cursor. Scoped under `.pgr-hero`;
+ * `pgr-`-prefixed keyframes. React + CSS only, responsive,
+ * prefers-reduced-motion aware. Not wired into production.
+ */
+
+.pgr-hero {
+    --pgr-ink: #eaf7ef;
+    --pgr-dim: #90a99b;
+    --pgr-dim-2: #c4dccd;
+    --pgr-emerald: #34d399;
+    --pgr-emerald-lt: #6ee7b7;
+    --pgr-emerald-deep: #10b981;
+    --pgr-mint: #a7f3d0;
+    --pgr-amber: #f59e0b;
+    --pgr-amber-lt: #fbbf24;
+    --pgr-scan: #5eead4;
+    --pgr-font: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: clamp(28px, 4vw, 64px) clamp(18px, 5vw, 72px);
+    background: radial-gradient(120% 100% at 72% 40%, #08160f 0%, #05100b 52%, #030805 100%);
+    color: var(--pgr-ink);
+    font-family: var(--pgr-font);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.pgr-hero .pgr-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 60px);
+    animation: pgr-fade 1s ease-out both;
+}
+
+/* ── Left: real HTML copy ──────────────────────────────────────────── */
+.pgr-hero .pgr-copy { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.pgr-hero .pgr-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; width: fit-content;
+    margin: 0; padding: 7px 14px; border-radius: 100px;
+    background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(110, 231, 183, 0.32);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--pgr-emerald-lt);
+}
+.pgr-hero .pgr-eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 10px 2px rgba(52, 211, 153, 0.85); animation: pgr-blink 2.4s ease-in-out infinite; }
+.pgr-hero .pgr-title {
+    margin: 0; font-weight: 800; letter-spacing: -0.02em;
+    font-size: clamp(32px, 4.4vw, 58px); line-height: 1.04; color: #fff;
+    text-shadow: 0 2px 40px rgba(3, 12, 8, 0.6);
+}
+.pgr-hero .pgr-title__grad {
+    background: linear-gradient(100deg, var(--pgr-emerald-lt) 0%, var(--pgr-emerald) 55%, var(--pgr-emerald-deep) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+}
+.pgr-hero .pgr-lede { margin: 0; max-width: 520px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.7; color: var(--pgr-dim); text-wrap: pretty; }
+
+.pgr-hero .pgr-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+.pgr-hero .pgr-btn {
+    display: inline-flex; align-items: center; gap: 9px; padding: 15px 28px; border-radius: 14px;
+    font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.pgr-hero .pgr-btn--primary {
+    color: #04140c;
+    background: linear-gradient(120deg, var(--pgr-emerald) 0%, #22c58a 55%, var(--pgr-emerald-deep) 100%);
+    box-shadow: 0 10px 34px rgba(16, 185, 129, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.pgr-hero .pgr-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 16px 46px rgba(16, 185, 129, 0.58); }
+.pgr-hero .pgr-btn--ghost {
+    color: var(--pgr-dim-2); background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(110, 200, 160, 0.32); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.pgr-hero .pgr-btn--ghost:hover { transform: translateY(-2px); border-color: rgba(110, 231, 183, 0.6); color: #fff; }
+
+.pgr-hero .pgr-benefits { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 22px; }
+.pgr-hero .pgr-benefit { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #bcd8c8; }
+.pgr-hero .pgr-benefit__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 8px rgba(52, 211, 153, 0.8); }
+
+/* ── Right: cropped image scene window ─────────────────────────────── */
+.pgr-hero .pgr-window {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.05 / 1;        /* shows the right ~59% of the 16:9 image */
+    border-radius: clamp(10px, 1.2vw, 18px);
+    overflow: hidden;
+    isolation: isolate;
+    /* dark scene base so the area is never white/empty (load-flash + graceful) */
+    background: radial-gradient(120% 120% at 60% 40%, #0a1c12 0%, #061109 60%, #030805 100%);
+    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.55);
+    animation: pgr-fade 1.1s ease-out 0.1s both;
+}
+/* fade the left edge into the section so any residual baked text is masked */
+.pgr-hero .pgr-window::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    background: linear-gradient(90deg, #050f0a 0%, #050f0a 6%, rgba(5, 15, 10, 0.6) 10%, transparent 15%);
+}
+.pgr-hero .pgr-scene {
+    --pgr-lx: 0px; --pgr-ly: 0px; --pgr-cx: 0px; --pgr-cy: 0px;   /* cursor parallax */
+    position: absolute; top: 0; right: 0; height: 100%;
+    aspect-ratio: 1672 / 941;      /* full image; wider than window -> left clipped */
+}
+.pgr-hero .pgr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 0; background-color: #050f0a; }
+
+/* ── Overlays (positioned as % of the full image) ──────────────────── */
+.pgr-hero .pgr-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; }
+.pgr-hero .pgr-ov--radial { border-radius: 50%; transform: translate(-50%, -50%); aspect-ratio: 1 / 1; }
+
+/* holographic grid shimmer sweep */
+.pgr-hero .pgr-ov--shimmer {
+    inset: 0;
+    background: linear-gradient(115deg, transparent 36%, rgba(110, 231, 183, 0.12) 47%, rgba(94, 234, 212, 0.1) 53%, transparent 64%);
+    background-size: 220% 100%;
+    animation: pgr-shim 8s linear infinite;
+}
+/* ambient emerald + amber breathing glows */
+.pgr-hero .pgr-ov--emerald { left: 66%; top: 55%; width: 52%; background: radial-gradient(circle, rgba(46, 200, 140, 0.5), transparent 68%); filter: blur(14px); animation: pgr-breathe 9s ease-in-out infinite; }
+.pgr-hero .pgr-ov--amber { left: 66%; top: 80%; width: 44%; background: radial-gradient(circle, rgba(245, 158, 11, 0.34), transparent 70%); filter: blur(12px); animation: pgr-breathe 11s ease-in-out 1.2s infinite; }
+/* card-band soft glow */
+.pgr-hero .pgr-ov--cards { left: 68%; top: 30%; width: 56%; background: radial-gradient(ellipse 60% 46% at 50% 50%, rgba(90, 220, 160, 0.18), transparent 70%); filter: blur(6px); animation: pgr-pulse 7s ease-in-out 0.6s infinite; }
+
+/* floating scanner lens glow (parallaxes toward the cursor) */
+.pgr-hero .pgr-ov--lens {
+    left: 68%; top: 18.5%; width: 12%;
+    background: radial-gradient(circle, rgba(120, 255, 210, 0.85) 0%, rgba(46, 200, 140, 0.4) 46%, transparent 70%);
+    filter: blur(3px);
+    animation: pgr-lens 3.6s ease-in-out infinite;
+    transform: translate(calc(-50% + var(--pgr-lx)), calc(-50% + var(--pgr-ly)));
+    transition: transform 0.5s ease-out;
+}
+/* scan beam from the lens down onto the leaves */
+.pgr-hero .pgr-ov--beam {
+    left: 67.5%; top: 22%; width: 5.5%; height: 30%;
+    transform: translate(calc(-50% + var(--pgr-lx)), 0);
+    transition: transform 0.5s ease-out;
+    background: linear-gradient(180deg, rgba(120, 255, 210, 0.6) 0%, rgba(46, 200, 140, 0.28) 55%, transparent 100%);
+    filter: blur(4px);
+    border-radius: 50% 50% 40% 40%;
+    animation: pgr-beam 3.2s ease-in-out infinite;
+}
+/* emerald leaf scan pulse */
+.pgr-hero .pgr-ov--leaf { left: 66%; top: 50%; width: 20%; background: radial-gradient(circle, rgba(80, 240, 170, 0.4), transparent 66%); filter: blur(5px); animation: pgr-pulse 4.4s ease-in-out infinite; }
+/* emerald core glow around scanner (parallax) */
+.pgr-hero .pgr-ov--core {
+    left: 66%; top: 58%; width: 26%;
+    background: radial-gradient(circle, rgba(94, 234, 212, 0.5) 0%, rgba(46, 200, 140, 0.28) 46%, transparent 70%);
+    filter: blur(5px);
+    animation: pgr-core 4.2s ease-in-out infinite;
+    transform: translate(calc(-50% + var(--pgr-cx)), calc(-50% + var(--pgr-cy)));
+    transition: transform 0.6s ease-out;
+}
+/* expanding emerald scanner ring */
+.pgr-hero .pgr-ov--ring {
+    left: 66%; top: 60%; width: 32%;
+    border-radius: 50%; border: 2px solid rgba(94, 234, 212, 0.5);
+    transform: translate(-50%, -50%) scale(0.42); aspect-ratio: 1 / 1;
+    animation: pgr-ringpulse 4.4s ease-out infinite;
+}
+.pgr-hero .pgr-ov--ring.pgr-ov--ring-2 { animation-delay: 2.2s; border-color: rgba(52, 211, 153, 0.45); }
+/* amber warning lights along the scanner base */
+.pgr-hero .pgr-ov--base {
+    left: 47%; right: 12%; bottom: 8%; height: 14%; transform: none;
+    background: radial-gradient(80% 100% at 55% 60%, rgba(251, 191, 36, 0.55) 0%, rgba(245, 158, 11, 0.3) 40%, transparent 74%);
+    filter: blur(5px);
+    animation: pgr-warn 2.6s ease-in-out infinite;
+}
+
+/* per-card glow spots (5 emerald + 1 amber for TOXIC PLANT) */
+.pgr-hero .pgr-ov--card { width: 5%; filter: blur(3px); animation: pgr-cardpulse 3.4s ease-in-out infinite; }
+.pgr-hero .pgr-ov--card { background: radial-gradient(circle, rgba(90, 235, 165, 0.8) 0%, rgba(52, 211, 153, 0.3) 44%, transparent 70%); }
+.pgr-hero .pgr-ov--card.pgr-ov--card-warn { background: radial-gradient(circle, rgba(251, 191, 36, 0.85) 0%, rgba(245, 158, 11, 0.32) 44%, transparent 70%); }
+
+/* ── Keyframes ─────────────────────────────────────────────────────── */
+@keyframes pgr-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pgr-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes pgr-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes pgr-cardpulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+@keyframes pgr-breathe { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+@keyframes pgr-core { 0%, 100% { opacity: 0.65; filter: blur(5px) brightness(1); } 50% { opacity: 1; filter: blur(5px) brightness(1.4); } }
+@keyframes pgr-lens { 0%, 100% { opacity: 0.8; filter: blur(3px) brightness(1); } 50% { opacity: 1; filter: blur(3px) brightness(1.45); } }
+@keyframes pgr-beam { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+@keyframes pgr-ringpulse { 0% { transform: translate(-50%, -50%) scale(0.42); opacity: 0; } 12% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0; } }
+@keyframes pgr-warn { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes pgr-shim { 0% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 980px) {
+    .pgr-hero { padding-block: 44px; }
+    .pgr-hero .pgr-inner { grid-template-columns: 1fr; gap: 34px; }
+    .pgr-hero .pgr-window { order: -1; max-width: 560px; margin: 0 auto; width: 100%; }
+    .pgr-hero .pgr-lede { max-width: none; }
+}
+@media (max-width: 560px) {
+    .pgr-hero .pgr-benefits { gap: 16px; }
+    .pgr-hero .pgr-btn { flex: 1 1 auto; justify-content: center; }
+    .pgr-hero .pgr-window { aspect-ratio: 0.98 / 1; }
+}
+
+/* ── Reduced motion: calm static glow ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .pgr-hero .pgr-inner,
+    .pgr-hero .pgr-window,
+    .pgr-hero .pgr-ov { animation: none !important; }
+    .pgr-hero .pgr-inner, .pgr-hero .pgr-window { opacity: 1 !important; transform: none !important; }
+    .pgr-hero .pgr-ov--lens, .pgr-hero .pgr-ov--core, .pgr-hero .pgr-ov--beam { transform: translate(-50%, -50%) !important; transition: none !important; }
+    .pgr-hero .pgr-ov--beam { transform: none !important; }
+    .pgr-hero .pgr-ov--ring { display: none; }
+    .pgr-hero .pgr-ov--shimmer { opacity: 0.5; }
+}

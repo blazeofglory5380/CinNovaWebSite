@@ -1,31 +1,47 @@
-# PoisonGuard Hero Animation — Archived Prototype
+# PoisonGuard Hero Prototypes — experiment branch only
 
-This is an **archived Claude Design PoisonGuard hero animation prototype**.
+Two isolated PoisonGuard hero prototypes live here. **Neither is wired into
+production** — the live PoisonGuard page uses the 3D `ProductHero3D` hero
+(`src/data/productHero3D.js` `poisonguard` config, rendered by
+`src/pages/PoisonGuard.jsx`).
 
-- **It is not wired into production.** Nothing imports these files.
-- The **live PoisonGuard page uses `ProductHero3D`** (the 3D scanning-platform
-  model hero), not this animation.
-- This prototype is **CSS-only** and kept purely for **visual / animation
-  reference**.
-- **Do not import it into production** without a separate review branch.
-- Created from the existing (unwired) `src/components/PoisonGuardHero.jsx` /
-  `PoisonGuardHero.css` — the approved Claude Design export.
+## 1. Approved-image review hero (current)
 
-## Contents
+Built from the approved concept image
+`design-exports/poisonguard-hero-concept/poisonguard-hero-approved-v1.png`
+(copied to `public/prototypes/poisonguard/poisonguard-hero-approved-v1.png`,
+served at `/prototypes/poisonguard/...`).
 
 | File | Purpose |
 | --- | --- |
-| `PoisonGuardHero.prototype.jsx` | Snapshot of the animated hero component |
-| `PoisonGuardHero.prototype.css` | Snapshot of its self-contained styles |
+| `PoisonGuardHeroReview.prototype.jsx` | Hero component (`<PoisonGuardHeroReview />`) |
+| `PoisonGuardHeroReview.prototype.css` | Cropped-image layout + animated overlays |
 
-The only change from the source component is the CSS import path
-(`./PoisonGuardHero.prototype.css`). Everything is scoped under
-`.poison-guard-hero`, uses lightweight CSS animations only, and has no external
-library requirements.
+- **Base visual = the actual approved PNG** (cropped to the right ~68% so the
+  baked-in left text is clipped out and replaced by real HTML copy).
+- **Real HTML left column:** eyebrow, headline, subtext, real Join Waitlist /
+  Safety Resources buttons, and the Families / Pets / Schools benefits.
+- **Animated overlays** (`mix-blend-mode: screen`, additive light): emerald scan
+  rings + beam, leaf pulse, amber base warning lights, per-card glow, hologrid
+  shimmer, ambient emerald/amber breathing, and a lens/core glow that parallaxes
+  toward the cursor.
+- React + CSS only, scoped under `.pgr-hero`, responsive,
+  `prefers-reduced-motion` aware.
+
+Preview route (experiment branch only): **`?page=poisonguard-hero-review`**
+
+```jsx
+import PoisonGuardHeroReview from "./prototypes/poisonguard-hero-animation/PoisonGuardHeroReview.prototype.jsx";
+
+<PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
+```
+
+## 2. Archived CSS animation (reference)
+
+`PoisonGuardHero.prototype.{jsx,css}` — an earlier CSS-only animated hero
+snapshot (scoped under `.poison-guard-hero`), kept for reference. Not routed.
 
 ## Not production
 
-This folder is a reference archive. The production hero lives in
-`src/components/ProductHero3D.jsx` and `src/data/productHero3D.js`
-(`poisonguard` config), rendered by `src/pages/PoisonGuard.jsx`. Do not change
-that setup to use this prototype without an explicit, reviewed branch.
+Do not swap either prototype into the live PoisonGuard page without an explicit,
+reviewed branch.
