@@ -44,15 +44,15 @@ export const products = [
         imageAlt: "MacBook with code editor open on a clean home office desk \u2014 TechMate AI guides device troubleshooting",
     },
     {
-        name: "Cin Nova Real Estate",
+        name: "CinNova Real Estate AI",
         category: "Real Estate AI",
         icon: "RE",
         status: "Active Build",
         description:
             "AI tools for property analysis, deal evaluation, mortgage estimates, cash flow, commercial real estate, land, and development intelligence.",
         page: "real-estate",
-        image: "/images/products/cinnova-real-estate-property.jpg",
-        imageAlt: "Classic white colonial house with a green lawn \u2014 Cin Nova Real Estate AI for property analysis",
+        image: "/images/products/real-estate/real-estate-ai-city-hero-approved-v1.png",
+        imageAlt: "Nighttime city skyline with river bridges under a full moon \u2014 CinNova Real Estate AI for property analysis",
     },
 ];
 
