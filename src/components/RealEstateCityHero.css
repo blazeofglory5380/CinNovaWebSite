@@ -1,14 +1,13 @@
 /*
- * RealEstateCityHeroReview — full-bleed moonlit-city Real Estate AI hero
- * (PROTOTYPE / experiment branch review only).
+ * RealEstateCityHero — full-bleed moonlit-city Real Estate AI hero.
  *
- * The approved image (public/prototypes/real-estate/real-estate-ai-city-hero-
- * approved-v1.png) is the ENTIRE hero background (object-fit: cover — never
- * boxed). A left-weighted scrim keeps the real HTML copy readable. Subtle
- * screen-blend overlays add life (moon/water breathing, bridge/car-trail glow,
- * city shimmer, AI grid, market nodes, scanning arcs, floating cards). Scoped
- * under `.rex-hero`; `rex-`-prefixed keyframes. Responsive + prefers-reduced-
- * motion. Not wired into production.
+ * The approved image (public/images/products/real-estate/real-estate-ai-city-
+ * hero-approved-v1.png) is the ENTIRE hero background (object-fit: cover — never
+ * boxed). A left-weighted scrim keeps the real HTML copy readable. Cinematic
+ * screen-blend overlays add life (threshold light bloom, drifting sky clouds,
+ * alternating warm-light pulse + warm water reflections, moon/blue-white water
+ * glow, AI grid, market nodes, scanning arcs, floating cards). Scoped under
+ * `.rex-hero`; `rex-`-prefixed keyframes. Responsive + prefers-reduced-motion.
  */
 
 .rex-hero {

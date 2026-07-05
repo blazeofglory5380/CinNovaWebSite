@@ -1,23 +1,24 @@
 import { useRef } from "react";
-import "./RealEstateCityHeroReview.prototype.css";
+import "./RealEstateCityHero.css";
 
 /*
- * RealEstateCityHeroReview — full-bleed Real Estate AI hero (PROTOTYPE).
+ * RealEstateCityHero — full-bleed Real Estate AI hero.
  *
- * The approved moonlit-city concept image is the ENTIRE hero background
- * (object-fit: cover, full width/height — never boxed). A left-weighted dark
- * scrim keeps the real HTML copy readable. Subtle screen-blend overlays add
- * life: moon + water breathing glow, bridge/car-trail glow, city shimmer, a
- * faint AI grid, pulsing market nodes, slow scanning arcs, and glassy floating
- * "intelligence" cards. Scoped under `.rex-hero`; `rex-`-prefixed keyframes.
+ * The approved moonlit-city image is the ENTIRE hero background (object-fit:
+ * cover, full width/height — never boxed). A left-weighted dark scrim keeps the
+ * real HTML copy readable. Cinematic screen-blend overlays add life: a threshold
+ * light bloom (every light glows in its own colour), slow drifting clouds in the
+ * upper sky, an alternating warm-light "living pulse" (left/right/center zones)
+ * with matching warm water reflections, moon + blue-white water glow, faint AI
+ * grid, pulsing market nodes, scanning arcs, and glassy floating intelligence
+ * cards. Scoped under `.rex-hero`; `rex-`-prefixed keyframes.
  *
- * React + CSS only. Responsive + prefers-reduced-motion. Review-only — not wired
- * into production (the live Real Estate page keeps its 3D ProductHero3D hero).
+ * React + CSS only. Responsive + prefers-reduced-motion.
  *
- * Usage:  <RealEstateCityHeroReview primaryHref="#" secondaryHref="#" />
+ * Usage:  <RealEstateCityHero primaryHref="#features" secondaryHref="#tools" />
  */
 
-const IMAGE_SRC = "/prototypes/real-estate/real-estate-ai-city-hero-approved-v1.png";
+const IMAGE_SRC = "/images/products/real-estate/real-estate-ai-city-hero-approved-v1.png";
 
 const PROOF = ["Market Signals", "Deal Scoring", "Investment Insights"];
 
@@ -39,7 +40,7 @@ const NODES = [
     { left: "14%", top: "64%", delay: "3s" },
 ];
 
-function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
+function RealEstateCityHero({ primaryHref = "#", secondaryHref = "#" }) {
     const heroRef = useRef(null);
 
     return (
@@ -151,4 +152,4 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
     );
 }
 
-export default RealEstateCityHeroReview;
+export default RealEstateCityHero;

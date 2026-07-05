@@ -1,19 +1,17 @@
-# Real Estate AI City Hero — review prototype (experiment branch only)
+# Real Estate AI City Hero — PROMOTED TO PRODUCTION
 
-A **review-only** full-bleed hero for the Real Estate AI product, built from the
-approved moonlit-city concept image. **Not wired into production** — the live
-Real Estate page keeps its 3D `ProductHero3D` hero.
+The approved full-bleed moonlit-city hero that used to live here has been promoted
+to a production component. This folder is kept only as an archival note.
 
-## Files
-
-| File | Purpose |
+| Now (production) | Was (prototype) |
 | --- | --- |
-| `RealEstateCityHeroReview.prototype.jsx` | Hero component (`<RealEstateCityHeroReview />`) |
-| `RealEstateCityHeroReview.prototype.css` | Full-bleed layout + cinematic overlays |
+| `src/components/RealEstateCityHero.jsx` | `RealEstateCityHeroReview.prototype.jsx` |
+| `src/components/RealEstateCityHero.css` | `RealEstateCityHeroReview.prototype.css` |
+| `public/images/products/real-estate/real-estate-ai-city-hero-approved-v1.png` | `public/prototypes/real-estate/real-estate-ai-city-hero-approved-v1.png` |
 
-Base image: `design-exports/real-estate-hero-concept/real-estate-ai-city-hero-approved-v1.png`
-(copied to `public/prototypes/real-estate/real-estate-ai-city-hero-approved-v1.png`,
-served at `/prototypes/real-estate/...`).
+It renders the Real Estate page hero (`?page=real-estate`) via
+`src/pages/RealEstate.jsx`. Source concept image:
+`design-exports/real-estate-hero-concept/real-estate-ai-city-hero-approved-v1.png`.
 
 ## Design
 
@@ -21,26 +19,20 @@ served at `/prototypes/real-estate/...`).
   full width/height — never boxed). A left-weighted dark scrim keeps the real
   HTML copy readable.
 - **Real HTML left column:** eyebrow (CinNova Real Estate AI), headline, sub,
-  real "Explore Real Estate AI" / "View Dashboard" buttons, and the
-  Market Signals / Deal Scoring / Investment Insights proof points.
+  real "Explore Real Estate AI" (→ `#features`) / "View Dashboard" (→ `#tools`)
+  buttons, and the Market Signals / Deal Scoring / Investment Insights proof
+  points.
 - **Floating intelligence cards** (lower-right): Market Heat · Deal Score ·
   Rent Potential · Risk Level.
-- **Subtle cinematic overlays** (`mix-blend-mode: screen`): moon + moonlit-water
-  breathing glow, right-bridge + car-trail glow, city-light shimmer sweep, a
-  faint AI grid, pulsing market nodes, and slow scanning arcs from the central
-  tower.
+- **Cinematic overlays** (`mix-blend-mode: screen`): threshold light bloom (every
+  light glows in its own colour), slow drifting sky clouds, an alternating
+  warm-light "living pulse" (left/right/center zones) with matching warm water
+  reflections, moon + blue-white water glow, faint AI grid, pulsing market nodes,
+  and scanning arcs.
 - React + CSS only, scoped under `.rex-hero`, responsive,
   `prefers-reduced-motion` aware.
 
-Preview route (experiment branch only): **`?page=real-estate-hero-review`**
+The temporary `?page=real-estate-hero-review` preview route has been removed.
 
-```jsx
-import RealEstateCityHeroReview from "./prototypes/real-estate-city-hero/RealEstateCityHeroReview.prototype.jsx";
-
-<RealEstateCityHeroReview primaryHref="#" secondaryHref="#" />
-```
-
-## Not production
-
-Do not swap this prototype into the live Real Estate page without an explicit,
-reviewed branch.
+`ProductHero3D` and `productHero3DConfigs["real-estate"]` are retained in the
+codebase for rollback.

@@ -1,7 +1,7 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
-import RealEstateCityHeroReview from "../prototypes/real-estate-city-hero/RealEstateCityHeroReview.prototype.jsx";
+import RealEstateCityHero from "../components/RealEstateCityHero.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -39,13 +39,12 @@ function RealEstate() {
                 schema={realestateSchema}
             />
 
-            {/* Review hero (experiment branch only): the approved full-bleed city
-                hero replaces the 3D ProductHero3D hero for review. ProductHero3D and
-                productHero3DConfigs["real-estate"] (realEstateHero) are intentionally
-                retained for rollback — nothing is deleted; the 3D assets stay. Also
-                available for comparison at ?page=real-estate-hero-review. */}
+            {/* Main Real Estate hero — approved full-bleed city hero
+                (RealEstateCityHero). ProductHero3D and productHero3DConfigs
+                ["real-estate"] (realEstateHero) are intentionally retained for
+                rollback — nothing is deleted; the 3D model assets stay in the repo. */}
             <MotionHeroWrap>
-                <RealEstateCityHeroReview primaryHref="#features" secondaryHref="#tools" />
+                <RealEstateCityHero primaryHref="#features" secondaryHref="#tools" />
             </MotionHeroWrap>
 
             <section className="section" id="features">
