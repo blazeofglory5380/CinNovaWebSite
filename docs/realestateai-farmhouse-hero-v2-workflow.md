@@ -8,7 +8,7 @@
 | **Poster path** | `public/images/product-heroes/posters/realestateai-farmhouse-transformation.png` |
 | **Config key** | `real-estate` in `src/data/productHero3D.js` |
 | **Creative spec** | `docs/realestateai-farmhouse-hero-asset-guide.md` §1–§4 |
-| **Live page** | `https://cin-nova-web-site.vercel.app/?page=real-estate` |
+| **Live page** | `https://getcinnova.com/?page=real-estate` |
 
 Do **not** ship another procedural Three.js placeholder. This asset requires DCC quality (Spline or Blender).
 
