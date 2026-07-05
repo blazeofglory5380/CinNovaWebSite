@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
+import PoisonGuardHeroReview from "../prototypes/poisonguard-hero-animation/PoisonGuardHeroReview.prototype.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
 import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
 import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
@@ -194,12 +195,15 @@ function PoisonGuard() {
                 schema={poisonguardSchema}
             />
 
-            {/* Main Poison Guard hero — 3D scanning-platform model (self-hosted
-                Draco) with poster fallback, rendering the page <h1>. Driven by
-                productHero3DConfigs.poisonguard; matches the TechMate/RealEstate
-                ProductHero3D pattern. */}
+            {/* REVIEW HERO — experiment branch only. The approved image-based
+                PoisonGuardHeroReview stands in for the 3D ProductHero3D hero so the
+                full PoisonGuard page can be reviewed with the new hero. ProductHero3D
+                and productHero3DConfigs.poisonguard are intentionally retained (the
+                config still feeds the SEO schema, and production on main keeps the 3D
+                hero) — nothing is deleted. The same prototype is also available for
+                side-by-side comparison at ?page=poisonguard-hero-review. */}
             <MotionHeroWrap>
-                <ProductHero3D {...poisonGuardHero} className="ph3d--poisonguard" />
+                <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
             </MotionHeroWrap>
 
             <div className="pg-disclaimer-wrap">
