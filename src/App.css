@@ -10619,6 +10619,27 @@ button.product-hero-pill {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+/* Real Estate FEATURES grid has 9 cards. Force a clean 3x3 on desktop instead
+   of the uncapped auto-fill (which produced a lopsided 4 + 4 + 1). Collapses to
+   2 columns on tablet, then 1 on mobile. Scoped to this page only. */
+.re-feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .re-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .re-feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .product-card-photo {
     padding: 0;
     overflow: hidden;
