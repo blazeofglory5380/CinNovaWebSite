@@ -57,8 +57,19 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
                 }}
             />
 
+            {/* ── Bloom layers: brightened + blurred copies of the same image,
+                 screen-blended so every baked-in light (windows, car trails,
+                 bridges, moon, water) blooms into a cinematic glow. The dark sky
+                 stays dark under a screen blend, so composition is unchanged. ── */}
+            <img className="rex-bloom" src={IMAGE_SRC} alt="" aria-hidden="true" loading="eager" decoding="async"
+                onError={(e) => { e.currentTarget.style.display = "none"; }} />
+            <img className="rex-bloom rex-bloom--wide" src={IMAGE_SRC} alt="" aria-hidden="true" loading="eager" decoding="async"
+                onError={(e) => { e.currentTarget.style.display = "none"; }} />
+            <div className="rex-haze" aria-hidden="true" />
+
             {/* ── Cinematic overlays (screen-blend light) ── */}
             <div className="rex-ov rex-ov--moon" aria-hidden="true" />
+            <div className="rex-ov rex-ov--moon-core" aria-hidden="true" />
             <div className="rex-ov rex-ov--water" aria-hidden="true" />
             <div className="rex-ov rex-ov--bridge" aria-hidden="true" />
             <div className="rex-ov rex-ov--trail" aria-hidden="true" />
@@ -75,8 +86,9 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
                 />
             ))}
 
-            {/* ── Legibility scrim (left-weighted + bottom) ── */}
+            {/* ── Legibility scrim (left-weighted + bottom) + cinematic vignette ── */}
             <div className="rex-scrim" aria-hidden="true" />
+            <div className="rex-vignette" aria-hidden="true" />
 
             {/* ── Left: real HTML copy ── */}
             <div className="rex-inner">
