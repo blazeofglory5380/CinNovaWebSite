@@ -90,6 +90,10 @@ function Contact() {
 
             {/* ── Hero ───────────────────────────────────────────── */}
             <section className="section" style={{ paddingBottom: "48px" }}>
+                {/* Screen-reader/SEO top-level heading. The visible hero heading
+                    below is an <h2> for design consistency; this gives the page a
+                    single, valid <h1> without altering the layout. */}
+                <h1 className="sr-only">Contact CinNova</h1>
                 <div className="section-heading" style={{ marginBottom: 0 }}>
                     <p className="eyebrow">GET IN TOUCH</p>
                     <h2>Contact Cin Nova</h2>
