@@ -99,7 +99,7 @@
 .pgr-hero .pgr-window {
     position: relative;
     width: 100%;
-    aspect-ratio: 1.18 / 1;        /* shows the right ~66% of the 16:9 image (more left revealed) */
+    aspect-ratio: 1.24 / 1;        /* shows the right ~70% of the image; left edge lands at image-x ~0.30, well left of the status cards (~0.44) so they sit fully inside the frame with breathing room */
     border-radius: clamp(10px, 1.2vw, 18px);
     overflow: hidden;
     isolation: isolate;
@@ -111,7 +111,9 @@
 /* fade the left edge into the section so any residual baked text is masked */
 .pgr-hero .pgr-window::after {
     content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    background: linear-gradient(90deg, #050f0a 0%, #050f0a 8%, rgba(5, 15, 10, 0.82) 13%, rgba(5, 15, 10, 0.32) 18%, transparent 23%);
+    /* solid over the baked-in headline strip (ends ~13% of the window), then fully
+       clear before the left status cards (~19%) so the cards stay bright */
+    background: linear-gradient(90deg, #050f0a 0%, #050f0a 13%, rgba(5, 15, 10, 0.55) 16%, rgba(5, 15, 10, 0.15) 18.5%, transparent 20.5%);
 }
 .pgr-hero .pgr-scene {
     --pgr-lx: 0px; --pgr-ly: 0px; --pgr-cx: 0px; --pgr-cy: 0px;   /* cursor parallax */
@@ -277,7 +279,7 @@
 @media (max-width: 560px) {
     .pgr-hero .pgr-benefits { gap: 16px; }
     .pgr-hero .pgr-btn { flex: 1 1 auto; justify-content: center; }
-    .pgr-hero .pgr-window { aspect-ratio: 1.05 / 1; }
+    .pgr-hero .pgr-window { aspect-ratio: 1.18 / 1; }
 }
 
 /* ── Reduced motion: calm static glow ──────────────────────────────── */
