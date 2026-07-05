@@ -13,7 +13,7 @@ export const blogCategories = [
     "CinNova Updates",
 ];
 
-export const siteUrl = "https://cin-nova-web-site.vercel.app";
+export const siteUrl = "https://getcinnova.com";
 
 export function slugifyCategory(category = "") {
     return String(category)
@@ -48,8 +48,8 @@ export const blogAuthors = {
         bio:
             "The CinNova Team writes about AI software, education technology, family safety, real estate tools, product building, and the ideas behind the CinNova ecosystem.",
         socials: [
-            { label: "Website", url: "https://cin-nova-web-site.vercel.app" },
-            { label: "Blog", url: "https://cin-nova-web-site.vercel.app/blog" },
+            { label: "Website", url: "https://getcinnova.com" },
+            { label: "Blog", url: "https://getcinnova.com/blog" },
             { label: "Newsletter", url: "#newsletter" },
         ],
     },
@@ -419,7 +419,7 @@ const fullArticles = [
         popular: true,
         status: "published",
         thumbnail: { label: "AT", title: "AI Tutors & Teachers" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         content: [
             {
                 heading: "Introduction",
@@ -525,7 +525,7 @@ const fullArticles = [
         popular: true,
         status: "published",
         thumbnail: { label: "SR", title: "Spaced Repetition" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         content: [
             {
                 heading: "Introduction",
@@ -636,7 +636,7 @@ const fullArticles = [
         popular: true,
         status: "published",
         thumbnail: { label: "SS", title: "Smarter Study With AI" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         content: [
             {
                 heading: "Introduction",
@@ -742,7 +742,7 @@ const fullArticles = [
         popular: true,
         status: "published",
         thumbnail: { label: "OE", title: "Online Learning Platforms" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         content: [
             {
                 heading: "Introduction",
@@ -854,7 +854,7 @@ const fullArticles = [
         popular: true,
         status: "published",
         thumbnail: { label: "SN", title: "StudyNest Learning Loop" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         content: [
             {
                 heading: "Introduction",
@@ -1619,7 +1619,7 @@ const cornerstoneOverrides = {
         tags: ["AI tutoring", "study tools", "personalized learning", "education AI"],
         seoKeywords: ["AI transforming education", "AI in education", "education technology"],
         thumbnail: { label: "ED", title: "AI Education Systems" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         heroImage: "/images/education/ai-transforming-education-classroom.jpg",
         heroImageAlt: "Students and a teacher using AI tools in a modern classroom",
         heroImageCaption: "AI is reshaping how students learn and how teachers deliver instruction.",
@@ -1717,7 +1717,7 @@ const cornerstoneOverrides = {
         tags: ["AI infrastructure", "ChatGPT", "data centers", "cloud computing"],
         seoKeywords: ["AI infrastructure", "ChatGPT infrastructure", "data centers for AI"],
         thumbnail: { label: "AI", title: "AI Infrastructure Stack" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-ai.png",
+        ogImage: "https://getcinnova.com/og-ai.png",
         heroImage: "/images/ai/chatgpt-infrastructure-data-center.jpg",
         heroImageAlt: "Server racks inside a large AI data center facility",
         heroImageCaption: "Behind every AI response is a vast physical infrastructure of chips, servers, and power systems.",
@@ -1823,7 +1823,7 @@ const cornerstoneOverrides = {
         tags: ["data centers", "AI infrastructure", "cloud", "power demand"],
         seoKeywords: ["data center gold rush", "AI data centers", "data center demand"],
         thumbnail: { label: "DC", title: "Data Center Expansion" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-data-centers.png",
+        ogImage: "https://getcinnova.com/og-data-centers.png",
         heroImage: "/images/datacenters/data-center-gold-rush-facility.jpg",
         heroImageAlt: "Rows of server racks inside a modern hyperscale data center",
         heroImageCaption: "Data centers have become strategic assets as AI demand for compute accelerates.",
@@ -1924,7 +1924,7 @@ const cornerstoneOverrides = {
         tags: ["AI economy", "AI companies", "software business", "infrastructure"],
         seoKeywords: ["companies building AI economy", "AI economy", "AI software companies"],
         thumbnail: { label: "EC", title: "AI Economy Map" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-ai.png",
+        ogImage: "https://getcinnova.com/og-ai.png",
         heroImage: "/images/ai/ai-economy-companies-tech-stack.jpg",
         heroImageAlt: "Layered diagram showing the companies and sectors building the AI economy",
         heroImageCaption: "The AI economy spans chip manufacturers, model labs, cloud platforms, and application developers.",
@@ -2019,7 +2019,7 @@ const cornerstoneOverrides = {
         tags: ["AI power demand", "power grid", "data centers", "energy"],
         seoKeywords: ["AI power grid", "AI electricity demand", "data center power"],
         thumbnail: { label: "PG", title: "AI Power Demand" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-data-centers.png",
+        ogImage: "https://getcinnova.com/og-data-centers.png",
         heroImage: "/images/datacenters/power-grid-ai-electricity-demand.jpg",
         heroImageAlt: "High-voltage power transmission lines supplying electricity to AI data centers",
         heroImageCaption: "AI data centers are drawing unprecedented electricity demand from regional power grids.",
@@ -2116,7 +2116,7 @@ const cornerstoneOverrides = {
         tags: ["AI tutoring", "personalized learning", "education AI", "study tools"],
         seoKeywords: ["AI tutors", "personalized learning technology", "AI tutoring app"],
         thumbnail: { label: "AT", title: "AI Tutoring Systems" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+        ogImage: "https://getcinnova.com/og-education.png",
         heroImage: "/images/education/ai-tutor-personalized-learning-dashboard.jpg",
         heroImageAlt: "Student using an AI tutoring dashboard on a laptop at their desk",
         heroImageCaption: "AI tutors adapt to each student's pace and learning gaps in real time.",
@@ -2207,7 +2207,7 @@ const cornerstoneOverrides = {
         tags: ["real estate AI", "deal analysis", "property investing", "market intelligence"],
         seoKeywords: ["AI real estate investing", "AI deal analysis", "real estate investment software"],
         thumbnail: { label: "RI", title: "AI Real Estate Analysis" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-real-estate.png",
+        ogImage: "https://getcinnova.com/og-real-estate.png",
         heroImage: "/images/real-estate/ai-real-estate-investing-deal-analysis.jpg",
         heroImageAlt: "Real estate investor reviewing AI-powered deal analysis on a laptop screen",
         heroImageCaption: "AI tools are helping real estate investors analyze deals faster and with greater confidence.",
@@ -2294,7 +2294,7 @@ const cornerstoneOverrides = {
         tags: ["construction AI", "engineering technology", "estimating", "jobsite safety"],
         seoKeywords: ["AI in construction", "construction technology AI", "AI estimating software"],
         thumbnail: { label: "CE", title: "Construction & Engineering AI" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-construction.png",
+        ogImage: "https://getcinnova.com/og-construction.png",
         heroImage: "/images/construction/ai-construction-engineering-jobsite.jpg",
         heroImageAlt: "Construction site with digital planning tools and AI-powered monitoring equipment",
         heroImageCaption: "AI is entering construction through estimating, jobsite safety monitoring, and project management.",
@@ -2379,7 +2379,7 @@ const cornerstoneOverrides = {
         tags: ["robotics 2026", "automation", "warehouse robots", "workflow automation"],
         seoKeywords: ["robotics and automation 2026", "business automation", "warehouse robotics"],
         thumbnail: { label: "RA", title: "Robotics & Automation" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-robotics.png",
+        ogImage: "https://getcinnova.com/og-robotics.png",
         heroImage: "/images/robotics/robotics-automation-warehouse-2026.jpg",
         heroImageAlt: "Automated warehouse robots moving inventory alongside human workers",
         heroImageCaption: "Robotics and automation are becoming practical for a wider range of industries in 2026.",
@@ -2464,7 +2464,7 @@ const cornerstoneOverrides = {
         tags: ["technology trends", "future tech", "AI infrastructure", "clean energy"],
         seoKeywords: ["technology trends next decade", "future technology", "AI technology trends 2026"],
         thumbnail: { label: "TT", title: "Technology Decade Ahead" },
-        ogImage: "https://cin-nova-web-site.vercel.app/og-future-tech.png",
+        ogImage: "https://getcinnova.com/og-future-tech.png",
         heroImage: "/images/future-tech/technology-trends-next-decade-overview.jpg",
         heroImageAlt: "Abstract visualization of converging technology trends including AI, clean energy, and robotics",
         heroImageCaption: "The technology trends shaping the next decade are already in early commercial deployment today.",
@@ -2705,7 +2705,7 @@ cornerstoneOverrides[32] = {
     metaDescription:
         "Everything you need to know about AI in education in 2026: how students and teachers use AI, personalized learning, AI tutors, spaced repetition, online platforms, risks, and what comes next.",
     thumbnail: { label: "ED", title: "AI Education Guide 2026" },
-    ogImage: "https://cin-nova-web-site.vercel.app/og-education.png",
+    ogImage: "https://getcinnova.com/og-education.png",
     heroImage: "/images/education/ai-education-guide-2026.jpg",
     heroImageAlt: "Students collaborating on laptops in a modern classroom — AI-powered learning in 2026",
     heroImageCaption: "AI is reshaping how students learn, how teachers teach, and how learning platforms are built.",
@@ -2868,7 +2868,7 @@ cornerstoneOverrides[31] = {
     metaDescription:
         "A comprehensive guide to AI in 2026: how it works, the companies building it, how AI is changing education, real estate, safety, and business, and what comes next.",
     thumbnail: { label: "AI", title: "Complete AI Guide 2026" },
-    ogImage: "https://cin-nova-web-site.vercel.app/og-ai.png",
+    ogImage: "https://getcinnova.com/og-ai.png",
     heroImage: "/images/ai/ai-complete-guide-2026.jpg",
     heroImageAlt: "Abstract digital visualization representing artificial intelligence systems and neural networks",
     heroImageCaption: "Artificial intelligence in 2026 is embedded in education, real estate, safety, business, and daily life.",

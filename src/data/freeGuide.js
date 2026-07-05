@@ -107,8 +107,8 @@ The Cin Nova product ecosystem includes:
   - Kiddo         Early learning for ABCs, reading, and counting
   - Real Estate   AI-powered property analysis and deal evaluation
 
-Visit the website:  https://cin-nova-web-site.vercel.app
-Read the blog:      https://cin-nova-web-site.vercel.app/blog
+Visit the website:  https://getcinnova.com
+Read the blog:      https://getcinnova.com/blog
 
 This guide is a free resource from Cin Nova. Share it freely.
 Last updated: June 2026.

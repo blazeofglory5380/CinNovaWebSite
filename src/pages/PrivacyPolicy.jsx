@@ -7,7 +7,7 @@ const privacySchema = {
     "@type": "WebPage",
     name: "Privacy Policy — Cin Nova",
     description:
-        "How Cin Nova collects, uses, and protects information on cin-nova-web-site.vercel.app, including analytics, newsletter signups, downloads, and contact forms.",
+        "How Cin Nova collects, uses, and protects information on getcinnova.com, including analytics, newsletter signups, downloads, and contact forms.",
     url: `${siteUrl}/?page=privacy`,
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };

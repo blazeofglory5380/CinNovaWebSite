@@ -2,5 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /blog-admin
 
-Sitemap: https://cin-nova-web-site.vercel.app/sitemap.xml
-Sitemap: https://cin-nova-web-site.vercel.app/sitemap-video.xml
+Sitemap: https://getcinnova.com/sitemap.xml
+Sitemap: https://getcinnova.com/sitemap-video.xml
