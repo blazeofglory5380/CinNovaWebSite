@@ -1,0 +1,266 @@
+/*
+ * RealEstateCityHeroReview — full-bleed moonlit-city Real Estate AI hero
+ * (PROTOTYPE / experiment branch review only).
+ *
+ * The approved image (public/prototypes/real-estate/real-estate-ai-city-hero-
+ * approved-v1.png) is the ENTIRE hero background (object-fit: cover — never
+ * boxed). A left-weighted scrim keeps the real HTML copy readable. Subtle
+ * screen-blend overlays add life (moon/water breathing, bridge/car-trail glow,
+ * city shimmer, AI grid, market nodes, scanning arcs, floating cards). Scoped
+ * under `.rex-hero`; `rex-`-prefixed keyframes. Responsive + prefers-reduced-
+ * motion. Not wired into production.
+ */
+
+.rex-hero {
+    --rex-ink: #eef4ff;
+    --rex-dim: #a6b8d4;
+    --rex-dim-2: #cfe0f7;
+    --rex-cyan: #38bdf8;
+    --rex-cyan-lt: #7dd3fc;
+    --rex-teal: #2dd4bf;
+    --rex-gold: #fbbf24;
+    --rex-hot: #fb7185;
+    --rex-warn: #fbbf24;
+    --rex-good: #34d399;
+    --rex-ink-bg: #050b18;
+    --rex-font: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+
+    position: relative;
+    width: 100%;
+    min-height: clamp(560px, 90vh, 940px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--rex-ink-bg);
+    color: var(--rex-ink);
+    font-family: var(--rex-font);
+}
+
+/* ── Full-bleed approved city image ── */
+.rex-hero .rex-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 42%;
+    display: block;
+    z-index: 0;
+    background-color: var(--rex-ink-bg);
+}
+
+/* ── Screen-blend cinematic glows (above image, below scrim) ── */
+.rex-hero .rex-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; border-radius: 50%; }
+
+/* moon glow (top-right) */
+.rex-hero .rex-ov--moon {
+    left: 80%; top: 13%; width: 20%; aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(210, 230, 255, 0.55) 0%, rgba(150, 190, 255, 0.22) 34%, transparent 66%);
+    filter: blur(6px);
+    animation: rex-breathe 9s ease-in-out infinite;
+}
+/* moonlit water reflection glow (center river) */
+.rex-hero .rex-ov--water {
+    left: 58%; top: 62%; width: 30%; height: 26%; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 70% at 50% 40%, rgba(120, 180, 255, 0.4) 0%, rgba(70, 130, 220, 0.18) 42%, transparent 72%);
+    filter: blur(9px);
+    animation: rex-breathe 12s ease-in-out 1.5s infinite;
+}
+/* right suspension bridge glow */
+.rex-hero .rex-ov--bridge {
+    left: 85%; top: 61%; width: 22%; height: 16%; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(251, 191, 36, 0.3) 0%, rgba(120, 200, 255, 0.16) 45%, transparent 72%);
+    filter: blur(7px);
+    animation: rex-pulse 6.5s ease-in-out infinite;
+}
+/* warm car-light-trail glow (foreground highways) */
+.rex-hero .rex-ov--trail {
+    left: 46%; top: 84%; width: 62%; height: 22%; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(251, 146, 60, 0.26) 0%, rgba(251, 191, 36, 0.12) 46%, transparent 74%);
+    filter: blur(10px);
+    animation: rex-pulse 7.5s ease-in-out 0.8s infinite;
+}
+/* very subtle city-light shimmer sweep across the skyline band */
+.rex-hero .rex-ov--shimmer {
+    left: 0; right: 0; top: 30%; height: 26%; border-radius: 0; transform: none;
+    background: linear-gradient(100deg, transparent 40%, rgba(150, 210, 255, 0.10) 48%, rgba(120, 235, 220, 0.08) 53%, transparent 61%);
+    background-size: 240% 100%;
+    filter: blur(1px);
+    animation: rex-shim 11s linear infinite;
+}
+
+/* ── Faint AI grid (lower half, drifts slowly) ── */
+.rex-hero .rex-grid {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 58%; z-index: 1;
+    pointer-events: none; mix-blend-mode: screen; opacity: 0.5;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(90, 200, 255, 0.10) 0 1px, transparent 1px 68px),
+        repeating-linear-gradient(0deg, rgba(90, 200, 255, 0.08) 0 1px, transparent 1px 58px);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 55%, #000 100%);
+    animation: rex-griddrift 26s linear infinite;
+}
+
+/* ── Legibility scrim (left-weighted + bottom) ── */
+.rex-hero .rex-scrim {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(4, 9, 22, 0.9) 0%, rgba(4, 9, 22, 0.72) 26%, rgba(4, 9, 22, 0.34) 50%, rgba(4, 9, 22, 0.05) 72%, transparent 88%),
+        linear-gradient(0deg, rgba(4, 9, 22, 0.6) 0%, transparent 34%);
+}
+
+/* ── Scanning arcs from the central tower (data layer, above scrim) ── */
+.rex-hero .rex-arc {
+    position: absolute; left: 54%; top: 34%; z-index: 3;
+    width: 26%; aspect-ratio: 1 / 1; border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.35);
+    border: 1px solid rgba(125, 211, 252, 0.4);
+    pointer-events: none; mix-blend-mode: screen; opacity: 0;
+    animation: rex-arc 7s ease-out infinite;
+}
+.rex-hero .rex-arc--2 { animation-delay: 3.5s; border-color: rgba(45, 212, 191, 0.36); }
+
+/* ── Pulsing market nodes (data layer, above scrim) ── */
+.rex-hero .rex-node {
+    position: absolute; z-index: 3; width: 9px; height: 9px; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--rex-cyan-lt);
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5), 0 0 10px 2px rgba(56, 189, 248, 0.8);
+    pointer-events: none; mix-blend-mode: screen;
+    animation: rex-node 3.6s ease-out infinite;
+}
+
+/* ── Left: real HTML copy ── */
+.rex-hero .rex-inner {
+    position: relative; z-index: 4;
+    width: 100%; max-width: 1320px; margin: 0 auto;
+    padding: clamp(28px, 5vw, 72px) clamp(20px, 6vw, 88px);
+    box-sizing: border-box;
+    animation: rex-fade 1s ease-out both;
+}
+.rex-hero .rex-copy { max-width: 620px; display: flex; flex-direction: column; gap: 22px; }
+.rex-hero .rex-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; width: fit-content;
+    margin: 0; padding: 7px 15px; border-radius: 100px;
+    background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(125, 211, 252, 0.36);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rex-cyan-lt);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.rex-hero .rex-eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rex-cyan); box-shadow: 0 0 10px 2px rgba(56, 189, 248, 0.85); animation: rex-blink 2.6s ease-in-out infinite; }
+.rex-hero .rex-title {
+    margin: 0; font-weight: 800; letter-spacing: -0.02em;
+    font-size: clamp(34px, 5vw, 62px); line-height: 1.04;
+    color: #fff; text-shadow: 0 4px 40px rgba(3, 9, 22, 0.7);
+}
+.rex-hero .rex-lede {
+    margin: 0; max-width: 540px; font-size: clamp(15px, 1.25vw, 18.5px); line-height: 1.7;
+    color: var(--rex-dim-2); text-wrap: pretty; text-shadow: 0 2px 18px rgba(3, 9, 22, 0.7);
+}
+
+.rex-hero .rex-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+.rex-hero .rex-btn {
+    display: inline-flex; align-items: center; gap: 9px; padding: 15px 28px; border-radius: 13px;
+    font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.rex-hero .rex-btn--primary {
+    color: #04121f;
+    background: linear-gradient(120deg, var(--rex-cyan-lt) 0%, var(--rex-cyan) 52%, #0ea5e9 100%);
+    box-shadow: 0 10px 34px rgba(14, 165, 233, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.rex-hero .rex-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 16px 46px rgba(14, 165, 233, 0.6); }
+.rex-hero .rex-btn--ghost {
+    color: var(--rex-dim-2); background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(150, 200, 240, 0.35); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.rex-hero .rex-btn--ghost:hover { transform: translateY(-2px); border-color: rgba(125, 211, 252, 0.65); color: #fff; }
+
+.rex-hero .rex-proof { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 22px; }
+.rex-hero .rex-proof__item { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #c3d6f0; }
+.rex-hero .rex-proof__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rex-teal); box-shadow: 0 0 8px rgba(45, 212, 191, 0.85); }
+
+/* ── Floating intelligence cards (lower-right) ── */
+.rex-hero .rex-cards {
+    position: absolute; right: clamp(18px, 3.5vw, 54px); bottom: clamp(26px, 5vh, 60px); z-index: 4;
+    display: flex; flex-direction: column; gap: 12px; width: min(230px, 42vw);
+}
+.rex-hero .rex-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 16px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(10, 22, 44, 0.72), rgba(6, 14, 30, 0.62));
+    border: 1px solid rgba(125, 190, 245, 0.22);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45);
+    animation: rex-cardin 0.9s ease-out both, rex-cardglow 6s ease-in-out infinite;
+}
+.rex-hero .rex-card__label { font-size: 12px; font-weight: 500; letter-spacing: 0.03em; color: var(--rex-dim); }
+.rex-hero .rex-card__value { font-size: 16px; font-weight: 800; letter-spacing: 0.01em; }
+.rex-hero .rex-card--good .rex-card__value { color: var(--rex-good); }
+.rex-hero .rex-card--hot .rex-card__value { color: var(--rex-hot); }
+.rex-hero .rex-card--warn .rex-card__value { color: var(--rex-warn); }
+.rex-hero .rex-card--good { border-left: 2px solid var(--rex-good); }
+.rex-hero .rex-card--hot { border-left: 2px solid var(--rex-hot); }
+.rex-hero .rex-card--warn { border-left: 2px solid var(--rex-warn); }
+
+/* ── Keyframes ── */
+@keyframes rex-fade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes rex-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes rex-breathe { 0%, 100% { opacity: 0.62; filter: blur(6px) brightness(1); } 50% { opacity: 1; filter: blur(6px) brightness(1.28); } }
+@keyframes rex-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.95; } }
+@keyframes rex-shim { 0% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+@keyframes rex-griddrift { 0% { background-position: 0 0, 0 0; } 100% { background-position: 68px 0, 0 58px; } }
+@keyframes rex-arc {
+    0% { transform: translate(-50%, -50%) scale(0.35); opacity: 0; }
+    12% { opacity: 0.55; }
+    100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0; }
+}
+@keyframes rex-node {
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5), 0 0 10px 2px rgba(56, 189, 248, 0.85); opacity: 1; }
+    70% { box-shadow: 0 0 0 12px rgba(56, 189, 248, 0), 0 0 10px 2px rgba(56, 189, 248, 0.5); opacity: 0.85; }
+    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0), 0 0 10px 2px rgba(56, 189, 248, 0.85); opacity: 1; }
+}
+@keyframes rex-cardin { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes rex-cardglow { 0%, 100% { box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45); } 50% { box-shadow: 0 12px 38px rgba(2, 8, 20, 0.5), 0 0 22px rgba(56, 189, 248, 0.16); } }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .rex-hero { min-height: clamp(520px, 82vh, 760px); }
+    .rex-hero .rex-bg { object-position: 62% 42%; }
+    /* stronger full scrim so copy stays readable over the busy image */
+    .rex-hero .rex-scrim {
+        background:
+            linear-gradient(180deg, rgba(4, 9, 22, 0.72) 0%, rgba(4, 9, 22, 0.42) 40%, rgba(4, 9, 22, 0.66) 100%),
+            linear-gradient(90deg, rgba(4, 9, 22, 0.7) 0%, rgba(4, 9, 22, 0.2) 60%, transparent 100%);
+    }
+    .rex-hero .rex-copy { max-width: 100%; }
+    .rex-hero .rex-cards { flex-direction: row; flex-wrap: wrap; right: auto; left: clamp(20px, 6vw, 88px); bottom: clamp(20px, 4vh, 40px); width: auto; max-width: min(520px, 88vw); gap: 10px; }
+    .rex-hero .rex-card { flex: 0 1 auto; padding: 10px 13px; }
+}
+@media (max-width: 560px) {
+    .rex-hero { min-height: 88vh; align-items: flex-start; }
+    .rex-hero .rex-inner { padding-top: clamp(40px, 12vh, 96px); }
+    .rex-hero .rex-btn { flex: 1 1 auto; justify-content: center; }
+    .rex-hero .rex-proof { gap: 14px; }
+    /* keep only the two most useful cards on tiny screens to avoid clutter */
+    .rex-hero .rex-card:nth-child(n + 3) { display: none; }
+}
+
+/* ── Reduced motion: calm, static, still readable ── */
+@media (prefers-reduced-motion: reduce) {
+    .rex-hero .rex-ov,
+    .rex-hero .rex-grid,
+    .rex-hero .rex-node,
+    .rex-hero .rex-eyebrow__dot,
+    .rex-hero .rex-inner,
+    .rex-hero .rex-card { animation: none !important; }
+    .rex-hero .rex-arc { display: none; }
+    .rex-hero .rex-inner, .rex-hero .rex-card { opacity: 1 !important; transform: none !important; }
+    .rex-hero .rex-ov--shimmer { opacity: 0.4; }
+}

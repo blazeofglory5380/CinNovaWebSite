@@ -7,7 +7,8 @@ import PoisonGuard from "./pages/PoisonGuard.jsx";
 import RealEstate from "./pages/RealEstate.jsx";
 import TechMateAI from "./pages/TechMateAI.jsx";
 import Kiddo from "./pages/Kiddo.jsx";
-// Experiment-branch-only preview of the PoisonGuard image-based hero review.
+// Experiment-branch-only preview of the Real Estate AI city-hero review prototype.
+import RealEstateCityHeroReview from "./prototypes/real-estate-city-hero/RealEstateCityHeroReview.prototype.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -110,6 +111,13 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         const resource = getResourceBySlug(resourceSlug);
         if (resource) return { page: "resource", article: null, resource, category: null };
         return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    // Experiment-branch-only preview route for the Real Estate AI city-hero review
+    // prototype. Handled here (not via VALID_PAGE_KEYS) so SEO config, the sitemap,
+    // and production routing stay untouched.
+    if (routedPage === "real-estate-hero-review") {
+        return { page: "real-estate-hero-review", article: null, resource: null, category: null };
     }
 
     if (routedPage) {
@@ -543,6 +551,20 @@ function App() {
                     </div>
                     <RealEstate />
                     <ProductEcosystemSection currentPage="real-estate" onNavigate={openPage} />
+                </>
+            )}
+
+            {/* Experiment-branch-only preview of the Real Estate AI city-hero review
+                prototype. Not a production route; not in the sitemap/SEO. */}
+            {page === "real-estate-hero-review" && (
+                <>
+                    <div className="back-bar">
+                        <button onClick={goHome}>Back to CinNova</button>
+                        <button type="button" className="back-bar-secondary" onClick={() => openPage("real-estate")}>
+                            Live Real Estate
+                        </button>
+                    </div>
+                    <RealEstateCityHeroReview primaryHref="#" secondaryHref="#" />
                 </>
             )}
 
