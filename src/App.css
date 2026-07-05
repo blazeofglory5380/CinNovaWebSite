@@ -13132,6 +13132,9 @@ button.product-hero-pill {
     --sn-shadow-rest: 0 2px 16px rgba(15, 23, 42, 0.05);
     --sn-shadow-hover: 0 16px 40px rgba(15, 23, 42, 0.1);
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 240px);
+    /* Clear the fixed sticky newsletter bar so the waitlist section
+       and footer aren't hidden behind it at the bottom of the page. */
+    padding-bottom: 96px;
 }
 
 .studynest-landing > .section {
@@ -13345,6 +13348,9 @@ button.product-hero-pill {
 .sn-feature-grid {
     max-width: 1180px;
     margin: 0 auto;
+    /* Four feature cards: keep them balanced on one row at desktop
+       instead of 3 + a lone card. Collapses to 2x2, then 1 column. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .studynest-landing .product-card-photo {
@@ -13717,6 +13723,10 @@ button.product-hero-pill {
         grid-template-columns: 1fr;
     }
 
+    .sn-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .sn-preview-grid {
         grid-template-columns: 1fr;
     }
@@ -13738,7 +13748,8 @@ button.product-hero-pill {
 
 @media (max-width: 720px) {
     .sn-hero-stats,
-    .sn-audiences-grid {
+    .sn-audiences-grid,
+    .sn-feature-grid {
         grid-template-columns: 1fr;
     }
 
