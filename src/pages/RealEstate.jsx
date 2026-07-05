@@ -57,7 +57,7 @@ function RealEstate() {
                     </p>
                 </div>
 
-                <div className="product-grid product-grid-photo">
+                <div className="product-grid product-grid-photo re-feature-grid">
                     {features.map((feature) => (
                         <FeaturePhotoCard key={feature.title} image={feature.src} alt={feature.alt} {...feature} />
                     ))}
