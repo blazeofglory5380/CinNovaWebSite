@@ -12163,6 +12163,14 @@ button.product-hero-pill {
     cursor: default;
 }
 
+/* The sticky newsletter bar is position:fixed at the bottom of the viewport.
+   When it is on screen, reserve extra space beneath the footer so the copyright
+   row isn't hidden behind it. Scoped with :has() so it only applies while the
+   bar is actually rendered — no awkward gap when the bar is absent. */
+.site:has(.sticky-newsletter-bar) .site-footer-rich {
+    padding-bottom: 104px;
+}
+
 .marketing-photo {
     background-color: #f1f5f9;
 }
@@ -13132,9 +13140,6 @@ button.product-hero-pill {
     --sn-shadow-rest: 0 2px 16px rgba(15, 23, 42, 0.05);
     --sn-shadow-hover: 0 16px 40px rgba(15, 23, 42, 0.1);
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 240px);
-    /* Clear the fixed sticky newsletter bar so the waitlist section
-       and footer aren't hidden behind it at the bottom of the page. */
-    padding-bottom: 96px;
 }
 
 .studynest-landing > .section {
@@ -14137,6 +14142,9 @@ button.product-hero-pill {
 .pg-feature-grid {
     max-width: 1180px;
     margin: 0 auto;
+    /* Eight feature cards: keep a clean 4x2 grid on wide desktop instead of
+       3 + 3 + 2. Collapses to 2 columns on tablet, then 1 on mobile. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 /* ── PoisonGuard Feature Cards v2 ── */
@@ -15335,6 +15343,10 @@ button.product-hero-pill {
         grid-template-columns: 1fr;
     }
 
+    .pg-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .pg-preview-grid {
         grid-template-columns: 1fr;
     }
@@ -15355,7 +15367,8 @@ button.product-hero-pill {
 }
 
 @media (max-width: 720px) {
-    .pg-hero-stats {
+    .pg-hero-stats,
+    .pg-feature-grid {
         grid-template-columns: 1fr;
     }
 
