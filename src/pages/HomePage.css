@@ -43,6 +43,123 @@ main.homepage-v2 {
     .home-v2__grid { grid-template-columns: 1fr; }
 }
 
+/* ── Ecosystem carousel (homepage-only sliding product showcase) ── */
+.home-v2__carousel {
+    /* --eco-per-view is set inline from React (3 desktop / 2 tablet / 1 mobile) */
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.home-v2__carousel-viewport {
+    overflow: hidden;
+    /* room for the card hover-float + rim glow so it isn't clipped */
+    margin: -6px;
+    padding: 6px;
+    touch-action: pan-y;
+}
+
+.home-v2__carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.home-v2__carousel-slide {
+    flex: 0 0 calc(100% / var(--eco-per-view, 3));
+    box-sizing: border-box;
+    padding: 0 11px;
+    /* let each card fill the slide height for even rows */
+    display: flex;
+}
+
+.home-v2__carousel-slide > .home-v2__product-card {
+    width: 100%;
+}
+
+/* Controls row: arrows flank centered dot indicators */
+.home-v2__carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+
+.home-v2__carousel-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--bdna-line);
+    background: var(--bdna-bg-lift);
+    color: var(--bdna-ink);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.home-v2__carousel-arrow:hover:not(:disabled) {
+    border-color: var(--bdna-accent);
+    color: var(--bdna-emerald-glow);
+    transform: translateY(-1px);
+}
+
+.home-v2__carousel-arrow:focus-visible {
+    outline: 2px solid var(--bdna-accent);
+    outline-offset: 2px;
+}
+
+.home-v2__carousel-arrow:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.home-v2__carousel-dots {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-v2__carousel-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--bdna-line);
+    background: transparent;
+    cursor: pointer;
+    transition: width 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.home-v2__carousel-dot:hover {
+    border-color: var(--bdna-accent);
+}
+
+.home-v2__carousel-dot.is-active {
+    width: 26px;
+    border-radius: 5px;
+    background: var(--bdna-accent);
+    border-color: var(--bdna-accent);
+}
+
+.home-v2__carousel-dot:focus-visible {
+    outline: 2px solid var(--bdna-accent);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-v2__carousel-track {
+        transition: none;
+    }
+    .home-v2__carousel-arrow,
+    .home-v2__carousel-dot {
+        transition: none;
+    }
+}
+
 /* ── Cards (GlassCard bodies) ───────────────────────────────────── */
 .home-v2__product-card .bdna-card__media,
 .home-v2__article-card .bdna-card__media {

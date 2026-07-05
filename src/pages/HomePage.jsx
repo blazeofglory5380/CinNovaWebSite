@@ -6,6 +6,7 @@ import GlassCard from "../components/brand-dna/GlassCard.jsx";
 import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
 import SectionHead from "../components/brand-dna/SectionHead.jsx";
 import Dispatch from "../components/brand-dna/Dispatch.jsx";
+import EcosystemCarousel from "../components/EcosystemCarousel.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
 import { normalizeProductStatus } from "../data/products.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
@@ -139,34 +140,11 @@ function HomePage({
                     Each platform solves a different real-world problem — and together they form a practical AI
                     ecosystem for everyday life.
                 </p>
-                <div className="home-v2__grid">
-                    {products.map((product) => {
-                        const status = normalizeProductStatus(product.status);
-                        const audience = productDetails[product.page]?.whoFor?.[0] || product.category;
-                        return (
-                            <GlassCard
-                                key={product.name}
-                                className="home-v2__product-card"
-                                media={
-                                    product.image ? (
-                                        <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
-                                    ) : null
-                                }
-                                onClick={() => openProduct(product.page)}
-                                aria-label={`${product.name} — learn more`}
-                            >
-                                <div className="home-v2__card-meta">
-                                    <span className={`home-v2__status home-v2__status--${status.variant}`}>{status.label}</span>
-                                    <span className="home-v2__cat">{product.category}</span>
-                                </div>
-                                <h3>{product.name}</h3>
-                                <p>{product.description}</p>
-                                <p className="home-v2__audience"><strong>Audience:</strong> {audience}</p>
-                                <span className="home-v2__cue">Learn More →</span>
-                            </GlassCard>
-                        );
-                    })}
-                </div>
+                <EcosystemCarousel
+                    products={products}
+                    productDetails={productDetails}
+                    openProduct={openProduct}
+                />
             </MotionSectionWrap>
 
             {/* ── Why CinNova ─────────────────────────────────────────── */}
