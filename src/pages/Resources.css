@@ -260,3 +260,150 @@ main.resources-v2 .resource-empty-state p { color: var(--bdna-dim); }
  * too but are outside this scope, so they are unaffected.) */
 main.resources-v2 .modal-panel { color: #1e293b; }
 main.resources-v2 .modal-panel .eyebrow { color: #0f7a5a; }
+
+/* ── Phase 92I polish — lighter vertical rhythm + sticky-bar clearance ──
+ * All scoped to main.resources-v2 so the resource-detail page (ResourcePage,
+ * which reuses ResourcePublicationCard) and every other page are unaffected.
+ * Spacing only: card content, images, labels, metadata, and buttons unchanged. */
+
+/* Base .section is 100px top/bottom, which makes the library feel heavy and
+ * leaves the hero floating away from the content. Tighten the rhythm and pull
+ * the hero closer to the featured section below it. */
+main.resources-v2 .resources-library-hero {
+    padding-bottom: 56px;
+}
+
+main.resources-v2 .resource-library-categories,
+main.resources-v2 .resource-library-search-panel,
+main.resources-v2 .resource-library-strip,
+main.resources-v2 .resource-library-catalog {
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+/* Slightly more compact publication cards (spacing only). */
+main.resources-v2 {
+    --rl-body-gap: 10px;
+}
+
+main.resources-v2 .resource-pub-body {
+    padding: 20px;
+}
+
+/* Safe bottom spacing so the last row of resource cards and their
+ * preview/download actions clear the fixed sticky newsletter bar. */
+main.resources-v2.resources-library-page {
+    padding-bottom: 48px;
+}
+
+/* ── "Find the right resource" search/filter panel — readability ──
+ * The default --bdna-panel (rgba 15,24,38,0.55) barely separates from the
+ * near-black page, and --bdna-panel-edge (emerald @0.14) is nearly invisible,
+ * so the panel, labels, chips, and input read as low-contrast. Raise contrast
+ * while keeping the dark CinNova style + emerald accent. Colors/borders only —
+ * layout and content unchanged; scoped to this panel within main.resources-v2. */
+
+/* 1. Panel clearly separates from the background, with a stronger emerald edge. */
+main.resources-v2 .resource-search-panel-card {
+    background: rgba(17, 29, 46, 0.94);
+    border: 1px solid rgba(10, 191, 140, 0.34);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 2. Heading + helper text brighter. */
+main.resources-v2 .resource-search-panel-head h2 {
+    color: #f1f5f9;
+    font-weight: 500;
+}
+
+main.resources-v2 .resource-search-panel-head p {
+    color: #cbd5e1;
+}
+
+/* 3. Filter group labels (CATEGORY, PRODUCT, …) — readable light slate. */
+main.resources-v2 .resource-filter-pill-label {
+    color: #b6c4d2;
+}
+
+/* 4. Inactive chips — visible border + readable text.
+ * Note: base .resource-filter-pill color/background/border are set with
+ * !important by broad global rules in App.css, so these overrides must also
+ * use !important (scoped to main.resources-v2 so no other page is affected). */
+main.resources-v2 .resource-filter-pill {
+    color: #d6e2ea !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(148, 163, 184, 0.4) !important;
+}
+
+main.resources-v2 .resource-filter-pill:hover {
+    color: var(--bdna-emerald-glow) !important;
+    background: rgba(10, 191, 140, 0.12) !important;
+    border-color: rgba(63, 232, 192, 0.6) !important;
+}
+
+/* 5. Active/selected chip — obvious bright-emerald fill with dark text. */
+main.resources-v2 .resource-filter-pill.is-active {
+    color: #06231b !important;
+    background: var(--bdna-emerald-glow) !important;
+    border-color: var(--bdna-emerald-glow) !important;
+    font-weight: 700;
+}
+
+/* 6. Search input — clearer border, brighter icon/text/placeholder. */
+main.resources-v2 .resource-search-input-wrap {
+    background: rgba(9, 14, 23, 0.85);
+    border-color: rgba(148, 163, 184, 0.4);
+}
+
+main.resources-v2 .resource-search-input-wrap:focus-within {
+    border-color: var(--bdna-emerald-glow);
+    box-shadow: 0 0 0 3px rgba(10, 191, 140, 0.18);
+}
+
+main.resources-v2 .resource-search-icon { color: var(--bdna-emerald-glow); }
+main.resources-v2 .resource-search-input-wrap input { color: #f1f5f9; }
+main.resources-v2 .resource-search-input-wrap input::placeholder { color: #a3b2be; }
+
+/* Results summary line ("Showing X of Y resources"). */
+main.resources-v2 .resource-library-results-bar { color: #c2d0da; }
+
+/* ── Accessibility boost — easier reading for older users / glasses ──
+ * Extra contrast + small-text clarity on top of the readability block above.
+ * Scoped to main.resources-v2; colours/sizes only — no copy, images, product
+ * data, or card structure changed. */
+
+/* Filter group labels: brighter and a touch larger. */
+main.resources-v2 .resource-filter-pill-label {
+    color: #cbd8e2;
+    font-size: 11px;
+}
+
+/* Helper text + search placeholder brighter. */
+main.resources-v2 .resource-search-panel-head p { color: #dbe4ec; }
+main.resources-v2 .resource-search-input-wrap input::placeholder { color: #b3c0ca; }
+
+/* Resource-card metadata: higher contrast for the small label/value pairs. */
+main.resources-v2 .resource-pub-meta dt { color: #b9c6d1; }
+main.resources-v2 .resource-pub-meta dd { color: #eef2f6; }
+
+/* Card product label + description a step brighter for legibility. */
+main.resources-v2 .resource-pub-product { color: #b9c6d1; }
+main.resources-v2 .resource-pub-description { color: #c3d0da; }
+
+/* Preview button: App.css forces .secondary-btn text to a muted colour with
+ * !important, which renders it near-invisible on the dark cards. Override with
+ * !important and give it a clearer surface + border so it reads as a real
+ * (secondary) action next to the emerald Download button. */
+main.resources-v2 .secondary-btn,
+main.resources-v2 .resource-pub-preview {
+    color: #eaf1f5 !important;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+main.resources-v2 .secondary-btn:hover,
+main.resources-v2 .resource-pub-preview:hover {
+    color: var(--bdna-emerald-glow) !important;
+    border-color: var(--bdna-emerald-glow);
+    background: rgba(10, 191, 140, 0.14);
+}
