@@ -310,7 +310,7 @@ function Kiddo() {
                             </div>
                             <p className="kd-mock-caption">2 of 3 clues found in Alphabet Forest</p>
                         </MotionCardWrap>
-                        <MotionCardWrap as="article" className="kd-mock-card">
+                        <MotionCardWrap as="article" className="kd-mock-card kd-mock-card-wide">
                             <p className="kd-mock-label">Daily Challenge</p>
                             <h3>Star streak unlocked</h3>
                             <div className="kd-mock-streak">
