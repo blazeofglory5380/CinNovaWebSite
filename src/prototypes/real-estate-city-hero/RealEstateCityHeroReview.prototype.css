@@ -49,6 +49,8 @@
     display: block;
     z-index: 0;
     background-color: var(--rex-ink-bg);
+    /* deeper blacks + punchier, more saturated neon lights (less flat) */
+    filter: contrast(1.17) saturate(1.32) brightness(1.03);
 }
 
 /* ── Bloom: brightened + blurred copies of the image, screen-blended so every
@@ -58,51 +60,64 @@
     position: absolute; inset: 0; width: 100%; height: 100%;
     object-fit: cover; object-position: center 42%;
     z-index: 1; pointer-events: none; mix-blend-mode: screen;
-    filter: blur(7px) brightness(1.5) saturate(1.4) contrast(1.05);
-    opacity: 0.62; will-change: opacity;
+    /* THRESHOLD bloom: high contrast crushes darks to black so only the brightest
+       lights survive → screen-blend adds a tight glow in each light's own colour
+       (red trails glow red, gold windows gold, white/blue lights white/blue) with
+       NO pale wash over the darks. */
+    filter: blur(5px) contrast(1.9) brightness(1.16) saturate(1.7);
+    opacity: 0.85; will-change: opacity;
     animation: rex-bloompulse 9s ease-in-out infinite;
 }
-/* wide soft-haze bloom pass for atmospheric depth */
+/* wider, softer second threshold pass for a richer halo (still crushed darks,
+   so it glows without fogging) */
 .rex-hero .rex-bloom--wide {
-    filter: blur(26px) brightness(1.7) saturate(1.3);
-    opacity: 0.42;
+    filter: blur(17px) contrast(1.75) brightness(1.1) saturate(1.6);
+    opacity: 0.5;
     animation: rex-bloompulse-wide 13s ease-in-out 1.4s infinite;
-}
-/* soft light haze near the horizon/water */
-.rex-hero .rex-haze {
-    position: absolute; left: 0; right: 0; top: 38%; height: 32%; z-index: 1;
-    pointer-events: none; mix-blend-mode: screen;
-    background: linear-gradient(180deg, transparent 0%, rgba(96, 156, 224, 0.12) 46%, rgba(126, 186, 244, 0.07) 72%, transparent 100%);
-    filter: blur(9px);
-    animation: rex-breathe 14s ease-in-out infinite;
 }
 
 /* ── Screen-blend cinematic glows (above image, below scrim) ── */
 .rex-hero .rex-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; border-radius: 50%; }
 
-/* moon glow (top-right) — strong luminous halo + bright core */
+/* moon glow (top-right) — bright + crisp, tighter so it doesn't wash the skyline */
 .rex-hero .rex-ov--moon {
-    left: 80%; top: 13%; width: 26%; aspect-ratio: 1 / 1;
+    left: 80%; top: 13%; width: 17%; aspect-ratio: 1 / 1;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(235, 245, 255, 0.85) 0%, rgba(200, 224, 255, 0.5) 20%, rgba(150, 190, 255, 0.26) 40%, transparent 68%);
-    filter: blur(5px);
+    background: radial-gradient(circle, rgba(240, 248, 255, 0.9) 0%, rgba(200, 224, 255, 0.42) 24%, rgba(150, 190, 255, 0.16) 46%, transparent 66%);
+    filter: blur(4px);
     animation: rex-breathe 9s ease-in-out infinite;
 }
 /* tight bright moon core */
 .rex-hero .rex-ov--moon-core {
-    left: 80%; top: 13%; width: 9%; aspect-ratio: 1 / 1;
+    left: 80%; top: 13%; width: 7%; aspect-ratio: 1 / 1;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.92) 0%, rgba(226, 240, 255, 0.5) 45%, transparent 72%);
-    filter: blur(3px);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.98) 0%, rgba(230, 242, 255, 0.55) 42%, transparent 70%);
+    filter: blur(2px);
     animation: rex-breathe 7s ease-in-out infinite;
 }
-/* moonlit water reflection glow (center river) — stronger */
+/* moonlit water reflection glow (center river) — bright blue-white + shimmer */
 .rex-hero .rex-ov--water {
-    left: 58%; top: 62%; width: 36%; height: 30%; border-radius: 50%;
+    left: 58%; top: 62%; width: 34%; height: 28%; border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse 58% 70% at 50% 40%, rgba(150, 200, 255, 0.5) 0%, rgba(80, 145, 230, 0.24) 42%, transparent 74%);
-    filter: blur(10px);
-    animation: rex-breathe 12s ease-in-out 1.5s infinite;
+    background: radial-gradient(ellipse 56% 72% at 50% 40%, rgba(190, 224, 255, 0.6) 0%, rgba(95, 165, 245, 0.28) 40%, transparent 72%);
+    filter: blur(9px);
+    animation: rex-breathe 10s ease-in-out 1.2s infinite;
+}
+/* blue/white glow over the central lit skyline towers */
+.rex-hero .rex-ov--skyline {
+    left: 55%; top: 36%; width: 30%; height: 22%; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(130, 195, 255, 0.34) 0%, rgba(90, 150, 235, 0.14) 46%, transparent 74%);
+    filter: blur(8px);
+    animation: rex-pulse 8s ease-in-out 0.6s infinite;
+}
+/* warm gold glow over the densest downtown window-light cluster */
+.rex-hero .rex-ov--gold {
+    left: 62%; top: 47%; width: 34%; height: 16%; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255, 196, 92, 0.3) 0%, rgba(245, 158, 11, 0.13) 46%, transparent 74%);
+    filter: blur(9px);
+    animation: rex-pulse 9s ease-in-out 1.4s infinite;
 }
 /* right suspension bridge glow */
 .rex-hero .rex-ov--bridge {
@@ -112,13 +127,20 @@
     filter: blur(7px);
     animation: rex-pulse 6.5s ease-in-out infinite;
 }
-/* warm car-light-trail glow (foreground highways) */
+/* warm car-light-trail glow (foreground highways) — stronger red/orange */
 .rex-hero .rex-ov--trail {
-    left: 46%; top: 84%; width: 62%; height: 22%; border-radius: 50%;
+    left: 46%; top: 84%; width: 64%; height: 24%; border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(251, 146, 60, 0.26) 0%, rgba(251, 191, 36, 0.12) 46%, transparent 74%);
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255, 130, 55, 0.4) 0%, rgba(251, 146, 60, 0.18) 44%, transparent 74%);
     filter: blur(10px);
     animation: rex-pulse 7.5s ease-in-out 0.8s infinite;
+}
+/* second warm accent along the mid highway curving toward downtown */
+.rex-hero .rex-ov--trail::after {
+    content: ""; position: absolute; left: 6%; top: -34%; width: 46%; height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255, 150, 70, 0.28) 0%, transparent 70%);
+    filter: blur(8px);
 }
 /* very subtle city-light shimmer sweep across the skyline band */
 .rex-hero .rex-ov--shimmer {
@@ -148,10 +170,10 @@
         linear-gradient(90deg, rgba(4, 9, 22, 0.9) 0%, rgba(4, 9, 22, 0.72) 26%, rgba(4, 9, 22, 0.34) 50%, rgba(4, 9, 22, 0.05) 72%, transparent 88%),
         linear-gradient(0deg, rgba(4, 9, 22, 0.6) 0%, transparent 34%);
 }
-/* cinematic vignette — gently darkens the frame edges */
+/* cinematic vignette — deeper corners for contrast + premium framing */
 .rex-hero .rex-vignette {
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: radial-gradient(135% 125% at 52% 40%, transparent 50%, rgba(2, 6, 16, 0.34) 82%, rgba(2, 6, 16, 0.62) 100%);
+    background: radial-gradient(130% 120% at 54% 40%, transparent 46%, rgba(1, 4, 12, 0.42) 80%, rgba(1, 4, 12, 0.74) 100%);
 }
 
 /* ── Scanning arcs from the central tower (data layer, above scrim) ── */
@@ -277,7 +299,7 @@
     .rex-hero .rex-bg, .rex-hero .rex-bloom { object-position: 62% 42%; }
     /* drop the heavy wide-bloom pass on smaller screens for performance */
     .rex-hero .rex-bloom--wide { display: none; }
-    .rex-hero .rex-bloom { filter: blur(6px) brightness(1.45) saturate(1.35); }
+    .rex-hero .rex-bloom { filter: blur(5px) contrast(1.85) brightness(1.14) saturate(1.65); }
     /* stronger full scrim so copy stays readable over the busy image */
     .rex-hero .rex-scrim {
         background:
@@ -302,7 +324,6 @@
     .rex-hero .rex-ov,
     .rex-hero .rex-grid,
     .rex-hero .rex-node,
-    .rex-hero .rex-haze,
     .rex-hero .rex-bloom,
     .rex-hero .rex-eyebrow__dot,
     .rex-hero .rex-inner,

@@ -65,12 +65,13 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
                 onError={(e) => { e.currentTarget.style.display = "none"; }} />
             <img className="rex-bloom rex-bloom--wide" src={IMAGE_SRC} alt="" aria-hidden="true" loading="eager" decoding="async"
                 onError={(e) => { e.currentTarget.style.display = "none"; }} />
-            <div className="rex-haze" aria-hidden="true" />
 
-            {/* ── Cinematic overlays (screen-blend light) ── */}
+            {/* ── Targeted colored glows (screen-blend additive light) ── */}
             <div className="rex-ov rex-ov--moon" aria-hidden="true" />
             <div className="rex-ov rex-ov--moon-core" aria-hidden="true" />
             <div className="rex-ov rex-ov--water" aria-hidden="true" />
+            <div className="rex-ov rex-ov--skyline" aria-hidden="true" />
+            <div className="rex-ov rex-ov--gold" aria-hidden="true" />
             <div className="rex-ov rex-ov--bridge" aria-hidden="true" />
             <div className="rex-ov rex-ov--trail" aria-hidden="true" />
             <div className="rex-ov rex-ov--shimmer" aria-hidden="true" />
