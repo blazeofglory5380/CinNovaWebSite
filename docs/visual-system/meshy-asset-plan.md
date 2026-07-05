@@ -57,14 +57,102 @@ Masters (`*.glb` without `.web`) and reference PNGs are gitignored — regenerat
 6. **Approve** — add row to product visual roadmap
 7. **Wire** — update `productHero3D.js` / hero components in a follow-up PR (not this phase)
 
+## Real Estate AI Meshy plan
+
+External workspace: `G:\CinNova Assets\Meshy\Completed\Real Estate AI` (and `In Progress\Real Estate AI`).
+
+**Production rule:** the live website hero is the **city illustration** (`real-estate-ai-city-hero-approved-v1.png`). All Meshy work below is for marketing, app surfaces, and the optional farmhouse 3D slot — none of it replaces the city hero without an explicit approval phase.
+
+### Scene catalog
+
+| Scene | Description | Meshy folder | Repo staging | Priority |
+|-------|-------------|--------------|--------------|----------|
+| **3D city block** | Low-poly city grid, 4–8 buildings, readable from aerial angle, neutral daylight | `Completed/Real Estate AI/City Block/v1/` | `models/products/real-estate/realestateai-city-block.web.glb` | P1 |
+| **Glowing property pin set** | 3–5 map pins (rose glow, glass stem), separate meshes for animation | `Completed/Real Estate AI/Property Pins/v1/` | `models/products/real-estate/realestateai-property-pins.web.glb` | P1 |
+| **Modern house + data overlays** | Single residential model, frosted HUD panels (ARV, cap rate, rehab cost) | `Completed/Real Estate AI/House Data Overlay/v1/` | `models/products/real-estate/realestateai-house-data-overlay.web.glb` | P2 |
+| **Investor dashboard room** | Desk + monitors showing abstract charts, city view through window | `Completed/Real Estate AI/Investor Room/v1/` | `models/products/real-estate/realestateai-investor-dashboard-room.web.glb` | P3 |
+| **Farmhouse transformation** | Before/after diorama (v2 spec) | `Completed/Real Estate AI/Farmhouse/v2/` | `models/product-heroes/realestateai-farmhouse-transformation-v2.glb` | P2 |
+
+### 3D city block model
+
+- **Scale:** platform ~2 m diameter; buildings 0.3–0.8 m tall for diorama readability
+- **Materials:** matte white concrete base, glass curtain walls, subtle emissive window grids
+- **Camera:** 45° aerial, hero-safe 360° orbit
+- **Animation (optional):** slow turntable or pin pulse — clip name `Orbit` or `Idle`
+- **Poster:** capture to `public/images/products/real-estate/realestateai-city-block-poster-v1.png`
+- **Use:** app map marketing, feature sections, social video stills — **not** live page hero
+
+### Glowing property pin set
+
+- **Meshes:** pin base, stem, head, glow halo (separate for emissive control)
+- **Colors:** rose `#ec4899` primary glow, blue `#2563eb` secondary for selected state
+- **Variants:** default, selected, alert (3 materials or 3 objects)
+- **Export:** single GLB with named nodes `Pin_Default`, `Pin_Selected`, `Pin_Alert`
+- **Use:** compositing on city block, 2D map mockups, Lottie/video exports
+
+### Modern house with data overlays
+
+- **House:** contemporary suburban, white siding, black frames — distinct from farmhouse v2
+- **Overlays:** 2–4 frosted panels floating near roofline; bake labels at 1024px
+- **Lighting:** studio key + rose/blue rim (match farmhouse v2 spec)
+- **Animation:** subtle panel fade-in loop (6 s), clip `DataReveal`
+- **Use:** dashboard mockup companion, report covers, `#features` section art
+
+### Investor dashboard room
+
+- **Set:** minimal office, dual monitors, keyboard, chair silhouette
+- **Screens:** abstract chart textures (no real data), emissive screen planes
+- **Window:** optional city block visible outside (reuse city block asset)
+- **Poly budget:** ≤ 80k tris web target after Draco
+- **Use:** “built for investors” marketing, newsletter hero, future app landing
+
+### Farmhouse transformation — archive & rollback notes
+
+| Version | File | Status | Action |
+|---------|------|--------|--------|
+| **v1 procedural** | `models/product-heroes/realestateai-farmhouse-transformation.glb` | Rejected for production | **Keep as archive** — do not delete; not wired to live hero |
+| **Dual-model (live support)** | `models/real-estate-ai/farmhouse-old-decrepit.glb`, `farmhouse-modern-renovated.glb` | Production support assets | **Do not move** — used by transformation config |
+| **v2 (target)** | `models/product-heroes/realestateai-farmhouse-transformation-v2.glb` | Not shipped | Drop when DCC quality approved |
+| **Poster (custom)** | `images/product-heroes/posters/realestateai-farmhouse-transformation.png` | Tracked, build-respected | Regenerate only via approved capture |
+
+**Rollback:** if v2 fails review, live page remains on **city hero** (2D). Farmhouse poster/GLB stack stays dormant — no revert of city hero required.
+
+Workflow detail: `docs/realestateai-farmhouse-hero-v2-workflow.md`.
+
+### Export formats & naming (Real Estate AI)
+
+| Stage | Format | Location | Naming |
+|-------|--------|----------|--------|
+| Meshy export | GLB (master) | `G:\...\Exports\GLB\` | `realestateai-{scene}-master.glb` |
+| Blender polish | GLB (master) | Meshy project `Models/` | same base name |
+| Web production | GLB + Draco | `public/models/products/real-estate/` | `realestateai-{scene}.web.glb` |
+| Optional AR | USDZ | Meshy `Exports/USDZ/` | `realestateai-{scene}.usdz` |
+| Source textures | PNG | Meshy `Textures/PBR/` | `{scene}_BaseColor.png`, `_Normal.png`, etc. |
+| Poster | PNG | `public/images/products/real-estate/` or `product-heroes/posters/` | `realestateai-{scene}-poster-v1.png` |
+| Prompt archive | TXT/MD | Meshy `Prompt/` | `{scene}-prompt-v1.md` |
+
+**Scene slugs:** `city-block`, `property-pins`, `house-data-overlay`, `investor-dashboard-room`, `farmhouse-transformation`.
+
+**Optimize before commit:**
+
+```bash
+npx gltf-transform optimize realestateai-{scene}-master.glb realestateai-{scene}.web.glb --compress draco
+```
+
+Masters stay local or in Meshy — follow `.gitignore` patterns for `product-heroes` masters.
+
+---
+
 ## Assets still needed from Meshy
 
 | Product | Scene | Priority |
 |---------|-------|----------|
+| **Real Estate AI** | City block + property pins | **P1** — see [Real Estate AI Meshy plan](#real-estate-ai-meshy-plan) |
+| **Real Estate AI** | Farmhouse v2 transformation GLB | **P2** — v2 workflow doc |
+| **Real Estate AI** | House data overlay, investor room | **P2–P3** |
 | TechMate | Data-center / support desk hero | High — config references GLB |
 | Kiddo | Kids learning / play hero (product-heroes slot) | Medium |
 | Home | Customer communication scene (optional; home uses AI Core today) | Low |
-| Real Estate | Merged v2 transformation GLB | High — see v2 workflow doc |
 | Nightmare Forest | Game environment + characters | Future — game not on site yet |
 | CinNova site | Blog/resource/social template props | Medium |
 
