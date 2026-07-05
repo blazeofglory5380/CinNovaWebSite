@@ -95,25 +95,34 @@
 .pgr-hero .pgr-benefit { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #bcd8c8; }
 .pgr-hero .pgr-benefit__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 8px rgba(52, 211, 153, 0.8); }
 
-/* ── Right: cropped image scene window ─────────────────────────────── */
+/* ── Right: frameless scene that dissolves into the hero background ─── */
 .pgr-hero .pgr-window {
     position: relative;
     width: 100%;
     aspect-ratio: 1.24 / 1;        /* shows the right ~70% of the image; left edge lands at image-x ~0.30, well left of the status cards (~0.44) so they sit fully inside the frame with breathing room */
-    border-radius: clamp(10px, 1.2vw, 18px);
-    overflow: hidden;
+    overflow: hidden;              /* clips the left overflow of the wider scene */
     isolation: isolate;
-    /* dark scene base so the area is never white/empty (load-flash + graceful) */
-    background: radial-gradient(120% 120% at 60% 40%, #0a1c12 0%, #061109 60%, #030805 100%);
-    box-shadow: 0 26px 80px rgba(0, 0, 0, 0.55);
+    background: transparent;       /* no panel: the edge fades reveal the hero background */
+    /* Feather EVERY edge so the scene merges into the dark emerald hero instead of
+       sitting in a boxed card. Two gradients (horizontal + vertical) intersected:
+       - left fade is wider and clears by ~15.5% to also hide the baked-in headline
+         (which ends ~13% of the window) while keeping the left cards (~16-20%) bright
+       - right/top/bottom feather softly into the atmosphere. */
+    -webkit-mask-image:
+        linear-gradient(90deg, transparent 0%, transparent 13%, #000 15.5%, #000 92%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, #000 11%, #000 86%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(90deg, transparent 0%, transparent 13%, #000 15.5%, #000 92%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, #000 11%, #000 86%, transparent 100%);
+    mask-composite: intersect;
     animation: pgr-fade 1.1s ease-out 0.1s both;
 }
-/* fade the left edge into the section so any residual baked text is masked */
+/* soft emerald ground atmosphere so the platform reads as living in the scene */
 .pgr-hero .pgr-window::after {
     content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    /* solid over the baked-in headline strip (ends ~13% of the window), then fully
-       clear before the left status cards (~19%) so the cards stay bright */
-    background: linear-gradient(90deg, #050f0a 0%, #050f0a 13%, rgba(5, 15, 10, 0.55) 16%, rgba(5, 15, 10, 0.15) 18.5%, transparent 20.5%);
+    background: radial-gradient(120% 78% at 55% 90%, rgba(24, 96, 64, 0.18) 0%, transparent 56%);
+    mix-blend-mode: screen;
 }
 .pgr-hero .pgr-scene {
     --pgr-lx: 0px; --pgr-ly: 0px; --pgr-cx: 0px; --pgr-cy: 0px;   /* cursor parallax */
