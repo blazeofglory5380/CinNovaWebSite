@@ -558,6 +558,7 @@ function App() {
                 </>
             )}
 
+
             {page === "kiddo" && (
                 <>
                     <div className="back-bar">

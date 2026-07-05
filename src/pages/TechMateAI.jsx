@@ -1,19 +1,16 @@
 import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
-import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import TechMateHero from "../components/TechMateHero.jsx";
+import TechMateFeatureCards from "../components/TechMateFeatureCards.jsx";
 import { productMarketing } from "../data/marketingImages.js";
-import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 
 const { features } = productMarketing.techmate;
-const techmateHero = productHero3DConfigs.techmate;
 
 const techmateSchema = {
     "@context": "https://schema.org",
@@ -38,9 +35,7 @@ function TechMateAI() {
                 schema={techmateSchema}
             />
 
-            <MotionHeroWrap>
-                <ProductHero3D {...techmateHero} className="ph3d--techmate" />
-            </MotionHeroWrap>
+            <TechMateHero primaryHref="#waitlist" secondaryHref="#waitlist" />
 
             <section className="section" id="features">
                 <div className="section-heading">
@@ -52,11 +47,7 @@ function TechMateAI() {
                     </p>
                 </div>
 
-                <div className="product-grid product-grid-photo">
-                    {features.map((feature) => (
-                        <FeaturePhotoCard key={feature.title} {...feature} />
-                    ))}
-                </div>
+                <TechMateFeatureCards features={features} />
             </section>
 
             {/* ── Device Troubleshooting + Error Code Preview ──────── */}
