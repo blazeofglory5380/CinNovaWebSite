@@ -66,6 +66,10 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
             <img className="rex-bloom rex-bloom--wide" src={IMAGE_SRC} alt="" aria-hidden="true" loading="eager" decoding="async"
                 onError={(e) => { e.currentTarget.style.display = "none"; }} />
 
+            {/* ── Slow drifting clouds (masked to the upper sky only) ── */}
+            <div className="rex-clouds" aria-hidden="true" />
+            <div className="rex-clouds rex-clouds--2" aria-hidden="true" />
+
             {/* ── Targeted colored glows (screen-blend additive light) ── */}
             <div className="rex-ov rex-ov--moon" aria-hidden="true" />
             <div className="rex-ov rex-ov--moon-core" aria-hidden="true" />
@@ -74,6 +78,18 @@ function RealEstateCityHeroReview({ primaryHref = "#", secondaryHref = "#" }) {
             <div className="rex-ov rex-ov--gold" aria-hidden="true" />
             <div className="rex-ov rex-ov--bridge" aria-hidden="true" />
             <div className="rex-ov rex-ov--trail" aria-hidden="true" />
+
+            {/* ── Warm-light "living pulse": left / right / center zones cycle
+                 brightness out of phase (one side brightens while the other dims,
+                 then alternate). Water reflections pulse in sync with their zone. ── */}
+            <div className="rex-warm rex-warm--l1" aria-hidden="true" />
+            <div className="rex-warm rex-warm--l2" aria-hidden="true" />
+            <div className="rex-warm rex-warm--lwater" aria-hidden="true" />
+            <div className="rex-warm rex-warm--r1" aria-hidden="true" />
+            <div className="rex-warm rex-warm--r2" aria-hidden="true" />
+            <div className="rex-warm rex-warm--rwater" aria-hidden="true" />
+            <div className="rex-warm rex-warm--c1" aria-hidden="true" />
+            <div className="rex-warm rex-warm--cwater" aria-hidden="true" />
             <div className="rex-ov rex-ov--shimmer" aria-hidden="true" />
             <div className="rex-grid" aria-hidden="true" />
             <div className="rex-arc" aria-hidden="true" />
