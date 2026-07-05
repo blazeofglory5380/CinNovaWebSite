@@ -99,7 +99,7 @@
 .pgr-hero .pgr-window {
     position: relative;
     width: 100%;
-    aspect-ratio: 1.05 / 1;        /* shows the right ~59% of the 16:9 image */
+    aspect-ratio: 1.18 / 1;        /* shows the right ~66% of the 16:9 image (more left revealed) */
     border-radius: clamp(10px, 1.2vw, 18px);
     overflow: hidden;
     isolation: isolate;
@@ -111,7 +111,7 @@
 /* fade the left edge into the section so any residual baked text is masked */
 .pgr-hero .pgr-window::after {
     content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    background: linear-gradient(90deg, #050f0a 0%, #050f0a 6%, rgba(5, 15, 10, 0.6) 10%, transparent 15%);
+    background: linear-gradient(90deg, #050f0a 0%, #050f0a 8%, rgba(5, 15, 10, 0.82) 13%, rgba(5, 15, 10, 0.32) 18%, transparent 23%);
 }
 .pgr-hero .pgr-scene {
     --pgr-lx: 0px; --pgr-ly: 0px; --pgr-cx: 0px; --pgr-cy: 0px;   /* cursor parallax */
@@ -277,7 +277,7 @@
 @media (max-width: 560px) {
     .pgr-hero .pgr-benefits { gap: 16px; }
     .pgr-hero .pgr-btn { flex: 1 1 auto; justify-content: center; }
-    .pgr-hero .pgr-window { aspect-ratio: 0.98 / 1; }
+    .pgr-hero .pgr-window { aspect-ratio: 1.05 / 1; }
 }
 
 /* ── Reduced motion: calm static glow ──────────────────────────────── */
