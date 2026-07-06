@@ -1878,6 +1878,25 @@ a {
     line-height: 1.5;
 }
 
+/* Inline privacy notice shown near email-capture forms (newsletter, waitlist,
+   sticky bar, contact). Small, muted; inherits the parent's text alignment. */
+.form-privacy-note {
+    margin: 10px 0 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary, #64748b);
+}
+
+.form-privacy-link {
+    color: var(--color-accent, #0f7a5a);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.form-privacy-link:hover {
+    text-decoration: none;
+}
+
 .newsletter-admin-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
