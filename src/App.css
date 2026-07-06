@@ -17784,6 +17784,107 @@ button.product-hero-pill {
     line-height: 1.8;
 }
 
+/* ============================================================
+   About page polish (Phase 92K)
+   All rules scoped under .about-page so the shared business-center
+   styles on Advertise / Media Kit / Press Center are unaffected.
+   ============================================================ */
+
+/* 5. Tighten the general vertical rhythm between About sections. */
+.about-page .bc-section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+}
+
+/* 1 + 5. Pull section content closer to its heading. */
+.about-page .bc-section-heading {
+    margin-bottom: 36px;
+}
+
+/* 1. Company Snapshot: BusinessStats renders inside a nested .section (another
+   100px of padding), leaving a big empty gap under the heading. Remove that
+   nested padding so the metric cards feel connected to the heading. */
+.about-page .bc-stats-section {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* 2. Ecosystem: 5 product cards -> clean, centered 3 + 2 on wide desktop
+   (instead of a lopsided 4 + 1). Collapses to 2 columns on tablet, 1 on
+   mobile. Scoped to the ecosystem grid only (#products). */
+.about-page #products .product-grid-photo {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1001px) {
+    .about-page #products .product-grid-photo {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .about-page #products .product-grid-photo > * {
+        grid-column: span 2;
+    }
+    .about-page #products .product-grid-photo > :nth-child(4) {
+        grid-column: 2 / span 2;
+    }
+    .about-page #products .product-grid-photo > :nth-child(5) {
+        grid-column: 4 / span 2;
+    }
+}
+
+@media (max-width: 1000px) {
+    .about-page #products .product-grid-photo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .about-page #products .product-grid-photo {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 3. Our Values: these cards have no image, so the media slot renders as a
+   blank gray box that looks unfinished. Replace it with a slim CinNova green
+   gradient accent (CSS only — no image assets added). */
+.about-page #values .feature-photo-wrap {
+    height: 8px;
+    min-height: 0;
+    background: linear-gradient(90deg, var(--color-accent), #34d399);
+}
+
+/* Our Values has 6 cards. Render them as a clean 3 x 2 (3 columns) on wide
+   desktop instead of 4 + 2. Collapses to 2 columns on tablet, 1 on mobile. */
+.about-page #values .product-grid-photo {
+    max-width: 1180px;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1000px) {
+    .about-page #values .product-grid-photo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .about-page #values .product-grid-photo {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 4. Founder Vision: improve readability with a comfortable measure, more
+   line-height, and clearer paragraph separation (copy unchanged). */
+.about-page .bc-founder-card p {
+    line-height: 1.85;
+    color: #334155;
+    max-width: 68ch;
+}
+
+.about-page .bc-founder-card p:not(:last-of-type) {
+    margin-bottom: 18px;
+}
+
 .bc-list-card {
     text-align: left;
     max-width: 860px;

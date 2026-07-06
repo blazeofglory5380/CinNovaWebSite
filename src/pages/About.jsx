@@ -25,7 +25,7 @@ const aboutSchema = {
 
 function About({ onNavigate }) {
     return (
-        <main className="product-page business-center-page">
+        <main className="product-page business-center-page about-page">
             <SEO
                 title="About Cin Nova | Practical AI Software Company"
                 description="Cin Nova builds AI-powered products for learning, safety, real estate, tech support, and early childhood education. Learn about our products, values, and roadmap."
