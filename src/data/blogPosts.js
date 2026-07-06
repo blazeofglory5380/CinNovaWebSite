@@ -1520,6 +1520,79 @@ const fullArticles = [
             },
         ],
     },
+    // Re-homed Real Estate articles. Their original slots (ids 3 and 9) are
+    // repurposed by cornerstoneOverrides for the Data Centers and Robotics
+    // cornerstones, which masked these two articles and left their slugs
+    // returning NotFound. They are re-published here under free ids (108, 109)
+    // so both the cornerstones and these Real Estate articles resolve.
+    {
+        id: 108,
+        title: "The Future of Real Estate AI",
+        slug: "the-future-of-real-estate-ai",
+        category: "Real Estate Technology",
+        excerpt:
+            "Real estate software is moving toward faster property search, smarter deal analysis, and clearer market intelligence.",
+        date: "June 15, 2026",
+        readTime: "7 min read",
+        author,
+        tags: ["real estate AI", "deal analysis", "market intelligence"],
+        seoKeywords: ["real estate AI", "property analysis software", "AI real estate tools"],
+        featured: false,
+        trending: true,
+        popular: true,
+        status: "published",
+        content: [
+            {
+                heading: "Investors need faster clarity",
+                body:
+                    "Real estate decisions involve price, rent, expenses, financing, location, and risk. AI can organize those factors into a clearer picture before an investor spends hours on manual analysis. The practical takeaway is to use software for first-pass clarity, then verify assumptions before making decisions.",
+            },
+            {
+                heading: "Deal analysis is becoming more accessible",
+                body:
+                    "Cap rate, cash flow, mortgage payments, and repair assumptions can be confusing for beginners. A strong AI real estate product can explain the numbers and show what changes the deal. CinNova Real Estate AI is being designed to make those calculations easier to understand.",
+            },
+            {
+                heading: "Market intelligence matters",
+                body:
+                    "The next wave of real estate tools will combine property data with local market signals so users can compare opportunities with better context. A practical workflow is to screen quickly, compare honestly, and only spend deeper time on deals that survive the numbers.",
+            },
+        ],
+    },
+    {
+        id: 109,
+        title: "Beginner Guide to Real Estate Deal Analysis",
+        slug: "beginner-guide-to-real-estate-deal-analysis",
+        category: "Real Estate Technology",
+        excerpt:
+            "Learn the basic numbers investors review before deciding whether a property is worth deeper research.",
+        date: "June 9, 2026",
+        readTime: "6 min read",
+        author,
+        tags: ["deal analysis", "cash flow", "real estate investing"],
+        seoKeywords: ["real estate deal analysis", "beginner property analysis", "cash flow calculator"],
+        featured: false,
+        trending: false,
+        popular: false,
+        status: "published",
+        content: [
+            {
+                heading: "Start with income and expenses",
+                body:
+                    "A deal begins with expected rent, vacancy, taxes, insurance, maintenance, management, and other costs. These numbers shape the real cash flow. Beginners should write assumptions down instead of trusting the first attractive listing photo.",
+            },
+            {
+                heading: "Understand financing",
+                body:
+                    "Mortgage payments can turn a strong-looking property into a weak deal. A mortgage calculator helps users test different loan terms and down payments. CinNova Real Estate AI connects mortgage math to deal analysis so investors can see the effect quickly.",
+            },
+            {
+                heading: "Compare return metrics",
+                body:
+                    "Cap rate, cash-on-cash return, and monthly cash flow each answer a different question. A good analyzer explains all three and highlights weak assumptions. The practical takeaway is to screen deals with consistent rules before getting emotionally attached.",
+            },
+        ],
+    },
 ];
 
 const cornerstoneRelated = {
