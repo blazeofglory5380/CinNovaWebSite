@@ -244,7 +244,7 @@ function Pricing() {
                                                 ? "none"
                                                 : "1px solid #cbd5e1",
                                             background: tier.highlight
-                                                ? "linear-gradient(135deg, #2563eb, #7c3aed)"
+                                                ? "linear-gradient(135deg, var(--color-accent), var(--color-accent-dark))"
                                                 : "#ffffff",
                                             color: tier.highlight ? "#ffffff" : "#334155",
                                             fontWeight: 900,
@@ -253,7 +253,13 @@ function Pricing() {
                                             opacity: tier.price === "Coming Soon" ? 0.5 : 1,
                                         }}
                                     >
-                                        {tier.price === "Coming Soon" ? "Coming Soon" : tier.highlight ? "Get Started" : "Start Free"}
+                                        {tier.price === "Coming Soon"
+                                            ? "Coming Soon"
+                                            : tier.highlight
+                                              ? "Get Started"
+                                              : tier.price === "$0"
+                                                ? "Start Free"
+                                                : "Get Started"}
                                     </button>
                                 </div>
                             ))}
@@ -270,7 +276,7 @@ function Pricing() {
                     <p>Here's how different Cin Nova products serve different people.</p>
                 </div>
 
-                <div className="product-grid product-grid-photo">
+                <div className="product-grid product-grid-photo pricing-fit-grid">
                     {pricingAudiences.map((item) => {
                         const photo = productMarketing[item.key]?.card;
                         return (
