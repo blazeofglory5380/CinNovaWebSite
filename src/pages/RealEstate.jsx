@@ -2,6 +2,7 @@ import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
 import RealEstateCityHero from "../components/RealEstateCityHero.jsx";
+import RealEstateResourceCta from "../components/RealEstateResourceCta.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -63,6 +64,8 @@ function RealEstate() {
                     ))}
                 </div>
             </section>
+
+            <RealEstateResourceCta />
 
             <section className="section showcase-section" id="tools">
                 <div className="section-heading">
