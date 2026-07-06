@@ -1593,6 +1593,65 @@ const fullArticles = [
             },
         ],
     },
+    {
+        id: 110,
+        title: "Is This Rental Property a Good Deal? How to Analyze It in 10 Minutes",
+        slug: "analyze-rental-property-in-10-minutes",
+        category: "Real Estate Technology",
+        excerpt:
+            "A beginner-friendly, 10-minute framework to check a rental property's cash flow, cap rate, and ROI before you spend hours on deeper research.",
+        date: "July 5, 2026",
+        readTime: "8 min read",
+        author,
+        tags: ["rental property analysis", "cash flow", "cap rate", "ROI", "deal analysis"],
+        seoKeywords: ["how to analyze a rental property", "rental property cash flow", "cap rate for beginners", "real estate deal analysis"],
+        featured: false,
+        trending: true,
+        popular: false,
+        status: "published",
+        content: [
+            {
+                heading: "Screen the deal before you dig in",
+                body:
+                    "Most beginners lose hours on listings that never had the numbers to work. The fix is not more spreadsheets — it is a repeatable first pass you can run in about 10 minutes to decide whether a property is worth a deeper look. This is educational content, not financial advice: every market and property is different, so always verify your assumptions before making a decision.",
+            },
+            {
+                heading: "Minute 1-3: Income and expenses",
+                body:
+                    "Start with realistic numbers, not the listing's best case. Write down expected monthly rent, then subtract the costs people forget: vacancy, property taxes, insurance, maintenance, and management. If you do not write your assumptions down, the photos will do your thinking for you.",
+            },
+            {
+                heading: "Minute 4-5: Cash flow",
+                body:
+                    "Cash flow is simply income minus all expenses and the mortgage payment. Positive cash flow means the property pays you each month; negative means you are subsidizing it. Test a couple of loan terms and down payments — financing alone can turn a good-looking property into a weak one.",
+            },
+            {
+                heading: "Minute 6-7: Cap rate",
+                body:
+                    "Cap rate is annual net operating income (income minus operating expenses, before the mortgage) divided by the purchase price. It is a quick way to compare properties on equal footing, independent of how you finance them. Compare it against similar rentals in the same area, not a national average.",
+            },
+            {
+                heading: "Minute 8: Cash-on-cash return (ROI)",
+                body:
+                    "This answers a simple question: what return am I getting on the actual cash I put in? It is annual pre-tax cash flow divided by total cash invested — down payment, closing costs, and initial repairs. It is the number that tells you how hard your money is working.",
+            },
+            {
+                heading: "Minute 9-10: Does the deal survive?",
+                body:
+                    "Now zoom out. Cap rate, cash-on-cash, and monthly cash flow each answer a different question. A property that looks fine on one and weak on two others is not a maybe — it is a pass. Screen with consistent rules before getting emotionally attached, and only spend deeper time on the deals that clear all three.",
+            },
+            {
+                heading: "Do it faster with free templates",
+                body:
+                    "You do not need to build this from scratch. The free Real Estate Deal Analysis Template gives you a simple framework for rent, expenses, financing, cash flow, and risk, and the Real Estate Cash Flow Analysis Template is a ready-to-use worksheet for income, expense, and return calculations. Both are available in the downloads below.",
+            },
+            {
+                heading: "What is next",
+                body:
+                    "We are building CinNova Real Estate AI to run this whole 10-minute pass for you — deal scoring, cash flow modeling, and market signals in one place. It is in development now, and you can join the Real Estate AI waitlist to be first in when it launches. Use the product link below to learn more and sign up.",
+            },
+        ],
+    },
 ];
 
 const cornerstoneRelated = {
