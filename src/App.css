@@ -64,6 +64,63 @@
     color: var(--color-accent);
 }
 
+/* ── "More" dropdown (secondary nav links) — desktop ── */
+.nav-more {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-more-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-more-caret {
+    font-size: 0.7em;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.nav-more-open .nav-more-caret {
+    transform: rotate(180deg);
+}
+
+.nav-more-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    min-width: 190px;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+    z-index: 60;
+}
+
+.nav-more-open .nav-more-menu {
+    display: flex;
+}
+
+.nav-links .nav-more-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.nav-links .nav-more-menu button:hover {
+    color: var(--color-accent);
+    background: rgba(15, 122, 90, 0.08);
+}
+
 .nav-cta {
     padding: 12px 20px;
     border-radius: 999px;
@@ -915,6 +972,18 @@ a {
     }
     /* Nav links hidden by default on mobile — shown as drawer via .nav-mobile-open */
     .nav-links {
+        display: none;
+    }
+
+    /* Mobile: flatten the "More" dropdown so every secondary link shows in the
+       hamburger drawer (no toggle). display:contents dissolves the wrappers so
+       the links become direct drawer children with the shared button styling. */
+    .nav-more,
+    .nav-more-menu,
+    .nav-more-open .nav-more-menu {
+        display: contents;
+    }
+    .nav-more-toggle {
         display: none;
     }
 

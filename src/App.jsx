@@ -47,6 +47,7 @@ import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView } from "./utils/analytics.js";
 import { productDetails, products } from "./data/products.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
+import NavMoreMenu from "./components/NavMoreMenu.jsx";
 
 // Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
 // Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
@@ -409,19 +410,25 @@ function App() {
                         onClick={() => setMobileMenuOpen(false)}
                         aria-label="Close menu"
                     />
+                    {/* Primary links — always inline on desktop */}
                     <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
                     <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
-                    <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
-                    <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { openPage("pricing");            setMobileMenuOpen(false); }}>Pricing</button>
+                    <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
+                    <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
-                    <button onClick={() => { openPage("advertise");          setMobileMenuOpen(false); }}>Advertise</button>
-                    <button onClick={() => { openPage("partnerships");       setMobileMenuOpen(false); }}>Partnerships</button>
-                    <button onClick={() => { openPage("media-kit");          setMobileMenuOpen(false); }}>Media Kit</button>
-                    <button onClick={() => { openPage("press-center");        setMobileMenuOpen(false); }}>Press</button>
-                    <button onClick={() => { openPage("contact");            setMobileMenuOpen(false); }}>Contact</button>
-                    <button onClick={() => { openPage("newsletter");         setMobileMenuOpen(false); }}>Newsletter</button>
-                    <button onClick={() => { openPage("partners");           setMobileMenuOpen(false); }}>Partners</button>
+                    {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
+                    <NavMoreMenu
+                        items={[
+                            { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
+                            { label: "Partners",        onSelect: () => { openPage("partners");        setMobileMenuOpen(false); } },
+                            { label: "Partner With Us", onSelect: () => { openPage("partner-with-us"); setMobileMenuOpen(false); } },
+                            { label: "Media Kit",       onSelect: () => { openPage("media-kit");       setMobileMenuOpen(false); } },
+                            { label: "Advertise",       onSelect: () => { openPage("advertise");       setMobileMenuOpen(false); } },
+                            { label: "Partnerships",    onSelect: () => { openPage("partnerships");    setMobileMenuOpen(false); } },
+                            { label: "Press Center",    onSelect: () => { openPage("press-center");    setMobileMenuOpen(false); } },
+                        ]}
+                    />
                 </div>
 
                 <div className="nav-right">
