@@ -2,6 +2,8 @@ import "../App.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
+import PricingProductNav from "../components/PricingProductNav.jsx";
+import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
 import { pricingAudiences, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
@@ -140,6 +142,40 @@ const products = [
     },
 ];
 
+// Jump-nav items -> per-product pricing section anchors (labels are short forms).
+const pricingNavItems = [
+    { label: "All Plans", href: "#all-plans" },
+    { label: "StudyNest", href: "#plan-studynest" },
+    { label: "PoisonGuard", href: "#plan-poisonguard" },
+    { label: "Kiddo", href: "#plan-kiddo" },
+    { label: "TechMate", href: "#plan-techmate" },
+    { label: "Real Estate", href: "#plan-real-estate" },
+];
+
+// FAQ content — preserved verbatim from the previous static pricing FAQ.
+const pricingFaqItems = [
+    {
+        question: "Can I use multiple Cin Nova products under one account?",
+        answer:
+            "Yes — your Cin Nova account gives you access to all products. Each product has its own plan, so you only pay for what you use. You can mix and match: for example, StudyNest Pro + Kiddo Family Plan from a single login.",
+    },
+    {
+        question: "Do free plans expire?",
+        answer:
+            "No. Free plans stay free forever. There are no trials or hidden time limits. You upgrade only when you need more features or higher usage limits.",
+    },
+    {
+        question: "Can I cancel my subscription at any time?",
+        answer:
+            "Yes — cancel anytime from your account settings with no penalties or cancellation fees. Your plan stays active until the end of the billing period, then reverts to the free tier.",
+    },
+    {
+        question: "Are there discounts for annual billing?",
+        answer:
+            "Annual billing will be available at launch with a 2-month discount (equivalent to paying for 10 months and getting 12). Join the waitlist to be notified when annual plans go live.",
+    },
+];
+
 const pricingSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -186,6 +222,9 @@ function Pricing() {
                 </div>
             </section>
 
+            {/* ── Product jump nav (sticky) ───────────────────────── */}
+            <PricingProductNav items={pricingNavItems} />
+
             {/* ── All Pricing Tiers ───────────────────────────────── */}
             <section className="section showcase-section" id="all-plans" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading">
@@ -196,6 +235,8 @@ function Pricing() {
                 {products.map((product, i) => (
                     <div
                         key={product.name}
+                        id={`plan-${product.key}`}
+                        className="pricing-product-block"
                         style={{
                             marginBottom: i < products.length - 1 ? "72px" : "0",
                         }}
@@ -293,49 +334,14 @@ function Pricing() {
                 </div>
             </section>
 
-            {/* ── FAQ Strip ───────────────────────────────────────── */}
-            <section className="section showcase-section">
+            {/* ── FAQ (accordion) ─────────────────────────────────── */}
+            <section className="section showcase-section pricing-faq-section">
                 <div className="section-heading">
                     <p className="eyebrow">COMMON QUESTIONS</p>
                     <h2>Everything you need to know about Cin Nova pricing</h2>
                 </div>
 
-                <div className="showcase-grid">
-                    <div className="showcase-card">
-                        <div className="chat-user">Can I use multiple Cin Nova products under one account?</div>
-                        <div className="chat-ai">
-                            Yes — your Cin Nova account gives you access to all products.
-                            Each product has its own plan, so you only pay for what you use.
-                            You can mix and match: for example, StudyNest Pro + Kiddo Family
-                            Plan from a single login.
-                        </div>
-                        <div className="chat-user" style={{ marginTop: "10px" }}>
-                            Do free plans expire?
-                        </div>
-                        <div className="chat-ai">
-                            No. Free plans stay free forever. There are no trials or hidden
-                            time limits. You upgrade only when you need more features or
-                            higher usage limits.
-                        </div>
-                    </div>
-
-                    <div className="showcase-card">
-                        <div className="chat-user">Can I cancel my subscription at any time?</div>
-                        <div className="chat-ai">
-                            Yes — cancel anytime from your account settings with no penalties
-                            or cancellation fees. Your plan stays active until the end of the
-                            billing period, then reverts to the free tier.
-                        </div>
-                        <div className="chat-user" style={{ marginTop: "10px" }}>
-                            Are there discounts for annual billing?
-                        </div>
-                        <div className="chat-ai">
-                            Annual billing will be available at launch with a 2-month discount
-                            (equivalent to paying for 10 months and getting 12). Join the
-                            waitlist to be notified when annual plans go live.
-                        </div>
-                    </div>
-                </div>
+                <BusinessFAQ items={pricingFaqItems} title="Everything you need to know about Cin Nova pricing" />
             </section>
 
             {/* ── CTA ─────────────────────────────────────────────── */}
