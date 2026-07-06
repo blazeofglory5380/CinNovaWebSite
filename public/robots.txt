@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /blog-admin
+Disallow: /?page=newsletter-admin
+Disallow: /?page=blog-manager
 
 Sitemap: https://getcinnova.com/sitemap.xml
 Sitemap: https://getcinnova.com/sitemap-video.xml

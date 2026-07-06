@@ -54,7 +54,10 @@ function StickyNewsletterBar({ onSubscribe, onDismiss }) {
                         </div>
                         <div className="sticky-bar-copy">
                             <strong>Join the CinNova newsletter</strong>
-                            <span>Get AI, education, real estate, and app updates.</span>
+                            <span>
+                                Get AI, education, real estate, and app updates.{" "}
+                                <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>
+                            </span>
                         </div>
                         <form className="sticky-bar-form" onSubmit={handleSubmit}>
                             <input

@@ -196,6 +196,10 @@ function Contact() {
                         <button type="submit" className="primary-btn contact-submit">
                             Send Message
                         </button>
+                        <p className="form-privacy-note">
+                            We'll use your information according to our{" "}
+                            <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                        </p>
                     </form>
                 </div>
             </section>

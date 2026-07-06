@@ -153,7 +153,8 @@ function NewsletterPage({ onSubscribe }) {
                                     </button>
                                 </form>
                                 <p className="nl-form-note">
-                                    Free. No spam. Unsubscribe any time.
+                                    Free. No spam. Unsubscribe any time. By subscribing, you agree to our{" "}
+                                    <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
                                 </p>
                                 <div className="nl-form-social-proof">
                                     <div className="nl-avatar-stack">
@@ -259,6 +260,10 @@ function NewsletterPage({ onSubscribe }) {
                             </button>
                         </form>
                     )}
+                    <p className="form-privacy-note nl-inline-privacy">
+                        By subscribing, you agree to our{" "}
+                        <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                    </p>
                 </div>
             </section>
 
