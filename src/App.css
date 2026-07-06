@@ -7506,6 +7506,15 @@ body,
     color: var(--cn-text);
 }
 
+/* Pricing page only: make the Most Popular card ring match the CinNova green
+   CTA. Scoped via #all-plans (a pricing-page-only section id) so the shared
+   .pricing-card.featured ring on product pages (e.g. Real Estate) is untouched. */
+#all-plans .pricing-card.featured {
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--color-accent), var(--color-accent-dark)) border-box;
+}
+
 .article-thumb {
     border-color: rgba(15, 122, 90, 0.16);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34), var(--cn-shadow-soft);
@@ -10652,6 +10661,42 @@ button.product-hero-pill {
 
 .product-grid-photo {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Pricing "Find Your Fit" has 5 audience cards. On wide desktop, lay them out
+   as a clean, centered 3 + 2 (instead of a lopsided orphan). Collapses to 2
+   columns on tablet, then 1 on mobile. Scoped to the pricing grid only so the
+   product-page feature grids are unaffected. */
+.pricing-fit-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1001px) {
+    .pricing-fit-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .pricing-fit-grid > * {
+        grid-column: span 2;
+    }
+    .pricing-fit-grid > :nth-child(4) {
+        grid-column: 2 / span 2;
+    }
+    .pricing-fit-grid > :nth-child(5) {
+        grid-column: 4 / span 2;
+    }
+}
+
+@media (max-width: 1000px) {
+    .pricing-fit-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .pricing-fit-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Real Estate FEATURES grid has 9 cards. Force a clean 3x3 on desktop instead

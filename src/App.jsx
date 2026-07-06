@@ -339,6 +339,9 @@ function App() {
     // newsletter signup, so suppress it there (keep it on marketing/product/blog).
     const isNewsletterFocusedPage =
         page === "newsletter" || page === "sponsor-newsletter" || isSuccessPage;
+    // Also suppress the sticky bar on pages that already have their own strong
+    // conversion CTAs (e.g. Pricing), where it is redundant and overlaps content.
+    const hideStickyBar = isNewsletterFocusedPage || page === "pricing";
 
     return (
         <div className="site">
@@ -361,7 +364,7 @@ function App() {
                     onClose={() => setShowGuideModal(false)}
                 />
             )}
-            {showStickyBar && !stickyDismissed && !isNewsletterFocusedPage && (
+            {showStickyBar && !stickyDismissed && !hideStickyBar && (
                 <StickyNewsletterBar
                     onSubscribe={showNewsletterAlert}
                     onDismiss={dismissStickyBar}
