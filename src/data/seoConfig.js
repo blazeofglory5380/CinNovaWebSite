@@ -22,6 +22,14 @@ export const EXCLUDED_PAGE_KEYS = new Set([
     "newsletter-success",
 ]);
 
+/**
+ * Admin/internal route keys. Gated behind VITE_ENABLE_ADMIN_ROUTES so they
+ * resolve to NotFound in production unless explicitly enabled for local dev.
+ * Intentionally NOT reusing EXCLUDED_PAGE_KEYS (which includes the public
+ * newsletter-success page).
+ */
+export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin"]);
+
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
 export const ROBOTS_DISALLOW_PATHS = ["/blog-admin", "/?page=newsletter-admin", "/?page=blog-manager"];
 
