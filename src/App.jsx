@@ -43,10 +43,15 @@ import { getResourceBySlug, resources } from "./data/resources.js";
 import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
-import { VALID_PAGE_KEYS } from "./data/seoConfig.js";
+import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView } from "./utils/analytics.js";
 import { productDetails, products } from "./data/products.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
+
+// Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
+// Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
+// in production unless the pages are protected by real authentication.
+const ADMIN_ROUTES_ENABLED = import.meta.env.VITE_ENABLE_ADMIN_ROUTES === "true";
 
 class ArticleErrorBoundary extends Component {
     constructor(props) {
@@ -83,6 +88,9 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     }
 
     if (path === "/blog-admin") {
+        if (!ADMIN_ROUTES_ENABLED) {
+            return { page: "not-found", article: null, resource: null, category: null };
+        }
         return { page: "blog-manager", article: null, resource: null, category: null };
     }
 
@@ -112,6 +120,9 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     }
 
     if (routedPage) {
+        if (!ADMIN_ROUTES_ENABLED && ADMIN_PAGE_KEYS.has(routedPage)) {
+            return { page: "not-found", article: null, resource: null, category: null };
+        }
         if (VALID_PAGE_KEYS.has(routedPage)) {
             return { page: routedPage, article: null, resource: null, category: null };
         }
@@ -461,7 +472,7 @@ function App() {
                     onOpenCategory={goBlogCategory}
                 />
             )}
-            {page === "blog-manager" && (
+            {ADMIN_ROUTES_ENABLED && page === "blog-manager" && (
                 <BlogManager posts={managedPosts} onPostsChange={setManagedPosts} />
             )}
             {page === "resources" && (
@@ -508,7 +519,7 @@ function App() {
                     onSubscribe={showNewsletterAlert}
                 />
             )}
-            {page === "newsletter-admin" && <NewsletterAdmin />}
+            {ADMIN_ROUTES_ENABLED && page === "newsletter-admin" && <NewsletterAdmin />}
             {page === "newsletter-success" && (
                 <NewsletterSuccess onGoHome={goHome} onGoBlog={goBlog} />
             )}
