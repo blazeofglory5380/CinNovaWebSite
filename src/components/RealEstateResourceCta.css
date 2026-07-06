@@ -1,0 +1,188 @@
+/*
+ * RealEstateResourceCta — below-hero conversion section for the Real Estate AI
+ * page. Surfaces the two existing Real Estate templates and frames investor vs.
+ * broker use cases. Fully scoped with `re-conv-` class names so it cannot
+ * collide with the existing `.re-feature-grid` / `.re-tf-*` namespaces or affect
+ * any other product page.
+ */
+
+.re-conv {
+    background-color: var(--color-surface);
+}
+
+.re-conv-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ── Use-case framing: investors vs. brokers ── */
+.re-conv-uses {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.re-conv-use {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 28px;
+}
+
+.re-conv-use__role {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+}
+
+.re-conv-use h3 {
+    font-size: 1.25rem;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    color: #0f172a;
+}
+
+.re-conv-use ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.re-conv-use li {
+    position: relative;
+    padding-left: 22px;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.re-conv-use li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+}
+
+/* ── Template cards ── */
+.re-conv-templates {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.re-conv-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 26px;
+}
+
+.re-conv-card__tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background-color: rgba(15, 122, 90, 0.10);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+.re-conv-card h3 {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.re-conv-card p {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.re-conv-card__link {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 14px;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+}
+
+.re-conv-card__link:hover {
+    transform: translateY(-2px);
+}
+
+/* ── Section-level actions ── */
+.re-conv-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 34px;
+}
+
+.re-conv-btn {
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+}
+
+.re-conv-btn--primary {
+    color: #ffffff;
+    background: var(--color-accent);
+}
+
+.re-conv-btn--ghost {
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+}
+
+.re-conv-btn:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 720px) {
+    .re-conv-uses,
+    .re-conv-templates {
+        grid-template-columns: 1fr;
+    }
+
+    .re-conv-actions {
+        flex-direction: column;
+    }
+
+    .re-conv-btn {
+        text-align: center;
+    }
+}
