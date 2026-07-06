@@ -95,7 +95,7 @@ function PartnerWithUs({ onNavigate }) {
             <section className="section blog-hero-section">
                 <div className="section-heading blog-hero-copy">
                     <p className="eyebrow">PARTNER WITH US</p>
-                    <h2>Build with a practical AI and education-focused media ecosystem.</h2>
+                    <h1>Build with a practical AI and education-focused media ecosystem.</h1>
                     <p>
                         Cin Nova works with aligned companies, educators, creators, real estate
                         professionals, and technology teams that can help readers learn, solve

@@ -109,7 +109,7 @@ function Partners({ onSubscribe }) {
             <section className="section blog-hero-section">
                 <div className="section-heading blog-hero-copy">
                     <p className="eyebrow">PARTNER PROGRAM</p>
-                    <h2>Work with a growing AI software ecosystem.</h2>
+                    <h1>Work with a growing AI software ecosystem.</h1>
                     <p>
                         Cin Nova is building a multi-product software company across education,
                         safety, tech support, early learning, and real estate. We offer four ways

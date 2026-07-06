@@ -364,7 +364,8 @@
     margin: 0 auto 55px;
 }
 
-.section-heading h2 {
+.section-heading h2,
+.section-heading h1 {
     font-size: clamp(2.2rem, 4vw, 3.4rem);
     line-height: 1.1;
     margin-bottom: 18px;
@@ -375,6 +376,39 @@
     color: var(--color-text-secondary);
     line-height: 1.8;
     font-size: 1rem;
+}
+
+/* 404 / Not Found — center the utility page into a finished, hero-like layout
+   consistent with the rest of the site (scoped to .not-found-page only). */
+.not-found-page .section {
+    max-width: 620px;
+    margin: 0 auto;
+    min-height: 58vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.not-found-page h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.1;
+    margin: 6px 0 14px;
+    color: var(--color-text);
+}
+
+.not-found-page .section > p:not(.eyebrow) {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 28px;
+    max-width: 460px;
+}
+
+.not-found-page .article-actions {
+    display: flex;
+    justify-content: center;
 }
 
 .blog-section,
@@ -7231,6 +7265,7 @@ body,
 }
 
 .section-heading h2,
+.section-heading h1,
 .hero h1,
 .studynest-hero h1,
 .product-card h3,
