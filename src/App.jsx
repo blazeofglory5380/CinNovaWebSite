@@ -11,6 +11,10 @@ import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
+import AITutorials from "./pages/AITutorials.jsx";
+import AIPromptGuide from "./pages/AIPromptGuide.jsx";
+import AIResearchGuide from "./pages/AIResearchGuide.jsx";
+import AICodingGuide from "./pages/AICodingGuide.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -421,6 +425,7 @@ function App() {
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
+                            { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
                             { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
                             { label: "Partners",        onSelect: () => { openPage("partners");        setMobileMenuOpen(false); } },
@@ -513,6 +518,10 @@ function App() {
             )}
             {page === "pricing" && <Pricing />}
             {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
+            {page === "ai-tutorials" && <AITutorials />}
+            {page === "ai-prompt-writing-guide" && <AIPromptGuide />}
+            {page === "ai-research-guide" && <AIResearchGuide />}
+            {page === "ai-coding-guide" && <AICodingGuide />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
