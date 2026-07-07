@@ -290,7 +290,7 @@ function PoisonGuard() {
                         <div className="pg-mock-scanner">
                             <MarketingPhoto
                                 src="/images/blog/healthcare/pet-safety-home-environment.jpg"
-                                alt=""
+                                alt="PoisonGuard scanner preview checking a home environment for pet-safety hazards"
                                 className="pg-mock-scanner-img"
                                 loading="lazy"
                             />

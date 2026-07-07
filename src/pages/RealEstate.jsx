@@ -33,7 +33,7 @@ function RealEstate() {
     return (
         <div className="product-page">
             <SEO
-                title="Cin Nova Real Estate | AI Investment Tools — Cin Nova"
+                title="Cin Nova Real Estate | AI Real Estate Investment Tools"
                 description="Analyze deals, model cash flow, calculate mortgages, and get AI guidance on real estate investments. Cin Nova Real Estate is in development."
                 url={`${siteUrl}/?page=real-estate`}
                 type="website"

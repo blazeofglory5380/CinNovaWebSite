@@ -1,10 +1,19 @@
 import "../App.css";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import SEO from "../components/SEO.jsx";
 import { newsletterSuccessPerks } from "../data/marketingImages.js";
+import { siteUrl } from "../data/seoConfig.js";
 
 function NewsletterSuccess({ onGoHome, onGoBlog }) {
     return (
         <main className="product-page newsletter-success-page">
+            <SEO
+                title="Subscription Confirmed | Cin Nova"
+                description="You're subscribed to the Cin Nova newsletter. New articles, product updates, and launch announcements will land in your inbox."
+                url={`${siteUrl}/?page=newsletter-success`}
+                type="website"
+                noindex
+            />
             <section className="section newsletter-success-section">
                 <div className="success-checkmark-wrap">
                     <div className="success-checkmark-icon">✓</div>

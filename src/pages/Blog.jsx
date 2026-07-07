@@ -205,7 +205,7 @@ function Blog({
 
     const heroSubtitle =
         activeCategory === "All"
-            ? "Ideas, tutorials, product stories, and AI research from across the CinNova ecosystem."
+            ? "Practical AI insights for real estate, education, safety, and smarter decisions — ideas, tutorials, and product stories from across the CinNova ecosystem."
             : `${activeCategory} — articles and research from the CinNova ecosystem.`;
 
     return (
@@ -221,7 +221,7 @@ function Blog({
             {/* ── Hero ─────────────────────────────────────────────── */}
             <CinNovaCoreHero
                 eyebrow="CinNova Research · Publication"
-                titleA="CinNova"
+                titleA="The CinNova"
                 titleB="Blog"
                 subtitle={heroSubtitle}
                 primaryCta={{ label: "Explore Articles", onClick: scrollToArticles }}
