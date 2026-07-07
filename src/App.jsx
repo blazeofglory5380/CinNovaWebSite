@@ -442,12 +442,14 @@ function App() {
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
+                    <button className="nav-languages" onClick={() => { openPage("languages"); setMobileMenuOpen(false); }} aria-label="Languages">
+                        <span aria-hidden="true">🌐</span> Languages
+                    </button>
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
-                            { label: "Languages", onSelect: () => { openPage("languages"); setMobileMenuOpen(false); } },
                             { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
                             { label: "Partners",        onSelect: () => { openPage("partners");        setMobileMenuOpen(false); } },
                             { label: "Partner With Us", onSelect: () => { openPage("partner-with-us"); setMobileMenuOpen(false); } },

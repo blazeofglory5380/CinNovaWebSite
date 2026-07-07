@@ -1,0 +1,50 @@
+/* Pricing page — horizontal-scroll plan rows.
+   Every rule is scoped under #all-plans (a pricing-page-only section id) so the
+   shared global .pricing-grid / .pricing-card used on product pages stays
+   untouched. Simple CSS only — no payment/checkout logic. */
+
+/* Subtle "scroll to compare" hint above the plan rows */
+#all-plans .pricing-scroll-hint {
+    color: #64748b;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin: 0 0 20px;
+}
+
+/* Turn each product's tier grid into a clean horizontal scroll row */
+#all-plans .pricing-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px; /* room for the scrollbar so it doesn't overlap cards */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+#all-plans .pricing-grid::-webkit-scrollbar {
+    height: 8px;
+}
+#all-plans .pricing-grid::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+#all-plans .pricing-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Fixed/min width so cards form a scrollable row instead of shrinking to fit */
+#all-plans .pricing-grid .pricing-card {
+    flex: 0 0 320px;
+    min-width: 320px;
+    scroll-snap-align: start;
+}
+
+/* Mobile: show ~one card at a time and scroll side to side */
+@media (max-width: 600px) {
+    #all-plans .pricing-grid .pricing-card {
+        flex-basis: 84vw;
+        min-width: 84vw;
+    }
+}

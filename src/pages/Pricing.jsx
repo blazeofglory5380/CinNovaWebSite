@@ -1,4 +1,5 @@
 import "../App.css";
+import "./Pricing.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
@@ -231,6 +232,8 @@ function Pricing() {
                     <p className="eyebrow">ALL PLANS</p>
                     <h2>Pick a product. Pick a plan. Get started free.</h2>
                 </div>
+
+                <p className="pricing-scroll-hint">Scroll any plan row sideways to compare plans →</p>
 
                 {products.map((product, i) => (
                     <div
