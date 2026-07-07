@@ -5,7 +5,7 @@ import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 import { AI_TUTORIALS, AI_TOOL_TUTORIALS, CLAUDE_WORKFLOW_GUIDES, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
-import { trackAiTutorialClick } from "../utils/analytics.js";
+import { trackAiTutorialClick, trackEvent } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
 const guideUrl = (key) => `/?page=${key}`;
@@ -170,7 +170,7 @@ export default function AITutorials() {
                                 type="button"
                                 className={`ait-filter${active ? " ait-filter--active" : ""}`}
                                 aria-pressed={active}
-                                onClick={() => setFilter(f.id)}
+                                onClick={() => { trackEvent("ai_tutorial_filter_click", { filter: f.id, source_page: "ai-tutorials" }); setFilter(f.id); }}
                             >
                                 {f.label} <span className="ait-filter-count">{count}</span>
                             </button>
