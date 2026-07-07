@@ -85,6 +85,24 @@ export function BackToHubCta({ note }) {
     );
 }
 
+/** Links back to the hub and the three foundational skill guides. */
+export function RelatedGuides() {
+    return (
+        <section className="section">
+            <div className="ait-section-head">
+                <h2>Keep going</h2>
+                <p>These foundational guides make every AI tool easier to use.</p>
+            </div>
+            <div className="ait-related">
+                <a className="ait-link-btn" href={HUB_URL}>All AI Tutorials</a>
+                <a className="ait-link-btn" href="/?page=ai-prompt-writing-guide">Prompt Writing Guide</a>
+                <a className="ait-link-btn" href="/?page=ai-research-guide">AI Research Guide</a>
+                <a className="ait-link-btn" href="/?page=ai-coding-guide">AI Coding Guide</a>
+            </div>
+        </section>
+    );
+}
+
 /** Shared privacy/safety reminder used across every guide. */
 export function SafetyNote() {
     return (

@@ -3,7 +3,7 @@ import "../App.css";
 import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { AI_TUTORIALS, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
+import { AI_TUTORIALS, AI_TOOL_TUTORIALS, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
 const guideUrl = (key) => `/?page=${key}`;
@@ -105,6 +105,27 @@ export default function AITutorials() {
                 </div>
             </section>
 
+            {/* Beginner guides by AI tool */}
+            <section className="section">
+                <div className="ait-section-head">
+                    <h2>Beginner guides by AI tool</h2>
+                    <p>Step-by-step walkthroughs for the most popular AI assistants.</p>
+                </div>
+                <div className="ait-guide-grid">
+                    {AI_TOOL_TUTORIALS.map((t) => (
+                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}>
+                            <div className="ait-guide-card-meta">
+                                <span className="ait-chip">{t.level}</span>
+                                <span className="ait-chip ait-chip--muted">{t.minutes} min</span>
+                            </div>
+                            <h3>{t.title}</h3>
+                            <p>{t.blurb}</p>
+                            <span className="ait-guide-card-go">Read the guide →</span>
+                        </a>
+                    ))}
+                </div>
+            </section>
+
             {/* Categories */}
             <section className="section">
                 <div className="ait-section-head">
@@ -136,18 +157,23 @@ export default function AITutorials() {
                     </p>
                 </div>
                 <div className="ait-co-grid">
-                    {AI_COMPANIES.map((co) => (
-                        <div className="ait-co" key={co.name}>
-                            <div className="ait-co-top">
-                                <span className="ait-co-name">{co.name}</span>
-                                <span className="ait-co-use">{co.use}</span>
-                            </div>
-                            <p className="ait-co-desc">{co.desc}</p>
-                            <span className={`ait-co-status ait-chip ${STATUS_CLASS[co.status] || "ait-chip--gray"}`}>
-                                {co.status}
-                            </span>
-                        </div>
-                    ))}
+                    {AI_COMPANIES.map((co) => {
+                        const CardTag = co.guide ? "a" : "div";
+                        const linkProps = co.guide ? { href: guideUrl(co.guide) } : {};
+                        return (
+                            <CardTag className="ait-co" key={co.name} {...linkProps}>
+                                <div className="ait-co-top">
+                                    <span className="ait-co-name">{co.name}</span>
+                                    <span className="ait-co-use">{co.use}</span>
+                                </div>
+                                <p className="ait-co-desc">{co.desc}</p>
+                                <span className={`ait-co-status ait-chip ${STATUS_CLASS[co.status] || "ait-chip--gray"}`}>
+                                    {co.status}
+                                </span>
+                                {co.guide && <span className="ait-co-go">Read the guide →</span>}
+                            </CardTag>
+                        );
+                    })}
                 </div>
             </section>
 

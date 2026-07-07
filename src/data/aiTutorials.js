@@ -26,6 +26,42 @@ export const AI_TUTORIALS = [
     },
 ];
 
+/** Step-by-step beginner guides for specific AI tools. */
+export const AI_TOOL_TUTORIALS = [
+    {
+        key: "chatgpt-beginner-guide",
+        title: "How to Use ChatGPT",
+        blurb: "Writing, studying, planning, and coding help — with clear steps, example prompts, and safety tips.",
+        tool: "ChatGPT / OpenAI",
+        level: "Beginner",
+        minutes: 9,
+    },
+    {
+        key: "claude-beginner-guide",
+        title: "How to Use Claude",
+        blurb: "Drafting, summarizing, planning, and document-style work — step by step for beginners.",
+        tool: "Claude / Anthropic",
+        level: "Beginner",
+        minutes: 9,
+    },
+    {
+        key: "gemini-beginner-guide",
+        title: "How to Use Google Gemini",
+        blurb: "Writing, research support, productivity, and everyday AI help, explained simply.",
+        tool: "Google Gemini",
+        level: "Beginner",
+        minutes: 9,
+    },
+    {
+        key: "microsoft-copilot-beginner-guide",
+        title: "How to Use Microsoft Copilot",
+        blurb: "Email, documents, spreadsheets, and meeting help for everyday work — with privacy guidance.",
+        tool: "Microsoft Copilot",
+        level: "Beginner",
+        minutes: 9,
+    },
+];
+
 /** Tutorial categories shown on the hub. `available` counts what ships today. */
 export const AI_CATEGORIES = [
     { name: "AI for beginners", note: "Start from zero — what AI can and can't do, and how to get useful answers.", available: 1 },
@@ -42,10 +78,10 @@ export const AI_CATEGORIES = [
 
 /** AI companies/tools covered. Status is Available / Guide Planned / Coming Soon. */
 export const AI_COMPANIES = [
-    { name: "OpenAI / ChatGPT", use: "General assistant", desc: "A widely used chat assistant for writing, brainstorming, coding help, and Q&A.", status: "Guide Planned" },
-    { name: "Anthropic / Claude", use: "General assistant", desc: "A conversational assistant known for long-context reading, writing, and analysis.", status: "Guide Planned" },
-    { name: "Google Gemini", use: "General assistant", desc: "An assistant that helps with writing, research, and tasks across common workflows.", status: "Guide Planned" },
-    { name: "Microsoft Copilot", use: "Work assistant", desc: "An assistant that helps draft, summarize, and act inside everyday work apps.", status: "Guide Planned" },
+    { name: "OpenAI / ChatGPT", use: "General assistant", desc: "A widely used chat assistant for writing, brainstorming, coding help, and Q&A.", status: "Available", guide: "chatgpt-beginner-guide" },
+    { name: "Anthropic / Claude", use: "General assistant", desc: "A conversational assistant known for long-context reading, writing, and analysis.", status: "Available", guide: "claude-beginner-guide" },
+    { name: "Google Gemini", use: "General assistant", desc: "An assistant that helps with writing, research, and tasks across common workflows.", status: "Available", guide: "gemini-beginner-guide" },
+    { name: "Microsoft Copilot", use: "Work assistant", desc: "An assistant that helps draft, summarize, and act inside everyday work apps.", status: "Available", guide: "microsoft-copilot-beginner-guide" },
     { name: "Meta AI", use: "General assistant", desc: "A general-purpose assistant available across several consumer apps.", status: "Coming Soon" },
     { name: "Perplexity", use: "Answer engine", desc: "A search-style assistant that answers questions and points to sources to check.", status: "Guide Planned" },
     { name: "Mistral", use: "Open models", desc: "A family of language models often used by developers and self-hosters.", status: "Coming Soon" },

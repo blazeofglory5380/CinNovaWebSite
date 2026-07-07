@@ -288,6 +288,14 @@
 .ait-faq-item[open] summary::before { content: "− "; }
 .ait-faq-item p { color: #475569; line-height: 1.65; padding: 0 0 14px; }
 
+/* Related guides row */
+.ait-related { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Company card as a link */
+a.ait-co { text-decoration: none; color: inherit; transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s; }
+a.ait-co:hover { border-color: #93c5fd; box-shadow: 0 6px 18px rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
+.ait-co-go { color: #2563eb; font-weight: 800; font-size: 0.8rem; margin-top: 2px; }
+
 /* Guide bottom CTA */
 .ait-guide-cta-card {
     text-align: center;
