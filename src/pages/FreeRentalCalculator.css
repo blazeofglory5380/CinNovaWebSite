@@ -1,0 +1,179 @@
+/* ── Free Rental Calculator (prefix frc-) ── */
+.frc-hero {
+    text-align: center;
+    padding-bottom: 8px;
+}
+.frc-hero h1 {
+    margin: 6px 0 12px;
+}
+.frc-intro {
+    max-width: 640px;
+    margin: 0 auto;
+    color: #64748b;
+    font-size: 1.02rem;
+    line-height: 1.65;
+}
+
+.frc-tool {
+    padding-top: 8px;
+}
+.frc-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.frc-col-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+}
+
+/* Inputs */
+.frc-inputs {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.frc-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+}
+.frc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.frc-field-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #475569;
+}
+.frc-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.frc-input {
+    width: 100%;
+    padding: 9px 46px 9px 11px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.14s, box-shadow 0.14s;
+    -moz-appearance: textfield;
+}
+.frc-input::-webkit-outer-spin-button,
+.frc-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.frc-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.frc-unit {
+    position: absolute;
+    right: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Results */
+.frc-results {
+    background: #0f172a;
+    border-radius: 14px;
+    padding: 22px;
+    color: #e2e8f0;
+    position: sticky;
+    top: 20px;
+}
+.frc-results .frc-col-title { color: #fff; }
+
+.frc-score {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border: 1.5px solid;
+}
+.frc-score--good  { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.5); }
+.frc-score--watch { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.5); }
+.frc-score--risk  { background: rgba(239, 68, 68, 0.12);  border-color: rgba(239, 68, 68, 0.5); }
+
+.frc-score-num {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+}
+.frc-score-num span { font-size: 1rem; font-weight: 700; color: #94a3b8; }
+.frc-score-meta { display: flex; flex-direction: column; gap: 4px; }
+.frc-score-grade { font-size: 0.85rem; font-weight: 800; color: #cbd5e1; }
+.frc-score-verdict { font-size: 1.1rem; font-weight: 900; color: #fff; letter-spacing: -0.01em; }
+
+.frc-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.frc-metric {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.frc-metric:last-child { border-bottom: none; }
+.frc-metric span { font-size: 0.86rem; color: #94a3b8; font-weight: 600; }
+.frc-metric strong { font-size: 1.05rem; font-weight: 900; color: #fff; }
+.frc-pos { color: #34d399 !important; }
+.frc-neg { color: #f87171 !important; }
+
+.frc-disclaimer {
+    margin-top: 14px;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* CTA */
+.frc-cta {
+    padding-top: 8px;
+}
+.frc-cta-card {
+    text-align: center;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0fdfa 100%);
+    border: 1.5px solid #bfdbfe;
+    border-radius: 16px;
+    padding: 32px 24px;
+}
+.frc-cta-card h2 { margin-bottom: 8px; }
+.frc-cta-card p {
+    max-width: 540px;
+    margin: 0 auto 18px;
+    color: #475569;
+    line-height: 1.6;
+}
+.frc-cta-btn { display: inline-flex; }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .frc-grid { grid-template-columns: 1fr; }
+    .frc-results { position: static; }
+}
+@media (max-width: 520px) {
+    .frc-fields { grid-template-columns: 1fr; }
+}

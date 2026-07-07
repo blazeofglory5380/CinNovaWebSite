@@ -60,6 +60,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "home", changefreq: "weekly", priority: "1.0", lastmod: BUILD_LASTMOD },
     { key: "products", changefreq: "weekly", priority: "0.9", lastmod: BUILD_LASTMOD },
     { key: "resources", changefreq: "weekly", priority: "0.9", lastmod: BUILD_LASTMOD },
+    { key: "free-rental-property-calculator", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "pricing", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "about", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "contact", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
