@@ -110,7 +110,7 @@ function RealEstate() {
                     </span>
                 </div>
 
-                <div style={{ marginTop: "24px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <div style={{ marginTop: "24px", display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
                     <a
                         className="primary-btn"
                         href={LIVE_BETA_URL}
@@ -118,6 +118,9 @@ function RealEstate() {
                         rel="noopener noreferrer"
                     >
                         Try the Live Beta →
+                    </a>
+                    <a href="/?page=free-rental-property-calculator">
+                        Or try the free Rental Property Calculator →
                     </a>
                 </div>
 

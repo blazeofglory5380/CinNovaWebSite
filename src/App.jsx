@@ -10,6 +10,7 @@ import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -420,6 +421,7 @@ function App() {
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
+                            { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
                             { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
                             { label: "Partners",        onSelect: () => { openPage("partners");        setMobileMenuOpen(false); } },
                             { label: "Partner With Us", onSelect: () => { openPage("partner-with-us"); setMobileMenuOpen(false); } },
@@ -510,6 +512,7 @@ function App() {
                 />
             )}
             {page === "pricing" && <Pricing />}
+            {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
