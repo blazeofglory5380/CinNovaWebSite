@@ -3,7 +3,7 @@ import "../App.css";
 import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { AI_TUTORIALS, AI_TOOL_TUTORIALS, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
+import { AI_TUTORIALS, AI_TOOL_TUTORIALS, CLAUDE_WORKFLOW_GUIDES, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
 import { trackAiTutorialClick } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
@@ -115,6 +115,28 @@ export default function AITutorials() {
                 </div>
                 <div className="ait-guide-grid">
                     {AI_TOOL_TUTORIALS.map((t) => (
+                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}
+                            onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title })}>
+                            <div className="ait-guide-card-meta">
+                                <span className="ait-chip">{t.level}</span>
+                                <span className="ait-chip ait-chip--muted">{t.minutes} min</span>
+                            </div>
+                            <h3>{t.title}</h3>
+                            <p>{t.blurb}</p>
+                            <span className="ait-guide-card-go">Read the guide →</span>
+                        </a>
+                    ))}
+                </div>
+            </section>
+
+            {/* Claude Workflow Guides */}
+            <section className="section">
+                <div className="ait-section-head">
+                    <h2>Claude Workflow Guides</h2>
+                    <p>Practical ways to use Claude alongside your creative, website, art, and marketing work.</p>
+                </div>
+                <div className="ait-guide-grid">
+                    {CLAUDE_WORKFLOW_GUIDES.map((t) => (
                         <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}
                             onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title })}>
                             <div className="ait-guide-card-meta">

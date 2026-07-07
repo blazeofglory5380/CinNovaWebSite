@@ -94,6 +94,38 @@ export const AI_TOOL_TUTORIALS = [
     },
 ];
 
+/** Practical Claude workflow guides for creative, website, art, and marketing work. */
+export const CLAUDE_WORKFLOW_GUIDES = [
+    {
+        key: "claude-with-adobe-guide",
+        title: "Using Claude with Adobe",
+        blurb: "Plan briefs, mood boards, copy, and reviews with Claude alongside your Adobe creative tools.",
+        level: "Workflow",
+        minutes: 10,
+    },
+    {
+        key: "claude-website-design-guide",
+        title: "Designing a Website with Claude",
+        blurb: "Define goals, build a sitemap, draft copy and wireframe notes, and prepare a developer handoff.",
+        level: "Workflow",
+        minutes: 11,
+    },
+    {
+        key: "claude-art-prompts-guide",
+        title: "Better Art Prompts with Claude",
+        blurb: "Turn ideas into detailed art prompts — subject, style, mood, lighting, and composition — to use in an image tool.",
+        level: "Workflow",
+        minutes: 10,
+    },
+    {
+        key: "claude-branding-marketing-guide",
+        title: "Branding & Marketing with Claude",
+        blurb: "Shape audience, positioning, voice, content pillars, and launch copy — then review for clarity and trust.",
+        level: "Workflow",
+        minutes: 11,
+    },
+];
+
 /** Tutorial categories shown on the hub. `available` counts what ships today. */
 export const AI_CATEGORIES = [
     { name: "AI for beginners", note: "Start from zero — what AI can and can't do, and how to get useful answers.", available: 1 },
