@@ -13,6 +13,9 @@ import Contact from "./pages/Contact.jsx";
 import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
 import AITutorials from "./pages/AITutorials.jsx";
 import AIPromptGuide from "./pages/AIPromptGuide.jsx";
+import AIPromptGuideES from "./pages/AIPromptGuideES.jsx";
+import AIPromptGuideFR from "./pages/AIPromptGuideFR.jsx";
+import AIPromptGuideDE from "./pages/AIPromptGuideDE.jsx";
 import AIResearchGuide from "./pages/AIResearchGuide.jsx";
 import AICodingGuide from "./pages/AICodingGuide.jsx";
 import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
@@ -538,6 +541,9 @@ function App() {
             {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
             {page === "ai-tutorials" && <AITutorials />}
             {page === "ai-prompt-writing-guide" && <AIPromptGuide />}
+            {page === "ai-prompt-writing-guide-es" && <AIPromptGuideES />}
+            {page === "ai-prompt-writing-guide-fr" && <AIPromptGuideFR />}
+            {page === "ai-prompt-writing-guide-de" && <AIPromptGuideDE />}
             {page === "ai-research-guide" && <AIResearchGuide />}
             {page === "ai-coding-guide" && <AICodingGuide />}
             {page === "chatgpt-beginner-guide" && <ChatGPTBeginnerGuide />}

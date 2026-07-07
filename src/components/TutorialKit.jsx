@@ -10,6 +10,34 @@ function currentPageKey() {
     return new URLSearchParams(window.location.search).get("page") || "";
 }
 
+// Language versions of the AI prompt writing guide (multilingual starter pilot).
+// Every route here exists, so the switcher never produces a dead link.
+const PROMPT_GUIDE_LANGS = [
+    { code: "en", label: "English",  href: "/?page=ai-prompt-writing-guide" },
+    { code: "es", label: "Español",  href: "/?page=ai-prompt-writing-guide-es" },
+    { code: "fr", label: "Français", href: "/?page=ai-prompt-writing-guide-fr" },
+    { code: "de", label: "Deutsch",  href: "/?page=ai-prompt-writing-guide-de" },
+];
+
+/** Language switcher shown on each version of the AI prompt writing guide. */
+export function PromptGuideLangNav({ current = "en" }) {
+    return (
+        <div className="ait-langnav" aria-label="Guide language">
+            {PROMPT_GUIDE_LANGS.map((l) =>
+                l.code === current ? (
+                    <span key={l.code} className="ait-langnav-link ait-langnav-link--active" aria-current="true" lang={l.code}>
+                        {l.label}
+                    </span>
+                ) : (
+                    <a key={l.code} className="ait-langnav-link" href={l.href} lang={l.code}>
+                        {l.label}
+                    </a>
+                ),
+            )}
+        </div>
+    );
+}
+
 /** Page-top hero for a single tutorial. */
 export function TutorialHero({ eyebrow, title, intro, level, minutes }) {
     return (

@@ -48,6 +48,7 @@ const SECTIONS = [
             realEstate: "IA para bienes raíces",
             blog: "Blog",
         },
+        promptGuide: { href: "/?page=ai-prompt-writing-guide-es", dest: "ai-prompt-writing-guide-es", label: "Nuevo: Guía para escribir mejores prompts de IA" },
         note: "Esta sección en tu idioma es un punto de partida. Próximamente habrá más páginas traducidas.",
     },
     {
@@ -68,6 +69,7 @@ const SECTIONS = [
             realEstate: "IA pour l'immobilier",
             blog: "Blog",
         },
+        promptGuide: { href: "/?page=ai-prompt-writing-guide-fr", dest: "ai-prompt-writing-guide-fr", label: "Nouveau : Guide pour écrire de meilleurs prompts IA" },
         note: "Cette section dans votre langue est un point de départ. D'autres pages traduites arrivent bientôt.",
     },
     {
@@ -88,6 +90,7 @@ const SECTIONS = [
             realEstate: "KI für Immobilien",
             blog: "Blog",
         },
+        promptGuide: { href: "/?page=ai-prompt-writing-guide-de", dest: "ai-prompt-writing-guide-de", label: "Neu: Bessere KI-Prompts schreiben" },
         note: "Dieser Abschnitt in Ihrer Sprache ist ein Ausgangspunkt. Weitere übersetzte Seiten folgen bald.",
     },
 ];
@@ -155,6 +158,15 @@ export default function Languages() {
                     <li>You can try the free Rental Property Score Calculator.</li>
                     <li>You can explore CinNova Real Estate AI, our real estate investment tools.</li>
                 </ul>
+                <p className="lang-featured">
+                    <a
+                        className="lang-featured-link"
+                        href="/?page=ai-prompt-writing-guide"
+                        onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-prompt-writing-guide" })}
+                    >
+                        New: How to Write Better AI Prompts →
+                    </a>
+                </p>
                 <LinkRow language="English" labels={{ tutorials: "AI Tutorials", products: "Products", calculator: "Free Rental Calculator", realEstate: "Real Estate AI", blog: "Blog" }} />
                 <p className="lang-note">This section is a starting point. More translated pages are coming.</p>
             </section>
@@ -167,6 +179,17 @@ export default function Languages() {
                     <ul className="lang-list">
                         {s.points.map((p, i) => <li key={i}>{p}</li>)}
                     </ul>
+                    {s.promptGuide && (
+                        <p className="lang-featured">
+                            <a
+                                className="lang-featured-link"
+                                href={s.promptGuide.href}
+                                onClick={() => trackLanguageInternalLinkClick({ language: s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch", destinationPage: s.promptGuide.dest })}
+                            >
+                                {s.promptGuide.label} →
+                            </a>
+                        </p>
+                    )}
                     <LinkRow language={s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch"} labels={s.linkLabels} />
                     <p className="lang-note">{s.note}</p>
                 </section>
