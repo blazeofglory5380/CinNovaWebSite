@@ -27,6 +27,10 @@ import ClaudeWithAdobeGuide from "./pages/ClaudeWithAdobeGuide.jsx";
 import ClaudeWebsiteDesignGuide from "./pages/ClaudeWebsiteDesignGuide.jsx";
 import ClaudeArtPromptsGuide from "./pages/ClaudeArtPromptsGuide.jsx";
 import ClaudeBrandingMarketingGuide from "./pages/ClaudeBrandingMarketingGuide.jsx";
+import ClaudeWithCanvaGuide from "./pages/ClaudeWithCanvaGuide.jsx";
+import ClaudeWithFigmaGuide from "./pages/ClaudeWithFigmaGuide.jsx";
+import ClaudeWithCursorGuide from "./pages/ClaudeWithCursorGuide.jsx";
+import ClaudeWithHiggsfieldGuide from "./pages/ClaudeWithHiggsfieldGuide.jsx";
 import Languages from "./pages/Languages.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
@@ -548,6 +552,10 @@ function App() {
             {page === "claude-website-design-guide" && <ClaudeWebsiteDesignGuide />}
             {page === "claude-art-prompts-guide" && <ClaudeArtPromptsGuide />}
             {page === "claude-branding-marketing-guide" && <ClaudeBrandingMarketingGuide />}
+            {page === "claude-with-canva-guide" && <ClaudeWithCanvaGuide />}
+            {page === "claude-with-figma-guide" && <ClaudeWithFigmaGuide />}
+            {page === "claude-with-cursor-guide" && <ClaudeWithCursorGuide />}
+            {page === "claude-with-higgsfield-guide" && <ClaudeWithHiggsfieldGuide />}
             {page === "languages" && <Languages />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
