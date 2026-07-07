@@ -19,6 +19,7 @@ import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
 import ClaudeBeginnerGuide from "./pages/ClaudeBeginnerGuide.jsx";
 import GeminiBeginnerGuide from "./pages/GeminiBeginnerGuide.jsx";
 import MicrosoftCopilotBeginnerGuide from "./pages/MicrosoftCopilotBeginnerGuide.jsx";
+import Languages from "./pages/Languages.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -431,6 +432,7 @@ function App() {
                         items={[
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
+                            { label: "Languages", onSelect: () => { openPage("languages"); setMobileMenuOpen(false); } },
                             { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
                             { label: "Partners",        onSelect: () => { openPage("partners");        setMobileMenuOpen(false); } },
                             { label: "Partner With Us", onSelect: () => { openPage("partner-with-us"); setMobileMenuOpen(false); } },
@@ -530,6 +532,7 @@ function App() {
             {page === "claude-beginner-guide" && <ClaudeBeginnerGuide />}
             {page === "gemini-beginner-guide" && <GeminiBeginnerGuide />}
             {page === "microsoft-copilot-beginner-guide" && <MicrosoftCopilotBeginnerGuide />}
+            {page === "languages" && <Languages />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
