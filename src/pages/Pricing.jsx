@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import "./Pricing.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -181,10 +181,145 @@ function ctaLabel(price) {
     return "Get Started";
 }
 
-function Pricing() {
-    const [selectedKey, setSelectedKey] = useState(products[0].key);
-    const product = products.find((p) => p.key === selectedKey) || products[0];
+function computePerView() {
+    if (typeof window === "undefined") return 3;
+    if (window.matchMedia("(min-width: 1001px)").matches) return 3; // desktop
+    if (window.matchMedia("(min-width: 769px)").matches) return 2; // tablet
+    return 1; // mobile
+}
 
+/* Dark ecosystem-style pricing carousel: one card per product, all plans inside. */
+function PricingCarousel() {
+    const [perView, setPerView] = useState(computePerView);
+    const [index, setIndex] = useState(0);
+    const drag = useRef({ startX: 0, active: false, moved: false });
+
+    useEffect(() => {
+        const onResize = () => setPerView(computePerView());
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
+    const maxIndex = Math.max(0, products.length - perView);
+    useEffect(() => {
+        setIndex((i) => Math.min(i, maxIndex));
+    }, [maxIndex]);
+
+    const go = (i) => setIndex(Math.max(0, Math.min(maxIndex, i)));
+    const prev = () => go(index - 1);
+    const next = () => go(index + 1);
+
+    const pageCount = maxIndex + 1;
+    const atStart = index <= 0;
+    const atEnd = index >= maxIndex;
+
+    const onPointerDown = (e) => { drag.current = { startX: e.clientX, active: true, moved: false }; };
+    const onPointerMove = (e) => {
+        if (!drag.current.active) return;
+        if (Math.abs(e.clientX - drag.current.startX) > 8) drag.current.moved = true;
+    };
+    const onPointerUp = (e) => {
+        if (!drag.current.active) return;
+        const dx = e.clientX - drag.current.startX;
+        drag.current.active = false;
+        if (dx <= -40) next();
+        else if (dx >= 40) prev();
+    };
+
+    return (
+        <div className="pricing-carousel" style={{ "--pc-per-view": perView }}>
+            <div
+                className="pricing-carousel-viewport"
+                role="group"
+                aria-roledescription="carousel"
+                aria-label="CinNova product pricing"
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerLeave={onPointerUp}
+            >
+                <div
+                    className="pricing-carousel-track"
+                    style={{ transform: `translateX(-${(index * 100) / perView}%)` }}
+                >
+                    {products.map((product) => (
+                        <div className="pricing-carousel-slide" key={product.key}>
+                            <div className="pricing-pcard">
+                                <span className="pricing-pcard-badge">{product.category.toUpperCase()}</span>
+                                <h3>{product.name}</h3>
+                                <p className="pricing-pcard-desc">{product.description}</p>
+
+                                <div className="pricing-pcard-plans">
+                                    {product.tiers.map((tier) => {
+                                        const comingSoon = tier.price === "Coming Soon";
+                                        return (
+                                            <div
+                                                key={tier.label}
+                                                className={`pricing-pplan${tier.highlight ? " pricing-pplan--featured" : ""}`}
+                                            >
+                                                <div className="pricing-pplan-head">
+                                                    <span className="pricing-pplan-name">{tier.label}</span>
+                                                    {tier.highlight && <span className="pricing-pplan-tag">Most Popular</span>}
+                                                </div>
+                                                <div className="pricing-pplan-price">{tier.price}</div>
+                                                <p className="pricing-pplan-perks">{tier.perks}</p>
+                                                <button
+                                                    type="button"
+                                                    className={`pricing-pplan-cta${tier.highlight ? " pricing-pplan-cta--primary" : ""}`}
+                                                    disabled={comingSoon}
+                                                    aria-disabled={comingSoon}
+                                                >
+                                                    {ctaLabel(tier.price)}
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="pricing-carousel-controls">
+                <button
+                    type="button"
+                    className="pricing-carousel-arrow"
+                    onClick={prev}
+                    disabled={atStart}
+                    aria-label="Previous products"
+                >
+                    <span aria-hidden="true">‹</span>
+                </button>
+
+                <div className="pricing-carousel-dots" role="group" aria-label="Pricing slides">
+                    {Array.from({ length: pageCount }).map((_, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            className={`pricing-carousel-dot${i === index ? " is-active" : ""}`}
+                            onClick={() => go(i)}
+                            aria-label={`Go to slide ${i + 1} of ${pageCount}`}
+                            aria-current={i === index ? "true" : undefined}
+                        />
+                    ))}
+                </div>
+
+                <button
+                    type="button"
+                    className="pricing-carousel-arrow"
+                    onClick={next}
+                    disabled={atEnd}
+                    aria-label="Next products"
+                >
+                    <span aria-hidden="true">›</span>
+                </button>
+            </div>
+        </div>
+    );
+}
+
+function Pricing() {
     return (
         <div className="product-page">
             <SEO
@@ -221,70 +356,14 @@ function Pricing() {
                 </div>
             </section>
 
-            {/* ── Single interactive pricing module ───────────────── */}
+            {/* ── Pricing carousel (dark ecosystem style) ─────────── */}
             <section className="section showcase-section" id="all-plans" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading">
                     <p className="eyebrow">ALL PLANS</p>
                     <h2>Pick a product. Pick a plan. Get started free.</h2>
                 </div>
 
-                <div className="pricing-module">
-                    {/* Product dropdown */}
-                    <div className="pricing-picker">
-                        <label className="pricing-picker-label" htmlFor="pricing-product-select">
-                            Choose a product
-                        </label>
-                        <select
-                            id="pricing-product-select"
-                            className="pricing-picker-select"
-                            value={selectedKey}
-                            onChange={(e) => setSelectedKey(e.target.value)}
-                        >
-                            {products.map((p) => (
-                                <option key={p.key} value={p.key}>{p.name}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Selected product header */}
-                    <div className="pricing-module-head">
-                        <p className="eyebrow">{product.category.toUpperCase()}</p>
-                        <h3>{product.name}</h3>
-                        <p className="pricing-module-desc">{product.description}</p>
-                    </div>
-
-                    {/* Plans for the selected product — rows inside the one card */}
-                    <ul className="pricing-plan-list">
-                        {product.tiers.map((tier) => {
-                            const comingSoon = tier.price === "Coming Soon";
-                            return (
-                                <li
-                                    key={tier.label}
-                                    className={`pricing-plan-row${tier.highlight ? " pricing-plan-row--featured" : ""}`}
-                                >
-                                    <div className="pricing-plan-info">
-                                        <div className="pricing-plan-name-row">
-                                            <span className="pricing-plan-name">{tier.label}</span>
-                                            {tier.highlight && <span className="pricing-plan-tag">Most Popular</span>}
-                                        </div>
-                                        <p className="pricing-plan-perks">{tier.perks}</p>
-                                    </div>
-                                    <div className="pricing-plan-action">
-                                        <span className="pricing-plan-price">{tier.price}</span>
-                                        <button
-                                            type="button"
-                                            className={`pricing-plan-cta${tier.highlight ? " pricing-plan-cta--primary" : ""}`}
-                                            disabled={comingSoon}
-                                            aria-disabled={comingSoon}
-                                        >
-                                            {ctaLabel(tier.price)}
-                                        </button>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
+                <PricingCarousel />
             </section>
 
             {/* ── Comparison Section ──────────────────────────────── */}
