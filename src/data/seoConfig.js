@@ -69,6 +69,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "claude-beginner-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "gemini-beginner-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "microsoft-copilot-beginner-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
+    { key: "languages", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "pricing", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "about", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "contact", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
