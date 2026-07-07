@@ -11,6 +11,7 @@ import { getRecentlyAddedResources } from "../data/resources.js";
 import { normalizeProductStatus } from "../data/products.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
+import { trackProductExploreClick } from "../utils/analytics.js";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import "../styles/brand-dna.css";
 import "./HomePage.css";
@@ -102,7 +103,8 @@ function HomePage({
     );
     const featuredProducts = products.filter((product) => FEATURED_PRODUCT_PAGES.includes(product.page));
 
-    function openProduct(page) {
+    function openProduct(page, name = "") {
+        trackProductExploreClick({ productName: name, sourcePage: "home", destinationPage: page });
         onNavigate?.(page);
         window.scrollTo(0, 0);
     }
@@ -180,7 +182,7 @@ function HomePage({
                                 media={
                                     <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
                                 }
-                                onClick={() => openProduct(product.page)}
+                                onClick={() => openProduct(product.page, product.name)}
                                 aria-label={`${product.name} — learn more`}
                             >
                                 <div className="home-v2__card-meta">

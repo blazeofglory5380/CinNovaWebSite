@@ -8,6 +8,7 @@ import Dispatch from "../components/brand-dna/Dispatch.jsx";
 import { featureCapabilityPhotos, productMarketing } from "../data/marketingImages.js";
 import { normalizeProductStatus, productDetails, products } from "../data/products.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
+import { trackProductExploreClick } from "../utils/analytics.js";
 import "../styles/brand-dna.css";
 import "./ProductsPage.css";
 
@@ -139,7 +140,10 @@ function CatalogCard({ product, onNavigate }) {
                     </>
                 ) : null
             }
-            onClick={() => onNavigate(product.page)}
+            onClick={() => {
+                trackProductExploreClick({ productName: product.name, sourcePage: "products", destinationPage: product.page });
+                onNavigate(product.page);
+            }}
             aria-label={`${product.name} — learn more`}
         >
             <div className="products-v2__card-meta">

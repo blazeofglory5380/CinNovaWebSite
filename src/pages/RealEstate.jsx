@@ -13,11 +13,14 @@ import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
+import { trackLiveBetaClick } from "../utils/analytics.js";
 
 const { features } = productMarketing["real-estate"];
 const realEstateHero = productHero3DConfigs["real-estate"];
 
 const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
+const betaClick = (label) => () =>
+    trackLiveBetaClick({ sourcePage: "real-estate", ctaLabel: label, destinationUrl: LIVE_BETA_URL });
 
 const realestateSchema = {
     "@context": "https://schema.org",
@@ -67,6 +70,7 @@ function RealEstate() {
                 <RealEstateCityHero
                     primaryHref={LIVE_BETA_URL}
                     primaryLabel="Try the Live Beta"
+                    onPrimaryClick={betaClick("Hero — Try the Live Beta")}
                     secondaryHref="#features"
                     secondaryLabel="Explore Features"
                 />
@@ -116,6 +120,7 @@ function RealEstate() {
                         href={LIVE_BETA_URL}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={betaClick("Beta section — Try the Live Beta")}
                     >
                         Try the Live Beta →
                     </a>
@@ -413,7 +418,7 @@ function RealEstate() {
                     <p style={{ color: "#64748b", marginBottom: "16px" }}>
                         Accounts, PDF reports, live data, and paid plans are on the roadmap.
                         Join the list and we'll tell you the moment they land — or{" "}
-                        <a href={LIVE_BETA_URL} target="_blank" rel="noopener noreferrer">
+                        <a href={LIVE_BETA_URL} target="_blank" rel="noopener noreferrer" onClick={betaClick("Waitlist — jump into the live beta")}>
                             jump into the live beta now
                         </a>.
                     </p>

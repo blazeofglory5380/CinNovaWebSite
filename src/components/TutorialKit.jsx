@@ -1,7 +1,14 @@
 // Reusable building blocks for AI tutorial pages. Prefix: ait-
 import SEO from "./SEO.jsx";
+import { trackAiTutorialClick } from "../utils/analytics.js";
 
 export const HUB_URL = "/?page=ai-tutorials";
+
+// Current ?page= key, used as the source_page for related-guide clicks.
+function currentPageKey() {
+    if (typeof window === "undefined") return "";
+    return new URLSearchParams(window.location.search).get("page") || "";
+}
 
 /** Page-top hero for a single tutorial. */
 export function TutorialHero({ eyebrow, title, intro, level, minutes }) {
@@ -94,10 +101,21 @@ export function RelatedGuides() {
                 <p>These foundational guides make every AI tool easier to use.</p>
             </div>
             <div className="ait-related">
-                <a className="ait-link-btn" href={HUB_URL}>All AI Tutorials</a>
-                <a className="ait-link-btn" href="/?page=ai-prompt-writing-guide">Prompt Writing Guide</a>
-                <a className="ait-link-btn" href="/?page=ai-research-guide">AI Research Guide</a>
-                <a className="ait-link-btn" href="/?page=ai-coding-guide">AI Coding Guide</a>
+                {[
+                    { href: HUB_URL, key: "ai-tutorials", label: "All AI Tutorials" },
+                    { href: "/?page=ai-prompt-writing-guide", key: "ai-prompt-writing-guide", label: "Prompt Writing Guide" },
+                    { href: "/?page=ai-research-guide", key: "ai-research-guide", label: "AI Research Guide" },
+                    { href: "/?page=ai-coding-guide", key: "ai-coding-guide", label: "AI Coding Guide" },
+                ].map((l) => (
+                    <a
+                        key={l.key}
+                        className="ait-link-btn"
+                        href={l.href}
+                        onClick={() => trackAiTutorialClick({ sourcePage: currentPageKey(), tutorialKey: l.key, tutorialTitle: l.label })}
+                    >
+                        {l.label}
+                    </a>
+                ))}
             </div>
         </section>
     );

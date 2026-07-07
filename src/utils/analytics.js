@@ -205,3 +205,61 @@ export function trackLeadDelivery({ source = "", ok = false, status = 0 } = {}) 
         delivery_status: status,
     });
 }
+
+/* ── Conversion tracking (PR G) ──────────────────────────────────────────────
+   Privacy-safe: these only capture action type, source/destination page, CTA
+   label, and product/tutorial/language names. They never send form values,
+   calculator numbers, or any personal data. All go through trackEvent, which
+   no-ops silently when GA is unavailable. */
+
+export function trackLiveBetaClick({ sourcePage = "", ctaLabel = "", destinationUrl = "" } = {}) {
+    trackEvent("cinnova_live_beta_click", {
+        source_page: sourcePage,
+        cta_label: ctaLabel,
+        destination_url: destinationUrl,
+    });
+}
+
+export function trackRentalCalculatorView({ sourcePage = "free-rental-property-calculator" } = {}) {
+    trackEvent("rental_calculator_view", { source_page: sourcePage });
+}
+
+// Only signals that the calculator was used — no input values are sent.
+export function trackRentalCalculatorCalculate({ sourcePage = "free-rental-property-calculator" } = {}) {
+    trackEvent("rental_calculator_calculate", { source_page: sourcePage });
+}
+
+export function trackRentalCalculatorBetaCta({ sourcePage = "free-rental-property-calculator", destinationUrl = "" } = {}) {
+    trackEvent("rental_calculator_beta_cta_click", {
+        source_page: sourcePage,
+        destination_url: destinationUrl,
+    });
+}
+
+export function trackAiTutorialClick({ sourcePage = "", tutorialKey = "", tutorialTitle = "" } = {}) {
+    trackEvent("ai_tutorial_click", {
+        source_page: sourcePage,
+        tutorial_key: tutorialKey,
+        tutorial_title: tutorialTitle,
+    });
+}
+
+export function trackLanguageSectionClick({ language = "", sourcePage = "languages" } = {}) {
+    trackEvent("language_section_click", { language, source_page: sourcePage });
+}
+
+export function trackLanguageInternalLinkClick({ language = "", destinationPage = "", sourcePage = "languages" } = {}) {
+    trackEvent("language_internal_link_click", {
+        language,
+        destination_page: destinationPage,
+        source_page: sourcePage,
+    });
+}
+
+export function trackProductExploreClick({ productName = "", sourcePage = "", destinationPage = "" } = {}) {
+    trackEvent("product_explore_click", {
+        product_name: productName,
+        source_page: sourcePage,
+        destination_page: destinationPage,
+    });
+}

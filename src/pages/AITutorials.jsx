@@ -4,6 +4,7 @@ import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 import { AI_TUTORIALS, AI_TOOL_TUTORIALS, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
+import { trackAiTutorialClick } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
 const guideUrl = (key) => `/?page=${key}`;
@@ -92,7 +93,8 @@ export default function AITutorials() {
                 </div>
                 <div className="ait-guide-grid">
                     {AI_TUTORIALS.map((t) => (
-                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}>
+                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}
+                            onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title })}>
                             <div className="ait-guide-card-meta">
                                 <span className="ait-chip">{t.level}</span>
                                 <span className="ait-chip ait-chip--muted">{t.minutes} min</span>
@@ -113,7 +115,8 @@ export default function AITutorials() {
                 </div>
                 <div className="ait-guide-grid">
                     {AI_TOOL_TUTORIALS.map((t) => (
-                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}>
+                        <a className="ait-guide-card" href={guideUrl(t.key)} key={t.key}
+                            onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title })}>
                             <div className="ait-guide-card-meta">
                                 <span className="ait-chip">{t.level}</span>
                                 <span className="ait-chip ait-chip--muted">{t.minutes} min</span>
@@ -159,7 +162,9 @@ export default function AITutorials() {
                 <div className="ait-co-grid">
                     {AI_COMPANIES.map((co) => {
                         const CardTag = co.guide ? "a" : "div";
-                        const linkProps = co.guide ? { href: guideUrl(co.guide) } : {};
+                        const linkProps = co.guide
+                            ? { href: guideUrl(co.guide), onClick: () => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: co.guide, tutorialTitle: co.name }) }
+                            : {};
                         return (
                             <CardTag className="ait-co" key={co.name} {...linkProps}>
                                 <div className="ait-co-top">
