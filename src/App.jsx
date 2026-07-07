@@ -23,6 +23,10 @@ import PerplexityBeginnerGuide from "./pages/PerplexityBeginnerGuide.jsx";
 import CursorBeginnerGuide from "./pages/CursorBeginnerGuide.jsx";
 import ReplitBeginnerGuide from "./pages/ReplitBeginnerGuide.jsx";
 import CanvaAIBeginnerGuide from "./pages/CanvaAIBeginnerGuide.jsx";
+import ClaudeWithAdobeGuide from "./pages/ClaudeWithAdobeGuide.jsx";
+import ClaudeWebsiteDesignGuide from "./pages/ClaudeWebsiteDesignGuide.jsx";
+import ClaudeArtPromptsGuide from "./pages/ClaudeArtPromptsGuide.jsx";
+import ClaudeBrandingMarketingGuide from "./pages/ClaudeBrandingMarketingGuide.jsx";
 import Languages from "./pages/Languages.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
@@ -540,6 +544,10 @@ function App() {
             {page === "cursor-beginner-guide" && <CursorBeginnerGuide />}
             {page === "replit-beginner-guide" && <ReplitBeginnerGuide />}
             {page === "canva-ai-beginner-guide" && <CanvaAIBeginnerGuide />}
+            {page === "claude-with-adobe-guide" && <ClaudeWithAdobeGuide />}
+            {page === "claude-website-design-guide" && <ClaudeWebsiteDesignGuide />}
+            {page === "claude-art-prompts-guide" && <ClaudeArtPromptsGuide />}
+            {page === "claude-branding-marketing-guide" && <ClaudeBrandingMarketingGuide />}
             {page === "languages" && <Languages />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
