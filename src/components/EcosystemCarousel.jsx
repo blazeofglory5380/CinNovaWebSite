@@ -97,7 +97,7 @@ function EcosystemCarousel({ products, productDetails, openProduct }) {
                                             <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
                                         ) : null
                                     }
-                                    onClick={() => openProduct(product.page)}
+                                    onClick={() => openProduct(product.page, product.name)}
                                     aria-label={`${product.name} — learn more`}
                                 >
                                     <div className="home-v2__card-meta">

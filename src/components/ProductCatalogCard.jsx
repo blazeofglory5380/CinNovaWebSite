@@ -1,8 +1,21 @@
 import { normalizeProductStatus } from "../data/products.js";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
+import { trackProductExploreClick } from "../utils/analytics.js";
 
 function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary-btn" }) {
     const status = normalizeProductStatus(product.status);
+
+    const handleLearnMore = () => {
+        trackProductExploreClick({
+            productName: product.name,
+            sourcePage:
+                typeof window !== "undefined"
+                    ? new URLSearchParams(window.location.search).get("page") || window.location.pathname
+                    : "",
+            destinationPage: product.page,
+        });
+        onLearnMore?.(product.page);
+    };
 
     return (
         <MotionCardWrap className="home-v12-ecosystem-card product-catalog-card">
@@ -23,7 +36,7 @@ function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary
                 </div>
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
-                <button type="button" className={buttonClassName} onClick={() => onLearnMore?.(product.page)}>
+                <button type="button" className={buttonClassName} onClick={handleLearnMore}>
                     Learn More
                 </button>
             </div>

@@ -45,6 +45,7 @@ function RealEstateCityHero({
     secondaryHref = "#",
     primaryLabel = "Explore Real Estate AI",
     secondaryLabel = "View Dashboard",
+    onPrimaryClick,
 }) {
     const primaryIsExternal = /^https?:\/\//.test(primaryHref);
     const heroRef = useRef(null);
@@ -130,6 +131,7 @@ function RealEstateCityHero({
                         <a
                             className="rex-btn rex-btn--primary"
                             href={primaryHref}
+                            onClick={onPrimaryClick}
                             {...(primaryIsExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                         >
                             {primaryLabel}

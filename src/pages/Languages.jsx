@@ -6,16 +6,19 @@ import "../App.css";
 import "./Languages.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { trackLanguageSectionClick, trackLanguageInternalLinkClick } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=languages`;
 
+// key -> { href, destPage } so link clicks can report a stable destination_page.
 const LINKS = {
-    tutorials: "/?page=ai-tutorials",
-    products: "/?page=products",
-    calculator: "/?page=free-rental-property-calculator",
-    realEstate: "/?page=real-estate",
-    blog: "/blog",
+    tutorials:  { href: "/?page=ai-tutorials",                    dest: "ai-tutorials" },
+    products:   { href: "/?page=products",                        dest: "products" },
+    calculator: { href: "/?page=free-rental-property-calculator", dest: "free-rental-property-calculator" },
+    realEstate: { href: "/?page=real-estate",                     dest: "real-estate" },
+    blog:       { href: "/blog",                                  dest: "blog" },
 };
+const LINK_ORDER = ["tutorials", "products", "calculator", "realEstate", "blog"];
 
 // Language cards (no flags — languages aren't tied to a single country).
 const CARDS = [
@@ -89,14 +92,19 @@ const SECTIONS = [
     },
 ];
 
-function LinkRow({ labels }) {
+function LinkRow({ labels, language }) {
     return (
         <div className="lang-links">
-            <a className="lang-link" href={LINKS.tutorials}>{labels.tutorials} →</a>
-            <a className="lang-link" href={LINKS.products}>{labels.products} →</a>
-            <a className="lang-link" href={LINKS.calculator}>{labels.calculator} →</a>
-            <a className="lang-link" href={LINKS.realEstate}>{labels.realEstate} →</a>
-            <a className="lang-link" href={LINKS.blog}>{labels.blog} →</a>
+            {LINK_ORDER.map((k) => (
+                <a
+                    key={k}
+                    className="lang-link"
+                    href={LINKS[k].href}
+                    onClick={() => trackLanguageInternalLinkClick({ language, destinationPage: LINKS[k].dest })}
+                >
+                    {labels[k]} →
+                </a>
+            ))}
         </div>
     );
 }
@@ -121,7 +129,13 @@ export default function Languages() {
                 </p>
                 <div className="lang-cards">
                     {CARDS.map((c) => (
-                        <a className="lang-card" href={c.anchor} key={c.code} lang={c.code}>
+                        <a
+                            className="lang-card"
+                            href={c.anchor}
+                            key={c.code}
+                            lang={c.code}
+                            onClick={() => trackLanguageSectionClick({ language: c.label })}
+                        >
                             {c.label}
                         </a>
                     ))}
@@ -141,7 +155,7 @@ export default function Languages() {
                     <li>You can try the free Rental Property Score Calculator.</li>
                     <li>You can explore CinNova Real Estate AI, our real estate investment tools.</li>
                 </ul>
-                <LinkRow labels={{ tutorials: "AI Tutorials", products: "Products", calculator: "Free Rental Calculator", realEstate: "Real Estate AI", blog: "Blog" }} />
+                <LinkRow language="English" labels={{ tutorials: "AI Tutorials", products: "Products", calculator: "Free Rental Calculator", realEstate: "Real Estate AI", blog: "Blog" }} />
                 <p className="lang-note">This section is a starting point. More translated pages are coming.</p>
             </section>
 
@@ -153,7 +167,7 @@ export default function Languages() {
                     <ul className="lang-list">
                         {s.points.map((p, i) => <li key={i}>{p}</li>)}
                     </ul>
-                    <LinkRow labels={s.linkLabels} />
+                    <LinkRow language={s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch"} labels={s.linkLabels} />
                     <p className="lang-note">{s.note}</p>
                 </section>
             ))}

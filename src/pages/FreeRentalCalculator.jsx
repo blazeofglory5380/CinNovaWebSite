@@ -1,9 +1,15 @@
 // FreeRentalCalculator — /?page=free-rental-property-calculator   CSS prefix: frc-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../App.css";
 import "./FreeRentalCalculator.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import {
+    trackRentalCalculatorView,
+    trackRentalCalculatorCalculate,
+    trackRentalCalculatorBetaCta,
+    trackLiveBetaClick,
+} from "../utils/analytics.js";
 
 const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
 const PAGE_URL = `${siteUrl}/?page=free-rental-property-calculator`;
@@ -85,8 +91,19 @@ function computeDeal(f) {
 export default function FreeRentalCalculator() {
     const [form, setForm] = useState(DEFAULTS);
     const out = useMemo(() => computeDeal(form), [form]);
+    const calcTracked = useRef(false);
 
-    const update = (key) => (e) => setForm((prev) => ({ ...prev, [key]: e.target.value }));
+    // Fire once when the calculator page loads.
+    useEffect(() => { trackRentalCalculatorView(); }, []);
+
+    const update = (key) => (e) => {
+        // Signal "calculator used" once per visit — never send the input values.
+        if (!calcTracked.current) {
+            calcTracked.current = true;
+            trackRentalCalculatorCalculate();
+        }
+        setForm((prev) => ({ ...prev, [key]: e.target.value }));
+    };
 
     return (
         <div className="product-page frc-page">
@@ -194,6 +211,10 @@ export default function FreeRentalCalculator() {
                         href={LIVE_BETA_URL}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => {
+                            trackRentalCalculatorBetaCta({ destinationUrl: LIVE_BETA_URL });
+                            trackLiveBetaClick({ sourcePage: "free-rental-property-calculator", ctaLabel: "Try CinNova Real Estate AI", destinationUrl: LIVE_BETA_URL });
+                        }}
                     >
                         Try CinNova Real Estate AI →
                     </a>
