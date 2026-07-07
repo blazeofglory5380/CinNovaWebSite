@@ -124,6 +124,34 @@ export const CLAUDE_WORKFLOW_GUIDES = [
         level: "Workflow",
         minutes: 11,
     },
+    {
+        key: "claude-with-canva-guide",
+        title: "Using Claude with Canva",
+        blurb: "Plan briefs, copy, and layout ideas with Claude alongside Canva, then build and review the design.",
+        level: "Workflow",
+        minutes: 10,
+    },
+    {
+        key: "claude-with-figma-guide",
+        title: "Using Claude with Figma",
+        blurb: "Map user flows, wireframe notes, and UX copy with Claude alongside Figma, then design and hand off.",
+        level: "Workflow",
+        minutes: 11,
+    },
+    {
+        key: "claude-with-cursor-guide",
+        title: "Using Claude with Cursor",
+        blurb: "Plan features and review risk with Claude, make changes in Cursor, and verify before committing.",
+        level: "Workflow",
+        minutes: 11,
+    },
+    {
+        key: "claude-with-higgsfield-guide",
+        title: "Using Claude with Higgsfield",
+        blurb: "Plan concepts and scene-by-scene AI video prompts with Claude, then generate footage in the tool.",
+        level: "Workflow",
+        minutes: 11,
+    },
 ];
 
 /** Tutorial categories shown on the hub. `available` counts what ships today. */
