@@ -15,6 +15,10 @@ import AITutorials from "./pages/AITutorials.jsx";
 import AIPromptGuide from "./pages/AIPromptGuide.jsx";
 import AIResearchGuide from "./pages/AIResearchGuide.jsx";
 import AICodingGuide from "./pages/AICodingGuide.jsx";
+import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
+import ClaudeBeginnerGuide from "./pages/ClaudeBeginnerGuide.jsx";
+import GeminiBeginnerGuide from "./pages/GeminiBeginnerGuide.jsx";
+import MicrosoftCopilotBeginnerGuide from "./pages/MicrosoftCopilotBeginnerGuide.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -522,6 +526,10 @@ function App() {
             {page === "ai-prompt-writing-guide" && <AIPromptGuide />}
             {page === "ai-research-guide" && <AIResearchGuide />}
             {page === "ai-coding-guide" && <AICodingGuide />}
+            {page === "chatgpt-beginner-guide" && <ChatGPTBeginnerGuide />}
+            {page === "claude-beginner-guide" && <ClaudeBeginnerGuide />}
+            {page === "gemini-beginner-guide" && <GeminiBeginnerGuide />}
+            {page === "microsoft-copilot-beginner-guide" && <MicrosoftCopilotBeginnerGuide />}
             {page === "about" && <About onNavigate={openPage} />}
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
