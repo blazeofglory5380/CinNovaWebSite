@@ -1,9 +1,8 @@
+import { useState } from "react";
 import "../App.css";
 import "./Pricing.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductPhotoThumb from "../components/ProductPhotoThumb.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
-import PricingProductNav from "../components/PricingProductNav.jsx";
 import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
 import { pricingAudiences, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
@@ -143,16 +142,6 @@ const products = [
     },
 ];
 
-// Jump-nav items -> per-product pricing section anchors (labels are short forms).
-const pricingNavItems = [
-    { label: "All Plans", href: "#all-plans" },
-    { label: "StudyNest", href: "#plan-studynest" },
-    { label: "PoisonGuard", href: "#plan-poisonguard" },
-    { label: "Kiddo", href: "#plan-kiddo" },
-    { label: "TechMate", href: "#plan-techmate" },
-    { label: "Real Estate", href: "#plan-real-estate" },
-];
-
 // FAQ content — preserved verbatim from the previous static pricing FAQ.
 const pricingFaqItems = [
     {
@@ -186,7 +175,16 @@ const pricingSchema = {
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
+function ctaLabel(price) {
+    if (price === "Coming Soon") return "Coming Soon";
+    if (price === "$0") return "Start Free";
+    return "Get Started";
+}
+
 function Pricing() {
+    const [selectedKey, setSelectedKey] = useState(products[0].key);
+    const product = products.find((p) => p.key === selectedKey) || products[0];
+
     return (
         <div className="product-page">
             <SEO
@@ -208,7 +206,7 @@ function Pricing() {
                         when you're ready.
                     </p>
                     <div className="hero-actions" style={{ justifyContent: "center", marginTop: "28px" }}>
-                        <a href="#all-plans" className="primary-btn">See All Plans</a>
+                        <a href="#all-plans" className="primary-btn">See Plans</a>
                         <a href="#comparison" className="secondary-btn">Compare Products</a>
                     </div>
                 </div>
@@ -223,93 +221,70 @@ function Pricing() {
                 </div>
             </section>
 
-            {/* ── Product jump nav (sticky) ───────────────────────── */}
-            <PricingProductNav items={pricingNavItems} />
-
-            {/* ── All Pricing Tiers ───────────────────────────────── */}
+            {/* ── Single interactive pricing module ───────────────── */}
             <section className="section showcase-section" id="all-plans" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading">
                     <p className="eyebrow">ALL PLANS</p>
                     <h2>Pick a product. Pick a plan. Get started free.</h2>
                 </div>
 
-                <p className="pricing-scroll-hint">Scroll any plan row sideways to compare plans →</p>
-
-                {products.map((product, i) => (
-                    <div
-                        key={product.name}
-                        id={`plan-${product.key}`}
-                        className="pricing-product-block"
-                        style={{
-                            marginBottom: i < products.length - 1 ? "72px" : "0",
-                        }}
-                    >
-                        {/* Product label row */}
-                        <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "24px" }}>
-                            <ProductPhotoThumb
-                                src={productMarketing[product.key].card.src}
-                                alt={productMarketing[product.key].card.alt}
-                                badge={productMarketing[product.key].card.src ? undefined : product.key.slice(0, 2).toUpperCase()}
-                                className="pricing-product-thumb"
-                            />
-                            <div>
-                                <p className="eyebrow" style={{ marginBottom: "2px" }}>
-                                    {product.category.toUpperCase()}
-                                </p>
-                                <h3 style={{ margin: 0, fontSize: "1.5rem" }}>{product.name}</h3>
-                                <p style={{ color: "#64748b", fontSize: "0.88rem", marginTop: "2px" }}>
-                                    {product.description}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="pricing-grid">
-                            {product.tiers.map((tier) => (
-                                <div
-                                    key={tier.label}
-                                    className={`pricing-card${tier.highlight ? " featured" : ""}`}
-                                >
-                                    {tier.highlight && (
-                                        <p className="eyebrow" style={{ marginBottom: "12px" }}>
-                                            MOST POPULAR
-                                        </p>
-                                    )}
-                                    <h3>{tier.label}</h3>
-                                    <div className="price">{tier.price}</div>
-                                    <p>{tier.perks}</p>
-                                    <button
-                                        style={{
-                                            display: "block",
-                                            width: "100%",
-                                            marginTop: "22px",
-                                            padding: "13px 20px",
-                                            borderRadius: "14px",
-                                            border: tier.highlight
-                                                ? "none"
-                                                : "1px solid #cbd5e1",
-                                            background: tier.highlight
-                                                ? "linear-gradient(135deg, var(--color-accent), var(--color-accent-dark))"
-                                                : "#ffffff",
-                                            color: tier.highlight ? "#ffffff" : "#334155",
-                                            fontWeight: 900,
-                                            fontSize: "0.9rem",
-                                            cursor: tier.price === "Coming Soon" ? "default" : "pointer",
-                                            opacity: tier.price === "Coming Soon" ? 0.5 : 1,
-                                        }}
-                                    >
-                                        {tier.price === "Coming Soon"
-                                            ? "Coming Soon"
-                                            : tier.highlight
-                                              ? "Get Started"
-                                              : tier.price === "$0"
-                                                ? "Start Free"
-                                                : "Get Started"}
-                                    </button>
-                                </div>
+                <div className="pricing-module">
+                    {/* Product dropdown */}
+                    <div className="pricing-picker">
+                        <label className="pricing-picker-label" htmlFor="pricing-product-select">
+                            Choose a product
+                        </label>
+                        <select
+                            id="pricing-product-select"
+                            className="pricing-picker-select"
+                            value={selectedKey}
+                            onChange={(e) => setSelectedKey(e.target.value)}
+                        >
+                            {products.map((p) => (
+                                <option key={p.key} value={p.key}>{p.name}</option>
                             ))}
-                        </div>
+                        </select>
                     </div>
-                ))}
+
+                    {/* Selected product header */}
+                    <div className="pricing-module-head">
+                        <p className="eyebrow">{product.category.toUpperCase()}</p>
+                        <h3>{product.name}</h3>
+                        <p className="pricing-module-desc">{product.description}</p>
+                    </div>
+
+                    {/* Plans for the selected product — rows inside the one card */}
+                    <ul className="pricing-plan-list">
+                        {product.tiers.map((tier) => {
+                            const comingSoon = tier.price === "Coming Soon";
+                            return (
+                                <li
+                                    key={tier.label}
+                                    className={`pricing-plan-row${tier.highlight ? " pricing-plan-row--featured" : ""}`}
+                                >
+                                    <div className="pricing-plan-info">
+                                        <div className="pricing-plan-name-row">
+                                            <span className="pricing-plan-name">{tier.label}</span>
+                                            {tier.highlight && <span className="pricing-plan-tag">Most Popular</span>}
+                                        </div>
+                                        <p className="pricing-plan-perks">{tier.perks}</p>
+                                    </div>
+                                    <div className="pricing-plan-action">
+                                        <span className="pricing-plan-price">{tier.price}</span>
+                                        <button
+                                            type="button"
+                                            className={`pricing-plan-cta${tier.highlight ? " pricing-plan-cta--primary" : ""}`}
+                                            disabled={comingSoon}
+                                            aria-disabled={comingSoon}
+                                        >
+                                            {ctaLabel(tier.price)}
+                                        </button>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
             </section>
 
             {/* ── Comparison Section ──────────────────────────────── */}

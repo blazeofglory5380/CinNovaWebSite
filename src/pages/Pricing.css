@@ -1,50 +1,179 @@
-/* Pricing page — horizontal-scroll plan rows.
-   Every rule is scoped under #all-plans (a pricing-page-only section id) so the
-   shared global .pricing-grid / .pricing-card used on product pages stays
-   untouched. Simple CSS only — no payment/checkout logic. */
+/* Pricing page — single interactive pricing module with a product dropdown.
+   Uses page-unique class names (.pricing-module, .pricing-plan-row, …) so the
+   global .pricing-card / .pricing-grid used on product pages stays untouched.
+   Simple CSS only — no payment/checkout logic. */
 
-/* Subtle "scroll to compare" hint above the plan rows */
-#all-plans .pricing-scroll-hint {
+.pricing-module {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--color-bg, #ffffff);
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    padding: 28px;
+}
+
+/* Product dropdown */
+.pricing-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.pricing-picker-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+}
+.pricing-picker-select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 44px;
+}
+.pricing-picker-select:focus-visible {
+    outline: none;
+    border-color: var(--color-accent, #16a34a);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+}
+
+/* Selected product header */
+.pricing-module-head {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+.pricing-module-head h3 {
+    margin: 4px 0 6px;
+    font-size: 1.6rem;
+    color: var(--color-text, #0f172a);
+}
+.pricing-module-desc {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Plan rows inside the single card */
+.pricing-plan-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.pricing-plan-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+}
+.pricing-plan-row--featured {
+    border-color: var(--color-accent, #16a34a);
+    box-shadow: 0 4px 16px rgba(22, 163, 74, 0.1);
+}
+.pricing-plan-info {
+    min-width: 0;
+}
+.pricing-plan-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+.pricing-plan-name {
+    font-weight: 900;
+    font-size: 1.05rem;
+    color: #0f172a;
+}
+.pricing-plan-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+.pricing-plan-perks {
     color: #64748b;
     font-size: 0.88rem;
-    font-weight: 700;
-    margin: 0 0 20px;
+    line-height: 1.55;
+    margin: 0;
 }
-
-/* Turn each product's tier grid into a clean horizontal scroll row */
-#all-plans .pricing-grid {
+.pricing-plan-action {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 12px; /* room for the scrollbar so it doesn't overlap cards */
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+    text-align: right;
 }
-#all-plans .pricing-grid::-webkit-scrollbar {
-    height: 8px;
+.pricing-plan-price {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #0f172a;
+    white-space: nowrap;
 }
-#all-plans .pricing-grid::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 999px;
+.pricing-plan-cta {
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 900;
+    font-size: 0.86rem;
+    cursor: pointer;
+    white-space: nowrap;
 }
-#all-plans .pricing-grid::-webkit-scrollbar-track {
-    background: transparent;
+.pricing-plan-cta--primary {
+    border: none;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+    color: #ffffff;
+}
+.pricing-plan-cta:disabled,
+.pricing-plan-cta[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: default;
 }
 
-/* Fixed/min width so cards form a scrollable row instead of shrinking to fit */
-#all-plans .pricing-grid .pricing-card {
-    flex: 0 0 320px;
-    min-width: 320px;
-    scroll-snap-align: start;
-}
-
-/* Mobile: show ~one card at a time and scroll side to side */
-@media (max-width: 600px) {
-    #all-plans .pricing-grid .pricing-card {
-        flex-basis: 84vw;
-        min-width: 84vw;
+/* Mobile: stack plan info above the price/CTA */
+@media (max-width: 560px) {
+    .pricing-module { padding: 20px; }
+    .pricing-plan-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
     }
+    .pricing-plan-action {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+    }
+    .pricing-plan-cta { flex-shrink: 0; }
 }
