@@ -3,7 +3,7 @@ import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";
 import {
-    TutorialHero, TutorialSEO, Step, Callout, PromptExample, FAQ, BackToHubCta, SafetyNote,
+    TutorialHero, TutorialSEO, Step, Callout, PromptExample, FAQ, BackToHubCta, SafetyNote, PromptGuideLangNav,
 } from "../components/TutorialKit.jsx";
 
 const FAQ_ITEMS = [
@@ -30,6 +30,8 @@ export default function AIPromptGuide() {
                 level="Beginner"
                 minutes={8}
             />
+
+            <PromptGuideLangNav current="en" />
 
             <section className="section ait-guide-body">
                 <h2>What is an AI prompt?</h2>

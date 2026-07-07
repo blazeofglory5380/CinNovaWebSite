@@ -208,6 +208,20 @@ export default function AITutorials() {
                 )}
             </section>
 
+            {/* Multilingual starter pilot */}
+            <section className="section">
+                <div className="ait-section-head">
+                    <h2>Available in other languages</h2>
+                    <p>A growing multilingual starter library. Read the AI prompt writing guide in your language.</p>
+                </div>
+                <div className="ait-langnav">
+                    <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-es")} lang="es">Español</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-fr")} lang="fr">Français</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-de")} lang="de">Deutsch</a>
+                    <a className="ait-langnav-link" href={guideUrl("languages")}>More languages →</a>
+                </div>
+            </section>
+
             {/* Categories */}
             <section className="section">
                 <div className="ait-section-head">
