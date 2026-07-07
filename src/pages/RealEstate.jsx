@@ -17,24 +17,43 @@ import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 const { features } = productMarketing["real-estate"];
 const realEstateHero = productHero3DConfigs["real-estate"];
 
+const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
+
 const realestateSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Cin Nova Real Estate",
     applicationCategory: "FinanceApplication",
-    description: "AI-powered real estate investment tools for deal analysis, cash flow modeling, mortgage calculators, and market intelligence.",
+    description: "AI-powered real estate investment tools for deal analysis, cash flow modeling, mortgage calculators, and market intelligence. Live beta available in the browser.",
     operatingSystem: "Web",
     url: `${siteUrl}/?page=real-estate`,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
+/* What the live beta can do today — mirrors the app's Getting Started guide. */
+const BETA_CAPABILITIES = [
+    { title: "Score properties", note: "Run any address through the Score Engine for cap rate, cash flow, and a 100-point investment score." },
+    { title: "Explore the interactive map", note: "A real map with clustered, score-colored property markers across key US metros." },
+    { title: "Ask the AI Advisor", note: "Plain-English questions about your saved properties — best cash flow, risk, next steps." },
+    { title: "Generate investor reports", note: "Turn any saved analysis into a polished report with strengths, risks, and recommendations." },
+    { title: "Track deals and portfolio", note: "Kanban deal pipeline plus portfolio KPIs, tables, and filters." },
+    { title: "View saved reports", note: "Every scored property collected in a filterable Reports Library." },
+];
+
+/* Related reading — existing published posts only (safe internal links). */
+const BETA_RELATED_POSTS = [
+    { slug: "analyze-rental-property-in-10-minutes", label: "How to analyze a rental property in 10 minutes" },
+    { slug: "beginner-guide-to-real-estate-deal-analysis", label: "Beginner guide to real estate deal analysis" },
+    { slug: "the-future-of-real-estate-ai", label: "The future of real estate AI" },
+];
+
 function RealEstate() {
     return (
         <div className="product-page">
             <SEO
-                title="Cin Nova Real Estate | AI Real Estate Investment Tools"
-                description="Analyze deals, model cash flow, calculate mortgages, and get AI guidance on real estate investments. Cin Nova Real Estate is in development."
+                title="Cin Nova Real Estate | AI Investment Tools — Live Beta"
+                description="Score properties, explore a real interactive map, ask an AI advisor, and generate investor reports. The Cin Nova Real Estate beta is live — try it free in your browser."
                 url={`${siteUrl}/?page=real-estate`}
                 type="website"
                 schema={realestateSchema}
@@ -45,8 +64,76 @@ function RealEstate() {
                 ["real-estate"] (realEstateHero) are intentionally retained for
                 rollback — nothing is deleted; the 3D model assets stay in the repo. */}
             <MotionHeroWrap>
-                <RealEstateCityHero primaryHref="#features" secondaryHref="#tools" />
+                <RealEstateCityHero
+                    primaryHref={LIVE_BETA_URL}
+                    primaryLabel="Try the Live Beta"
+                    secondaryHref="#features"
+                    secondaryLabel="Explore Features"
+                />
             </MotionHeroWrap>
+
+            {/* ── Live beta section: what you can do today ── */}
+            <section className="section" id="live-beta">
+                <div className="section-heading">
+                    <p className="eyebrow">LIVE BETA</p>
+                    <h2>The Cin Nova Real Estate beta is live — here's what you can do today</h2>
+                    <p>
+                        No account, no install. The beta runs free in your browser and saves
+                        your analyses locally on your device.
+                    </p>
+                </div>
+
+                <div className="showcase-grid">
+                    {BETA_CAPABILITIES.slice(0, 3).map((cap) => (
+                        <MotionCardWrap as="div" className="showcase-card" key={cap.title}>
+                            <h3>{cap.title}</h3>
+                            <p style={{ color: "#64748b", fontSize: "0.95rem", lineHeight: 1.6 }}>{cap.note}</p>
+                        </MotionCardWrap>
+                    ))}
+                </div>
+                <div className="showcase-grid" style={{ marginTop: "24px" }}>
+                    {BETA_CAPABILITIES.slice(3).map((cap) => (
+                        <MotionCardWrap as="div" className="showcase-card" key={cap.title}>
+                            <h3>{cap.title}</h3>
+                            <p style={{ color: "#64748b", fontSize: "0.95rem", lineHeight: 1.6 }}>{cap.note}</p>
+                        </MotionCardWrap>
+                    ))}
+                </div>
+
+                <div className="preview-note" style={{ marginTop: "28px" }}>
+                    <p>Beta scope</p>
+                    <h4>Some features are demo/local and coming later</h4>
+                    <span>
+                        The beta uses local, demo-grade data on your device. Accounts, a backend
+                        database, PDF export and report sharing, a live external AI API, and
+                        Stripe payments are planned upgrades — not in the beta yet.
+                    </span>
+                </div>
+
+                <div style={{ marginTop: "24px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                    <a
+                        className="primary-btn"
+                        href={LIVE_BETA_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Try the Live Beta →
+                    </a>
+                </div>
+
+                <div className="preview-note" style={{ marginTop: "28px" }}>
+                    <p>From the blog</p>
+                    <h4>Learn the playbook before you score your first deal</h4>
+                    <span>
+                        {BETA_RELATED_POSTS.map((post, i) => (
+                            <span key={post.slug}>
+                                <a href={`/blog/${post.slug}`}>{post.label}</a>
+                                {i < BETA_RELATED_POSTS.length - 1 ? " · " : ""}
+                            </span>
+                        ))}
+                    </span>
+                </div>
+            </section>
 
             <section className="section" id="features">
                 <div className="section-heading">
@@ -318,13 +405,20 @@ function RealEstate() {
 
             <section className="section" id="waitlist">
                 <MotionSectionWrap className="newsletter-card">
-                    <p className="eyebrow">JOIN THE WAITLIST</p>
-                    <h2>Be first to access Cin Nova Real Estate when it launches.</h2>
+                    <p className="eyebrow">STAY IN THE LOOP</p>
+                    <h2>The beta is live — get updates as new features ship.</h2>
+                    <p style={{ color: "#64748b", marginBottom: "16px" }}>
+                        Accounts, PDF reports, live data, and paid plans are on the roadmap.
+                        Join the list and we'll tell you the moment they land — or{" "}
+                        <a href={LIVE_BETA_URL} target="_blank" rel="noopener noreferrer">
+                            jump into the live beta now
+                        </a>.
+                    </p>
                     <NewsletterSignup
                         onSubscribe={saveSubscriber}
                         source="Real Estate Waitlist"
                         tags={["Real Estate", "Waitlist"]}
-                        buttonLabel="Join Waitlist"
+                        buttonLabel="Get Beta Updates"
                     />
                 </MotionSectionWrap>
             </section>

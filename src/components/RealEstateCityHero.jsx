@@ -40,7 +40,13 @@ const NODES = [
     { left: "14%", top: "64%", delay: "3s" },
 ];
 
-function RealEstateCityHero({ primaryHref = "#", secondaryHref = "#" }) {
+function RealEstateCityHero({
+    primaryHref = "#",
+    secondaryHref = "#",
+    primaryLabel = "Explore Real Estate AI",
+    secondaryLabel = "View Dashboard",
+}) {
+    const primaryIsExternal = /^https?:\/\//.test(primaryHref);
     const heroRef = useRef(null);
 
     return (
@@ -113,7 +119,7 @@ function RealEstateCityHero({ primaryHref = "#", secondaryHref = "#" }) {
                 <div className="rex-copy">
                     <p className="rex-eyebrow">
                         <span className="rex-eyebrow__dot" />
-                        CinNova Real Estate AI
+                        CinNova Real Estate AI · Live Beta
                     </p>
                     <h1 className="rex-title">AI for Smarter Real Estate Decisions</h1>
                     <p className="rex-lede">
@@ -121,8 +127,14 @@ function RealEstateCityHero({ primaryHref = "#", secondaryHref = "#" }) {
                         AI-powered real estate intelligence.
                     </p>
                     <div className="rex-actions">
-                        <a className="rex-btn rex-btn--primary" href={primaryHref}>Explore Real Estate AI</a>
-                        <a className="rex-btn rex-btn--ghost" href={secondaryHref}>View Dashboard</a>
+                        <a
+                            className="rex-btn rex-btn--primary"
+                            href={primaryHref}
+                            {...(primaryIsExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        >
+                            {primaryLabel}
+                        </a>
+                        <a className="rex-btn rex-btn--ghost" href={secondaryHref}>{secondaryLabel}</a>
                     </div>
                     <ul className="rex-proof">
                         {PROOF.map((p) => (
