@@ -25,7 +25,7 @@
     display: flex;
     align-items: flex-end;                       /* corner text sits at the bottom */
     min-height: clamp(460px, 64vh, 760px);
-    padding: 0 0 clamp(28px, 5vw, 56px);
+    padding: 0 0 clamp(16px, 3vw, 34px);         /* smaller bottom pad → text sits a little lower */
     background: #04080f;                          /* dark fallback before the video paints */
     color: var(--snh-ink);
     font-family: var(--snh-font);
@@ -45,15 +45,14 @@
     display: block;
     background: #04080f;
 }
-/* Subtle dark/teal scrim: light top, darker lower-left where the copy sits. */
+/* Subtle scrim localized to the lower-left, behind the text only — the rest of
+   the video (the student and library scene) stays clear. */
 .studynest-hero-animation .snh-scrim {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background:
-        linear-gradient(180deg, rgba(4, 8, 15, 0.22) 0%, rgba(4, 8, 15, 0) 30%, rgba(4, 8, 15, 0) 52%, rgba(4, 8, 15, 0.62) 100%),
-        linear-gradient(90deg, rgba(4, 12, 20, 0.56) 0%, rgba(4, 12, 20, 0.16) 38%, transparent 62%);
+    background: radial-gradient(82% 78% at 10% 96%, rgba(4, 8, 15, 0.64) 0%, rgba(4, 8, 15, 0.3) 32%, rgba(4, 8, 15, 0) 60%);
 }
 
 /* ── Minimal corner copy ───────────────────────────────────────────── */
@@ -61,12 +60,12 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 clamp(18px, 5vw, 64px);
+    max-width: none;
+    margin: 0;                                   /* hug the left edge instead of a centered column */
+    padding: 0 0 0 clamp(16px, 4vw, 48px);       /* slightly farther left */
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     animation: snh-fade-up 0.9s ease-out both;
 }
 .studynest-hero-animation .snh-eyebrow {
@@ -97,13 +96,13 @@
 .studynest-hero-animation .snh-title {
     margin: 0;
     font-family: var(--snh-display);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    font-size: clamp(24px, 3.2vw, 40px);
-    line-height: 1.08;
+    font-weight: 700;                            /* lighter, more elegant */
+    letter-spacing: -0.015em;
+    font-size: clamp(21px, 2.5vw, 32px);         /* a little smaller */
+    line-height: 1.14;
     color: #fff;
-    max-width: 620px;
-    text-shadow: 0 1px 16px rgba(2, 6, 12, 0.5);
+    max-width: 440px;                            /* narrow block, keeps the scene clear */
+    text-shadow: 0 1px 14px rgba(2, 6, 12, 0.5);
 }
 .studynest-hero-animation .snh-title__accent {
     background: linear-gradient(100deg, var(--snh-emerald), var(--snh-blue));
@@ -114,9 +113,9 @@
 }
 .studynest-hero-animation .snh-lede {
     margin: 0;
-    max-width: 460px;
-    font-size: clamp(13px, 1vw, 15px);
-    line-height: 1.6;
+    max-width: 360px;
+    font-size: clamp(12.5px, 0.95vw, 14px);
+    line-height: 1.55;
     color: var(--snh-dim);
     text-shadow: 0 1px 12px rgba(2, 6, 12, 0.55);
 }
