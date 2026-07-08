@@ -225,6 +225,12 @@ export default function AITutorials() {
                     <a className="ait-langnav-link" href={guideUrl("ai-research-guide-es")} lang="es">Español</a>
                     <a className="ait-langnav-link" href={guideUrl("ai-research-guide-fr")} lang="fr">Français</a>
                     <a className="ait-langnav-link" href={guideUrl("ai-research-guide-de")} lang="de">Deutsch</a>
+                </div>
+                <p className="ait-langgroup-label">AI Coding Guide</p>
+                <div className="ait-langnav">
+                    <a className="ait-langnav-link" href={guideUrl("ai-coding-guide-es")} lang="es">Español</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-coding-guide-fr")} lang="fr">Français</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-coding-guide-de")} lang="de">Deutsch</a>
                     <a className="ait-langnav-link" href={guideUrl("languages")}>More languages →</a>
                 </div>
             </section>

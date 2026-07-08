@@ -21,6 +21,9 @@ import AIResearchGuideES from "./pages/AIResearchGuideES.jsx";
 import AIResearchGuideFR from "./pages/AIResearchGuideFR.jsx";
 import AIResearchGuideDE from "./pages/AIResearchGuideDE.jsx";
 import AICodingGuide from "./pages/AICodingGuide.jsx";
+import AICodingGuideES from "./pages/AICodingGuideES.jsx";
+import AICodingGuideFR from "./pages/AICodingGuideFR.jsx";
+import AICodingGuideDE from "./pages/AICodingGuideDE.jsx";
 import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
 import ClaudeBeginnerGuide from "./pages/ClaudeBeginnerGuide.jsx";
 import GeminiBeginnerGuide from "./pages/GeminiBeginnerGuide.jsx";
@@ -554,6 +557,9 @@ function App() {
             {page === "ai-research-guide-fr" && <AIResearchGuideFR />}
             {page === "ai-research-guide-de" && <AIResearchGuideDE />}
             {page === "ai-coding-guide" && <AICodingGuide />}
+            {page === "ai-coding-guide-es" && <AICodingGuideES />}
+            {page === "ai-coding-guide-fr" && <AICodingGuideFR />}
+            {page === "ai-coding-guide-de" && <AICodingGuideDE />}
             {page === "chatgpt-beginner-guide" && <ChatGPTBeginnerGuide />}
             {page === "claude-beginner-guide" && <ClaudeBeginnerGuide />}
             {page === "gemini-beginner-guide" && <GeminiBeginnerGuide />}
