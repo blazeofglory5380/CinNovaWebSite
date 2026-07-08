@@ -67,6 +67,100 @@
     background: radial-gradient(55% 50% at 66% 46%, rgba(10, 191, 140, 0.1), transparent 70%);
 }
 
+/* ── Video-only homepage hero ──────────────────────────────────────────
+   The visual IS the video: the full 16:9 clip is shown complete (no cropping)
+   across the full page width, with a dark/teal backdrop filling any letterbox
+   space. No copy/scrim/orb. The only text is a visually-hidden H1. */
+.cn-core-hero--videoonly {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: 0;                     /* override the base 88vh */
+    margin-inline: 0;
+    padding: 0;
+    background: radial-gradient(120% 120% at 50% 0%, #08201e 0%, #05100b 58%, #030a08 100%);
+    overflow: hidden;
+}
+.cn-core-hero--videoonly .cn-core-hero__videoframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;              /* preserve the full composition */
+    max-height: 100vh;                 /* never taller than the viewport */
+    margin-inline: auto;
+    background: transparent;
+}
+.cn-core-hero--videoonly .cn-core-hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;               /* show the whole 16:9 frame — never crop */
+    object-position: center center;
+    display: block;
+    background: transparent;
+}
+
+/* Visually-hidden accessible heading (SEO / screen readers only). */
+.cn-core-hero__sr {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Cinematic background-video variant (homepage) ─────────────────────
+   Scoped under .cn-core-hero--video so the blog hero (no video) is untouched.
+   The video is the dominant full-bleed visual; the tint/scrim/fade below only
+   darken the left third (where the copy sits) with a subtle teal cast. */
+
+/* Full-bleed, edge-to-edge hero. The section already spans the full viewport
+   (its ancestors carry no max-width or side padding), so width:100% + zero
+   inline margin/padding is the correct, scrollbar-safe full-bleed. We avoid
+   100vw on purpose: with a vertical scrollbar it exceeds the client width and
+   introduces horizontal scroll. */
+.cn-core-hero--video {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+}
+/* Let the copy hug the left edge (with cinematic side padding) instead of
+   sitting inside a centered 1200px column, so the hero reads as full-bleed.
+   The copy keeps its own max-width for readability. */
+.cn-core-hero--video .cn-core-hero__wrap {
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: clamp(20px, 5vw, 72px);
+}
+.cn-core-hero--video .cn-core-hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                 /* fills edge-to-edge — no black side bars */
+    object-position: center;
+    display: block;
+    background: var(--bdna-bg);
+}
+/* Teal-tinted left scrim: dark enough on the left third to keep the headline
+   readable and to mask faint text baked into the source clip, then clears by
+   ~68% so the city skyline (right/center) stays bright and dominant. */
+.cn-core-hero--video .cn-core-hero__scrim {
+    background: linear-gradient(
+        90deg,
+        rgba(6, 18, 20, 0.92) 0%,
+        rgba(6, 18, 20, 0.74) 26%,
+        rgba(6, 18, 20, 0.4) 44%,
+        rgba(6, 18, 20, 0.12) 56%,
+        transparent 68%
+    );
+}
+/* A gentle teal wash on the copy side for the "dark/teal" cinematic feel. */
+.cn-core-hero--video .cn-core-hero__tint {
+    background: radial-gradient(60% 62% at 26% 52%, rgba(10, 150, 130, 0.14), transparent 70%);
+}
+
 .cn-core-hero__scrim {
     position: absolute;
     inset: 0;
@@ -155,6 +249,18 @@
     font-variant-numeric: tabular-nums;
 }
 
+/* Optional single truthful ecosystem line (homepage) */
+.cn-core-hero__ecoline {
+    margin: 40px 0 0;
+    font-family: var(--bdna-mono);
+    font-size: clamp(10px, 1vw, 12px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bdna-dim2);
+    text-shadow: 0 1px 12px rgba(7, 19, 22, 0.85);
+    text-wrap: balance;
+}
+
 /* Optional stats row (homepage) */
 .cn-core-hero__stats {
     margin: 52px 0 0;
@@ -202,6 +308,16 @@
             rgba(10, 14, 23, 0.95) 0%,
             rgba(10, 14, 23, 0.7) 36%,
             transparent 64%
+        );
+    }
+    /* Video variant: copy sits at the bottom on mobile, so darken from the
+       bottom (the scoped selector out-specifies the rule above). */
+    .cn-core-hero--video .cn-core-hero__scrim {
+        background: linear-gradient(
+            0deg,
+            rgba(7, 19, 22, 0.92) 0%,
+            rgba(7, 19, 22, 0.66) 38%,
+            transparent 66%
         );
     }
     .cn-core-hero__meta { display: none; }

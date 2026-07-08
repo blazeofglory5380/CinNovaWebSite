@@ -120,19 +120,11 @@ function HomePage({
                 schema={homeSchema}
             />
 
-            {/* ── Hero — the CinNova Core centerpiece ─────────────────── */}
+            {/* ── Hero — full 16:9 cinematic night-city video, no text overlay ── */}
             <CinNovaCoreHero
-                eyebrow="The CinNova Ecosystem"
-                titleA="Enter the CinNova"
-                titleB="ecosystem"
-                subtitle="Practical AI that helps people learn, stay safe, and make better decisions — connected software for education, family safety, technology support, early learning, and real estate, plus free guides and research."
-                primaryCta={{ label: "Explore Products", onClick: () => onNavigate?.("products") }}
-                secondaryCta={{ label: "Browse Resources", onClick: onGoResources }}
-                stats={[
-                    { value: "5", label: "Products" },
-                    { value: "12", label: "Free resources" },
-                    { value: "1", label: "Connected ecosystem" },
-                ]}
+                videoSrc="/videos/cinnova-home-hero-cinematic-night-city-rain.mp4"
+                videoOnly
+                srHeading="CinNova — One AI ecosystem built for real life"
             />
 
             {/* ── Ecosystem — all products ────────────────────────────── */}
