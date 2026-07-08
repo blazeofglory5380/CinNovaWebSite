@@ -212,12 +212,19 @@ export default function AITutorials() {
             <section className="section">
                 <div className="ait-section-head">
                     <h2>Available in other languages</h2>
-                    <p>A growing multilingual starter library. Read the AI prompt writing guide in your language.</p>
+                    <p>A growing multilingual starter library. Read these beginner guides in your language.</p>
                 </div>
+                <p className="ait-langgroup-label">Prompt Writing Guide</p>
                 <div className="ait-langnav">
                     <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-es")} lang="es">Español</a>
                     <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-fr")} lang="fr">Français</a>
                     <a className="ait-langnav-link" href={guideUrl("ai-prompt-writing-guide-de")} lang="de">Deutsch</a>
+                </div>
+                <p className="ait-langgroup-label">AI Research Guide</p>
+                <div className="ait-langnav">
+                    <a className="ait-langnav-link" href={guideUrl("ai-research-guide-es")} lang="es">Español</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-research-guide-fr")} lang="fr">Français</a>
+                    <a className="ait-langnav-link" href={guideUrl("ai-research-guide-de")} lang="de">Deutsch</a>
                     <a className="ait-langnav-link" href={guideUrl("languages")}>More languages →</a>
                 </div>
             </section>

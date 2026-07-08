@@ -19,11 +19,20 @@ const PROMPT_GUIDE_LANGS = [
     { code: "de", label: "Deutsch",  href: "/?page=ai-prompt-writing-guide-de" },
 ];
 
-/** Language switcher shown on each version of the AI prompt writing guide. */
-export function PromptGuideLangNav({ current = "en" }) {
+// Language versions of the AI research guide (multilingual starter pilot).
+// Every route here exists, so the switcher never produces a dead link.
+const RESEARCH_GUIDE_LANGS = [
+    { code: "en", label: "English",  href: "/?page=ai-research-guide" },
+    { code: "es", label: "Español",  href: "/?page=ai-research-guide-es" },
+    { code: "fr", label: "Français", href: "/?page=ai-research-guide-fr" },
+    { code: "de", label: "Deutsch",  href: "/?page=ai-research-guide-de" },
+];
+
+// Shared renderer so both switchers behave identically (active = non-link span).
+function LangNav({ langs, current }) {
     return (
         <div className="ait-langnav" aria-label="Guide language">
-            {PROMPT_GUIDE_LANGS.map((l) =>
+            {langs.map((l) =>
                 l.code === current ? (
                     <span key={l.code} className="ait-langnav-link ait-langnav-link--active" aria-current="true" lang={l.code}>
                         {l.label}
@@ -36,6 +45,16 @@ export function PromptGuideLangNav({ current = "en" }) {
             )}
         </div>
     );
+}
+
+/** Language switcher shown on each version of the AI prompt writing guide. */
+export function PromptGuideLangNav({ current = "en" }) {
+    return <LangNav langs={PROMPT_GUIDE_LANGS} current={current} />;
+}
+
+/** Language switcher shown on each version of the AI research guide. */
+export function ResearchGuideLangNav({ current = "en" }) {
+    return <LangNav langs={RESEARCH_GUIDE_LANGS} current={current} />;
 }
 
 /** Page-top hero for a single tutorial. */

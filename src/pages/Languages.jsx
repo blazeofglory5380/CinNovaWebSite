@@ -49,6 +49,7 @@ const SECTIONS = [
             blog: "Blog",
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-es", dest: "ai-prompt-writing-guide-es", label: "Nuevo: Guía para escribir mejores prompts de IA" },
+        researchGuide: { href: "/?page=ai-research-guide-es", dest: "ai-research-guide-es", label: "Nuevo: Guía para usar la IA en la investigación" },
         note: "Esta sección en tu idioma es un punto de partida. Próximamente habrá más páginas traducidas.",
     },
     {
@@ -70,6 +71,7 @@ const SECTIONS = [
             blog: "Blog",
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-fr", dest: "ai-prompt-writing-guide-fr", label: "Nouveau : Guide pour écrire de meilleurs prompts IA" },
+        researchGuide: { href: "/?page=ai-research-guide-fr", dest: "ai-research-guide-fr", label: "Nouveau : Guide pour utiliser l'IA dans la recherche" },
         note: "Cette section dans votre langue est un point de départ. D'autres pages traduites arrivent bientôt.",
     },
     {
@@ -91,6 +93,7 @@ const SECTIONS = [
             blog: "Blog",
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-de", dest: "ai-prompt-writing-guide-de", label: "Neu: Bessere KI-Prompts schreiben" },
+        researchGuide: { href: "/?page=ai-research-guide-de", dest: "ai-research-guide-de", label: "Neu: KI für die Recherche nutzen" },
         note: "Dieser Abschnitt in Ihrer Sprache ist ein Ausgangspunkt. Weitere übersetzte Seiten folgen bald.",
     },
 ];
@@ -167,6 +170,15 @@ export default function Languages() {
                         New: How to Write Better AI Prompts →
                     </a>
                 </p>
+                <p className="lang-featured">
+                    <a
+                        className="lang-featured-link"
+                        href="/?page=ai-research-guide"
+                        onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-research-guide" })}
+                    >
+                        New: How to Use AI for Research →
+                    </a>
+                </p>
                 <LinkRow language="English" labels={{ tutorials: "AI Tutorials", products: "Products", calculator: "Free Rental Calculator", realEstate: "Real Estate AI", blog: "Blog" }} />
                 <p className="lang-note">This section is a starting point. More translated pages are coming.</p>
             </section>
@@ -187,6 +199,17 @@ export default function Languages() {
                                 onClick={() => trackLanguageInternalLinkClick({ language: s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch", destinationPage: s.promptGuide.dest })}
                             >
                                 {s.promptGuide.label} →
+                            </a>
+                        </p>
+                    )}
+                    {s.researchGuide && (
+                        <p className="lang-featured">
+                            <a
+                                className="lang-featured-link"
+                                href={s.researchGuide.href}
+                                onClick={() => trackLanguageInternalLinkClick({ language: s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch", destinationPage: s.researchGuide.dest })}
+                            >
+                                {s.researchGuide.label} →
                             </a>
                         </p>
                     )}
