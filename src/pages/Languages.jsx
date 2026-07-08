@@ -50,6 +50,7 @@ const SECTIONS = [
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-es", dest: "ai-prompt-writing-guide-es", label: "Nuevo: Guía para escribir mejores prompts de IA" },
         researchGuide: { href: "/?page=ai-research-guide-es", dest: "ai-research-guide-es", label: "Nuevo: Guía para usar la IA en la investigación" },
+        codingGuide: { href: "/?page=ai-coding-guide-es", dest: "ai-coding-guide-es", label: "Nuevo: Guía para usar la IA en la programación" },
         note: "Esta sección en tu idioma es un punto de partida. Próximamente habrá más páginas traducidas.",
     },
     {
@@ -72,6 +73,7 @@ const SECTIONS = [
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-fr", dest: "ai-prompt-writing-guide-fr", label: "Nouveau : Guide pour écrire de meilleurs prompts IA" },
         researchGuide: { href: "/?page=ai-research-guide-fr", dest: "ai-research-guide-fr", label: "Nouveau : Guide pour utiliser l'IA dans la recherche" },
+        codingGuide: { href: "/?page=ai-coding-guide-fr", dest: "ai-coding-guide-fr", label: "Nouveau : Guide pour utiliser l'IA en programmation" },
         note: "Cette section dans votre langue est un point de départ. D'autres pages traduites arrivent bientôt.",
     },
     {
@@ -94,6 +96,7 @@ const SECTIONS = [
         },
         promptGuide: { href: "/?page=ai-prompt-writing-guide-de", dest: "ai-prompt-writing-guide-de", label: "Neu: Bessere KI-Prompts schreiben" },
         researchGuide: { href: "/?page=ai-research-guide-de", dest: "ai-research-guide-de", label: "Neu: KI für die Recherche nutzen" },
+        codingGuide: { href: "/?page=ai-coding-guide-de", dest: "ai-coding-guide-de", label: "Neu: KI zum Programmieren nutzen" },
         note: "Dieser Abschnitt in Ihrer Sprache ist ein Ausgangspunkt. Weitere übersetzte Seiten folgen bald.",
     },
 ];
@@ -179,6 +182,15 @@ export default function Languages() {
                         New: How to Use AI for Research →
                     </a>
                 </p>
+                <p className="lang-featured">
+                    <a
+                        className="lang-featured-link"
+                        href="/?page=ai-coding-guide"
+                        onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-coding-guide" })}
+                    >
+                        New: How to Use AI for Coding →
+                    </a>
+                </p>
                 <LinkRow language="English" labels={{ tutorials: "AI Tutorials", products: "Products", calculator: "Free Rental Calculator", realEstate: "Real Estate AI", blog: "Blog" }} />
                 <p className="lang-note">This section is a starting point. More translated pages are coming.</p>
             </section>
@@ -210,6 +222,17 @@ export default function Languages() {
                                 onClick={() => trackLanguageInternalLinkClick({ language: s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch", destinationPage: s.researchGuide.dest })}
                             >
                                 {s.researchGuide.label} →
+                            </a>
+                        </p>
+                    )}
+                    {s.codingGuide && (
+                        <p className="lang-featured">
+                            <a
+                                className="lang-featured-link"
+                                href={s.codingGuide.href}
+                                onClick={() => trackLanguageInternalLinkClick({ language: s.id === "espanol" ? "Español" : s.id === "francais" ? "Français" : "Deutsch", destinationPage: s.codingGuide.dest })}
+                            >
+                                {s.codingGuide.label} →
                             </a>
                         </p>
                     )}

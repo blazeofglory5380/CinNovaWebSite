@@ -3,7 +3,7 @@ import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";
 import {
-    TutorialHero, TutorialSEO, Step, Callout, PromptExample, FAQ, BackToHubCta, SafetyNote,
+    TutorialHero, TutorialSEO, Step, Callout, PromptExample, FAQ, BackToHubCta, SafetyNote, CodingGuideLangNav,
 } from "../components/TutorialKit.jsx";
 
 const FAQ_ITEMS = [
@@ -30,6 +30,8 @@ export default function AICodingGuide() {
                 level="Beginner"
                 minutes={9}
             />
+
+            <CodingGuideLangNav current="en" />
 
             <section className="section ait-guide-body">
                 <h2>What AI coding assistants can help with</h2>

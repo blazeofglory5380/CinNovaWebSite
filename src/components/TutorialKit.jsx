@@ -57,6 +57,20 @@ export function ResearchGuideLangNav({ current = "en" }) {
     return <LangNav langs={RESEARCH_GUIDE_LANGS} current={current} />;
 }
 
+// Language versions of the AI coding guide (multilingual starter pilot).
+// Every route here exists, so the switcher never produces a dead link.
+const CODING_GUIDE_LANGS = [
+    { code: "en", label: "English",  href: "/?page=ai-coding-guide" },
+    { code: "es", label: "Español",  href: "/?page=ai-coding-guide-es" },
+    { code: "fr", label: "Français", href: "/?page=ai-coding-guide-fr" },
+    { code: "de", label: "Deutsch",  href: "/?page=ai-coding-guide-de" },
+];
+
+/** Language switcher shown on each version of the AI coding guide. */
+export function CodingGuideLangNav({ current = "en" }) {
+    return <LangNav langs={CODING_GUIDE_LANGS} current={current} />;
+}
+
 /** Page-top hero for a single tutorial. */
 export function TutorialHero({ eyebrow, title, intro, level, minutes }) {
     return (
