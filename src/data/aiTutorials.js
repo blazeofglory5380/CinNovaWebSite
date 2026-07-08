@@ -203,7 +203,7 @@ export const CREATOR_AI_PLATFORM_COLLECTIONS = [
         status: "Guide Planned",
         tutorials: [
             { title: "What is Higgsfield?" },
-            { title: "How to Set Up Higgsfield for AI Video Creation" },
+            { title: "How to Set Up Higgsfield for AI Video Creation", key: "higgsfield-ai-video-setup-guide", status: "Available" },
             { title: "How to Use Higgsfield Image Tools" },
             { title: "How to Use Higgsfield Video Tools" },
             { title: "How to Use Higgsfield Cinema Studio" },
@@ -683,7 +683,7 @@ export const AI_TUTORIAL_ROADMAP_100 = [
     { key: "rm-github-copilot", title: "How to Use GitHub Copilot for Coding", blurb: "Write and refactor code faster with GitHub Copilot.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Microsoft"], category: "Microsoft", topics: ["Coding"], priority: 2 },
 
     { key: "rm-what-is-higgsfield", title: "What is Higgsfield? Beginner Guide", blurb: "A plain-English intro to Higgsfield's creator studios.", level: "Intermediate", minutes: 10, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Creator Tools", "Video Creation"], priority: 2 },
-    { key: "rm-higgsfield-setup", title: "How to Set Up Higgsfield for AI Video Creation", blurb: "Set up Higgsfield and generate your first AI video, step by step.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Coming Next", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Setup", "Creator Tools"], priority: 1 },
+    { key: "higgsfield-ai-video-setup-guide", title: "How to Set Up Higgsfield for AI Video Creation", blurb: "Set up Higgsfield and generate your first AI video, step by step.", level: "Intermediate", minutes: 14, status: "Available", publishStatus: "Available", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Setup", "Creator Tools"], priority: 1 },
     { key: "rm-higgsfield-image-tools", title: "How to Use Higgsfield Image Tools", blurb: "Create images and stills with Higgsfield's image tools.", level: "Intermediate", minutes: 11, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Image Creation", "Creator Tools"], priority: 2 },
     { key: "rm-higgsfield-video-tools", title: "How to Use Higgsfield Video Tools", blurb: "Generate and refine video clips with Higgsfield's video tools.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 2 },
     { key: "rm-higgsfield-cinema-studio", title: "How to Use Higgsfield Cinema Studio", blurb: "Direct cinematic scenes with Higgsfield Cinema Studio.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 3 },

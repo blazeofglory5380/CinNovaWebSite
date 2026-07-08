@@ -226,6 +226,8 @@
     padding: 10px 12px;
 }
 .ait-creator-tut-title { font-size: 0.85rem; font-weight: 600; color: #0f172a; line-height: 1.35; }
+a.ait-creator-tut { text-decoration: none; transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; }
+a.ait-creator-tut:hover { border-color: #86efac; box-shadow: 0 6px 18px rgba(22, 163, 74, 0.12); transform: translateY(-2px); }
 
 .ait-creator-grid {
     display: grid;

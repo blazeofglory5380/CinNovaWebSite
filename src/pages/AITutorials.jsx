@@ -501,15 +501,29 @@ export default function AITutorials() {
                             </span>
                         </div>
                         <p className="ait-creator-count">
-                            {HIGGSFIELD.tutorials.length} planned {HIGGSFIELD.platform} tutorials
+                            {HIGGSFIELD.tutorials.length} {HIGGSFIELD.platform} tutorials
+                            {" · "}
+                            {HIGGSFIELD.tutorials.filter((t) => t.status === "Available").length} available now
                         </p>
                         <div className="ait-creator-tut-grid">
-                            {HIGGSFIELD.tutorials.map((t) => (
-                                <div className="ait-creator-tut" key={t.title}>
-                                    <span className="ait-creator-tut-title">{t.title}</span>
-                                    <span className="ait-chip ait-chip--gold">Planned</span>
-                                </div>
-                            ))}
+                            {HIGGSFIELD.tutorials.map((t) =>
+                                t.status === "Available" && t.key ? (
+                                    <a
+                                        className="ait-creator-tut"
+                                        key={t.title}
+                                        href={guideUrl(t.key)}
+                                        onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title })}
+                                    >
+                                        <span className="ait-creator-tut-title">{t.title}</span>
+                                        <span className="ait-chip ait-chip--green">Available →</span>
+                                    </a>
+                                ) : (
+                                    <div className="ait-creator-tut" key={t.title}>
+                                        <span className="ait-creator-tut-title">{t.title}</span>
+                                        <span className="ait-chip ait-chip--gold">Planned</span>
+                                    </div>
+                                ),
+                            )}
                         </div>
                     </div>
                 )}
