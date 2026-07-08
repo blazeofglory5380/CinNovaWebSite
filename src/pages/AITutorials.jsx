@@ -4,7 +4,19 @@ import "../App.css";
 import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { AI_TUTORIALS, AI_TOOL_TUTORIALS, CLAUDE_WORKFLOW_GUIDES, AI_CATEGORIES, AI_COMPANIES, CREATOR_AI_PLATFORM_COLLECTIONS } from "../data/aiTutorials.js";
+import {
+    AI_TUTORIALS,
+    AI_TOOL_TUTORIALS,
+    CLAUDE_WORKFLOW_GUIDES,
+    AI_CATEGORIES,
+    AI_COMPANIES,
+    CREATOR_AI_PLATFORM_COLLECTIONS,
+    WEEKLY_TUTORIAL_CARDS,
+    LEARNING_LEVELS,
+    LEARNING_TOPICS,
+    AI_PROJECT_TRACKS,
+    YOUTUBE_LEARNING_PATHS,
+} from "../data/aiTutorials.js";
 import { trackAiTutorialClick, trackEvent } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
@@ -25,6 +37,10 @@ const STATUS_CLASS = {
     "Guide Planned": "ait-chip--gold",
     "Coming Soon": "ait-chip--gray",
 };
+
+// Level chip color: Beginner = green, Intermediate = gold, Advanced = base blue.
+const LEVEL_CHIP = { Beginner: "ait-chip--green", Intermediate: "ait-chip--gold", Advanced: "" };
+const levelChip = (lv) => `ait-chip ${LEVEL_CHIP[lv] ?? "ait-chip--muted"}`.trim();
 
 // Hub-only presentation metadata for the guide finder: topic tags (for filtering)
 // and a short "Best for…" line. Keyed by guide key so guide data stays untouched.
@@ -123,12 +139,34 @@ export default function AITutorials() {
                 <p className="eyebrow">FREE · AI EDUCATION</p>
                 <h1>AI Tutorials</h1>
                 <p className="ait-hub-sub">
-                    Step-by-step guides for learning how to use AI tools for writing, research, coding,
-                    productivity, design, video, business automation, and safer decision-making.
+                    Learn AI by skill, company, creator tool, and project. Follow beginner-friendly tutorials
+                    for setup, creation, design, automation, coding, video, business workflows, and safe
+                    publishing across today's major AI platforms.
                 </p>
                 <div className="ait-hub-ctas">
                     <a className="primary-btn" href="#find-guide">Find the Right AI Guide</a>
                     <a className="ait-link-btn" href="#companies">Browse AI Companies</a>
+                </div>
+            </section>
+
+            {/* New Tutorial Every Week */}
+            <section className="section">
+                <div className="ait-section-head">
+                    <h2>New Tutorial Every Week</h2>
+                    <p>
+                        CinNova publishes a new AI tutorial every week. Start with beginner step-by-step guides,
+                        then move into intermediate workflows, advanced projects, creator tools, automation, and
+                        platform-specific tutorials.
+                    </p>
+                </div>
+                <div className="ait-weekly-grid">
+                    {WEEKLY_TUTORIAL_CARDS.map((c) => (
+                        <div className="ait-weekly-card" key={c.id}>
+                            <span className="ait-weekly-label">{c.label}</span>
+                            <p className="ait-weekly-title">{c.title}</p>
+                            <span className="ait-chip ait-chip--gold ait-weekly-status">{c.status}</span>
+                        </div>
+                    ))}
                 </div>
             </section>
 
@@ -210,6 +248,52 @@ export default function AITutorials() {
                         </div>
                     </div>
                 )}
+            </section>
+
+            {/* Browse by Level */}
+            <section className="section" id="browse-level">
+                <div className="ait-section-head">
+                    <h2>Browse by Level</h2>
+                    <p>
+                        Choose the path that matches your experience. Beginner guides are click-by-click,
+                        intermediate guides improve workflows, and advanced guides build full systems.
+                    </p>
+                </div>
+                <div className="ait-level-grid">
+                    {LEARNING_LEVELS.map((l) => (
+                        <div className="ait-level-card" key={l.id}>
+                            <span className={levelChip(l.level)}>{l.level}</span>
+                            <p>{l.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Browse by Topic */}
+            <section className="section" id="browse-topic">
+                <div className="ait-section-head">
+                    <h2>Browse by Topic</h2>
+                    <p>
+                        Find tutorials by what you want to learn: setup, prompting, video creation, design,
+                        coding, automation, business workflows, safety, SEO, and advanced project builds.
+                    </p>
+                </div>
+                <div className="ait-topic-grid">
+                    {LEARNING_TOPICS.map((t) => (
+                        <div className="ait-topic-card" key={t.id}>
+                            <div className="ait-topic-name">{t.topic}</div>
+                            <p className="ait-topic-desc">{t.description}</p>
+                            <div className="ait-topic-foot">
+                                <span className={`ait-chip ${t.status === "Available guides" ? "ait-chip--green" : "ait-chip--gray"}`}>
+                                    {t.status}
+                                </span>
+                                {t.levels?.map((lv) => (
+                                    <span className="ait-chip ait-chip--muted" key={lv}>{lv}</span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </section>
 
             {/* Multilingual starter pilot */}
@@ -362,6 +446,68 @@ export default function AITutorials() {
                             </CardTag>
                         );
                     })}
+                </div>
+            </section>
+
+            {/* Build Real AI Projects */}
+            <section className="section" id="projects">
+                <div className="ait-section-head">
+                    <h2>Build Real AI Projects</h2>
+                    <p>
+                        Move from tutorials to real builds. Follow beginner, intermediate, and advanced project
+                        tracks for websites, creator assets, automation, coding, real estate, and CinNova product systems.
+                    </p>
+                </div>
+                <div className="ait-track-grid">
+                    {AI_PROJECT_TRACKS.map((tr) => (
+                        <div className="ait-track-card" key={tr.id}>
+                            <div className="ait-track-head">
+                                <h3>{tr.title}</h3>
+                                <div className="ait-track-levels">
+                                    {tr.levels.map((lv) => (
+                                        <span className={levelChip(lv)} key={lv}>{lv}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <p className="ait-track-desc">{tr.description}</p>
+                            <ul className="ait-track-examples">
+                                {tr.examples.map((ex) => (
+                                    <li key={ex}>{ex}</li>
+                                ))}
+                            </ul>
+                            <span className="ait-track-cta">{tr.cta}</span>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* YouTube Learning Paths */}
+            <section className="section" id="youtube-paths">
+                <div className="ait-section-head">
+                    <h2>YouTube Learning Paths</h2>
+                    <p>
+                        Curated video learning paths that help you find the best AI tutorials faster — paired with
+                        CinNova checklists, prompts, and project steps.
+                    </p>
+                </div>
+                <div className="ait-yt-flow" aria-hidden="true">
+                    <span className="ait-chip ait-chip--muted">Watch</span>
+                    <span className="ait-yt-arrow">→</span>
+                    <span className="ait-chip ait-chip--muted">Do</span>
+                    <span className="ait-yt-arrow">→</span>
+                    <span className="ait-chip ait-chip--muted">Build</span>
+                </div>
+                <p className="ait-yt-note">
+                    CinNova curates, credits, and organizes the best videos — we never copy creators' tutorials —
+                    and adds our own checklists, prompts, and project steps.
+                </p>
+                <div className="ait-yt-grid">
+                    {YOUTUBE_LEARNING_PATHS.map((y) => (
+                        <div className="ait-yt-card" key={y.id}>
+                            <span className="ait-yt-title">{y.title}</span>
+                            <span className="ait-chip ait-chip--gray">{y.status}</span>
+                        </div>
+                    ))}
                 </div>
             </section>
 

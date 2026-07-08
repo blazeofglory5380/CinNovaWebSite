@@ -420,3 +420,192 @@ export const CREATOR_AI_PLATFORM_COLLECTIONS = [
         ],
     },
 ];
+
+/*
+ * ── BEGINNER TUTORIAL QUALITY RULE ────────────────────────────────────────
+ * Every beginner tutorial we publish must be CLICK-BY-CLICK and SCREEN-AWARE.
+ * Each beginner step must include:
+ *   - Where to look
+ *   - What to click
+ *   - What you should see
+ *   - If you do not see it
+ *   - Common mistake
+ *   - Screenshot placeholder
+ *
+ * Do NOT write vague steps like "Go to settings" or "Click create."
+ * Instead write, for example:
+ *   "Look in the left sidebar near the bottom of the screen for the gear icon
+ *    labeled Settings. Click it once. After clicking it, you should see a
+ *    settings panel open."
+ * ──────────────────────────────────────────────────────────────────────────
+ */
+
+/** Weekly cadence cards for the hub (planned/placeholder content for now). */
+export const WEEKLY_TUTORIAL_CARDS = [
+    {
+        id: "this-week",
+        label: "This Week's Tutorial",
+        title: "How to Set Up Your First AI Workspace",
+        status: "Planned",
+    },
+    {
+        id: "next-week",
+        label: "Coming Next Week",
+        title: "How to Use Higgsfield for AI Video Creation — Beginner Guide",
+        status: "Planned",
+    },
+    {
+        id: "roadmap",
+        label: "Tutorial Roadmap",
+        title: "100 planned tutorials across AI platforms, creator tools, automation, coding, design, business, and project builds.",
+        status: "Planned",
+    },
+];
+
+/** Browse by Level — learning paths matched to experience. */
+export const LEARNING_LEVELS = [
+    {
+        id: "beginner",
+        level: "Beginner",
+        description: "Start here if you are new to AI. These tutorials explain every screen, button, menu, and step.",
+    },
+    {
+        id: "intermediate",
+        level: "Intermediate",
+        description: "Improve your results with better prompts, tool combinations, reusable workflows, and practical project systems.",
+    },
+    {
+        id: "advanced",
+        level: "Advanced",
+        description: "Build full AI systems for automation, business workflows, content pipelines, agents, SEO, and product launches.",
+    },
+];
+
+/** Browse by Topic — status is "Available guides" (guides exist) or "Planned path". */
+export const LEARNING_TOPICS = [
+    { id: "ai-basics", topic: "AI Basics", description: "What AI can and can't do, key terms, and how to get useful answers.", status: "Available guides", levels: ["Beginner"] },
+    { id: "setup", topic: "Setup", description: "Create accounts, find the right settings, and get any AI tool ready to use.", status: "Planned path", levels: ["Beginner"] },
+    { id: "prompting", topic: "Prompting", description: "Structure clear instructions so tools return what you actually need.", status: "Available guides", levels: ["Beginner", "Intermediate"] },
+    { id: "research", topic: "Research", description: "Draft outlines, gather leads, summarize notes, and verify facts.", status: "Available guides", levels: ["Beginner", "Intermediate"] },
+    { id: "image-creation", topic: "Image Creation", description: "Turn descriptions into images and iterate on visual ideas.", status: "Planned path", levels: ["Beginner", "Intermediate"] },
+    { id: "video-creation", topic: "Video Creation", description: "Generate and edit short cinematic video from text and images.", status: "Planned path", levels: ["Beginner", "Intermediate", "Advanced"] },
+    { id: "design", topic: "Design", description: "Create graphics, layouts, and brand-consistent visuals with AI.", status: "Available guides", levels: ["Beginner", "Intermediate"] },
+    { id: "website-building", topic: "Website Building", description: "Plan, write, and design websites with AI, then hand off to build.", status: "Available guides", levels: ["Intermediate"] },
+    { id: "coding", topic: "Coding", description: "Plan projects, generate functions, and debug code safely.", status: "Available guides", levels: ["Beginner", "Intermediate", "Advanced"] },
+    { id: "automation", topic: "Automation", description: "Connect tools and automate repetitive back-office work.", status: "Planned path", levels: ["Intermediate", "Advanced"] },
+    { id: "business-workflows", topic: "Business Workflows", description: "Positioning, content, launches, and client-facing systems.", status: "Available guides", levels: ["Intermediate", "Advanced"] },
+    { id: "creator-tools", topic: "Creator Tools", description: "Video, image, voice, music, and avatar tools for creators.", status: "Planned path", levels: ["Beginner", "Intermediate", "Advanced"] },
+    { id: "social-media", topic: "Social Media", description: "Plan, script, and produce short-form and social content.", status: "Planned path", levels: ["Beginner", "Intermediate"] },
+    { id: "real-estate-ai", topic: "Real Estate AI", description: "Analyze deals, score properties, and support investor decisions.", status: "Planned path", levels: ["Intermediate"] },
+    { id: "safety-privacy", topic: "Safety & Privacy", description: "Protect private data, check output, and use AI responsibly.", status: "Planned path", levels: ["Beginner"] },
+    { id: "youtube-paths", topic: "YouTube Learning Paths", description: "Curated video paths paired with CinNova checklists and prompts.", status: "Planned path", levels: ["Beginner", "Intermediate"] },
+    { id: "monetization-seo", topic: "Monetization & SEO", description: "Rank content, generate leads, and turn AI skills into income.", status: "Planned path", levels: ["Intermediate", "Advanced"] },
+    { id: "project-builds", topic: "Project Builds", description: "End-to-end builds that turn tutorials into real systems.", status: "Planned path", levels: ["Intermediate", "Advanced"] },
+];
+
+/** Build Real AI Projects — hands-on tracks (planned). */
+export const AI_PROJECT_TRACKS = [
+    {
+        id: "website-builder",
+        title: "AI Website Builder Track",
+        description: "Design and ship pages that convert — landing pages, hero sections, hubs, and lead tools.",
+        levels: ["Beginner", "Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Build a Product Landing Page with AI",
+            "Build a Cinematic Homepage Hero with AI",
+            "Build an AI Tutorial Hub",
+            "Build a Resource Hub That Ranks on Google",
+            "Build a Free Tool Page for Lead Generation",
+        ],
+    },
+    {
+        id: "creator",
+        title: "AI Creator Track",
+        description: "Produce cinematic video, brand kits, and consistent characters with AI creator tools.",
+        levels: ["Beginner", "Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Build a Cinematic Asset Library",
+            "Create a Full Brand Kit with AI",
+            "Create Website Hero Videos for Multiple Products",
+            "Create a Product Launch Video Pack",
+            "Create Consistent Characters for a Story or Game",
+        ],
+    },
+    {
+        id: "business-automation",
+        title: "AI Business Automation Track",
+        description: "Automate research, intake, reports, and launch content across your back office.",
+        levels: ["Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Automate Blog Research and Outlines",
+            "Automate Client Intake Forms",
+            "Automate Spreadsheet Reports",
+            "Automate Product Launch Content",
+            "Build a Newsletter Growth System",
+        ],
+    },
+    {
+        id: "real-estate",
+        title: "AI Real Estate Track",
+        description: "Build lead magnets, calculators, and follow-up systems for real estate.",
+        levels: ["Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Build a Real Estate AI Lead Magnet",
+            "Build a Rental Property Calculator Funnel",
+            "Build a Contractor Estimate Assistant",
+            "Automate Real Estate Follow-Ups",
+            "Build a Property Analysis Dashboard Concept",
+        ],
+    },
+    {
+        id: "coding-app",
+        title: "AI Coding and App Track",
+        description: "Go from idea to working prototype with AI coding tools — safely reviewed.",
+        levels: ["Beginner", "Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Build a Landing Page with Cursor",
+            "Build a Simple AI App with Replit",
+            "Build a Free Calculator Tool",
+            "Turn an App Idea into a Working Prototype",
+            "Review AI-Generated Code Safely",
+        ],
+    },
+    {
+        id: "cinnova-product",
+        title: "CinNova Product Project Track",
+        description: "Build content and asset systems across the CinNova product ecosystem.",
+        levels: ["Intermediate", "Advanced"],
+        cta: "Project track planned",
+        examples: [
+            "Build a PoisonGuard Safety Content System",
+            "Build a Kiddo Learning Asset Pipeline",
+            "Build a Real Estate AI Lead Magnet",
+            "Build a TechMate AI Support Workflow",
+            "Build a Nightmare Forest Game Asset Pipeline",
+            "Build the CinNova Cinematic Asset Library",
+        ],
+    },
+];
+
+/**
+ * YouTube Learning Paths — Watch → Do → Build. These pages CURATE, CREDIT, and
+ * organize the best existing videos and add CinNova's own checklists, prompts,
+ * and project steps. We never copy or reproduce creators' tutorials.
+ */
+export const YOUTUBE_LEARNING_PATHS = [
+    { id: "yt-chatgpt", title: "Best YouTube Tutorials for ChatGPT", status: "Planned path" },
+    { id: "yt-claude", title: "Best YouTube Tutorials for Claude", status: "Planned path" },
+    { id: "yt-google", title: "Best YouTube Tutorials for Google AI", status: "Planned path" },
+    { id: "yt-higgsfield", title: "Best YouTube Tutorials for Higgsfield", status: "Planned path" },
+    { id: "yt-runway", title: "Best YouTube Tutorials for Runway", status: "Planned path" },
+    { id: "yt-canva", title: "Best YouTube Tutorials for Canva AI", status: "Planned path" },
+    { id: "yt-cursor", title: "Best YouTube Tutorials for Cursor and AI Coding", status: "Planned path" },
+    { id: "yt-automation", title: "Best YouTube Tutorials for AI Automation", status: "Planned path" },
+    { id: "yt-web-design", title: "Best YouTube Tutorials for AI Website Design", status: "Planned path" },
+    { id: "yt-business", title: "Best YouTube Tutorials for AI Business Workflows", status: "Planned path" },
+];
