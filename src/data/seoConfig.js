@@ -71,6 +71,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "ai-research-guide-fr", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-research-guide-de", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
+    { key: "ai-workspace-setup-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-es", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-fr", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-de", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },

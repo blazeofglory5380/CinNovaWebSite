@@ -123,6 +123,30 @@ export function PromptExample({ label, children }) {
     );
 }
 
+/**
+ * A labeled detail row for click-by-click, screen-aware beginner steps.
+ * Use inside <Step> with labels like "Where to look", "What to click",
+ * "What you should see", "If you don't see it", "Common mistake".
+ */
+export function StepDetail({ label, children }) {
+    return (
+        <div className="ait-stepdetail">
+            <span className="ait-stepdetail-label">{label}</span>
+            <div className="ait-stepdetail-body">{children}</div>
+        </div>
+    );
+}
+
+/** A screenshot placeholder block for beginner tutorials. */
+export function ScreenshotPlaceholder({ children }) {
+    return (
+        <div className="ait-shot">
+            <span className="ait-shot-icon" aria-hidden="true">📷</span>
+            <span className="ait-shot-text">{children}</span>
+        </div>
+    );
+}
+
 /** FAQ list rendered as accessible detail/summary items. */
 export function FAQ({ items }) {
     return (

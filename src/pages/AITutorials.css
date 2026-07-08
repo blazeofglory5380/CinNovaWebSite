@@ -266,6 +266,53 @@ div.ait-creator-card .ait-creator-card-cta { color: #94a3b8; }
     .ait-creator-grid { grid-template-columns: 1fr; }
 }
 
+/* ── Beginner step details (click-by-click, screen-aware) ── */
+.ait-stepdetail {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    gap: 4px 16px;
+    padding: 9px 0;
+    border-top: 1px solid #f1f5f9;
+}
+.ait-stepdetail:first-child { border-top: 0; padding-top: 2px; }
+.ait-stepdetail-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #2563eb;
+    padding-top: 2px;
+}
+.ait-stepdetail-body { color: #475569; font-size: 0.9rem; line-height: 1.55; }
+.ait-stepdetail-body p { margin: 0; }
+
+.ait-shot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 13px 16px;
+    border: 1.5px dashed #bfdbfe;
+    border-radius: 12px;
+    background: #f8fbff;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+.ait-shot-icon { font-size: 1.1rem; line-height: 1; }
+
+.ait-note-line {
+    color: #64748b;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+    .ait-stepdetail { grid-template-columns: 1fr; gap: 2px; }
+}
+
 /* ── 100 Tutorial Roadmap ── */
 .ait-roadmap-stats { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
 .ait-roadmap-stat {
