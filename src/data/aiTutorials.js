@@ -214,7 +214,7 @@ export const CREATOR_AI_PLATFORM_COLLECTIONS = [
             { title: "How to Use Higgsfield Viral Presets" },
             { title: "How to Use Higgsfield Canvas" },
             { title: "How to Use Higgsfield MCP & CLI" },
-            { title: "How to Create Website Hero Videos with Higgsfield" },
+            { title: "How to Create Website Hero Videos with Higgsfield", key: "higgsfield-website-hero-video-guide", status: "Available" },
             { title: "How to Create Social Media Ads with Higgsfield" },
             { title: "How to Create Character Motion Shots with Higgsfield" },
             { title: "Higgsfield vs Runway vs Google Flow", key: "higgsfield-vs-runway-vs-google-flow", status: "Available" },
@@ -690,7 +690,7 @@ export const AI_TUTORIAL_ROADMAP_100 = [
     { key: "rm-higgsfield-cinema-studio", title: "How to Use Higgsfield Cinema Studio", blurb: "Direct cinematic scenes with Higgsfield Cinema Studio.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 3 },
     { key: "rm-higgsfield-shorts-studio", title: "How to Use Higgsfield Shorts Studio", blurb: "Produce short-form video with Higgsfield Shorts Studio.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Social Media", "Video Creation"], priority: 3 },
     { key: "rm-higgsfield-marketing-studio", title: "How to Use Higgsfield Marketing Studio", blurb: "Create marketing videos and ads with Higgsfield Marketing Studio.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Business Workflows", "Video Creation"], priority: 3 },
-    { key: "rm-higgsfield-hero-videos", title: "How to Create Website Hero Videos with Higgsfield", blurb: "Produce a cinematic website hero video with Higgsfield.", level: "Intermediate", minutes: 14, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Website Building"], priority: 1 },
+    { key: "higgsfield-website-hero-video-guide", title: "How to Create Website Hero Videos with Higgsfield", blurb: "Produce a cinematic website hero video with Higgsfield.", level: "Intermediate", minutes: 14, status: "Available", publishStatus: "Available", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Website Building"], priority: 1 },
     { key: "rm-higgsfield-character-motion", title: "How to Create Character Motion Shots with Higgsfield", blurb: "Animate characters and motion shots with Higgsfield.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 3 },
     { key: "higgsfield-vs-runway-vs-google-flow", title: "Higgsfield vs Runway vs Google Flow", blurb: "Compare three AI video tools to pick the right one for your project.", level: "Intermediate", minutes: 12, status: "Available", publishStatus: "Available", platforms: ["Higgsfield", "Runway", "Google AI"], category: "Creator Tools", topics: ["Video Creation"], priority: 2 },
 

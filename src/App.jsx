@@ -29,6 +29,7 @@ import HiggsfieldAIVideoSetupGuide from "./pages/HiggsfieldAIVideoSetupGuide.jsx
 import RunwayAIVideoGuide from "./pages/RunwayAIVideoGuide.jsx";
 import HiggsfieldRunwayGoogleFlowComparison from "./pages/HiggsfieldRunwayGoogleFlowComparison.jsx";
 import CinNovaCinematicAssetLibraryGuide from "./pages/CinNovaCinematicAssetLibraryGuide.jsx";
+import HiggsfieldWebsiteHeroVideoGuide from "./pages/HiggsfieldWebsiteHeroVideoGuide.jsx";
 import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
 import ClaudeBeginnerGuide from "./pages/ClaudeBeginnerGuide.jsx";
 import GeminiBeginnerGuide from "./pages/GeminiBeginnerGuide.jsx";
@@ -570,6 +571,7 @@ function App() {
             {page === "runway-ai-video-guide" && <RunwayAIVideoGuide />}
             {page === "higgsfield-vs-runway-vs-google-flow" && <HiggsfieldRunwayGoogleFlowComparison />}
             {page === "cinnova-cinematic-asset-library-guide" && <CinNovaCinematicAssetLibraryGuide />}
+            {page === "higgsfield-website-hero-video-guide" && <HiggsfieldWebsiteHeroVideoGuide />}
             {page === "chatgpt-beginner-guide" && <ChatGPTBeginnerGuide />}
             {page === "claude-beginner-guide" && <ClaudeBeginnerGuide />}
             {page === "gemini-beginner-guide" && <GeminiBeginnerGuide />}
