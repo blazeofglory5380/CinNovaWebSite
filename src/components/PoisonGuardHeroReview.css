@@ -1,17 +1,19 @@
 /*
- * PoisonGuardHeroReview — approved image-based PoisonGuard hero with animated
- * overlays.
+ * PoisonGuardHeroReview — cinematic video-background PoisonGuard hero.
  *
- * Left = REAL HTML copy/buttons. Right = the approved PoisonGuard scene image
- * (public/images/products/poisonguard/poisonguard-hero-approved-v1.png), cropped
- * to the right ~70% so the baked-in left text is clipped out and replaced by the
- * real copy, while the full scanner platform stays visible. The scene is
- * frameless — an all-edge mask feathers it into the hero background. Animated
- * `mix-blend-mode: screen` overlays (emerald scan rings/beam, leaf breeze, amber
- * base lights, status-card glow, hologrid shimmer, lens/logo glow, particles)
- * sit on top; the lens/core glow parallax toward the cursor. Scoped under
- * `.pgr-hero`; `pgr-`-prefixed keyframes. React + CSS only, responsive,
- * prefers-reduced-motion aware.
+ * A full-bleed looping clip (public/videos/cinnova-poisonguard-blog-hero.mp4,
+ * 1280x720 / 16:9) is the dominant visual. The overlay copy is split into two
+ * small corner blocks — brand + headline + CTAs at TOP-LEFT, supporting message
+ * + audience chips at TOP-RIGHT — so the lower-left (child), center (protected
+ * food island + shield), and lower-right (glowing plant/device) stay clear.
+ * Only the two top corners get a subtle radial scrim for readability; there is
+ * no full-frame dark overlay, so the video stays bright. `object-fit: cover` +
+ * `object-position: center` keep the central composition uncropped and remove
+ * any letterbox side bars.
+ *
+ * On mobile the layout stacks: the video shows in full (16:9, uncropped) with
+ * the two text blocks below it. Scoped under `.pgr-hero`; `pgr-` keyframes.
+ * React + CSS only, responsive, prefers-reduced-motion aware.
  */
 
 .pgr-hero {
@@ -30,279 +32,144 @@
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    padding: clamp(28px, 4vw, 64px) clamp(18px, 5vw, 72px);
-    background: radial-gradient(120% 100% at 72% 40%, #08160f 0%, #05100b 52%, #030805 100%);
+    min-height: clamp(520px, 64vh, 760px);
+    background: #05100b;                          /* dark fallback before the video paints */
     color: var(--pgr-ink);
     font-family: var(--pgr-font);
     overflow: hidden;
     isolation: isolate;
 }
 
-.pgr-hero .pgr-inner {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1320px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
-    align-items: center;
-    gap: clamp(28px, 4vw, 60px);
-    animation: pgr-fade 1s ease-out both;
+/* ── Full-bleed cinematic video background ─────────────────────────── */
+.pgr-hero .pgr-media { position: absolute; inset: 0; z-index: 0; }
+.pgr-hero .pgr-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;                           /* fills edge-to-edge — no black side bars */
+    object-position: center;                     /* keep the central child/shield/food-island subject */
+    display: block;
+    background: #05100b;
 }
 
-/* ── Left: real HTML copy ──────────────────────────────────────────── */
-.pgr-hero .pgr-copy { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+/* Corner-only scrims — subtle, so the video stays bright and the center/lower
+   thirds are never darkened. */
+.pgr-hero .pgr-scrim { position: absolute; pointer-events: none; z-index: 1; }
+.pgr-hero .pgr-scrim--tl {
+    top: 0; left: 0; width: min(62%, 660px); height: min(72%, 460px);
+    background: radial-gradient(125% 125% at 0% 0%, rgba(3, 10, 7, 0.58) 0%, rgba(3, 10, 7, 0.30) 42%, transparent 74%);
+}
+.pgr-hero .pgr-scrim--tr {
+    top: 0; right: 0; width: min(46%, 470px); height: min(54%, 320px);
+    background: radial-gradient(120% 120% at 100% 0%, rgba(3, 10, 7, 0.50) 0%, rgba(3, 10, 7, 0.22) 42%, transparent 74%);
+}
+
+/* ── Corner copy blocks ────────────────────────────────────────────── */
+.pgr-hero .pgr-corner {
+    position: absolute; z-index: 2;
+    display: flex; flex-direction: column;
+    animation: pgr-fade 1s ease-out both;
+}
+.pgr-hero .pgr-corner--tl {
+    top: clamp(22px, 3.5vw, 48px); left: clamp(18px, 5vw, 64px);
+    max-width: clamp(268px, 33vw, 400px);
+    gap: 14px; align-items: flex-start;
+}
+.pgr-hero .pgr-corner--tr {
+    top: clamp(22px, 3.5vw, 48px); right: clamp(18px, 5vw, 64px);
+    max-width: clamp(210px, 24vw, 300px);
+    gap: 12px; align-items: flex-end; text-align: right;
+}
+
+/* ── Top-left: eyebrow ─────────────────────────────────────────────── */
 .pgr-hero .pgr-eyebrow {
-    display: inline-flex; align-items: center; gap: 10px; width: fit-content;
-    margin: 0; padding: 7px 14px; border-radius: 100px;
-    background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(110, 231, 183, 0.32);
-    font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 9px; width: fit-content;
+    margin: 0; padding: 6px 12px; border-radius: 100px;
+    background: rgba(5, 20, 13, 0.42); border: 1px solid rgba(110, 231, 183, 0.36);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--pgr-emerald-lt);
 }
-.pgr-hero .pgr-eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 10px 2px rgba(52, 211, 153, 0.85); animation: pgr-blink 2.4s ease-in-out infinite; }
+.pgr-hero .pgr-eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 10px 2px rgba(52, 211, 153, 0.85); animation: pgr-blink 2.4s ease-in-out infinite; }
+
+/* ── Top-left: headline (much smaller, narrow) ─────────────────────── */
 .pgr-hero .pgr-title {
     margin: 0; font-weight: 800; letter-spacing: -0.02em;
-    font-size: clamp(32px, 4.4vw, 58px); line-height: 1.04; color: #fff;
-    text-shadow: 0 2px 40px rgba(3, 12, 8, 0.6);
+    font-size: clamp(22px, 2.7vw, 34px); line-height: 1.1; color: #fff;
+    text-shadow: 0 1px 12px rgba(2, 8, 5, 0.42);
 }
 .pgr-hero .pgr-title__grad {
     background: linear-gradient(100deg, var(--pgr-emerald-lt) 0%, var(--pgr-emerald) 55%, var(--pgr-emerald-deep) 100%);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+    /* Whisper-soft ambient shadow only — no heavy outline on the green words. */
+    text-shadow: 0 1px 6px rgba(2, 8, 5, 0.12);
 }
-.pgr-hero .pgr-lede { margin: 0; max-width: 520px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.7; color: var(--pgr-dim); text-wrap: pretty; }
 
-.pgr-hero .pgr-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+/* ── Top-left: CTAs (compact) ──────────────────────────────────────── */
+.pgr-hero .pgr-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2px; }
 .pgr-hero .pgr-btn {
-    display: inline-flex; align-items: center; gap: 9px; padding: 15px 28px; border-radius: 14px;
-    font-size: 15.5px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 12px;
+    font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent;
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 .pgr-hero .pgr-btn--primary {
     color: #04140c;
     background: linear-gradient(120deg, var(--pgr-emerald) 0%, #22c58a 55%, var(--pgr-emerald-deep) 100%);
-    box-shadow: 0 10px 34px rgba(16, 185, 129, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 26px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
-.pgr-hero .pgr-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 16px 46px rgba(16, 185, 129, 0.58); }
+.pgr-hero .pgr-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(16, 185, 129, 0.56); }
 .pgr-hero .pgr-btn--ghost {
-    color: var(--pgr-dim-2); background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(110, 200, 160, 0.32); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    color: #eaf7ef; background: rgba(5, 18, 12, 0.42);
+    border-color: rgba(110, 200, 160, 0.4); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
-.pgr-hero .pgr-btn--ghost:hover { transform: translateY(-2px); border-color: rgba(110, 231, 183, 0.6); color: #fff; }
+.pgr-hero .pgr-btn--ghost:hover { transform: translateY(-2px); border-color: rgba(110, 231, 183, 0.7); color: #fff; }
 
-.pgr-hero .pgr-benefits { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 22px; }
-.pgr-hero .pgr-benefit { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #bcd8c8; }
-.pgr-hero .pgr-benefit__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pgr-emerald); box-shadow: 0 0 8px rgba(52, 211, 153, 0.8); }
-
-/* ── Right: frameless scene that dissolves into the hero background ─── */
-.pgr-hero .pgr-window {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1.24 / 1;        /* shows the right ~70% of the image; left edge lands at image-x ~0.30, well left of the status cards (~0.44) so they sit fully inside the frame with breathing room */
-    overflow: hidden;              /* clips the left overflow of the wider scene */
-    isolation: isolate;
-    background: transparent;       /* no panel: the edge fades reveal the hero background */
-    /* Feather EVERY edge so the scene merges into the dark emerald hero instead of
-       sitting in a boxed card. Two gradients (horizontal + vertical) intersected:
-       - left fade is wider and clears by ~15.5% to also hide the baked-in headline
-         (which ends ~13% of the window) while keeping the left cards (~16-20%) bright
-       - right/top/bottom feather softly into the atmosphere. */
-    -webkit-mask-image:
-        linear-gradient(90deg, transparent 0%, transparent 13%, #000 15.5%, #000 92%, transparent 100%),
-        linear-gradient(180deg, transparent 0%, #000 11%, #000 86%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-        linear-gradient(90deg, transparent 0%, transparent 13%, #000 15.5%, #000 92%, transparent 100%),
-        linear-gradient(180deg, transparent 0%, #000 11%, #000 86%, transparent 100%);
-    mask-composite: intersect;
-    animation: pgr-fade 1.1s ease-out 0.1s both;
-}
-/* soft emerald ground atmosphere so the platform reads as living in the scene */
-.pgr-hero .pgr-window::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    background: radial-gradient(120% 78% at 55% 90%, rgba(24, 96, 64, 0.18) 0%, transparent 56%);
-    mix-blend-mode: screen;
-}
-.pgr-hero .pgr-scene {
-    --pgr-lx: 0px; --pgr-ly: 0px; --pgr-cx: 0px; --pgr-cy: 0px;   /* cursor parallax */
-    position: absolute; top: 0; right: 0; height: 100%;
-    aspect-ratio: 1672 / 941;      /* full image; wider than window -> left clipped */
-}
-.pgr-hero .pgr-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 0; background-color: #050f0a; }
-
-/* Breeze layer: a masked duplicate of the image revealing only the leaf, gently
-   swaying/floating so the leaf reads as moving in a soft breeze while the rest
-   of the (flat) scene stays still. Rotates from the stem base. */
-.pgr-hero .pgr-leaf-layer {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    display: block; z-index: 0; pointer-events: none;
-    -webkit-mask-image: radial-gradient(ellipse 14% 19% at 65% 45%, #000 46%, transparent 80%);
-    mask-image: radial-gradient(ellipse 14% 19% at 65% 45%, #000 46%, transparent 80%);
-    transform-origin: 65% 61%;
-    will-change: transform;
-    animation: pgr-breeze 8.5s ease-in-out infinite;
+/* ── Top-right: supporting message ─────────────────────────────────── */
+.pgr-hero .pgr-support {
+    margin: 0; font-size: clamp(12.5px, 0.95vw, 14.5px); line-height: 1.55;
+    color: var(--pgr-dim-2); text-wrap: pretty;
+    text-shadow: 0 1px 10px rgba(2, 8, 5, 0.55);
 }
 
-/* drifting emerald light particles for ambient life */
-.pgr-hero .pgr-particle {
-    position: absolute; z-index: 1; width: 3px; height: 3px; border-radius: 50%;
-    background: var(--pgr-emerald-lt); box-shadow: 0 0 8px 1px currentColor;
-    mix-blend-mode: screen; opacity: 0; pointer-events: none;
-    animation: pgr-drift linear infinite;
+/* ── Top-right: audience chips (small, premium pills) ──────────────── */
+.pgr-hero .pgr-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.pgr-hero .pgr-chip {
+    padding: 5px 12px; border-radius: 100px;
+    background: rgba(5, 20, 13, 0.4); border: 1px solid rgba(110, 231, 183, 0.3);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #d3e8dc;
 }
-
-/* ── Overlays (positioned as % of the full image) ──────────────────── */
-.pgr-hero .pgr-ov { position: absolute; pointer-events: none; mix-blend-mode: screen; z-index: 1; }
-.pgr-hero .pgr-ov--radial { border-radius: 50%; transform: translate(-50%, -50%); aspect-ratio: 1 / 1; }
-
-/* holographic grid shimmer sweep */
-.pgr-hero .pgr-ov--shimmer {
-    inset: 0;
-    background: linear-gradient(115deg, transparent 36%, rgba(110, 231, 183, 0.12) 47%, rgba(94, 234, 212, 0.1) 53%, transparent 64%);
-    background-size: 220% 100%;
-    animation: pgr-shim 8s linear infinite;
-}
-/* ambient emerald atmosphere — cinematic background breathing glow */
-.pgr-hero .pgr-ov--emerald { left: 64%; top: 52%; width: 64%; background: radial-gradient(circle, rgba(46, 205, 145, 0.6) 0%, rgba(34, 170, 120, 0.24) 44%, transparent 70%); filter: blur(20px); animation: pgr-breathe 10s ease-in-out infinite; }
-/* a wider, slower emerald wash so the whole scene feels alive */
-.pgr-hero .pgr-ov--emerald-wide { left: 62%; top: 46%; width: 92%; background: radial-gradient(circle, rgba(30, 150, 105, 0.28) 0%, transparent 66%); filter: blur(28px); animation: pgr-breathe 15s ease-in-out 1.5s infinite; }
-/* amber ambient wash + bloom on the base/warning accents */
-.pgr-hero .pgr-ov--amber { left: 66%; top: 80%; width: 50%; background: radial-gradient(circle, rgba(245, 158, 11, 0.46) 0%, rgba(245, 158, 11, 0.16) 45%, transparent 72%); filter: blur(14px); animation: pgr-bloom 4.6s ease-in-out 0.6s infinite; }
-/* card-band soft glow */
-.pgr-hero .pgr-ov--cards { left: 68%; top: 30%; width: 56%; background: radial-gradient(ellipse 60% 46% at 50% 50%, rgba(90, 220, 160, 0.18), transparent 70%); filter: blur(6px); animation: pgr-pulse 7s ease-in-out 0.6s infinite; }
-
-/* floating scanner lens glow — brighter luminous bloom (parallaxes to cursor) */
-.pgr-hero .pgr-ov--lens {
-    left: 68%; top: 18.5%; width: 15%;
-    background: radial-gradient(circle, rgba(180, 255, 235, 0.95) 0%, rgba(120, 255, 210, 0.6) 32%, rgba(46, 205, 145, 0.32) 55%, transparent 72%);
-    filter: blur(3px);
-    animation: pgr-lens 3.6s ease-in-out infinite;
-    transform: translate(calc(-50% + var(--pgr-lx)), calc(-50% + var(--pgr-ly)));
-    transition: transform 0.5s ease-out;
-}
-/* scan beam from the lens down onto the leaves — luminous, slightly volumetric */
-.pgr-hero .pgr-ov--beam {
-    left: 67.5%; top: 21%; width: 7.5%; height: 34%;
-    transform: translate(calc(-50% + var(--pgr-lx)), 0);
-    transition: transform 0.5s ease-out;
-    background: linear-gradient(180deg, rgba(190, 255, 235, 0.7) 0%, rgba(120, 255, 210, 0.5) 34%, rgba(46, 205, 145, 0.24) 66%, transparent 100%);
-    filter: blur(5px);
-    border-radius: 46% 46% 40% 40%;
-    animation: pgr-beam 3.2s ease-in-out infinite;
-}
-/* tight inner beam core for a brighter volumetric shaft */
-.pgr-hero .pgr-ov--beam-core {
-    left: 67.5%; top: 21%; width: 2.6%; height: 32%;
-    transform: translate(calc(-50% + var(--pgr-lx)), 0);
-    transition: transform 0.5s ease-out;
-    background: linear-gradient(180deg, rgba(220, 255, 245, 0.9) 0%, rgba(150, 255, 220, 0.5) 45%, transparent 100%);
-    filter: blur(2px);
-    border-radius: 50%;
-    animation: pgr-beam 3.2s ease-in-out 0.2s infinite;
-}
-/* soft light spill where the beam lands on the leaf + platform */
-.pgr-hero .pgr-ov--spill {
-    left: 65.5%; top: 52%; width: 30%;
-    background: radial-gradient(ellipse 60% 70% at 50% 46%, rgba(150, 255, 215, 0.4) 0%, rgba(46, 205, 145, 0.2) 42%, transparent 72%);
-    filter: blur(7px);
-    animation: pgr-lens 5s ease-in-out 0.4s infinite;
-}
-/* emerald leaf scan pulse */
-.pgr-hero .pgr-ov--leaf { left: 66%; top: 50%; width: 20%; background: radial-gradient(circle, rgba(80, 240, 170, 0.44), transparent 66%); filter: blur(5px); animation: pgr-pulse 4.4s ease-in-out infinite; }
-/* emerald core glow around scanner (parallax) */
-.pgr-hero .pgr-ov--core {
-    left: 66%; top: 58%; width: 26%;
-    background: radial-gradient(circle, rgba(94, 234, 212, 0.5) 0%, rgba(46, 200, 140, 0.28) 46%, transparent 70%);
-    filter: blur(5px);
-    animation: pgr-core 4.2s ease-in-out infinite;
-    transform: translate(calc(-50% + var(--pgr-cx)), calc(-50% + var(--pgr-cy)));
-    transition: transform 0.6s ease-out;
-}
-/* expanding emerald scanner ring */
-.pgr-hero .pgr-ov--ring {
-    left: 66%; top: 60%; width: 32%;
-    border-radius: 50%; border: 2px solid rgba(94, 234, 212, 0.5);
-    transform: translate(-50%, -50%) scale(0.42); aspect-ratio: 1 / 1;
-    animation: pgr-ringpulse 4.4s ease-out infinite;
-}
-.pgr-hero .pgr-ov--ring.pgr-ov--ring-2 { animation-delay: 2.2s; border-color: rgba(52, 211, 153, 0.45); }
-/* amber warning lights along the scanner base — soft bloom pulse */
-.pgr-hero .pgr-ov--base {
-    left: 47%; right: 12%; bottom: 8%; height: 16%; transform: none;
-    background: radial-gradient(80% 100% at 55% 60%, rgba(253, 200, 70, 0.7) 0%, rgba(245, 158, 11, 0.38) 38%, transparent 74%);
-    filter: blur(5px);
-    animation: pgr-bloom 3.2s ease-in-out infinite;
-}
-/* subtle emerald glow on the "POISONGUARD" platform logo mark */
-.pgr-hero .pgr-ov--logo {
-    left: 65%; top: 68%; width: 16%; height: 6%;
-    border-radius: 50%; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(110, 231, 183, 0.4) 0%, rgba(52, 211, 153, 0.16) 45%, transparent 74%);
-    filter: blur(4px);
-    animation: pgr-pulse 5.4s ease-in-out 0.8s infinite;
-}
-
-/* per-card glow spots (5 emerald + 1 amber for TOXIC PLANT) */
-.pgr-hero .pgr-ov--card { width: 5%; filter: blur(3px); animation: pgr-cardpulse 3.4s ease-in-out infinite; }
-.pgr-hero .pgr-ov--card { background: radial-gradient(circle, rgba(90, 235, 165, 0.8) 0%, rgba(52, 211, 153, 0.3) 44%, transparent 70%); }
-.pgr-hero .pgr-ov--card.pgr-ov--card-warn { background: radial-gradient(circle, rgba(251, 191, 36, 0.85) 0%, rgba(245, 158, 11, 0.32) 44%, transparent 70%); }
 
 /* ── Keyframes ─────────────────────────────────────────────────────── */
-@keyframes pgr-fade { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pgr-fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes pgr-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-@keyframes pgr-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
-@keyframes pgr-cardpulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
-@keyframes pgr-breathe { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
-@keyframes pgr-core { 0%, 100% { opacity: 0.65; filter: blur(5px) brightness(1); } 50% { opacity: 1; filter: blur(5px) brightness(1.4); } }
-@keyframes pgr-lens { 0%, 100% { opacity: 0.8; filter: blur(3px) brightness(1); } 50% { opacity: 1; filter: blur(3px) brightness(1.45); } }
-@keyframes pgr-beam { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.85; } }
-@keyframes pgr-ringpulse { 0% { transform: translate(-50%, -50%) scale(0.42); opacity: 0; } 12% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0; } }
-@keyframes pgr-warn { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-@keyframes pgr-shim { 0% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
-/* soft bloom: opacity + brightness swell (amber accents / base lights) */
-@keyframes pgr-bloom { 0%, 100% { opacity: 0.5; filter: blur(5px) brightness(0.95); } 50% { opacity: 1; filter: blur(6px) brightness(1.55); } }
-/* gentle breeze: slow sway + tiny float + micro-rotation from the stem base */
-@keyframes pgr-breeze {
-    0%   { transform: rotate(-0.7deg) translate(0, 0) scale(1); }
-    25%  { transform: rotate(0.35deg) translate(0.8px, -1.2px) scale(1.004); }
-    50%  { transform: rotate(0.75deg) translate(-0.6px, -0.4px) scale(1.006); }
-    75%  { transform: rotate(-0.15deg) translate(0.5px, -1.4px) scale(1.003); }
-    100% { transform: rotate(-0.7deg) translate(0, 0) scale(1); }
-}
-/* drifting light particle: rise + fade in/out */
-@keyframes pgr-drift {
-    0%   { opacity: 0; transform: translateY(6px) scale(0.7); }
-    20%  { opacity: 0.85; }
-    80%  { opacity: 0.6; }
-    100% { opacity: 0; transform: translateY(-34px) scale(1.1); }
+
+/* ── Tablet: keep corners but ease the max-widths ──────────────────── */
+@media (max-width: 980px) and (min-width: 761px) {
+    .pgr-hero .pgr-corner--tl { max-width: 46vw; }
+    .pgr-hero .pgr-corner--tr { max-width: 34vw; }
 }
 
-/* ── Responsive ────────────────────────────────────────────────────── */
-@media (max-width: 980px) {
-    .pgr-hero { padding-block: 44px; }
-    .pgr-hero .pgr-inner { grid-template-columns: 1fr; gap: 34px; }
-    .pgr-hero .pgr-window { order: -1; max-width: 560px; margin: 0 auto; width: 100%; }
-    .pgr-hero .pgr-lede { max-width: none; }
-}
-@media (max-width: 560px) {
-    .pgr-hero .pgr-benefits { gap: 16px; }
+/* ── Mobile: stack the video full (uncropped) with text below ──────── */
+@media (max-width: 760px) {
+    .pgr-hero {
+        display: flex; flex-direction: column;
+        min-height: 0;
+    }
+    .pgr-hero .pgr-media { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 9; }
+    .pgr-hero .pgr-scrim { display: none; }              /* text is below the video now */
+    .pgr-hero .pgr-corner {
+        position: static; max-width: none; width: 100%; box-sizing: border-box;
+        align-items: flex-start; text-align: left;
+    }
+    .pgr-hero .pgr-corner--tl { padding: 22px clamp(18px, 5vw, 28px) 0; gap: 14px; }
+    .pgr-hero .pgr-corner--tr { padding: 16px clamp(18px, 5vw, 28px) 26px; gap: 12px; }
+    .pgr-hero .pgr-chips { justify-content: flex-start; }
+    .pgr-hero .pgr-title { font-size: clamp(24px, 7vw, 32px); }
     .pgr-hero .pgr-btn { flex: 1 1 auto; justify-content: center; }
-    .pgr-hero .pgr-window { aspect-ratio: 1.18 / 1; }
 }
 
-/* ── Reduced motion: calm static glow ──────────────────────────────── */
+/* ── Reduced motion: hold the first frame, drop entrance/blink ─────── */
 @media (prefers-reduced-motion: reduce) {
-    .pgr-hero .pgr-inner,
-    .pgr-hero .pgr-window,
-    .pgr-hero .pgr-ov { animation: none !important; }
-    .pgr-hero .pgr-inner, .pgr-hero .pgr-window { opacity: 1 !important; transform: none !important; }
-    .pgr-hero .pgr-ov--lens, .pgr-hero .pgr-ov--core, .pgr-hero .pgr-ov--beam { transform: translate(-50%, -50%) !important; transition: none !important; }
-    .pgr-hero .pgr-ov--beam { transform: none !important; }
-    .pgr-hero .pgr-ov--ring { display: none; }
-    .pgr-hero .pgr-ov--shimmer { opacity: 0.5; }
-    /* hold the leaf still and drop drifting particles */
-    .pgr-hero .pgr-leaf-layer { animation: none !important; transform: none !important; }
-    .pgr-hero .pgr-particle { display: none; }
+    .pgr-hero .pgr-corner { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .pgr-hero .pgr-eyebrow__dot { animation: none !important; }
 }
