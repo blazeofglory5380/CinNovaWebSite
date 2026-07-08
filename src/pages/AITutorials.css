@@ -315,6 +315,46 @@ div.ait-creator-card .ait-creator-card-cta { color: #94a3b8; }
     .ait-stepdetail { grid-template-columns: 1fr; gap: 2px; }
 }
 
+/* ── Comparison pages (cards + table) ── */
+.ait-cmp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 6px 0 8px;
+}
+.ait-cmp-card {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+}
+.ait-cmp-card h3 { font-size: 1rem; color: #0f172a; margin-bottom: 8px; }
+.ait-cmp-card p { color: #475569; font-size: 0.88rem; line-height: 1.5; margin: 4px 0; }
+.ait-cmp-card p strong { color: #0f172a; }
+
+.ait-cmp-table-wrap { overflow-x: auto; margin: 8px 0; -webkit-overflow-scrolling: touch; }
+.ait-cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 680px;
+}
+.ait-cmp-table th,
+.ait-cmp-table td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+    color: #475569;
+    line-height: 1.45;
+}
+.ait-cmp-table th { color: #0f172a; font-weight: 800; background: #f8fbff; }
+.ait-cmp-table td:first-child { font-weight: 700; color: #0f172a; }
+
+@media (max-width: 640px) {
+    .ait-cmp-grid { grid-template-columns: 1fr; }
+}
+
 /* ── 100 Tutorial Roadmap ── */
 .ait-roadmap-stats { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
 .ait-roadmap-stat {

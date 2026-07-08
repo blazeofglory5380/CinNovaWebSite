@@ -217,7 +217,7 @@ export const CREATOR_AI_PLATFORM_COLLECTIONS = [
             { title: "How to Create Website Hero Videos with Higgsfield" },
             { title: "How to Create Social Media Ads with Higgsfield" },
             { title: "How to Create Character Motion Shots with Higgsfield" },
-            { title: "Higgsfield vs Runway vs Google Flow" },
+            { title: "Higgsfield vs Runway vs Google Flow", key: "higgsfield-vs-runway-vs-google-flow", status: "Available" },
         ],
     },
     {
@@ -692,7 +692,7 @@ export const AI_TUTORIAL_ROADMAP_100 = [
     { key: "rm-higgsfield-marketing-studio", title: "How to Use Higgsfield Marketing Studio", blurb: "Create marketing videos and ads with Higgsfield Marketing Studio.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Business Workflows", "Video Creation"], priority: 3 },
     { key: "rm-higgsfield-hero-videos", title: "How to Create Website Hero Videos with Higgsfield", blurb: "Produce a cinematic website hero video with Higgsfield.", level: "Intermediate", minutes: 14, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Website Building"], priority: 1 },
     { key: "rm-higgsfield-character-motion", title: "How to Create Character Motion Shots with Higgsfield", blurb: "Animate characters and motion shots with Higgsfield.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 3 },
-    { key: "rm-higgsfield-vs-runway-flow", title: "Higgsfield vs Runway vs Google Flow", blurb: "Compare three AI video tools to pick the right one for your project.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield", "Runway", "Google AI"], category: "Creator Tools", topics: ["Video Creation"], priority: 2 },
+    { key: "higgsfield-vs-runway-vs-google-flow", title: "Higgsfield vs Runway vs Google Flow", blurb: "Compare three AI video tools to pick the right one for your project.", level: "Intermediate", minutes: 12, status: "Available", publishStatus: "Available", platforms: ["Higgsfield", "Runway", "Google AI"], category: "Creator Tools", topics: ["Video Creation"], priority: 2 },
 
     { key: "runway-ai-video-guide", title: "How to Use Runway for AI Video", blurb: "Generate and edit video with Runway's creative suite.", level: "Intermediate", minutes: 14, status: "Available", publishStatus: "Available", platforms: ["Runway"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 1 },
     { key: "rm-runway-product-videos", title: "How to Use Runway for Product Videos", blurb: "Make product videos and short ads with Runway.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Runway"], category: "Creator Tools", topics: ["Video Creation", "Business Workflows"], priority: 3 },
