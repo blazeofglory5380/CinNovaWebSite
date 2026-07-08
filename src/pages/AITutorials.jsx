@@ -16,6 +16,7 @@ import {
     LEARNING_TOPICS,
     AI_PROJECT_TRACKS,
     YOUTUBE_LEARNING_PATHS,
+    AI_TUTORIAL_ROADMAP_100,
 } from "../data/aiTutorials.js";
 import { trackAiTutorialClick, trackEvent } from "../utils/analytics.js";
 
@@ -77,6 +78,30 @@ const GROUPS = [
 const HIGGSFIELD = CREATOR_AI_PLATFORM_COLLECTIONS.find((c) => c.id === "higgsfield");
 const OTHER_CREATORS = CREATOR_AI_PLATFORM_COLLECTIONS.filter((c) => c.id !== "higgsfield");
 
+// 100 Tutorial Roadmap — derived counts + filter chips.
+const ROADMAP_TOTAL = AI_TUTORIAL_ROADMAP_100.length;
+const ROADMAP_BEGINNER = AI_TUTORIAL_ROADMAP_100.filter((t) => t.level === "Beginner").length;
+const ROADMAP_INTERMEDIATE = AI_TUTORIAL_ROADMAP_100.filter((t) => t.level === "Intermediate").length;
+const ROADMAP_ADVANCED = AI_TUTORIAL_ROADMAP_100.filter((t) => t.level === "Advanced").length;
+const ROADMAP_PRIORITY1 = AI_TUTORIAL_ROADMAP_100.filter((t) => t.priority === 1).length;
+
+const ROADMAP_FILTERS = [
+    { id: "all", label: "All", match: () => true },
+    { id: "beginner", label: "Beginner", match: (t) => t.level === "Beginner" },
+    { id: "intermediate", label: "Intermediate", match: (t) => t.level === "Intermediate" },
+    { id: "advanced", label: "Advanced", match: (t) => t.level === "Advanced" },
+    { id: "priority1", label: "Priority 1", match: (t) => t.priority === 1 },
+    { id: "openai", label: "OpenAI", match: (t) => t.platforms.includes("OpenAI") || t.category === "OpenAI" },
+    { id: "anthropic", label: "Anthropic", match: (t) => t.platforms.includes("Anthropic") || t.category === "Anthropic" },
+    { id: "google", label: "Google AI", match: (t) => t.platforms.includes("Google AI") || t.category === "Google AI" },
+    { id: "microsoft", label: "Microsoft", match: (t) => t.platforms.includes("Microsoft") || t.category === "Microsoft" },
+    { id: "creators", label: "Creators", match: (t) => t.category === "Creator Tools" || t.topics.includes("Creator Tools") },
+    { id: "coding", label: "Coding", match: (t) => t.topics.includes("Coding") },
+    { id: "automation", label: "Automation", match: (t) => t.topics.includes("Automation") },
+    { id: "youtube", label: "YouTube", match: (t) => t.category === "YouTube Learning Paths" || t.topics.includes("YouTube Learning Paths") },
+    { id: "safety", label: "Safety", match: (t) => t.topics.includes("Safety & Privacy") },
+];
+
 const ALL_GUIDES = GROUPS.flatMap((group) =>
     group.guides.map((g) => ({
         ...g,
@@ -123,6 +148,10 @@ export default function AITutorials() {
     const [filter, setFilter] = useState("all");
     const activeFilter = FILTERS.find((f) => f.id === filter) || FILTERS[0];
     const visibleGuides = useMemo(() => ALL_GUIDES.filter(activeFilter.match), [activeFilter]);
+
+    const [roadmapFilter, setRoadmapFilter] = useState("all");
+    const activeRoadmapFilter = ROADMAP_FILTERS.find((f) => f.id === roadmapFilter) || ROADMAP_FILTERS[0];
+    const visibleRoadmap = useMemo(() => AI_TUTORIAL_ROADMAP_100.filter(activeRoadmapFilter.match), [activeRoadmapFilter]);
 
     return (
         <div className="product-page ait-page">
@@ -293,6 +322,73 @@ export default function AITutorials() {
                             </div>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* 100 Tutorial Roadmap */}
+            <section className="section" id="roadmap">
+                <div className="ait-section-head">
+                    <h2>100 Tutorial Roadmap</h2>
+                    <p>
+                        Explore the full CinNova tutorial roadmap: beginner step-by-step guides, intermediate
+                        workflows, advanced systems, creator tools, automation, coding, business, and project builds.
+                    </p>
+                </div>
+
+                <div className="ait-roadmap-stats">
+                    <div className="ait-roadmap-stat"><strong>{ROADMAP_TOTAL}</strong><span>Tutorials</span></div>
+                    <div className="ait-roadmap-stat"><strong>{ROADMAP_BEGINNER}</strong><span>Beginner</span></div>
+                    <div className="ait-roadmap-stat"><strong>{ROADMAP_INTERMEDIATE}</strong><span>Intermediate</span></div>
+                    <div className="ait-roadmap-stat"><strong>{ROADMAP_ADVANCED}</strong><span>Advanced</span></div>
+                    <div className="ait-roadmap-stat"><strong>{ROADMAP_PRIORITY1}</strong><span>Priority 1</span></div>
+                </div>
+
+                <div className="ait-filters" role="tablist" aria-label="Filter roadmap tutorials">
+                    {ROADMAP_FILTERS.map((f) => {
+                        const count = AI_TUTORIAL_ROADMAP_100.filter(f.match).length;
+                        const active = f.id === roadmapFilter;
+                        return (
+                            <button
+                                key={f.id}
+                                type="button"
+                                className={`ait-filter${active ? " ait-filter--active" : ""}`}
+                                aria-pressed={active}
+                                onClick={() => { trackEvent("ai_tutorial_filter_click", { filter: `roadmap-${f.id}`, source_page: "ai-tutorials" }); setRoadmapFilter(f.id); }}
+                            >
+                                {f.label} <span className="ait-filter-count">{count}</span>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                <div className="ait-roadmap-grid">
+                    {visibleRoadmap.map((t) => {
+                        const CardTag = t.status === "Available" ? "a" : "div";
+                        const linkProps = t.status === "Available"
+                            ? { href: guideUrl(t.key), onClick: () => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: t.key, tutorialTitle: t.title }) }
+                            : {};
+                        return (
+                            <CardTag className="ait-roadmap-card" key={t.key} {...linkProps}>
+                                <div className="ait-roadmap-card-meta">
+                                    <span className={levelChip(t.level)}>{t.level}</span>
+                                    <span className="ait-chip ait-chip--muted">{t.category}</span>
+                                    <span className={`ait-chip ${t.status === "Available" ? "ait-chip--green" : "ait-chip--gray"}`}>{t.status}</span>
+                                </div>
+                                <h3>{t.title}</h3>
+                                <p>{t.blurb}</p>
+                                <div className="ait-roadmap-tags">
+                                    {t.platforms.map((pf) => (
+                                        <span className="ait-chip ait-chip--muted" key={pf}>{pf}</span>
+                                    ))}
+                                </div>
+                                <div className="ait-roadmap-topics">{t.topics.join(" · ")}</div>
+                                <div className="ait-roadmap-card-foot">
+                                    <span className="ait-roadmap-min">{t.minutes} min</span>
+                                    <span className="ait-roadmap-cta">{t.status === "Available" ? "Read the guide →" : "Planned tutorial"}</span>
+                                </div>
+                            </CardTag>
+                        );
+                    })}
                 </div>
             </section>
 
