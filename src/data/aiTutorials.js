@@ -185,3 +185,238 @@ export const AI_COMPANIES = [
     { name: "Midjourney", use: "Image generation", desc: "A tool for generating stylized images from text descriptions.", status: "Coming Soon" },
     { name: "Stability AI", use: "Open image models", desc: "Open image-generation models used across many creative tools.", status: "Coming Soon" },
 ];
+
+/**
+ * AI for Creators — a major platform category for people making video, images,
+ * ads, voice, music, avatars, and cinematic/social content with AI. Evergreen,
+ * vendor-neutral. Higgsfield is treated as a first-class creator platform.
+ * Shape: { id, platform, description, creatorUseCases, status, tutorials, guide? }
+ * `guide` is set only when a real, live guide already exists on this site.
+ */
+export const CREATOR_AI_PLATFORM_COLLECTIONS = [
+    {
+        id: "higgsfield",
+        platform: "Higgsfield",
+        description:
+            "A creator-focused AI platform for cinematic video, images, ads, and social content, with dedicated studios for shorts, explainers, marketing, viral presets, and AI influencers.",
+        creatorUseCases: ["AI video", "Cinematic scenes", "Social ads", "Character motion", "AI influencers", "Marketing content"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Higgsfield?" },
+            { title: "How to Set Up Higgsfield for AI Video Creation" },
+            { title: "How to Use Higgsfield Image Tools" },
+            { title: "How to Use Higgsfield Video Tools" },
+            { title: "How to Use Higgsfield Cinema Studio" },
+            { title: "How to Use Higgsfield Shorts Studio" },
+            { title: "How to Use Higgsfield Explainer" },
+            { title: "How to Use Higgsfield Marketing Studio" },
+            { title: "How to Use Higgsfield AI Influencer" },
+            { title: "How to Use Higgsfield Viral Presets" },
+            { title: "How to Use Higgsfield Canvas" },
+            { title: "How to Use Higgsfield MCP & CLI" },
+            { title: "How to Create Website Hero Videos with Higgsfield" },
+            { title: "How to Create Social Media Ads with Higgsfield" },
+            { title: "How to Create Character Motion Shots with Higgsfield" },
+            { title: "Higgsfield vs Runway vs Google Flow" },
+        ],
+    },
+    {
+        id: "runway",
+        platform: "Runway",
+        description: "A creative suite for generating and editing video, visual effects, and motion from text and images.",
+        creatorUseCases: ["AI video", "Video editing", "VFX", "Motion"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Runway?" },
+            { title: "How to Set Up Runway for Video Creation" },
+            { title: "How to Generate Video with Runway" },
+            { title: "How to Edit Video and VFX with Runway" },
+        ],
+    },
+    {
+        id: "adobe-firefly",
+        platform: "Adobe Firefly",
+        description: "Generative AI for images, text effects, and creative fills that works alongside Adobe's creative apps.",
+        creatorUseCases: ["AI images", "Generative fill", "Text effects", "Design assets"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Adobe Firefly?" },
+            { title: "How to Generate Images with Firefly" },
+            { title: "How to Use Generative Fill" },
+            { title: "How to Use Firefly in Creative Cloud" },
+        ],
+    },
+    {
+        id: "canva-ai",
+        platform: "Canva AI",
+        description: "AI features inside a design tool for images, layouts, copy, and quick brand-consistent edits.",
+        creatorUseCases: ["Design", "AI images", "Layouts", "Brand assets"],
+        status: "Available",
+        guide: "canva-ai-beginner-guide",
+        tutorials: [
+            { title: "How to Use Canva AI" },
+            { title: "How to Design Social Graphics with Canva AI" },
+            { title: "How to Keep Brand Consistency with Canva AI" },
+        ],
+    },
+    {
+        id: "elevenlabs",
+        platform: "ElevenLabs",
+        description: "Tools for generating natural-sounding narration, voiceovers, and voice from text.",
+        creatorUseCases: ["AI voice", "Narration", "Dubbing", "Audio"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is ElevenLabs?" },
+            { title: "How to Generate a Voiceover with ElevenLabs" },
+            { title: "How to Clone and Design Voices Responsibly" },
+        ],
+    },
+    {
+        id: "midjourney",
+        platform: "Midjourney",
+        description: "A tool for generating stylized, high-quality images from text descriptions.",
+        creatorUseCases: ["AI images", "Concept art", "Styles", "Illustration"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Midjourney?" },
+            { title: "How to Set Up Midjourney" },
+            { title: "How to Write Better Midjourney Prompts" },
+        ],
+    },
+    {
+        id: "stability-ai",
+        platform: "Stability AI",
+        description: "Open image-generation models used across many creative tools and workflows.",
+        creatorUseCases: ["AI images", "Open models", "Custom pipelines"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Stability AI?" },
+            { title: "How to Generate Images with Stable Diffusion" },
+        ],
+    },
+    {
+        id: "luma-ai",
+        platform: "Luma AI",
+        description: "AI tools for generating video and 3D captures from text, images, and real-world scenes.",
+        creatorUseCases: ["AI video", "3D capture", "Motion"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Luma AI?" },
+            { title: "How to Generate Video with Luma AI" },
+        ],
+    },
+    {
+        id: "pika",
+        platform: "Pika",
+        description: "A tool for generating and restyling short video clips from text and images.",
+        creatorUseCases: ["AI video", "Short clips", "Restyling"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Pika?" },
+            { title: "How to Generate Short Videos with Pika" },
+        ],
+    },
+    {
+        id: "kling-ai",
+        platform: "Kling AI",
+        description: "A text-to-video and image-to-video tool for generating realistic motion clips.",
+        creatorUseCases: ["AI video", "Realistic motion", "Image-to-video"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Kling AI?" },
+            { title: "How to Generate Video with Kling AI" },
+        ],
+    },
+    {
+        id: "leonardo-ai",
+        platform: "Leonardo AI",
+        description: "An image-generation platform with fine-tuned models and tools for game, concept, and marketing art.",
+        creatorUseCases: ["AI images", "Game art", "Concept art", "Assets"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Leonardo AI?" },
+            { title: "How to Generate Images with Leonardo AI" },
+            { title: "How to Use Model Presets in Leonardo AI" },
+        ],
+    },
+    {
+        id: "heygen",
+        platform: "HeyGen",
+        description: "A platform for creating AI avatar and talking-head videos with translation and voiceover.",
+        creatorUseCases: ["AI avatars", "Talking heads", "Translation", "Voiceover"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is HeyGen?" },
+            { title: "How to Create an AI Avatar Video with HeyGen" },
+            { title: "How to Translate a Video with HeyGen" },
+        ],
+    },
+    {
+        id: "synthesia",
+        platform: "Synthesia",
+        description: "A tool for creating AI presenter videos for training, explainers, and internal communication.",
+        creatorUseCases: ["AI presenters", "Training video", "Explainers"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Synthesia?" },
+            { title: "How to Create a Presenter Video with Synthesia" },
+        ],
+    },
+    {
+        id: "descript",
+        platform: "Descript",
+        description: "An audio and video editor that lets you edit recordings by editing the transcript.",
+        creatorUseCases: ["Video editing", "Podcasts", "Transcription", "Voice"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Descript?" },
+            { title: "How to Edit Video by Editing Text in Descript" },
+            { title: "How to Clean Up Audio with Descript" },
+        ],
+    },
+    {
+        id: "suno",
+        platform: "Suno",
+        description: "A tool for generating original songs, instrumentals, and vocals from text prompts.",
+        creatorUseCases: ["AI music", "Songs", "Instrumentals"],
+        status: "Guide Planned",
+        tutorials: [
+            { title: "What is Suno?" },
+            { title: "How to Generate a Song with Suno" },
+            { title: "How to Use AI Music Responsibly" },
+        ],
+    },
+    {
+        id: "udio",
+        platform: "Udio",
+        description: "A music-generation tool for creating tracks, vocals, and instrumentals from text.",
+        creatorUseCases: ["AI music", "Vocals", "Tracks"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Udio?" },
+            { title: "How to Generate Music with Udio" },
+        ],
+    },
+    {
+        id: "capcut-ai",
+        platform: "CapCut AI",
+        description: "AI editing features inside a popular short-video editor for captions, effects, and quick cuts.",
+        creatorUseCases: ["Video editing", "Captions", "Short video", "Effects"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is CapCut AI?" },
+            { title: "How to Edit Short Videos with CapCut AI" },
+        ],
+    },
+    {
+        id: "figma-ai",
+        platform: "Figma AI",
+        description: "AI features inside a design tool for generating layouts, content, and design edits.",
+        creatorUseCases: ["Design", "UI layouts", "Prototyping", "Brand assets"],
+        status: "Coming Soon",
+        tutorials: [
+            { title: "What is Figma AI?" },
+            { title: "How to Use AI Features in Figma" },
+        ],
+    },
+];

@@ -4,7 +4,7 @@ import "../App.css";
 import "./AITutorials.css";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
-import { AI_TUTORIALS, AI_TOOL_TUTORIALS, CLAUDE_WORKFLOW_GUIDES, AI_CATEGORIES, AI_COMPANIES } from "../data/aiTutorials.js";
+import { AI_TUTORIALS, AI_TOOL_TUTORIALS, CLAUDE_WORKFLOW_GUIDES, AI_CATEGORIES, AI_COMPANIES, CREATOR_AI_PLATFORM_COLLECTIONS } from "../data/aiTutorials.js";
 import { trackAiTutorialClick, trackEvent } from "../utils/analytics.js";
 
 const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
@@ -56,6 +56,10 @@ const GROUPS = [
     { id: "tools",            label: "Tool Guide",      heading: "AI Tool Guides",         note: "Step-by-step walkthroughs for the most popular AI assistants.",       guides: AI_TOOL_TUTORIALS },
     { id: "claude-workflows", label: "Workflow Guide",  heading: "Claude Workflow Guides", note: "Use Claude alongside design, website, coding, and video work.",       guides: CLAUDE_WORKFLOW_GUIDES },
 ];
+
+// Creator platforms: Higgsfield is featured first-class; the rest form the grid.
+const HIGGSFIELD = CREATOR_AI_PLATFORM_COLLECTIONS.find((c) => c.id === "higgsfield");
+const OTHER_CREATORS = CREATOR_AI_PLATFORM_COLLECTIONS.filter((c) => c.id !== "higgsfield");
 
 const ALL_GUIDES = GROUPS.flatMap((group) =>
     group.guides.map((g) => ({
@@ -282,6 +286,79 @@ export default function AITutorials() {
                                     {co.status}
                                 </span>
                                 {co.guide && <span className="ait-co-go">Read the guide →</span>}
+                            </CardTag>
+                        );
+                    })}
+                </div>
+            </section>
+
+            {/* AI for Creators */}
+            <section className="section" id="creators">
+                <div className="ait-section-head">
+                    <h2>AI for Creators</h2>
+                    <p>
+                        Tutorials for creators building videos, images, ads, voiceovers, music, avatars,
+                        brand assets, cinematic scenes, and social content with AI.
+                    </p>
+                </div>
+
+                {/* Featured first-class creator platform: Higgsfield */}
+                {HIGGSFIELD && (
+                    <div className="ait-creator-featured" id="higgsfield-tutorials">
+                        <div className="ait-creator-featured-head">
+                            <div className="ait-creator-featured-intro">
+                                <span className="ait-chip ait-chip--gold">Featured creator platform</span>
+                                <h3>{HIGGSFIELD.platform}</h3>
+                                <p>{HIGGSFIELD.description}</p>
+                                <div className="ait-creator-chips">
+                                    {HIGGSFIELD.creatorUseCases.map((u) => (
+                                        <span className="ait-chip ait-chip--muted" key={u}>{u}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <span className={`ait-chip ${STATUS_CLASS[HIGGSFIELD.status] || "ait-chip--gray"}`}>
+                                {HIGGSFIELD.status}
+                            </span>
+                        </div>
+                        <p className="ait-creator-count">
+                            {HIGGSFIELD.tutorials.length} planned {HIGGSFIELD.platform} tutorials
+                        </p>
+                        <div className="ait-creator-tut-grid">
+                            {HIGGSFIELD.tutorials.map((t) => (
+                                <div className="ait-creator-tut" key={t.title}>
+                                    <span className="ait-creator-tut-title">{t.title}</span>
+                                    <span className="ait-chip ait-chip--gold">Planned</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Other creator platforms */}
+                <div className="ait-creator-grid">
+                    {OTHER_CREATORS.map((c) => {
+                        const CardTag = c.guide ? "a" : "div";
+                        const linkProps = c.guide
+                            ? { href: guideUrl(c.guide), onClick: () => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: c.guide, tutorialTitle: c.platform }) }
+                            : {};
+                        return (
+                            <CardTag className="ait-creator-card" key={c.id} {...linkProps}>
+                                <div className="ait-creator-card-top">
+                                    <span className="ait-creator-card-name">{c.platform}</span>
+                                    <span className={`ait-chip ${STATUS_CLASS[c.status] || "ait-chip--gray"}`}>{c.status}</span>
+                                </div>
+                                <p className="ait-creator-card-desc">{c.description}</p>
+                                <div className="ait-creator-chips">
+                                    {c.creatorUseCases.map((u) => (
+                                        <span className="ait-chip ait-chip--muted" key={u}>{u}</span>
+                                    ))}
+                                </div>
+                                <div className="ait-creator-card-foot">
+                                    <span className="ait-creator-card-count">
+                                        {c.tutorials.length} {c.tutorials.length === 1 ? "tutorial" : "tutorials"}
+                                    </span>
+                                    <span className="ait-creator-card-cta">{c.guide ? "View tutorials →" : "Coming soon"}</span>
+                                </div>
                             </CardTag>
                         );
                     })}
