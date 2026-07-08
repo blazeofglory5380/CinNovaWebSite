@@ -225,9 +225,10 @@ export const CREATOR_AI_PLATFORM_COLLECTIONS = [
         platform: "Runway",
         description: "A creative suite for generating and editing video, visual effects, and motion from text and images.",
         creatorUseCases: ["AI video", "Video editing", "VFX", "Motion"],
-        status: "Guide Planned",
+        status: "Available",
+        guide: "runway-ai-video-guide",
         tutorials: [
-            { title: "What is Runway?" },
+            { title: "How to Use Runway for AI Video", key: "runway-ai-video-guide", status: "Available" },
             { title: "How to Set Up Runway for Video Creation" },
             { title: "How to Generate Video with Runway" },
             { title: "How to Edit Video and VFX with Runway" },
@@ -693,7 +694,7 @@ export const AI_TUTORIAL_ROADMAP_100 = [
     { key: "rm-higgsfield-character-motion", title: "How to Create Character Motion Shots with Higgsfield", blurb: "Animate characters and motion shots with Higgsfield.", level: "Intermediate", minutes: 13, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 3 },
     { key: "rm-higgsfield-vs-runway-flow", title: "Higgsfield vs Runway vs Google Flow", blurb: "Compare three AI video tools to pick the right one for your project.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Higgsfield", "Runway", "Google AI"], category: "Creator Tools", topics: ["Video Creation"], priority: 2 },
 
-    { key: "rm-runway-ai-video", title: "How to Use Runway for AI Video", blurb: "Generate and edit video with Runway's creative suite.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Runway"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 1 },
+    { key: "runway-ai-video-guide", title: "How to Use Runway for AI Video", blurb: "Generate and edit video with Runway's creative suite.", level: "Intermediate", minutes: 14, status: "Available", publishStatus: "Available", platforms: ["Runway"], category: "Creator Tools", topics: ["Video Creation", "Creator Tools"], priority: 1 },
     { key: "rm-runway-product-videos", title: "How to Use Runway for Product Videos", blurb: "Make product videos and short ads with Runway.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Runway"], category: "Creator Tools", topics: ["Video Creation", "Business Workflows"], priority: 3 },
     { key: "rm-firefly-images-design", title: "How to Use Adobe Firefly for Images and Design", blurb: "Generate images and design assets with Adobe Firefly.", level: "Intermediate", minutes: 12, status: "Planned", publishStatus: "Planned", platforms: ["Adobe Firefly"], category: "Creator Tools", topics: ["Image Creation", "Design"], priority: 2 },
     { key: "rm-canva-social-graphics", title: "How to Use Canva AI for Social Media Graphics", blurb: "Design social graphics fast and keep them on-brand with Canva AI.", level: "Intermediate", minutes: 11, status: "Planned", publishStatus: "Planned", platforms: ["Canva AI"], category: "Creator Tools", topics: ["Design", "Social Media"], priority: 2 },

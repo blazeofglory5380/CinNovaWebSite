@@ -26,6 +26,7 @@ import AICodingGuideFR from "./pages/AICodingGuideFR.jsx";
 import AICodingGuideDE from "./pages/AICodingGuideDE.jsx";
 import AIWorkspaceSetupGuide from "./pages/AIWorkspaceSetupGuide.jsx";
 import HiggsfieldAIVideoSetupGuide from "./pages/HiggsfieldAIVideoSetupGuide.jsx";
+import RunwayAIVideoGuide from "./pages/RunwayAIVideoGuide.jsx";
 import ChatGPTBeginnerGuide from "./pages/ChatGPTBeginnerGuide.jsx";
 import ClaudeBeginnerGuide from "./pages/ClaudeBeginnerGuide.jsx";
 import GeminiBeginnerGuide from "./pages/GeminiBeginnerGuide.jsx";
@@ -564,6 +565,7 @@ function App() {
             {page === "ai-coding-guide-de" && <AICodingGuideDE />}
             {page === "ai-workspace-setup-guide" && <AIWorkspaceSetupGuide />}
             {page === "higgsfield-ai-video-setup-guide" && <HiggsfieldAIVideoSetupGuide />}
+            {page === "runway-ai-video-guide" && <RunwayAIVideoGuide />}
             {page === "chatgpt-beginner-guide" && <ChatGPTBeginnerGuide />}
             {page === "claude-beginner-guide" && <ClaudeBeginnerGuide />}
             {page === "gemini-beginner-guide" && <GeminiBeginnerGuide />}
