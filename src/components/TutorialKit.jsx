@@ -196,8 +196,24 @@ export function SafetyNote() {
 }
 
 /** Convenience SEO wrapper for a tutorial page. */
+// Guide families that have EN/ES/FR/DE versions. Used to emit hreflang
+// alternates so search engines connect the translated versions of each guide.
+const GUIDE_FAMILIES = [PROMPT_GUIDE_LANGS, RESEARCH_GUIDE_LANGS, CODING_GUIDE_LANGS];
+
+/** hreflang alternates for a guide pageKey, or undefined for non-guide pages. */
+function alternatesForPageKey(pageKey, siteUrl) {
+    const href = `/?page=${pageKey}`;
+    const family = GUIDE_FAMILIES.find((langs) => langs.some((l) => l.href === href));
+    if (!family) return undefined;
+    const alternates = family.map((l) => ({ hreflang: l.code, href: `${siteUrl}${l.href}` }));
+    const english = family.find((l) => l.code === "en");
+    if (english) alternates.push({ hreflang: "x-default", href: `${siteUrl}${english.href}` });
+    return alternates;
+}
+
 export function TutorialSEO({ title, description, pageKey, siteUrl }) {
     const url = `${siteUrl}/?page=${pageKey}`;
+    const alternates = alternatesForPageKey(pageKey, siteUrl);
     const schema = {
         "@context": "https://schema.org",
         "@type": "TechArticle",
@@ -206,5 +222,5 @@ export function TutorialSEO({ title, description, pageKey, siteUrl }) {
         url,
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     };
-    return <SEO title={title} description={description} url={url} type="article" schema={schema} />;
+    return <SEO title={title} description={description} url={url} type="article" schema={schema} alternates={alternates} />;
 }
