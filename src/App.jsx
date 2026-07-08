@@ -69,7 +69,7 @@ import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
-import { trackPageView } from "./utils/analytics.js";
+import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { productDetails, products } from "./data/products.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
@@ -442,7 +442,7 @@ function App() {
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
-                    <button className="nav-languages" onClick={() => { openPage("languages"); setMobileMenuOpen(false); }} aria-label="Languages">
+                    <button className="nav-languages" onClick={() => { trackEvent("language_header_click", { source: "header" }); openPage("languages"); setMobileMenuOpen(false); }} aria-label="Languages">
                         <span aria-hidden="true">🌐</span> Languages
                     </button>
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}

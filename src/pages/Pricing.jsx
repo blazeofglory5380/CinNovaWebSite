@@ -8,6 +8,7 @@ import { pricingAudiences, productMarketing } from "../data/marketingImages.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { trackEvent } from "../utils/analytics.js";
 
 const products = [
     {
@@ -268,6 +269,12 @@ function PricingCarousel() {
                                                     className={`pricing-pplan-cta${tier.highlight ? " pricing-pplan-cta--primary" : ""}`}
                                                     disabled={comingSoon}
                                                     aria-disabled={comingSoon}
+                                                    onClick={() => trackEvent("pricing_plan_cta_click", {
+                                                        product: product.name,
+                                                        plan: tier.label,
+                                                        price: tier.price,
+                                                        availability: comingSoon ? "coming_soon" : "available",
+                                                    })}
                                                 >
                                                     {ctaLabel(tier.price)}
                                                 </button>
@@ -285,7 +292,7 @@ function PricingCarousel() {
                 <button
                     type="button"
                     className="pricing-carousel-arrow"
-                    onClick={prev}
+                    onClick={() => { trackEvent("pricing_carousel_previous_click", { from_index: index }); prev(); }}
                     disabled={atStart}
                     aria-label="Previous products"
                 >
@@ -298,7 +305,7 @@ function PricingCarousel() {
                             key={i}
                             type="button"
                             className={`pricing-carousel-dot${i === index ? " is-active" : ""}`}
-                            onClick={() => go(i)}
+                            onClick={() => { trackEvent("pricing_carousel_dot_click", { slide_index: i }); go(i); }}
                             aria-label={`Go to slide ${i + 1} of ${pageCount}`}
                             aria-current={i === index ? "true" : undefined}
                         />
@@ -308,7 +315,7 @@ function PricingCarousel() {
                 <button
                     type="button"
                     className="pricing-carousel-arrow"
-                    onClick={next}
+                    onClick={() => { trackEvent("pricing_carousel_next_click", { from_index: index }); next(); }}
                     disabled={atEnd}
                     aria-label="Next products"
                 >

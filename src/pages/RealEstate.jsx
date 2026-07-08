@@ -13,7 +13,7 @@ import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
-import { trackLiveBetaClick } from "../utils/analytics.js";
+import { trackLiveBetaClick, trackEvent } from "../utils/analytics.js";
 
 const { features } = productMarketing["real-estate"];
 const realEstateHero = productHero3DConfigs["real-estate"];
@@ -124,7 +124,10 @@ function RealEstate() {
                     >
                         Try the Live Beta →
                     </a>
-                    <a href="/?page=free-rental-property-calculator">
+                    <a
+                        href="/?page=free-rental-property-calculator"
+                        onClick={() => trackEvent("free_calculator_cta_click", { source_page: "real-estate", destination_page: "free-rental-property-calculator" })}
+                    >
                         Or try the free Rental Property Calculator →
                     </a>
                 </div>
