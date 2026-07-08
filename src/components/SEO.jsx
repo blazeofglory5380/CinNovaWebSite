@@ -27,6 +27,29 @@ function upsertCanonical(url) {
     element.setAttribute("href", url);
 }
 
+// Manage <link rel="alternate" hreflang> tags for multilingual pages.
+// Idempotent: clears any previously-managed alternates first, then re-adds.
+// Tags are marked with data-cinnova-hreflang so cleanup never touches other links.
+function removeManagedAlternates() {
+    document.head
+        .querySelectorAll('link[rel="alternate"][data-cinnova-hreflang]')
+        .forEach((el) => el.remove());
+}
+
+function upsertAlternates(alternates) {
+    removeManagedAlternates();
+    if (!Array.isArray(alternates)) return;
+    for (const alt of alternates) {
+        if (!alt || !alt.hreflang || !alt.href) continue;
+        const link = document.createElement("link");
+        link.setAttribute("rel", "alternate");
+        link.setAttribute("hreflang", alt.hreflang);
+        link.setAttribute("href", alt.href);
+        link.setAttribute("data-cinnova-hreflang", "true");
+        document.head.appendChild(link);
+    }
+}
+
 function upsertStructuredData(schema) {
     const existing = document.getElementById("cinnova-structured-data");
     if (existing) existing.remove();
@@ -39,7 +62,7 @@ function upsertStructuredData(schema) {
     document.head.appendChild(script);
 }
 
-function SEO({ title, description, url, type = "website", image, schema, noindex = false }) {
+function SEO({ title, description, url, type = "website", image, schema, noindex = false, alternates }) {
     useEffect(() => {
         document.title = title;
 
@@ -59,8 +82,13 @@ function SEO({ title, description, url, type = "website", image, schema, noindex
         upsertMeta("name", "twitter:site", "@CinNova");
         upsertMeta("name", "twitter:image", previewImage);
         upsertCanonical(url);
+        upsertAlternates(alternates);
         upsertStructuredData(schema);
-    }, [title, description, url, type, image, schema, noindex]);
+
+        // Clear managed hreflang alternates on unmount / route change so they
+        // never leak onto pages that have no language alternates.
+        return removeManagedAlternates;
+    }, [title, description, url, type, image, schema, noindex, alternates]);
 
     return null;
 }
