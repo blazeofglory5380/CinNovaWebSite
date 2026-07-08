@@ -581,9 +581,25 @@ export default function AITutorials() {
                             </div>
                             <p className="ait-track-desc">{tr.description}</p>
                             <ul className="ait-track-examples">
-                                {tr.examples.map((ex) => (
-                                    <li key={ex}>{ex}</li>
-                                ))}
+                                {tr.examples.map((ex) => {
+                                    const text = typeof ex === "string" ? ex : ex.text;
+                                    const guide = typeof ex === "string" ? null : ex.guide;
+                                    return (
+                                        <li key={text}>
+                                            {guide ? (
+                                                <a
+                                                    className="ait-track-example-link"
+                                                    href={guideUrl(guide)}
+                                                    onClick={() => trackAiTutorialClick({ sourcePage: "ai-tutorials", tutorialKey: guide, tutorialTitle: text })}
+                                                >
+                                                    {text} <span aria-hidden="true">→</span>
+                                                </a>
+                                            ) : (
+                                                text
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                             <span className="ait-track-cta">{tr.cta}</span>
                         </div>

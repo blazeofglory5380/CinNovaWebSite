@@ -75,6 +75,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "higgsfield-ai-video-setup-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "runway-ai-video-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "higgsfield-vs-runway-vs-google-flow", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
+    { key: "cinnova-cinematic-asset-library-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-es", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-fr", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "ai-coding-guide-de", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },

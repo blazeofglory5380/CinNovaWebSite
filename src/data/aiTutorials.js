@@ -588,7 +588,7 @@ export const AI_PROJECT_TRACKS = [
             "Build a Real Estate AI Lead Magnet",
             "Build a TechMate AI Support Workflow",
             "Build a Nightmare Forest Game Asset Pipeline",
-            "Build the CinNova Cinematic Asset Library",
+            { text: "Build the CinNova Cinematic Asset Library", guide: "cinnova-cinematic-asset-library-guide" },
         ],
     },
 ];
