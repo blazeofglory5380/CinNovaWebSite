@@ -16111,6 +16111,8 @@ button.product-hero-pill {
 .kd-character-card--nova { border-color: rgba(129, 140, 248, 0.35); }
 .kd-character-card--coral { border-color: rgba(45, 212, 191, 0.35); }
 .kd-character-card--max { border-color: rgba(251, 191, 36, 0.45); }
+.kd-character-card--leo { border-color: rgba(56, 189, 248, 0.35); }
+.kd-character-card--kai { border-color: rgba(52, 211, 153, 0.35); }
 
 .kd-character-portrait-wrap {
     width: 96px;

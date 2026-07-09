@@ -72,7 +72,7 @@ const characters = [
         personality: "Brave, kind, and always ready to help a friend find the way.",
         teaches: "Reading quests, story choices, and empathy",
         variant: "luna",
-        asset: { src: "/images/Kiddo/characters/kiki.png", alt: "Kiki — curious explorer and reading quest guide" },
+        asset: kiddoAssets.characters.luna,
     },
     {
         name: "Oliver",
@@ -105,6 +105,22 @@ const characters = [
         teaches: "Counting, math challenges, and persistence",
         variant: "max",
         asset: kiddoAssets.characters.max,
+    },
+    {
+        name: "Leo",
+        title: "The Brave Adventurer",
+        personality: "Bold, encouraging, and always ready to lead the next quest.",
+        teaches: "Writing adventures, storytelling, and confidence",
+        variant: "leo",
+        asset: kiddoAssets.characters.leo,
+    },
+    {
+        name: "Kai",
+        title: "The Clever Explorer",
+        personality: "Inventive, quick-thinking, and loves a good puzzle.",
+        teaches: "Puzzles, patterns, and problem solving",
+        variant: "kai",
+        asset: kiddoAssets.characters.kai,
     },
 ];
 
@@ -296,7 +312,7 @@ function Kiddo() {
                     </div>
                     <div className="kd-gameplay-mocks">
                         <MotionCardWrap as="article" className="kd-mock-card kd-mock-card-visual">
-                            <KiddoArtwork asset={kiddoAssets.gameplay} className="kd-gameplay-preview-art" />
+                            <KiddoArtwork asset={kiddoAssets.gameplay} className="kd-gameplay-preview-art" placeholderLabel="Gameplay preview" />
                         </MotionCardWrap>
                         <MotionCardWrap as="article" className="kd-mock-card">
                             <p className="kd-mock-label">Treasure Map</p>
@@ -342,7 +358,7 @@ function Kiddo() {
                         ))}
                     </div>
                     <div className="kd-parent-visual">
-                        <KiddoArtwork asset={kiddoAssets.parentDashboard} className="kd-parent-dashboard-art" />
+                        <KiddoArtwork asset={kiddoAssets.parentDashboard} className="kd-parent-dashboard-art" placeholderLabel="Parent dashboard" />
                         <article className="kd-parent-dashboard-mock" aria-label="Parent dashboard preview">
                             <div className="kd-dashboard-header">
                                 <strong>Emma&apos;s Week</strong>
