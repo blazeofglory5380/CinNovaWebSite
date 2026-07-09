@@ -11,7 +11,7 @@ import Pricing from "./pages/Pricing.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
-import AITutorials from "./pages/AITutorials.jsx";
+import AiTutorialsPage from "./pages/AiTutorialsPage.jsx";
 import AIPromptGuide from "./pages/AIPromptGuide.jsx";
 import AIPromptGuideES from "./pages/AIPromptGuideES.jsx";
 import AIPromptGuideFR from "./pages/AIPromptGuideFR.jsx";
@@ -553,7 +553,7 @@ function App() {
             )}
             {page === "pricing" && <Pricing />}
             {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
-            {page === "ai-tutorials" && <AITutorials />}
+            {page === "ai-tutorials" && <AiTutorialsPage />}
             {page === "ai-prompt-writing-guide" && <AIPromptGuide />}
             {page === "ai-prompt-writing-guide-es" && <AIPromptGuideES />}
             {page === "ai-prompt-writing-guide-fr" && <AIPromptGuideFR />}
