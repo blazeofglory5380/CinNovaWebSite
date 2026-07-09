@@ -1,7 +1,6 @@
 import { useState } from "react";
-import "../App.css";
+import "./MediaKit.css";
 import SEO from "../components/SEO.jsx";
-import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { mediaKitAssets, mediaKitPlacements, mediaKitSegments } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
 import {
@@ -12,12 +11,9 @@ import {
     sanitizeText,
 } from "../utils/security.js";
 
-import BusinessHero from "../components/business/BusinessHero.jsx";
-import BusinessSection from "../components/business/BusinessSection.jsx";
-import BusinessStats from "../components/business/BusinessStats.jsx";
-import { businessAudienceStats } from "../data/businessCenter.js";
-const adPlacements = mediaKitPlacements;
+const CONTACT_EMAIL = "thin_line_99@yahoo.com";
 
+// Real client-side downloads (plain-text press assets), carried over unchanged.
 function downloadAsset(assetType) {
     const assets = {
         presspack: {
@@ -45,7 +41,7 @@ function downloadAsset(assetType) {
                 "",
                 "CONTACT",
                 `Website: ${siteUrl}`,
-                "Email: thin_line_99@yahoo.com",
+                `Email: ${CONTACT_EMAIL}`,
                 "",
                 "© 2026 Cin Nova. All Rights Reserved.",
             ].join("\n"),
@@ -128,7 +124,7 @@ function downloadAsset(assetType) {
                 "PLACEMENT OPPORTUNITIES",
                 "For advertising rates and placement specs, see the Cin Nova Media Kit.",
                 `Website: ${siteUrl}/?page=media-kit`,
-                "Email: thin_line_99@yahoo.com",
+                `Email: ${CONTACT_EMAIL}`,
                 "",
                 "© 2026 Cin Nova. All Rights Reserved.",
             ].join("\n"),
@@ -148,267 +144,288 @@ function downloadAsset(assetType) {
     URL.revokeObjectURL(url);
 }
 
-function MediaKit({ onNavigate }) {
-    const [contactForm, setContactForm] = useState({
-        name: "", email: "", company: "", placement: "", message: "",
-    });
-    const [contactSent, setContactSent] = useState(false);
-    const [errors, setErrors] = useState({});
+const STATS = [
+    { value: "Growing", label: "Newsletter subscribers", placeholder: true },
+    { value: "Active", label: "Monthly content program", placeholder: false },
+    { value: "Live", label: "Resource downloads", placeholder: false },
+    { value: "5", label: "Product verticals", placeholder: false },
+    { value: "7", label: "Article categories", placeholder: false },
+    { value: "TBD", label: "Campaign reach (est.)", placeholder: true },
+];
 
-    function validateContact() {
-        const e = {};
-        if (!contactForm.name.trim()) e.name = "Name is required";
-        if (!isValidEmail(contactForm.email)) e.email = "Valid email required";
-        if (!contactForm.company.trim()) e.company = "Company is required";
-        return e;
-    }
+const mediaKitSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Cin Nova Media Kit",
+    description: "Advertise with Cin Nova. Audience stats, ad placement options, and brand assets.",
+    url: `${siteUrl}/?page=media-kit`,
+};
 
-    function handleContactSubmit(e) {
+export default function MediaKit() {
+    const [sent, setSent] = useState(false);
+    const [error, setError] = useState("");
+
+    function handleSubmit(e) {
         e.preventDefault();
-        const errs = validateContact();
-        if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-        const inquiries = safeReadArray("cn_media_inquiries");
-        inquiries.push({
-            name: sanitizeText(contactForm.name, 100),
-            email: normalizeEmailInput(contactForm.email),
-            company: sanitizeText(contactForm.company, 140),
-            placement: sanitizeText(contactForm.placement, 120),
-            message: sanitizeText(contactForm.message, 1500),
-            submittedAt: new Date().toISOString(),
-        });
-        safeWriteArray("cn_media_inquiries", inquiries.slice(-500));
-        setContactSent(true);
-    }
+        const fd = new FormData(e.currentTarget);
+        const name = (fd.get("name") || "").toString().trim();
+        const email = (fd.get("email") || "").toString().trim();
+        const company = (fd.get("company") || "").toString().trim();
+        const placement = (fd.get("placement") || "").toString();
+        const brief = (fd.get("brief") || "").toString();
 
-    function updateContact(field, value) {
-        const limits = { name: 100, email: 254, company: 140, placement: 120, message: 1500 };
-        setContactForm((prev) => ({ ...prev, [field]: limits[field] ? value.slice(0, limits[field]) : value }));
-        if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
+        if (!name || !isValidEmail(email) || !company) {
+            setError("Please add your name, a valid email, and your company.");
+            return;
+        }
+        try {
+            const inquiries = safeReadArray("cn_media_inquiries");
+            inquiries.push({
+                name: sanitizeText(name, 100),
+                email: normalizeEmailInput(email),
+                company: sanitizeText(company, 140),
+                placement: sanitizeText(placement, 120),
+                message: sanitizeText(brief, 1500),
+                submittedAt: new Date().toISOString(),
+            });
+            safeWriteArray("cn_media_inquiries", inquiries.slice(-500));
+        } catch {
+            /* storage is best-effort — still confirm to the user */
+        }
+        setError("");
+        setSent(true);
     }
-
-    const mediaKitSchema = {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: "Cin Nova Media Kit",
-        description: "Advertise with Cin Nova. Audience stats, ad placement options, and brand assets.",
-        url: `${siteUrl}/?page=media-kit`,
-    };
 
     return (
-        <main className="product-page business-center-page media-kit-page">
+        <main className="mk-page media-kit-page">
             <SEO
                 title="Media Kit | Advertise with Cin Nova"
-                description="Reach students, parents, real estate investors, and tech professionals through Cin Nova newsletter sponsorships, article placements, and display advertising."
+                description="CinNova media kit: audience stats, ad placements, brand assets, and advertising contact. Reach students, parents, real estate investors, and tech professionals."
                 url={`${siteUrl}/?page=media-kit`}
                 type="website"
                 schema={mediaKitSchema}
             />
 
-            <BusinessHero
-                eyebrow="MEDIA KIT 2026"
-                title="Reach the Cin Nova audience."
-                description="Cin Nova reaches students, parents, real estate investors, tech professionals, and safety-conscious households through a growing blog, newsletter, and resource library. This media kit covers audience stats, placement options, technical specs, and how to get in touch."
-                pills={["Audience segments", "Ad placements", "Brand assets", "Rate inquiries"]}
-                actions={[
-                    { label: "Download Press Pack", onClick: () => downloadAsset("presspack") },
-                    { label: "Contact for Rates", href: "#contact", variant: "secondary" },
-                    { label: "Advertise With Us", onClick: () => onNavigate?.("advertise"), variant: "secondary" },
-                ]}
-            />
-
-            <BusinessSection
-                eyebrow="AUDIENCE OVERVIEW"
-                title="By the numbers"
-                description="Current audience metrics across newsletter, blog, and resources."
-            >
-                <BusinessStats
-                    stats={businessAudienceStats}
-                    note="Metrics marked “Placeholder metric” will be updated with verified analytics."
-                />
-            </BusinessSection>
-
-            <BusinessSection
-                eyebrow="AUDIENCE SEGMENTS"
-                title="Who reads Cin Nova"
-                description="Four distinct reader segments across the Cin Nova content and product ecosystem."
-            >
-                <div className="mk-segments-grid">
-                    {mediaKitSegments.map((seg) => (
-                        <article key={seg.name} className="mk-segment-card mk-segment-card-photo">
-                            <div className="mk-segment-photo-wrap">
-                                <MarketingPhoto src={seg.image} alt={seg.alt} className="mk-segment-photo-img" />
-                            </div>
-                            <h3>{seg.name}</h3>
-                            <p>{seg.description}</p>
-                            <div className="mk-segment-tags">
-                                {seg.tags.map((tag) => (
-                                    <span key={tag} className="mk-segment-tag">{tag}</span>
-                                ))}
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </BusinessSection>
-
-            <BusinessSection
-                eyebrow="AD PLACEMENTS"
-                title="Six ways to reach the Cin Nova audience"
-                description="All placements are reviewed and approved by Cin Nova. Pricing shown is an estimated range — final rates depend on campaign details and availability."
-            >
-                <div className="mk-placements-grid">
-                    {mediaKitPlacements.map((placement) => (
-                        <article
-                            key={placement.name}
-                            className="mk-placement-card mk-placement-card-photo"
-                            style={{ "--mk-accent": placement.accent, "--mk-accent-bg": placement.accentBg }}
-                        >
-                            <div className="mk-placement-photo-wrap">
-                                <MarketingPhoto src={placement.image} alt={placement.alt} className="mk-placement-photo-img" />
-                            </div>
-                            <h3>{placement.name}</h3>
-                            <p className="mk-placement-format">{placement.format}</p>
-                            <dl className="mk-placement-specs">
-                                <dt>Specs</dt>
-                                <dd>{placement.specs}</dd>
-                                <dt>Reach</dt>
-                                <dd>{placement.reach}</dd>
-                            </dl>
-                            <div className="mk-placement-price">{placement.range}</div>
-                        </article>
-                    ))}
-                </div>
-                <p className="mk-pricing-note">
-                    All rates are estimated. Final pricing depends on campaign scope, duration, and current availability.
-                    Custom packages are available — use the contact form below for a quote.
-                </p>
-                <div className="media-kit-hero-actions" style={{ justifyContent: "center", marginTop: "18px" }}>
-                    <button
-                        className="secondary-btn"
-                        onClick={() => onNavigate?.("sponsor-newsletter")}
-                    >
-                        Sponsor the Newsletter
-                    </button>
-                    <button
-                        className="secondary-btn"
-                        onClick={() => onNavigate?.("partnerships")}
-                    >
-                        Partnerships
-                    </button>
-                </div>
-            </BusinessSection>
-
-            <BusinessSection
-                eyebrow="BRAND ASSETS"
-                title="Downloads for press and partners"
-                description="Download the Cin Nova press pack, brand guidelines, and audience report."
-            >
-                <div className="mk-assets-grid">
-                    {mediaKitAssets.map((asset) => (
-                        <div key={asset.key} className="mk-asset-card mk-asset-card-photo">
-                            <div className="mk-asset-photo-wrap">
-                                <MarketingPhoto src={asset.image} alt={asset.alt} className="mk-asset-photo-img" />
-                            </div>
-                            <strong>{asset.title}</strong>
-                            <p>{asset.description}</p>
-                            <button className="secondary-btn" onClick={() => downloadAsset(asset.key)}>
-                                ↓ Download {asset.title}
+            {/* ============ Hero ============ */}
+            <section className="mk-container mk-hero-wrap" aria-label="Media kit introduction">
+                <div className="mk-hero">
+                    <div className="mk-hero-glow" aria-hidden="true" />
+                    <div className="mk-hero-copy">
+                        <span className="mk-eyebrow mk-eyebrow--green">MEDIA KIT 2026</span>
+                        <h1 className="mk-hero-title">Reach the Cin&nbsp;Nova audience.</h1>
+                        <p className="mk-hero-sub">
+                            Cin Nova reaches students, parents, real estate investors, tech
+                            professionals, and safety-conscious households through a growing
+                            blog, newsletter, and resource library. This media kit covers
+                            audience stats, placement options, technical specs, and how to
+                            get in touch.
+                        </p>
+                        <div className="mk-hero-chips">
+                            <a className="mk-chip-link" href="#segments">Audience segments</a>
+                            <a className="mk-chip-link" href="#placements">Ad placements</a>
+                            <a className="mk-chip-link" href="#brand-assets">Brand assets</a>
+                            <a className="mk-chip-link" href="#contact">Rate inquiries</a>
+                        </div>
+                        <div className="mk-hero-ctas">
+                            <button type="button" className="mk-btn mk-btn--primary" onClick={() => downloadAsset("presspack")}>
+                                Download Press Pack
                             </button>
+                            <a className="mk-btn mk-btn--outline" href="#contact">Contact for Rates</a>
+                            <a className="mk-btn mk-btn--outline" href="/?page=advertise">Advertise With Us</a>
+                        </div>
+                    </div>
+                    <div className="mk-hero-art" aria-hidden="true">
+                        <div className="mk-hero-orb">
+                            <div className="mk-hero-mark">CN</div>
+                            <span className="mk-hero-float mk-hero-float--tl">Newsletter</span>
+                            <span className="mk-hero-float mk-hero-float--br">Blog + Resources</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ============ Audience overview ============ */}
+            <section id="audience" className="mk-container mk-section" aria-label="Audience overview">
+                <header className="mk-section-head">
+                    <span className="mk-eyebrow mk-eyebrow--blue">AUDIENCE OVERVIEW</span>
+                    <h2 className="mk-h2">By the numbers</h2>
+                    <p className="mk-section-sub">
+                        Current audience metrics across newsletter, blog, and resources.{" "}
+                        <span className="mk-muted">
+                            Metrics marked “Placeholder” will be updated with verified analytics.
+                        </span>
+                    </p>
+                </header>
+                <div className="mk-grid mk-grid--stats">
+                    {STATS.map((s) => (
+                        <div className="mk-card mk-stat" key={s.label}>
+                            <div className="mk-stat-row">
+                                <span className="mk-stat-value">{s.value}</span>
+                                {s.placeholder && <span className="mk-badge-placeholder">PLACEHOLDER METRIC</span>}
+                            </div>
+                            <span className="mk-stat-label">{s.label}</span>
                         </div>
                     ))}
                 </div>
-            </BusinessSection>
+            </section>
 
-            <BusinessSection
-                id="contact"
-                eyebrow="CONTACT"
-                title="Ready to advertise? Get in touch."
-                description="Fill in the form below or email thin_line_99@yahoo.com directly with your campaign brief."
-            >
-
-                {contactSent ? (
-                    <div className="partner-success">
-                        <div className="partner-success-icon">✓</div>
-                        <h3>Inquiry received.</h3>
-                        <p>
-                            Thanks for reaching out. We'll review your inquiry and get back to you
-                            within 3–5 business days with availability and a rate proposal.
+            {/* ============ Audience segments ============ */}
+            <section id="segments" className="mk-band" aria-label="Audience segments">
+                <div className="mk-container mk-band-inner">
+                    <header className="mk-section-head">
+                        <span className="mk-eyebrow mk-eyebrow--blue">AUDIENCE SEGMENTS</span>
+                        <h2 className="mk-h2">Who reads Cin Nova</h2>
+                        <p className="mk-section-sub">
+                            Four distinct reader segments across the Cin Nova content and product ecosystem.
                         </p>
+                    </header>
+                    <div className="mk-grid mk-grid--segments">
+                        {mediaKitSegments.map((seg) => (
+                            <article className="mk-card mk-card--media" key={seg.name}>
+                                <img className="mk-card-img" src={seg.image} alt={seg.alt} loading="lazy" />
+                                <div className="mk-card-body">
+                                    <h3 className="mk-h3">{seg.name}</h3>
+                                    <p className="mk-card-text">{seg.description}</p>
+                                    <div className="mk-tags">
+                                        {seg.tags.map((tag, i) => (
+                                            <span key={tag} className={`mk-tag mk-tag--${i === 0 ? "green" : "blue"}`}>{tag}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ============ Ad placements ============ */}
+            <section id="placements" className="mk-container mk-section" aria-label="Ad placements">
+                <header className="mk-section-head">
+                    <span className="mk-eyebrow mk-eyebrow--blue">AD PLACEMENTS</span>
+                    <h2 className="mk-h2">Six ways to reach the Cin Nova audience</h2>
+                    <p className="mk-section-sub">
+                        All placements are reviewed and approved by Cin Nova. Pricing shown
+                        is an estimated range — final rates depend on campaign details and availability.
+                    </p>
+                </header>
+                <div className="mk-grid mk-grid--placements">
+                    {mediaKitPlacements.map((p) => (
+                        <article className="mk-card mk-card--media mk-placement" key={p.name}>
+                            <img className="mk-card-img mk-card-img--short" src={p.image} alt={p.alt} loading="lazy" />
+                            <div className="mk-card-body mk-placement-body">
+                                <div>
+                                    <h3 className="mk-h3 mk-h3--sm">{p.name}</h3>
+                                    <p className="mk-card-text mk-card-text--sm">{p.format}</p>
+                                </div>
+                                <div className="mk-spec">
+                                    <span className="mk-spec-label">SPECS</span>
+                                    {p.specs}
+                                </div>
+                                <div className="mk-spec">
+                                    <span className="mk-spec-label">REACH</span>
+                                    {p.reach}
+                                </div>
+                                <div className="mk-price">{p.range}</div>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+                <p className="mk-footnote">
+                    All rates are estimated. Final pricing depends on campaign scope,
+                    duration, and current availability. Custom packages are available —
+                    use the contact form below for a quote.
+                </p>
+                <div className="mk-hero-ctas mk-placements-actions">
+                    <a className="mk-btn mk-btn--outline" href="/?page=sponsor-newsletter">Sponsor the Newsletter</a>
+                    <a className="mk-btn mk-btn--outline" href="/?page=partnerships">Partnerships</a>
+                </div>
+            </section>
+
+            {/* ============ Brand assets ============ */}
+            <section id="brand-assets" className="mk-band" aria-label="Brand assets">
+                <div className="mk-container mk-band-inner">
+                    <header className="mk-section-head">
+                        <span className="mk-eyebrow mk-eyebrow--blue">BRAND ASSETS</span>
+                        <h2 className="mk-h2">Downloads for press and partners</h2>
+                        <p className="mk-section-sub">
+                            Download the Cin Nova press pack, brand guidelines, and audience report.
+                        </p>
+                    </header>
+                    <div className="mk-grid mk-grid--assets">
+                        {mediaKitAssets.map((a) => (
+                            <article className="mk-card mk-asset" key={a.key}>
+                                <span className="mk-asset-icon">TXT</span>
+                                <h3 className="mk-h3">{a.title}</h3>
+                                <p className="mk-card-text">{a.description}</p>
+                                <button type="button" className="mk-btn mk-btn--primary mk-btn--sm" onClick={() => downloadAsset(a.key)}>
+                                    ↓ Download {a.title}
+                                </button>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ============ Contact ============ */}
+            <section id="contact" className="mk-container mk-section mk-section--last" aria-label="Advertising contact">
+                <header className="mk-section-head">
+                    <span className="mk-eyebrow mk-eyebrow--green">CONTACT</span>
+                    <h2 className="mk-h2">Ready to advertise? Get in touch.</h2>
+                    <p className="mk-section-sub">
+                        Fill in the form below or email{" "}
+                        <a className="mk-inline-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{" "}
+                        directly with your campaign brief.
+                    </p>
+                </header>
+                {sent ? (
+                    <div className="mk-form mk-card">
+                        <div className="mk-form-success" role="status">
+                            Thanks — your inquiry was sent. We&rsquo;ll get back to you within 3–5 business days
+                            with availability and a rate proposal.
+                        </div>
                     </div>
                 ) : (
-                    <form className="partner-form" onSubmit={handleContactSubmit} noValidate>
-                        <div className="partner-form-row">
-                            <div className="partner-form-field">
-                                <label htmlFor="mk-name">Full Name *</label>
-                                <input
-                                    id="mk-name"
-                                    type="text"
-                                    value={contactForm.name}
-                                    onChange={(e) => updateContact("name", e.target.value)}
-                                    placeholder="Jane Smith"
-                                    maxLength={100}
-                                />
-                                {errors.name && <span className="form-error">{errors.name}</span>}
-                            </div>
-                            <div className="partner-form-field">
-                                <label htmlFor="mk-email">Email Address *</label>
-                                <input
-                                    id="mk-email"
-                                    type="email"
-                                    value={contactForm.email}
-                                    onChange={(e) => updateContact("email", e.target.value)}
-                                    placeholder="jane@example.com"
-                                    maxLength={254}
-                                />
-                                {errors.email && <span className="form-error">{errors.email}</span>}
-                            </div>
-                        </div>
-                        <div className="partner-form-row">
-                            <div className="partner-form-field">
-                                <label htmlFor="mk-company">Company *</label>
-                                <input
-                                    id="mk-company"
-                                    type="text"
-                                    value={contactForm.company}
-                                    onChange={(e) => updateContact("company", e.target.value)}
-                                    placeholder="Acme Corp"
-                                    maxLength={140}
-                                />
-                                {errors.company && <span className="form-error">{errors.company}</span>}
-                            </div>
-                            <div className="partner-form-field">
-                                <label htmlFor="mk-placement">Placement Interest</label>
-                                <select
-                                    id="mk-placement"
-                                    value={contactForm.placement}
-                                    onChange={(e) => updateContact("placement", e.target.value)}
-                                >
-                                    <option value="">Select a placement...</option>
+                    <form className="mk-form mk-card" onSubmit={handleSubmit} noValidate>
+                        <div className="mk-form-grid">
+                            <label className="mk-field">
+                                <span>Full Name <em className="mk-req">*</em></span>
+                                <input required type="text" name="name" placeholder="Jane Smith" maxLength={100} />
+                            </label>
+                            <label className="mk-field">
+                                <span>Email Address <em className="mk-req">*</em></span>
+                                <input required type="email" name="email" placeholder="jane@example.com" maxLength={254} />
+                            </label>
+                            <label className="mk-field">
+                                <span>Company <em className="mk-req">*</em></span>
+                                <input required type="text" name="company" placeholder="Acme Corp" maxLength={140} />
+                            </label>
+                            <label className="mk-field">
+                                <span>Placement Interest</span>
+                                <select name="placement" defaultValue="">
+                                    <option value="">Select a placement…</option>
                                     {mediaKitPlacements.map((p) => (
                                         <option key={p.name} value={p.name}>{p.name}</option>
                                     ))}
-                                    <option value="Custom Package">Custom Package</option>
+                                    <option value="Custom Package">Custom package</option>
                                 </select>
-                            </div>
+                            </label>
                         </div>
-                        <div className="partner-form-field">
-                            <label htmlFor="mk-message">Campaign Brief or Questions</label>
+                        <label className="mk-field mk-field--full">
+                            <span>Campaign Brief or Questions</span>
                             <textarea
-                                id="mk-message"
+                                name="brief"
                                 rows={5}
-                                value={contactForm.message}
-                                onChange={(e) => updateContact("message", e.target.value)}
-                                placeholder="Tell us about your product, target audience, and campaign goals..."
                                 maxLength={1500}
+                                placeholder="Tell us about your product, target audience, and campaign goals…"
                             />
-                        </div>
-                        <button type="submit" className="primary-btn">
+                        </label>
+                        {error && <p className="mk-form-error" role="alert">{error}</p>}
+                        <button type="submit" className="mk-btn mk-btn--primary mk-btn--block">
                             Send Inquiry →
                         </button>
                     </form>
                 )}
-            </BusinessSection>
+            </section>
         </main>
     );
 }
-
-export default MediaKit;

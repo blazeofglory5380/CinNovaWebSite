@@ -1,0 +1,456 @@
+/* ==========================================================================
+   CinNova Media Kit page — scoped stylesheet (2026 redesign)
+   Every rule is scoped under .mk-* so nothing leaks into other pages.
+   Fonts: Schibsted Grotesk (headings) + Instrument Sans (body).
+   If the site already loads different brand fonts, keep those instead —
+   only the two font-family declarations below need changing.
+   ========================================================================== */
+
+.mk-page {
+  --mk-ink: #0b1a17;
+  --mk-body: #45555f;
+  --mk-muted: #8795a0;
+  --mk-green: #0e6b4f;
+  --mk-green-dark: #0a523c;
+  --mk-green-bg: #e3f2ec;
+  --mk-blue: #2457d6;
+  --mk-blue-bg: #eaf0fd;
+  --mk-border: #e7eeec;
+  --mk-border-soft: #eef3f1;
+  --mk-band-bg: #f5f9f7;
+  --mk-input-bg: #fbfdfc;
+  --mk-input-border: #d9e3df;
+  --mk-shadow-card: 0 1px 2px rgba(11, 26, 23, 0.04), 0 14px 32px -20px rgba(11, 26, 23, 0.14);
+  --mk-font-head: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  --mk-font-body: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+
+  font-family: var(--mk-font-body);
+  color: var(--mk-body);
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+.mk-page *,
+.mk-page *::before,
+.mk-page *::after {
+  box-sizing: border-box;
+}
+
+.mk-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* --- Section rhythm: deliberately tight (was ~160px+ of dead space) ------ */
+.mk-section {
+  padding-top: 64px;
+}
+.mk-section--last {
+  padding-bottom: 72px;
+}
+.mk-band {
+  background: var(--mk-band-bg);
+  border-top: 1px solid var(--mk-border);
+  border-bottom: 1px solid var(--mk-border);
+  margin-top: 64px;
+}
+.mk-band-inner {
+  padding-top: 56px;
+  padding-bottom: 64px;
+}
+
+/* --- Section headers ------------------------------------------------------ */
+.mk-section-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 32px;
+}
+.mk-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 7px 14px;
+  border-radius: 999px;
+}
+.mk-eyebrow--green { background: var(--mk-green-bg); color: var(--mk-green); }
+.mk-eyebrow--blue  { background: var(--mk-blue-bg);  color: var(--mk-blue); }
+
+.mk-h2 {
+  font-family: var(--mk-font-head);
+  font-weight: 800;
+  color: var(--mk-ink);
+  font-size: clamp(28px, 3.4vw, 40px);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin: 14px 0 10px;
+  text-wrap: balance;
+}
+.mk-h3 {
+  font-family: var(--mk-font-head);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--mk-ink);
+  margin: 0 0 8px;
+}
+.mk-h3--sm { font-size: 18px; margin-bottom: 5px; }
+
+.mk-section-sub {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+.mk-muted { color: var(--mk-muted); }
+.mk-inline-link { color: var(--mk-green); font-weight: 600; text-decoration: none; }
+.mk-inline-link:hover { color: var(--mk-green-dark); }
+
+/* --- Hero ------------------------------------------------------------------ */
+.mk-hero-wrap { margin-top: 28px; }
+.mk-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid #e2eee9;
+  background: linear-gradient(120deg, #f1faf6 0%, #f4f8fd 70%, #eef3fb 100%);
+  padding: clamp(32px, 5vw, 56px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 36px;
+  align-items: center;
+}
+.mk-hero-glow {
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 155, 119, 0.12), transparent 70%);
+  pointer-events: none;
+}
+.mk-hero-copy { min-width: 0; }
+.mk-hero-title {
+  font-family: var(--mk-font-head);
+  font-weight: 800;
+  color: var(--mk-ink);
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 18px 0 14px;
+}
+.mk-hero-sub {
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0 0 20px;
+  max-width: 56ch;
+}
+.mk-hero-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+.mk-chip-link {
+  background: #fff;
+  border: 1px solid #dde8e3;
+  color: #3d4c55;
+  font-size: 13px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.mk-chip-link:hover { border-color: var(--mk-green); color: var(--mk-green); }
+.mk-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.mk-hero-art { display: grid; place-items: center; min-width: 0; }
+.mk-hero-orb {
+  position: relative;
+  width: min(300px, 70vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+.mk-hero-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e7f5ef, #e3ecfa);
+  box-shadow: inset 0 0 0 1px rgba(14, 107, 79, 0.1), 0 24px 48px -24px rgba(11, 26, 23, 0.18);
+}
+.mk-hero-mark {
+  position: relative;
+  width: 44%;
+  aspect-ratio: 1;
+  border-radius: 26%;
+  background: linear-gradient(135deg, #0e6b4f, #1273b8);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-family: var(--mk-font-head);
+  font-weight: 800;
+  font-size: clamp(28px, 3vw, 40px);
+  box-shadow: 0 16px 32px -14px rgba(14, 107, 79, 0.55);
+}
+.mk-hero-float {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #e2eee9;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px -10px rgba(11, 26, 23, 0.2);
+}
+.mk-hero-float--tl { top: 12%; left: 2%; color: var(--mk-green); }
+.mk-hero-float--br { bottom: 16%; right: 0; color: var(--mk-blue); }
+
+/* --- Buttons ---------------------------------------------------------------- */
+.mk-btn {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: inherit;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.mk-btn--primary {
+  background: var(--mk-green);
+  color: #fff;
+  border: none;
+  box-shadow: 0 8px 20px -8px rgba(14, 107, 79, 0.5);
+}
+.mk-btn--primary:hover { background: var(--mk-green-dark); color: #fff; }
+.mk-btn--outline {
+  background: #fff;
+  border: 1px solid #d8e3de;
+  color: var(--mk-ink);
+  font-weight: 600;
+}
+.mk-btn--outline:hover { border-color: var(--mk-green); color: var(--mk-green); }
+.mk-btn--sm { font-size: 14.5px; padding: 12px 22px; }
+.mk-btn--block { display: block; width: 100%; margin-top: 20px; font-size: 16px; padding: 15px 24px; }
+
+/* --- Cards (shared) --------------------------------------------------------- */
+.mk-card {
+  background: #fff;
+  border: 1px solid var(--mk-border);
+  border-radius: 18px;
+  box-shadow: var(--mk-shadow-card);
+}
+.mk-card--media { overflow: hidden; display: flex; flex-direction: column; }
+.mk-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.mk-card-img--short { height: 150px; }
+.mk-card-body { padding: 20px 24px 22px; }
+.mk-card-text { font-size: 14.5px; line-height: 1.6; margin: 0 0 14px; }
+.mk-card-text--sm { font-size: 14px; line-height: 1.55; margin: 0; }
+
+/* --- Grids ------------------------------------------------------------------ */
+.mk-grid { display: grid; gap: 20px; }
+.mk-grid--stats {
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+.mk-grid--segments   { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.mk-grid--placements { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.mk-grid--assets     { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+
+/* --- Stats ------------------------------------------------------------------ */
+.mk-stat {
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mk-stat-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mk-stat-value {
+  font-family: var(--mk-font-head);
+  font-weight: 800;
+  font-size: 30px;
+  color: var(--mk-ink);
+  letter-spacing: -0.01em;
+}
+.mk-stat-label { font-size: 14.5px; font-weight: 600; }
+.mk-badge-placeholder {
+  background: #fff4d6;
+  color: #8a6a12;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+/* --- Segment tags ------------------------------------------------------------ */
+.mk-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.mk-tag {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.mk-tag--green { background: var(--mk-green-bg); color: var(--mk-green); }
+.mk-tag--blue  { background: var(--mk-blue-bg);  color: var(--mk-blue); }
+
+/* --- Placements --------------------------------------------------------------- */
+.mk-placement-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  padding: 20px 22px 22px;
+}
+.mk-spec { font-size: 13.5px; line-height: 1.5; }
+.mk-spec-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--mk-muted);
+}
+.mk-price {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--mk-border-soft);
+  font-family: var(--mk-font-head);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--mk-green);
+}
+.mk-price-unit { font-weight: 600; font-size: 13.5px; color: var(--mk-muted); }
+.mk-footnote {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--mk-muted);
+  max-width: 64ch;
+  margin: 24px auto 0;
+  line-height: 1.6;
+}
+
+/* --- Brand asset cards ---------------------------------------------------------- */
+.mk-asset {
+  padding: 26px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.mk-asset .mk-h3 { margin: 0; }
+.mk-asset .mk-card-text { margin: 0; max-width: 36ch; }
+.mk-asset .mk-btn { margin-top: 6px; }
+.mk-asset-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e3f2ec, #e7eefb);
+  color: var(--mk-green);
+  display: grid;
+  place-items: center;
+  font-family: var(--mk-font-head);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+/* --- Contact form: light inputs on a white card ----------------------------------- */
+.mk-form {
+  max-width: 780px;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: clamp(24px, 3.5vw, 36px);
+  box-shadow: 0 1px 2px rgba(11, 26, 23, 0.04), 0 18px 40px -24px rgba(11, 26, 23, 0.16);
+}
+.mk-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 18px;
+}
+.mk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--mk-ink);
+}
+.mk-field--full { margin-top: 18px; }
+.mk-req { color: #c2453a; font-style: normal; }
+
+.mk-field input,
+.mk-field select,
+.mk-field textarea {
+  width: 100%;
+  background: var(--mk-input-bg);
+  border: 1px solid var(--mk-input-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--mk-ink);
+}
+.mk-field textarea { resize: vertical; min-height: 110px; }
+.mk-field input::placeholder,
+.mk-field textarea::placeholder { color: #9aaab2; }
+.mk-field input:focus,
+.mk-field select:focus,
+.mk-field textarea:focus {
+  outline: none;
+  border-color: var(--mk-green);
+  box-shadow: 0 0 0 3px rgba(14, 107, 79, 0.12);
+}
+
+.mk-form-success {
+  margin-top: 20px;
+  background: var(--mk-green-bg);
+  border: 1px solid #bfe1d3;
+  color: var(--mk-green-dark);
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Sticky newsletter bar suppression.
+   The global sticky newsletter bar overlaps this page's content — hide it
+   here; the footer newsletter link is enough. If the bar is rendered by the
+   global layout, either (a) add the page class below to <body>/layout root
+   when route === media-kit, or (b) skip rendering the bar component for
+   this route. Adjust `.newsletter-sticky-bar` to the bar's real selector.
+   ========================================================================== */
+.media-kit-page .newsletter-sticky-bar,
+.mk-page ~ .newsletter-sticky-bar {
+  display: none !important;
+}
+
+/* --- Small screens ------------------------------------------------------------ */
+@media (max-width: 560px) {
+  .mk-container { padding-left: 16px; padding-right: 16px; }
+  .mk-section { padding-top: 48px; }
+  .mk-band { margin-top: 48px; }
+  .mk-band-inner { padding-top: 44px; padding-bottom: 48px; }
+  .mk-hero-ctas .mk-btn { flex: 1 1 100%; text-align: center; }
+}
+
+/* Contact form validation message (scoped) */
+.mk-page .mk-form-error {
+  margin: 4px 0 0;
+  color: #b42318;
+  font-size: 0.92rem;
+  font-weight: 600;
+}

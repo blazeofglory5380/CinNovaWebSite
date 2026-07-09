@@ -390,7 +390,7 @@ function App() {
         page === "newsletter" || page === "sponsor-newsletter" || isSuccessPage;
     // Also suppress the sticky bar on pages that already have their own strong
     // conversion CTAs (e.g. Pricing), where it is redundant and overlaps content.
-    const hideStickyBar = isNewsletterFocusedPage || page === "pricing";
+    const hideStickyBar = isNewsletterFocusedPage || page === "pricing" || page === "media-kit";
 
     return (
         <div className="site">
