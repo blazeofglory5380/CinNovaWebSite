@@ -1,0 +1,361 @@
+/*
+ * Shared dark "below-hero" theme for the CinNova product pages:
+ * PoisonGuard, Kiddo, TechMate AI, and Real Estate AI.
+ *
+ * Mirrors the StudyNest pass (see StudyNest.css) but is shared, because these
+ * four pages reuse the same generic classes (.showcase-card, .pricing-card,
+ * .chat-*, .preview-*) that also exist on light pages. Everything is therefore
+ * scoped to `.product-dark-scope`.
+ *
+ * Scope
+ *   `.product-dark-scope`        route wrapper (back bar + page + ecosystem)
+ *   `.<product>-scope`           supplies the per-product accent
+ *   `.product-page.brand-dna`    page root; opts into the brand-dna tokens
+ *
+ * Heroes (.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) are NEVER targeted.
+ * Each sets its own background/color/font-family, so it inherits nothing from
+ * the brand-dna layer. The back bar sits ABOVE the hero and is deliberately
+ * left untouched — restyling its font shifts the hero by ~2px.
+ */
+
+/* ── Route canvas ─────────────────────────────────────────────────── */
+/* No `.brand-dna` here, so --bdna-* do not resolve; #0a0e17 is --bdna-bg. */
+.product-dark-scope {
+    background: #0a0e17;
+    --pd-accent: #3fe8c0; /* ecosystem teal — default for the shared blocks */
+}
+
+/* ── Per-product accents ──────────────────────────────────────────── */
+/* Lightened from the catalog hues so labels clear WCAG AA on midnight:
+   emerald #10b981 -> #34d399, amber #f59e0b -> #fbbf24,
+   violet #8b5cf6 -> #a78bfa, blue #2563eb -> #60a5fa. */
+.poisonguard-scope { --pd-accent: #34d399; }
+.kiddo-scope       { --pd-accent: #fbbf24; }
+.techmate-scope    { --pd-accent: #a78bfa; }
+.realestate-scope  { --pd-accent: #60a5fa; }
+
+/* ── Page canvas ──────────────────────────────────────────────────── */
+.product-dark-scope .product-page {
+    /* App.css sets `.eyebrow, .product-category, … { color: var(--cn-blue) !important }`.
+       Re-pointing the token turns every accent label the product hue without an
+       !important war. */
+    --cn-blue: var(--pd-accent);
+    --cn-text: var(--bdna-ink);
+    --cn-text-muted: var(--bdna-dim);
+    --bdna-accent: var(--pd-accent);
+
+    --pd-panel: rgba(15, 24, 38, 0.55);
+    --pd-edge: rgba(255, 255, 255, 0.08);
+    --pd-edge-lit: color-mix(in srgb, var(--pd-accent) 40%, transparent);
+    --pd-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+    --pd-shadow-lit: 0 20px 48px rgba(0, 0, 0, 0.5);
+
+    background: linear-gradient(180deg, var(--bdna-bg) 0%, var(--bdna-bg-lift) 240px);
+    color: var(--bdna-dim2);
+}
+
+/* The ecosystem block opts into brand-dna separately (see App.jsx). */
+.product-dark-scope .pd-eco {
+    --pd-panel: rgba(15, 24, 38, 0.55);
+    --pd-edge: rgba(255, 255, 255, 0.08);
+    --pd-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+    --pd-shadow-lit: 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Section canvases (were white / near-white) ───────────────────── */
+.product-dark-scope .product-page :is(
+    .section,
+    .platform-section,
+    .popular-section,
+    .categories-section,
+    .feature-icons-section,
+    .ecosystem-diagram-section,
+    .ecosystem-showcase-section,
+    .pg-trust-bar,
+    .kd-gameplay
+) {
+    background: transparent;
+}
+
+/* ── Frosted card material ────────────────────────────────────────── */
+.product-dark-scope .product-page :is(
+    .pg-trust-card,
+    .pg-how-card,
+    .pg-preview-card,
+    .pg-pricing-card,
+    .pg-faq-item,
+    .pg-feature-card-v2,
+    .pg-emergency-cta,
+    .kd-character-card,
+    .kd-mock-card,
+    .kd-parent-feature,
+    .kd-faq-item,
+    .kd-pricing-card,
+    .kd-parent-dashboard-mock,
+    .showcase-card,
+    .pricing-card,
+    .product-card,
+    .feature-card,
+    .preview-card,
+    .app-preview,
+    .immersive-product-card
+),
+.product-dark-scope .pd-eco .home-v12-ecosystem-card {
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    box-shadow: var(--pd-shadow);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* Existing hover lift is preserved — only the lit colors change. */
+.product-dark-scope .product-page :is(
+    .pg-trust-card,
+    .pg-how-card,
+    .pg-preview-card,
+    .pg-pricing-card,
+    .pg-feature-card-v2,
+    .kd-character-card,
+    .kd-parent-feature,
+    .kd-pricing-card,
+    .showcase-card,
+    .pricing-card,
+    .product-card,
+    .feature-card
+):hover,
+.product-dark-scope .pd-eco .home-v12-ecosystem-card:hover {
+    border-color: var(--pd-edge-lit);
+    box-shadow: var(--pd-shadow-lit);
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+/*
+ * CRITICAL: each hero is a DESCENDANT of `.product-page`, so a broad
+ * `.product-page p` rule recolors the hero's own eyebrow / <h1> / lede.
+ * A computed-style diff against the pre-change baseline caught exactly that on
+ * all four pages. Every broad element rule below therefore carries the
+ * `:not(:is(<hero roots>) *)` guard. Do not remove it.
+ */
+.product-dark-scope .product-page
+    :is(h1, h2, h3, h4, h5):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    color: var(--bdna-ink) !important;
+}
+
+/* App.css has several `!important` light-text rules aimed at cards and section
+   headings (e.g. `.product-card p, … { color: #334155 !important }`). Matching
+   the weight is the only way to reach AA on a dark canvas. */
+.product-dark-scope .product-page
+    :is(p, li, small, span, strong, td, th, dd, dt, figcaption, code):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    color: var(--bdna-dim) !important;
+}
+
+/* Accent labels/kickers keep the product hue. */
+.product-dark-scope .product-page
+    :is(.eyebrow, .product-category, .pg-eyebrow, .kd-eyebrow):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    color: var(--pd-accent) !important;
+    background-color: color-mix(in srgb, var(--pd-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 24%, transparent);
+}
+
+/* Strong/emphasis inside cards should read as ink, not muted. */
+.product-dark-scope .product-page :is(
+    .pricing-price,
+    .pg-pricing-price,
+    .kd-pricing-price,
+    .stat-number,
+    .showcase-card strong
+):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    color: var(--bdna-ink) !important;
+}
+
+/* ── Long-tail surfaces ───────────────────────────────────────────────
+   Enumerated empirically: every element below the hero whose computed
+   background was still light was collected from the live DOM on all four
+   pages, rather than guessed from the stylesheet. */
+.product-dark-scope .product-page :is(
+    .pg-use-case-card,
+    .pg-workflow-node,
+    .pg-workflow-banner,
+    .pg-feature-card-copy,
+    .pg-feature-card-visual,
+    .pg-waitlist-form,
+    .poisonguard-safety-disclaimer,
+    .kd-world-card,
+    .kd-subject-card,
+    .kd-waitlist-form,
+    .kd-mock-node,
+    .chat-user,
+    .chat-ai,
+    .flashcard-preview,
+    .preview-note,
+    .newsletter-card,
+    .re-conv-card,
+    .re-conv-use,
+    .guide-row-label,
+    code
+),
+.product-dark-scope .product-page .preview-grid > div,
+.product-dark-scope .product-page .kd-dashboard-stats > div {
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    color: var(--bdna-dim2);
+}
+
+/* Photo wrappers ship a light placeholder that shows for one frame before the
+   image paints — jarring on a dark canvas. The image itself is object-fit:cover
+   and fully covers the box, so this only affects the loading state. */
+.product-dark-scope .product-page :is(.feature-photo-wrap, .marketing-photo) {
+    background: var(--pd-panel);
+}
+
+/* The AI side of a chat exchange keeps its accent tint. */
+.product-dark-scope .product-page .chat-ai {
+    background: color-mix(in srgb, var(--pd-accent) 10%, transparent);
+    border-color: color-mix(in srgb, var(--pd-accent) 26%, transparent);
+}
+
+/* Small chips / dots / meters. */
+/* The guard is not only for hero safety: it adds a class to the specificity,
+   which is what lets these chip rules outrank the broad `:is(p, span, …)`
+   typography rule above. Without it, every <span>-based chip fell back to muted
+   gray. */
+.product-dark-scope .product-page :is(
+    .kd-gameplay-chip,
+    .kd-world-age,
+    .kd-subject-dot,
+    .kd-mock-star,
+    .pg-confidence-bar,
+    .re-conv-btn
+):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    background: color-mix(in srgb, var(--pd-accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 28%, transparent);
+    color: var(--pd-accent) !important;
+}
+
+/* Semantic status colors are preserved rather than flattened — these carry
+   meaning (risk level, completion) on a safety and a kids' product. */
+.product-dark-scope .product-page .pg-risk-badge.pg-risk-badge--high:not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    background: rgba(248, 113, 113, 0.16) !important;
+    border: 1px solid rgba(248, 113, 113, 0.42);
+    color: #fca5a5 !important;
+}
+
+.product-dark-scope .product-page .pg-emergency-link {
+    color: #fcd34d !important;
+}
+
+.product-dark-scope .product-page .kd-mock-node--done {
+    background: rgba(74, 222, 128, 0.16);
+    border-color: rgba(74, 222, 128, 0.4);
+}
+
+/* --active keeps its amber gradient (already high-contrast on dark). */
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+/* App.css: `.footer-links button, … .secondary-btn { color: var(--cn-text-muted) !important }`
+   (gray, ~3:1 here) — !important required to reach AA. Primary CTAs keep their
+   own solid backgrounds and white text, so they are left alone. */
+.product-dark-scope .secondary-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--pd-edge);
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .secondary-btn:hover {
+    border-color: var(--pd-edge-lit);
+    color: var(--bdna-ink) !important;
+}
+
+/* ── Forms (newsletter / waitlist) ────────────────────────────────── */
+/* Every input below the hero (heroes contain none). */
+.product-dark-scope .product-page :is(input, textarea, select) {
+    background: rgba(8, 12, 20, 0.7) !important;
+    border: 1px solid var(--pd-edge);
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page :is(input, textarea)::placeholder { color: var(--bdna-dim); }
+
+.product-dark-scope .signup-form input:focus-visible {
+    outline: 2px solid var(--pd-accent);
+    outline-offset: 1px;
+}
+
+.product-dark-scope .form-privacy-note { color: var(--bdna-dim) !important; }
+.product-dark-scope .form-privacy-link { color: var(--pd-accent) !important; }
+.product-dark-scope .newsletter-success { color: var(--pd-accent) !important; }
+
+/* ── CinNova ecosystem cards (rendered after each page) ───────────── */
+.product-dark-scope .pd-eco .product-ecosystem-section {
+    background: var(--bdna-bg-lift);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.product-dark-scope .pd-eco :is(h2, h3) { color: var(--bdna-ink); }
+.product-dark-scope .pd-eco :is(p, span) { color: var(--bdna-dim) !important; }
+
+/* Product-name pill floating over each ecosystem photo: it shipped as a light
+   pill with dark text, but the rules above recolor its text to muted gray.
+   Flip it to a dark glass pill so it stays legible over any photo. */
+.product-dark-scope .pd-eco .home-v12-product-brand {
+    background: rgba(10, 14, 23, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--bdna-ink) !important;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+/* Status chips shipped light-on-light; re-tint each variant. */
+.product-dark-scope .pd-eco .home-v12-status {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--bdna-dim2) !important;
+}
+
+.product-dark-scope .pd-eco .home-v12-status--available {
+    background: rgba(10, 191, 140, 0.14);
+    border-color: rgba(63, 232, 192, 0.34);
+    color: #3fe8c0 !important;
+}
+
+.product-dark-scope .pd-eco .home-v12-status--beta {
+    background: rgba(201, 169, 98, 0.16);
+    border-color: rgba(201, 169, 98, 0.38);
+    color: #e0c887 !important;
+}
+
+.product-dark-scope .pd-eco .home-v12-status--coming-soon {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--bdna-dim2) !important;
+}
+
+/* Footer transition — fade the last dark section into the light site footer. */
+.product-dark-scope .pd-eco .product-ecosystem-section::after {
+    content: "";
+    display: block;
+    height: 96px;
+    margin: 56px -100vw -1px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.9));
+    pointer-events: none;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────── */
+/* This file changes only color/border/shadow; it introduces no animation.
+   The hover treatments reuse transitions already defined in App.css, which
+   `.brand-dna *` neutralizes under reduce. These rules make that explicit for
+   the shared cards. */
+@media (prefers-reduced-motion: reduce) {
+    .product-dark-scope .product-page :is(
+        .pg-how-card, .pg-preview-card, .pg-pricing-card, .pg-feature-card-v2,
+        .kd-character-card, .kd-parent-feature, .kd-pricing-card,
+        .showcase-card, .pricing-card, .product-card, .feature-card
+    ),
+    .product-dark-scope .pd-eco .home-v12-ecosystem-card {
+        transition: none;
+    }
+
+    .product-dark-scope .product-page :is(.product-card, .feature-card, .showcase-card):hover {
+        transform: none;
+    }
+}

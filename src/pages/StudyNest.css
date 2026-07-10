@@ -1,0 +1,334 @@
+/*
+ * StudyNest — dark premium ecosystem theme for everything BELOW the hero.
+ *
+ * Scope
+ *   `.studynest-scope`   route wrapper (back bar + page + ecosystem cards)
+ *   `.studynest-landing` the page <main>
+ *
+ * The hero is `.studynest-hero-animation` / `.snh-*` and is deliberately never
+ * targeted here. It sets its own background (#04080f), color, and font-family,
+ * so it is insulated from the `.brand-dna` token layer this route opts into.
+ *
+ * Colors come from `brand-dna.css` (the same layer the home and products pages
+ * use) so StudyNest reads as part of one ecosystem rather than a lookalike.
+ * Loaded after App.css, so these rules win over the light defaults without
+ * editing the 18k-line global sheet.
+ */
+
+/* ── Route canvas ─────────────────────────────────────────────────── */
+/* This element carries no `.brand-dna` class, so --bdna-* do not resolve here.
+   #0a0e17 is `--bdna-bg` (Midnight Black) written literally.
+   Deliberately sets no `color`/`font-family`: the back bar sits ABOVE the hero
+   and is outside the safe-to-change area — restyling its font shrank its
+   buttons and shifted the hero up 2px. */
+.studynest-scope {
+    background: #0a0e17;
+
+    /* App.css sets `.eyebrow, .product-category, …{ color: var(--cn-blue) !important }`.
+       Re-pointing the token inside this scope turns every accent label teal
+       without an !important war, and it is exactly the set of label/kicker
+       elements we want teal. #3fe8c0 is `--bdna-emerald-glow`. */
+    --cn-blue: #3fe8c0;
+}
+
+/* Was a white gradient; now fades midnight -> lifted midnight under the hero.
+   `.studynest-landing` carries `.brand-dna`, so --bdna-* resolve from here down. */
+.studynest-scope .studynest-landing {
+    /* StudyNest keeps its sky identity for the primary CTA; labels, borders,
+       and glows use the ecosystem teal so the page matches the rest of
+       CinNova. */
+    --sn-accent: #0ea5e9;
+    --sn-accent-dark: #0284c7;
+    --sn-accent-bg: rgba(10, 191, 140, 0.12);
+    --sn-accent-border: rgba(10, 191, 140, 0.28);
+    --sn-border: 1px solid var(--bdna-panel-edge);
+    --sn-shadow-rest: 0 2px 18px rgba(0, 0, 0, 0.35);
+    --sn-shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.5);
+
+    background: linear-gradient(180deg, var(--bdna-bg) 0%, var(--bdna-bg-lift) 240px);
+    color: var(--bdna-dim2);
+}
+
+/* The ecosystem block opts into `.brand-dna` separately (see App.jsx). */
+.studynest-scope > .brand-dna {
+    --sn-shadow-rest: 0 2px 18px rgba(0, 0, 0, 0.35);
+    --sn-shadow-hover: 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Shared atoms ─────────────────────────────────────────────────── */
+.studynest-scope .eyebrow {
+    background-color: rgba(10, 191, 140, 0.12);
+    color: var(--bdna-emerald-glow);
+    border: 1px solid rgba(10, 191, 140, 0.22);
+}
+
+.studynest-scope .studynest-landing .sn-section-head h2 {
+    color: var(--bdna-ink);
+}
+
+.studynest-scope .studynest-landing .sn-section-head p {
+    color: var(--bdna-dim);
+}
+
+/* Frosted card material, shared by every below-hero card. */
+.studynest-scope .sn-how-card,
+.studynest-scope .sn-preview-card,
+.studynest-scope .sn-audience-card,
+.studynest-scope .sn-pricing-card,
+.studynest-scope .sn-faq-item,
+.studynest-scope .studynest-landing .product-card-photo {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    box-shadow: var(--sn-shadow-rest);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+    backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+}
+
+/* Existing hover lift is preserved — only the lit colors change. */
+.studynest-scope .sn-how-card:hover,
+.studynest-scope .sn-preview-card:hover,
+.studynest-scope .sn-audience-card:hover,
+.studynest-scope .sn-pricing-card:hover,
+.studynest-scope .sn-faq-item:hover,
+.studynest-scope .studynest-landing .product-card-photo:hover {
+    border-color: rgba(63, 232, 192, 0.32);
+    box-shadow: var(--sn-shadow-hover), 0 0 40px rgba(10, 191, 140, 0.1);
+}
+
+/* ── Trust bar ────────────────────────────────────────────────────── */
+.studynest-scope .sn-trust-bar {
+    background: rgba(13, 21, 34, 0.85);
+    border-top: 1px solid var(--bdna-panel-edge);
+    border-bottom: 1px solid var(--bdna-panel-edge);
+}
+
+.studynest-scope .sn-trust-inner {
+    color: var(--bdna-dim);
+}
+
+.studynest-scope .sn-trust-inner span::before {
+    background: var(--bdna-emerald-glow);
+}
+
+/* ── Why StudyNest ────────────────────────────────────────────────── */
+.studynest-scope .sn-problem-copy h2 { color: var(--bdna-ink); }
+.studynest-scope .sn-problem-copy p { color: var(--bdna-dim); }
+
+.studynest-scope .sn-problem-visual,
+.studynest-scope .sn-problem-img {
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: var(--sn-radius-media, 16px);
+}
+
+/* ── Feature cards (FeaturePhotoCard) ─────────────────────────────── */
+/* The kicker and body are <p> elements, and App.css sets
+   `.product-card p, … { color: #334155 !important }` — dark slate, unreadable
+   on a dark card. `!important` here is required to beat that, not a shortcut;
+   it is the same weight the global rule uses, scoped to this route only. */
+.studynest-scope .studynest-landing .product-card-photo .product-category {
+    color: var(--bdna-emerald-glow) !important;
+}
+
+.studynest-scope .studynest-landing .product-card-photo h3 { color: var(--bdna-ink); }
+
+.studynest-scope .studynest-landing .product-card-photo p {
+    color: var(--bdna-dim) !important;
+}
+
+/* ── How it works ─────────────────────────────────────────────────── */
+.studynest-scope .sn-how-step {
+    background: rgba(10, 191, 140, 0.12);
+    border: 1px solid rgba(10, 191, 140, 0.28);
+    color: var(--bdna-emerald-glow);
+}
+
+.studynest-scope .sn-how-card h3 { color: var(--bdna-ink); }
+.studynest-scope .sn-how-card p { color: var(--bdna-dim); }
+
+/* ── Product preview ──────────────────────────────────────────────── */
+.studynest-scope .sn-preview-label { color: var(--bdna-emerald-glow); }
+.studynest-scope .sn-preview-card h3 { color: var(--bdna-ink); }
+
+.studynest-scope .sn-chat-user {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+}
+
+.studynest-scope .sn-chat-ai {
+    background: rgba(10, 191, 140, 0.10);
+    border: 1px solid rgba(10, 191, 140, 0.26);
+    color: var(--bdna-dim2);
+}
+
+.studynest-scope .sn-flashcard {
+    background: linear-gradient(145deg, rgba(15, 24, 38, 0.9) 0%, rgba(13, 21, 34, 0.7) 100%);
+    border: 1px solid var(--bdna-panel-edge);
+}
+
+.studynest-scope .sn-flashcard-prompt { color: var(--bdna-ink); }
+.studynest-scope .sn-flashcard-answer { color: var(--bdna-dim); }
+
+.studynest-scope .sn-planner-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim);
+}
+
+.studynest-scope .sn-planner-row strong { color: var(--bdna-emerald-glow); }
+
+/* ── Who it's for ─────────────────────────────────────────────────── */
+.studynest-scope .sn-audience-card h3 { color: var(--bdna-ink); }
+.studynest-scope .sn-audience-card p { color: var(--bdna-dim); }
+
+/* ── Pricing ──────────────────────────────────────────────────────── */
+.studynest-scope .sn-pricing-card h3 { color: var(--bdna-ink); }
+.studynest-scope .sn-pricing-card p { color: var(--bdna-dim); }
+.studynest-scope .sn-pricing-price { color: var(--bdna-ink); }
+
+.studynest-scope .sn-pricing-card--featured {
+    border-color: rgba(63, 232, 192, 0.4);
+    box-shadow: var(--sn-shadow-hover), 0 0 50px rgba(10, 191, 140, 0.14);
+}
+
+.studynest-scope .sn-pricing-flag {
+    background: rgba(10, 191, 140, 0.16);
+    border: 1px solid rgba(10, 191, 140, 0.34);
+    color: var(--bdna-emerald-glow);
+}
+
+/* Secondary CTAs read as glass on dark; the sky primary CTA is untouched.
+   App.css sets `.footer-links button, … .secondary-btn { color: var(--cn-text-muted)
+   !important }` (gray, 3.0:1 on this canvas), so `!important` is required to
+   reach AA here. */
+.studynest-scope .sn-pricing-card .secondary-btn,
+.studynest-scope .secondary-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-ink) !important;
+}
+
+.studynest-scope .sn-pricing-card .secondary-btn:hover,
+.studynest-scope .secondary-btn:hover {
+    border-color: rgba(63, 232, 192, 0.36);
+    color: var(--bdna-ink) !important;
+}
+
+/* ── FAQ ──────────────────────────────────────────────────────────── */
+.studynest-scope .sn-faq-item h3 { color: var(--bdna-ink); }
+.studynest-scope .sn-faq-item p { color: var(--bdna-dim); }
+
+/* ── Waitlist / newsletter ────────────────────────────────────────── */
+.studynest-scope .sn-waitlist-card {
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgba(10, 191, 140, 0.14), transparent 60%),
+        var(--bdna-panel);
+    border: 1px solid rgba(10, 191, 140, 0.26);
+    box-shadow: var(--sn-shadow-hover);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
+    backdrop-filter: blur(var(--bdna-glass-blur));
+}
+
+/* The inner form panel was its own white card. */
+.studynest-scope .sn-waitlist-form {
+    background: rgba(8, 12, 20, 0.6);
+    border: 1px solid var(--bdna-panel-edge);
+}
+
+.studynest-scope .sn-waitlist-copy h2 { color: var(--bdna-ink); }
+.studynest-scope .sn-waitlist-copy p { color: var(--bdna-dim); }
+
+.studynest-scope .signup-form input {
+    background: rgba(8, 12, 20, 0.7);
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-ink);
+}
+
+.studynest-scope .signup-form input::placeholder { color: var(--bdna-dim); }
+
+.studynest-scope .signup-form input:focus-visible {
+    outline: 2px solid var(--bdna-emerald-glow);
+    outline-offset: 1px;
+}
+
+.studynest-scope .form-privacy-note { color: var(--bdna-dim); }
+.studynest-scope .form-privacy-link { color: var(--bdna-emerald-glow); }
+.studynest-scope .newsletter-success { color: var(--bdna-emerald-glow); }
+
+/* ── CinNova ecosystem cards (rendered after the page) ────────────── */
+.studynest-scope .product-ecosystem-section {
+    background: var(--bdna-bg-lift);
+    border-top: 1px solid var(--bdna-panel-edge);
+}
+
+.studynest-scope .product-ecosystem-head h2 { color: var(--bdna-ink); }
+.studynest-scope .product-ecosystem-head p { color: var(--bdna-dim); }
+
+.studynest-scope .home-v12-ecosystem-card {
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    box-shadow: var(--sn-shadow-rest);
+    -webkit-backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+    backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
+}
+
+.studynest-scope .home-v12-ecosystem-card h3 { color: var(--bdna-ink); }
+.studynest-scope .home-v12-ecosystem-card p { color: var(--bdna-dim); }
+.studynest-scope .home-v12-ecosystem-category { color: var(--bdna-dim); }
+
+/* Status chips shipped light-on-light backgrounds (#ecfdf5 / gold / surface).
+   Re-tint each variant so the label keeps its meaning at readable contrast. */
+.studynest-scope .home-v12-status {
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.studynest-scope .home-v12-status--available {
+    background: rgba(10, 191, 140, 0.14);
+    border-color: rgba(63, 232, 192, 0.34);
+    color: var(--bdna-emerald-glow);
+}
+
+.studynest-scope .home-v12-status--beta {
+    background: rgba(201, 169, 98, 0.16);
+    border-color: rgba(201, 169, 98, 0.38);
+    color: #e0c887;
+}
+
+.studynest-scope .home-v12-status--coming-soon {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+}
+
+/* Footer transition — fade the last dark section into the light site footer
+   so the seam does not read as a hard edge. */
+.studynest-scope .product-ecosystem-section::after {
+    content: "";
+    display: block;
+    height: 96px;
+    margin: 56px -100vw -1px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.9));
+    pointer-events: none;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────── */
+/* This file only changes color/border/shadow — no new animation is
+   introduced. The hover treatments above reuse the transitions already
+   defined in App.css, which `.brand-dna *` neutralizes under reduce. */
+@media (prefers-reduced-motion: reduce) {
+    .studynest-scope .sn-how-card,
+    .studynest-scope .sn-preview-card,
+    .studynest-scope .sn-audience-card,
+    .studynest-scope .sn-pricing-card,
+    .studynest-scope .sn-faq-item,
+    .studynest-scope .studynest-landing .product-card-photo,
+    .studynest-scope .home-v12-ecosystem-card {
+        transition: none;
+    }
+
+    .studynest-scope .studynest-landing .product-card-photo:hover {
+        transform: none;
+    }
+}

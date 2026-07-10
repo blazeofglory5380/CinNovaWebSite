@@ -1,4 +1,8 @@
 import "../App.css";
+// Shared dark ecosystem tokens + the below-hero dark theme. Both load after
+// App.css so they win over the light defaults. Hero CSS is untouched.
+import "../styles/brand-dna.css";
+import "./ProductDark.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import TechMateHero from "../components/TechMateHero.jsx";
 import TechMateFeatureCards from "../components/TechMateFeatureCards.jsx";
@@ -26,7 +30,7 @@ const techmateSchema = {
 
 function TechMateAI() {
     return (
-        <div className="product-page">
+        <div className="product-page techmate-landing brand-dna">
             <SEO
                 title="TechMate AI | AI Tech Support for Every Device — Cin Nova"
                 description="TechMate AI gives instant AI-powered troubleshooting for devices, software, networks, and error codes. No hold music, no wait times. In development by Cin Nova."

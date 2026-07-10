@@ -1,4 +1,8 @@
 import "../App.css";
+// Shared dark ecosystem tokens + the below-hero dark theme. Both load after
+// App.css so they win over the light defaults. Hero CSS is untouched.
+import "../styles/brand-dna.css";
+import "./ProductDark.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
 import RealEstateCityHero from "../components/RealEstateCityHero.jsx";
@@ -53,7 +57,7 @@ const BETA_RELATED_POSTS = [
 
 function RealEstate() {
     return (
-        <div className="product-page">
+        <div className="product-page realestate-landing brand-dna">
             <SEO
                 title="Cin Nova Real Estate | AI Investment Tools — Live Beta"
                 description="Score properties, explore a real interactive map, ask an AI advisor, and generate investor reports. The Cin Nova Real Estate beta is live — try it free in your browser."

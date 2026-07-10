@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
 import "../App.css";
+// Shared dark ecosystem tokens + the below-hero dark theme. Both load after
+// App.css so they win over the light defaults. Hero CSS is untouched.
+import "../styles/brand-dna.css";
+import "./ProductDark.css";
 import SEO from "../components/SEO.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
 import PoisonGuardHeroReview from "../components/PoisonGuardHeroReview.jsx";
@@ -186,7 +190,7 @@ function PoisonGuard() {
     }
 
     return (
-        <main className="product-page poisonguard-landing">
+        <main className="product-page poisonguard-landing brand-dna">
             <SEO
                 title="PoisonGuard | Household Chemical Safety App — Cin Nova"
                 description="PoisonGuard scans household chemicals for hazard information, provides pet-safe warnings, and delivers emergency guidance. In development by Cin Nova."

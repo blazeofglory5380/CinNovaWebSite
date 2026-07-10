@@ -623,7 +623,11 @@ function App() {
             )}
 
             {page === "studynest" && (
-                <>
+                /* `studynest-scope` only scopes CSS — it sets no font or color,
+                   so the back bar above the hero keeps its original metrics.
+                   The dark `brand-dna` token layer is opted into by the page
+                   <main> (see StudyNest.jsx) and by the ecosystem section. */
+                <div className="studynest-scope">
                     <div className="back-bar">
                         <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
@@ -631,12 +635,14 @@ function App() {
                         </button>
                     </div>
                     <StudyNest />
-                    <ProductEcosystemSection currentPage="studynest" onNavigate={openPage} />
-                </>
+                    <div className="brand-dna">
+                        <ProductEcosystemSection currentPage="studynest" onNavigate={openPage} />
+                    </div>
+                </div>
             )}
 
             {page === "poisonguard" && (
-                <>
+                <div className="product-dark-scope poisonguard-scope">
                     <div className="back-bar">
                         <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
@@ -644,12 +650,14 @@ function App() {
                         </button>
                     </div>
                     <PoisonGuard />
-                    <ProductEcosystemSection currentPage="poisonguard" onNavigate={openPage} />
-                </>
+                    <div className="pd-eco brand-dna">
+                        <ProductEcosystemSection currentPage="poisonguard" onNavigate={openPage} />
+                    </div>
+                </div>
             )}
 
             {page === "real-estate" && (
-                <>
+                <div className="product-dark-scope realestate-scope">
                     <div className="back-bar">
                         <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
@@ -657,12 +665,14 @@ function App() {
                         </button>
                     </div>
                     <RealEstate />
-                    <ProductEcosystemSection currentPage="real-estate" onNavigate={openPage} />
-                </>
+                    <div className="pd-eco brand-dna">
+                        <ProductEcosystemSection currentPage="real-estate" onNavigate={openPage} />
+                    </div>
+                </div>
             )}
 
             {page === "techmate" && (
-                <>
+                <div className="product-dark-scope techmate-scope">
                     <div className="back-bar">
                         <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
@@ -670,13 +680,15 @@ function App() {
                         </button>
                     </div>
                     <TechMateAI />
-                    <ProductEcosystemSection currentPage="techmate" onNavigate={openPage} />
-                </>
+                    <div className="pd-eco brand-dna">
+                        <ProductEcosystemSection currentPage="techmate" onNavigate={openPage} />
+                    </div>
+                </div>
             )}
 
 
             {page === "kiddo" && (
-                <>
+                <div className="product-dark-scope kiddo-scope">
                     <div className="back-bar">
                         <button onClick={goHome}>Back to CinNova</button>
                         <button type="button" className="back-bar-secondary" onClick={() => openPage("products")}>
@@ -684,8 +696,10 @@ function App() {
                         </button>
                     </div>
                     <Kiddo />
-                    <ProductEcosystemSection currentPage="kiddo" onNavigate={openPage} />
-                </>
+                    <div className="pd-eco brand-dna">
+                        <ProductEcosystemSection currentPage="kiddo" onNavigate={openPage} />
+                    </div>
+                </div>
             )}
 
             {page === "not-found" && <NotFound onGoHome={goHome} />}

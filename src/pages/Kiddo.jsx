@@ -1,4 +1,8 @@
 import "../App.css";
+// Shared dark ecosystem tokens + the below-hero dark theme. Both load after
+// App.css so they win over the light defaults. Hero CSS is untouched.
+import "../styles/brand-dna.css";
+import "./ProductDark.css";
 import SEO from "../components/SEO.jsx";
 import KiddoHero from "../components/KiddoHero.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -227,7 +231,7 @@ const kiddoSchema = withSchemaGraph(
 
 function Kiddo() {
     return (
-        <main className="product-page kiddo-landing">
+        <main className="product-page kiddo-landing brand-dna">
             <SEO
                 title="Kiddo | Early Learning App for Kids Ages 2\u20137 \u2014 Cin Nova"
                 description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 2\u20137, with a parent dashboard to track progress. In development by Cin Nova."

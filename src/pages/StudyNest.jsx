@@ -1,4 +1,8 @@
 import "../App.css";
+// Shared dark ecosystem tokens (same layer as the home/products pages), then
+// the StudyNest below-hero theme. Both load after App.css so they win.
+import "../styles/brand-dna.css";
+import "./StudyNest.css";
 import SEO from "../components/SEO.jsx";
 import StudyNestHero from "../components/StudyNestHero.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
@@ -115,9 +119,12 @@ const studynestSchema = withSchemaGraph(
     buildFaqSchema(faqItems),
 );
 
+// `brand-dna` on <main> opts the below-hero page into the shared dark ecosystem
+// token layer (the same one the home and products pages use). The hero sets its
+// own background/color/font-family, so it inherits nothing from this layer.
 function StudyNest() {
     return (
-        <main className="product-page studynest-landing">
+        <main className="product-page studynest-landing brand-dna">
             <SEO
                 title="StudyNest | AI Study Tools for Students — Cin Nova"
                 description="StudyNest helps students organize notes, generate flashcards, take quizzes, create study guides, and get AI tutoring support. Currently in development by Cin Nova."
