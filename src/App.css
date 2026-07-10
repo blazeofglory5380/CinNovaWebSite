@@ -2415,34 +2415,50 @@ a {
    Popular, Featured Categories, TOC, Share, Prev/Next
    ============================================================ */
 
-/* Reading Progress Bar — sits below sticky nav */
+/* Reading Progress Bar — integrated with the top edge of the sticky nav.
+   Previously `top: 72px; z-index: 49` placed it *underneath* the nav, which
+   is ~89px tall and sits at z-index 50, so the bar was never visible. It is
+   now pinned to the very top of the viewport and layered above the nav, which
+   also keeps it correct across breakpoints where the nav height changes. */
 
 .article-progress-bar {
     position: fixed;
-    top: 72px;
+    top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: rgba(37, 99, 235, 0.08);
-    z-index: 49;
+    height: var(--cn-ui-progress-height, 3px);
+    background: var(--cn-ui-progress-track, rgba(10, 191, 140, 0.1));
+    z-index: var(--cn-ui-z-progress, 55);
     pointer-events: none;
 }
 
 .article-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #38bdf8, #7c3aed);
+    background: linear-gradient(
+        90deg,
+        var(--cn-ui-progress-from, #0abf8c),
+        var(--cn-ui-progress-to, #38bdf8)
+    );
+    /* Subtle bloom so the bar reads as premium against the frosted nav. */
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.45);
     transition: width 0.2s ease-out;
     border-radius: 0 999px 999px 0;
 }
 
+/* The numeric read-out is decorative (aria-hidden); the accessible value
+   lives on the progressbar's aria-valuenow/aria-label. Now that the track
+   overlays the nav, a floating percentage would collide with the nav links,
+   so it is hidden visually while the ARIA value is untouched. */
 .article-progress-label {
-    position: absolute;
-    right: 12px;
-    top: 8px;
-    font-size: 0.68rem;
-    font-weight: 900;
-    color: #64748b;
-    letter-spacing: 0.5px;
+    display: none;
+}
+
+/* Reduced motion: the bar still tracks scroll position exactly — only the
+   easing between updates is removed, so width snaps instead of animating. */
+@media (prefers-reduced-motion: reduce) {
+    .article-progress-fill {
+        transition: none;
+    }
 }
 
 .reading-progress-track {
@@ -2682,9 +2698,8 @@ a {
 }
 
 @media (max-width: 900px) {
-    .article-progress-bar {
-        top: 64px;
-    }
+    /* .article-progress-bar keeps top: 0 at every breakpoint now that it is
+       layered above the nav rather than offset below it. */
 
     .reading-progress-track {
         top: 64px;

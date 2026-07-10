@@ -69,6 +69,16 @@
     --cn-ui-toast-bg: #1e1e1e;
     --cn-ui-toast-text: #ffffff;
     --cn-ui-z-toast: 10050;
+
+    /* ── Reading progress (article pages) ─────────────────── */
+    /* CinNova teal → sky blue. Sits above the sticky nav (z 50) but below
+       the nav "More" dropdown (z 60) and the mobile menu overlay (z 399),
+       so those still occlude it correctly when open. */
+    --cn-ui-progress-from: #0abf8c;
+    --cn-ui-progress-to: #38bdf8;
+    --cn-ui-progress-height: 3px;
+    --cn-ui-progress-track: rgba(10, 191, 140, 0.10);
+    --cn-ui-z-progress: 55;
 }
 
 /* ============================================================
