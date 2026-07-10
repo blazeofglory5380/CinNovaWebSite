@@ -24,8 +24,14 @@ const { features } = productMarketing["real-estate"];
 const realEstateHero = productHero3DConfigs["real-estate"];
 
 const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
-const betaClick = (label) => () =>
-    trackLiveBetaClick({ sourcePage: "real-estate", ctaLabel: label, destinationUrl: LIVE_BETA_URL });
+// "Try the Live Beta" opens the Real Estate AI app dashboard. Environment-aware so
+// local testing hits the local app while production points at the deployed app —
+// never hardcode localhost for production.
+const realEstateAppUrl = import.meta.env.DEV
+    ? "http://localhost:5173/main-dashboard"
+    : "https://cin-nova.vercel.app/main-dashboard";
+const betaClick = (label, destinationUrl = LIVE_BETA_URL) => () =>
+    trackLiveBetaClick({ sourcePage: "real-estate", ctaLabel: label, destinationUrl });
 
 const realestateSchema = {
     "@context": "https://schema.org",
@@ -73,9 +79,9 @@ function RealEstate() {
                 rollback — nothing is deleted; the 3D model assets stay in the repo. */}
             <MotionHeroWrap>
                 <RealEstateCityHero
-                    primaryHref={LIVE_BETA_URL}
+                    primaryHref={realEstateAppUrl}
                     primaryLabel="Try the Live Beta"
-                    onPrimaryClick={betaClick("Hero — Try the Live Beta")}
+                    onPrimaryClick={betaClick("Hero — Try the Live Beta", realEstateAppUrl)}
                     secondaryHref="#features"
                     secondaryLabel="Explore Features"
                 />
@@ -127,10 +133,10 @@ function RealEstate() {
                 <div style={{ marginTop: "24px", display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
                     <a
                         className="primary-btn"
-                        href={LIVE_BETA_URL}
+                        href={realEstateAppUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={betaClick("Beta section — Try the Live Beta")}
+                        onClick={betaClick("Beta section — Try the Live Beta", realEstateAppUrl)}
                     >
                         Try the Live Beta →
                     </a>
