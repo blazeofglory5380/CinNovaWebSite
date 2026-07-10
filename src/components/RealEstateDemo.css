@@ -1,0 +1,492 @@
+/*
+ * RealEstateDemo — "Analyze a Property" interactive demo.
+ *
+ * Scoped entirely under `.re-demo`. It renders inside `.realestate-scope`
+ * (dark product-page theme), so it inherits the page tokens:
+ *   --pd-accent  #60a5fa (blue)   --pd-panel  frosted surface
+ *   --pd-edge    hairline border   --bdna-ink / --bdna-dim  text
+ * A local --red-cyan complements the blue for "market heat" flourishes.
+ *
+ * No hero selectors are referenced. All motion collapses under
+ * prefers-reduced-motion (see the bottom of the file).
+ */
+
+.re-demo {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 48px);
+    --red-cyan: #22d3ee;
+    --red-panel: rgba(15, 24, 38, 0.62);
+    --red-edge: rgba(255, 255, 255, 0.08);
+    --red-radius: 18px;
+    --red-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * ProductDark.css applies
+ *   .product-dark-scope .product-page :is(p, span, strong, …):not(:is(hero) *)
+ *   { color: var(--bdna-dim) !important }
+ * to everything under the page, which flattens the demo's whole report to one
+ * muted gray — the big deal-score included. That rule's specificity is (0,3,1)
+ * with !important, so re-asserting colours requires matching its scope prefix
+ * (a bare `.re-demo …` selector loses). The prefix below yields (0,4,0), which
+ * wins. Elements that SHOULD stay muted (labels, notes, disclaimer) are left
+ * alone — dim is already correct for them.
+ */
+.product-dark-scope .product-page .re-demo :is(
+    .re-demo__score-num,
+    .re-demo__metric-value,
+    .re-demo__strategy p,
+    .re-demo__report-head h3,
+    .re-demo__idle strong,
+    .re-demo__idle p
+) {
+    color: var(--bdna-ink, #f8fafc) !important;
+}
+
+.product-dark-scope .product-page .re-demo :is(
+    .re-demo__lede strong,
+    .re-demo__report-tag,
+    .re-demo__step-status
+) {
+    color: var(--red-cyan) !important;
+}
+
+.product-dark-scope .product-page .re-demo :is(
+    .re-demo__steps-title,
+    .re-demo__score-cap,
+    .re-demo__insight-mark,
+    .re-demo__idle-addr
+) {
+    color: var(--pd-accent, #60a5fa) !important;
+}
+
+.product-dark-scope .product-page .re-demo .re-demo__insight p {
+    color: var(--bdna-dim2, #c4d3dd) !important;
+}
+
+.re-demo__head {
+    max-width: 720px;
+    margin: 0 auto clamp(24px, 3vw, 40px);
+    text-align: center;
+}
+
+.re-demo__head h2 {
+    margin: 10px 0 12px;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--bdna-ink, #f8fafc);
+    letter-spacing: -0.02em;
+}
+
+.re-demo__lede {
+    color: var(--bdna-dim, #9fb0bd);
+    line-height: 1.65;
+    font-size: clamp(0.98rem, 1.4vw, 1.08rem);
+}
+
+.re-demo__lede strong { color: var(--red-cyan); font-weight: 600; }
+
+/* ── Panel: input + output ──────────────────────────────────────────── */
+.re-demo__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(18px, 2.5vw, 28px);
+    align-items: start;
+}
+
+/* PERF: no `backdrop-filter`. These panels sit over the Phase 2 ambient field,
+   which animates; blurring an animated backdrop forces a re-blur every frame
+   and locked the renderer (same cliff resolved in Phase 2's ProductDark pass).
+   The opaque frosted panel + border give the same look without the blur. */
+.re-demo__controls,
+.re-demo__stage {
+    background: var(--red-panel);
+    border: 1px solid var(--red-edge);
+    border-radius: var(--red-radius);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+}
+
+.re-demo__controls {
+    padding: clamp(20px, 2.4vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.re-demo__label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--bdna-dim, #9fb0bd);
+    margin-top: 4px;
+}
+
+.re-demo__samples {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.re-demo__chip {
+    text-align: left;
+    padding: 11px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--red-edge);
+    color: var(--bdna-dim2, #c4d3dd);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.25s var(--red-ease), background 0.25s var(--red-ease),
+        color 0.25s var(--red-ease), transform 0.15s var(--red-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .re-demo__chip:hover {
+        border-color: color-mix(in srgb, var(--pd-accent, #60a5fa) 40%, transparent);
+        color: var(--bdna-ink, #f8fafc);
+        transform: translateY(-1px);
+    }
+}
+
+.re-demo__chip.is-active {
+    background: color-mix(in srgb, var(--pd-accent, #60a5fa) 14%, transparent);
+    border-color: color-mix(in srgb, var(--pd-accent, #60a5fa) 55%, transparent);
+    color: var(--bdna-ink, #f8fafc);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--pd-accent, #60a5fa) 22%, transparent);
+}
+
+.re-demo__chip:focus-visible {
+    outline: 2px solid var(--pd-accent, #60a5fa);
+    outline-offset: 2px;
+}
+
+.re-demo__input {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 12px;
+    background: rgba(8, 12, 20, 0.7);
+    border: 1px solid var(--red-edge);
+    color: var(--bdna-ink, #f8fafc);
+    font-size: 0.95rem;
+    transition: border-color 0.24s var(--red-ease), box-shadow 0.24s var(--red-ease);
+}
+
+.re-demo__input::placeholder { color: var(--bdna-dim, #9fb0bd); }
+
+.re-demo__input:focus-visible {
+    outline: none;
+    border-color: color-mix(in srgb, var(--pd-accent, #60a5fa) 60%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pd-accent, #60a5fa) 20%, transparent);
+}
+
+.re-demo__analyze {
+    margin-top: 6px;
+    width: 100%;
+    justify-content: center;
+}
+
+.re-demo__analyze:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.re-demo__disclaimer {
+    margin: 2px 0 0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--bdna-dim, #9fb0bd);
+    opacity: 0.85;
+}
+
+/* ── Stage (output) ─────────────────────────────────────────────────── */
+.re-demo__stage {
+    padding: clamp(22px, 2.6vw, 30px);
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.re-demo__idle {
+    text-align: center;
+    color: var(--bdna-dim, #9fb0bd);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.6;
+}
+
+.re-demo__idle p { max-width: 42ch; }
+.re-demo__idle strong { color: var(--bdna-ink, #f8fafc); }
+.re-demo__idle-addr { color: var(--pd-accent, #60a5fa); }
+
+.re-demo__idle-mark {
+    font-size: 2.4rem;
+    color: color-mix(in srgb, var(--pd-accent, #60a5fa) 70%, white 8%);
+    animation: re-demo-idle-pulse 3.2s var(--red-ease) infinite;
+}
+
+@keyframes re-demo-idle-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* ── Staged steps ───────────────────────────────────────────────────── */
+.re-demo__steps-title {
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pd-accent, #60a5fa);
+    margin-bottom: 16px;
+}
+
+.re-demo__steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+
+.re-demo__step {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    color: var(--bdna-dim, #9fb0bd);
+    transition: color 0.3s var(--red-ease), opacity 0.3s var(--red-ease);
+}
+
+.re-demo__step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--red-edge);
+    background: transparent;
+    transition: all 0.3s var(--red-ease);
+}
+
+.re-demo__step--todo { opacity: 0.5; }
+
+.re-demo__step--active { color: var(--bdna-ink, #f8fafc); }
+.re-demo__step--active .re-demo__step-dot {
+    border-color: var(--pd-accent, #60a5fa);
+    background: color-mix(in srgb, var(--pd-accent, #60a5fa) 30%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--pd-accent, #60a5fa) 14%, transparent);
+    animation: re-demo-step-pulse 1s var(--red-ease) infinite;
+}
+
+.re-demo__step--done { color: var(--bdna-dim2, #c4d3dd); }
+.re-demo__step--done .re-demo__step-dot {
+    border-color: var(--red-cyan);
+    background: var(--red-cyan);
+}
+
+.re-demo__step-status { color: var(--red-cyan); font-weight: 700; }
+
+@keyframes re-demo-step-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--pd-accent, #60a5fa) 14%, transparent); }
+    50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--pd-accent, #60a5fa) 6%, transparent); }
+}
+
+/* ── Report ─────────────────────────────────────────────────────────── */
+.re-demo__report {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: re-demo-reveal 0.45s var(--red-ease) both;
+}
+
+@keyframes re-demo-reveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.re-demo__report-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.re-demo__report-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-cyan);
+    background: color-mix(in srgb, var(--red-cyan) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--red-cyan) 30%, transparent);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+}
+
+.re-demo__report-head h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--bdna-ink, #f8fafc);
+}
+
+.re-demo__score {
+    flex: none;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 4px 6px;
+    padding: 12px 18px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--pd-accent, #60a5fa) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent, #60a5fa) 34%, transparent);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--pd-accent, #60a5fa) 14%, transparent);
+}
+
+.re-demo__score-num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--bdna-ink, #f8fafc);
+}
+
+.re-demo__score-max { font-size: 0.85rem; color: var(--bdna-dim, #9fb0bd); }
+.re-demo__score-cap {
+    grid-column: 1 / -1;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pd-accent, #60a5fa);
+}
+
+.re-demo__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.re-demo__metric {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--red-edge);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.re-demo__metric-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bdna-dim, #9fb0bd);
+}
+
+.re-demo__metric-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--bdna-ink, #f8fafc);
+}
+
+.re-demo__metric-sub { font-size: 0.8rem; color: var(--bdna-dim, #9fb0bd); }
+
+.re-demo__heat { display: inline-flex; gap: 4px; margin-top: 4px; }
+.re-demo__heat-bar {
+    width: 22px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.4s var(--red-ease);
+}
+.re-demo__heat-bar.is-on {
+    background: linear-gradient(90deg, var(--pd-accent, #60a5fa), var(--red-cyan));
+}
+
+.re-demo__strategy,
+.re-demo__insight {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--red-edge);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.re-demo__strategy p {
+    margin: 6px 0 0;
+    color: var(--bdna-ink, #f8fafc);
+    font-weight: 600;
+}
+
+.re-demo__insight {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: start;
+    border-color: color-mix(in srgb, var(--pd-accent, #60a5fa) 24%, transparent);
+    background: color-mix(in srgb, var(--pd-accent, #60a5fa) 7%, transparent);
+}
+
+.re-demo__insight-mark {
+    font-size: 2rem;
+    line-height: 0.7;
+    color: var(--pd-accent, #60a5fa);
+}
+
+.re-demo__insight p { margin: 0; color: var(--bdna-dim2, #c4d3dd); line-height: 1.6; font-size: 0.95rem; }
+
+/* Report preview skeleton bars — a gentle shimmer implies "generating". */
+.re-demo__report-preview {
+    display: grid;
+    gap: 8px;
+    padding: 4px 2px;
+}
+.re-demo__report-preview-bar {
+    height: 8px;
+    border-radius: 5px;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+    background-size: 200% 100%;
+    animation: re-demo-shimmer 2.6s var(--red-ease) infinite;
+}
+.re-demo__report-preview-bar:nth-child(2) { animation-delay: 0.4s; }
+.re-demo__report-preview-bar:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes re-demo-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.re-demo__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-top: 2px;
+}
+
+.re-demo__cta { white-space: nowrap; }
+
+.re-demo__cta-note { font-size: 0.82rem; color: var(--bdna-dim, #9fb0bd); }
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+    .re-demo__panel { grid-template-columns: 1fr; }
+    .re-demo__stage { min-height: 0; }
+}
+
+@media (max-width: 560px) {
+    .re-demo__metrics { grid-template-columns: 1fr; }
+    .re-demo__report-head { flex-direction: column; }
+    .re-demo__score { align-self: flex-start; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────── */
+/* No animation blocks reading; the staged timing is skipped in JS, and every
+   decorative loop here is disabled. */
+@media (prefers-reduced-motion: reduce) {
+    .re-demo__idle-mark,
+    .re-demo__step--active .re-demo__step-dot,
+    .re-demo__report-preview-bar {
+        animation: none !important;
+    }
+    .re-demo__report { animation: none !important; }
+    .re-demo__chip,
+    .re-demo__input,
+    .re-demo__step,
+    .re-demo__step-dot,
+    .re-demo__heat-bar {
+        transition: none !important;
+    }
+    .re-demo__chip:hover { transform: none !important; }
+}

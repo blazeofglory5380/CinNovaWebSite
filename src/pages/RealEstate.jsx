@@ -7,6 +7,7 @@ import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
 import RealEstateCityHero from "../components/RealEstateCityHero.jsx";
 import RealEstateResourceCta from "../components/RealEstateResourceCta.jsx";
+import RealEstateDemo from "../components/RealEstateDemo.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
@@ -79,6 +80,11 @@ function RealEstate() {
                     secondaryLabel="Explore Features"
                 />
             </MotionHeroWrap>
+
+            {/* ── Interactive "Analyze a Property" demo (marketing simulation,
+                no backend/API). Sits directly below the hero, inside the dark
+                product-page theme. ── */}
+            <RealEstateDemo />
 
             {/* ── Live beta section: what you can do today ── */}
             <section className="section" id="live-beta">
