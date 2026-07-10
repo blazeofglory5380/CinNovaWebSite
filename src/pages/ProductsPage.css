@@ -13,10 +13,13 @@ main.products-v2 {
     overflow-x: hidden;
 }
 
+/* Tightened from clamp(48px, 8vh, 92px): with the five stacked product
+   sections collapsed into one tab panel, the remaining sections sat too far
+   apart and the page read as sparse rather than premium. */
 .products-v2__section {
     max-width: 1200px;
     margin: 0 auto;
-    padding: clamp(48px, 8vh, 92px) clamp(20px, 4vw, 48px);
+    padding: clamp(36px, 5.5vh, 68px) clamp(20px, 4vw, 48px);
 }
 
 .products-v2__lead {
@@ -199,16 +202,7 @@ main.products-v2 {
     overflow: hidden;
 }
 
-/* ── Product detail ───────────────────────────────────────────────── */
-.products-v2__detail-grid {
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: clamp(24px, 4vw, 56px);
-    align-items: center;
-}
-
-.products-v2__detail--flip .products-v2__detail-visual { order: 2; }
-
+/* ── Product detail (rendered inside the active tab panel) ────────── */
 .products-v2__detail-visual { position: relative; padding: 0; overflow: hidden; aspect-ratio: 4 / 3; }
 .products-v2__detail-img { width: 100%; height: 100%; object-fit: cover; }
 .products-v2__detail-badge {
@@ -245,6 +239,123 @@ main.products-v2 {
 .products-v2__check::after { content: ""; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid var(--bdna-accent); border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .products-v2__detail-content .bdna-btn { margin-top: 6px; align-self: flex-start; }
 
+/* ── Product tabs ─────────────────────────────────────────────────── */
+.products-v2__tabs { display: grid; gap: clamp(18px, 2.5vw, 28px); }
+
+.products-v2__tablist {
+    display: flex;
+    gap: 10px;
+    /* Horizontal scroll rather than wrapping keeps the strip one row on
+       narrow screens; the fade edge hints there is more to scroll. */
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.products-v2__tablist::-webkit-scrollbar { display: none; }
+
+.products-v2__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex: 0 0 auto;
+    padding: 11px 18px;
+    border-radius: 999px;
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: var(--bdna-dim2);
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        transform 0.2s var(--bdna-ease),
+        border-color 0.25s var(--bdna-ease),
+        color 0.25s var(--bdna-ease),
+        box-shadow 0.25s var(--bdna-ease),
+        background 0.25s var(--bdna-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .products-v2__tab:hover {
+        transform: translateY(-2px);
+        color: var(--bdna-ink);
+        border-color: color-mix(in srgb, var(--bdna-accent) 45%, transparent);
+    }
+}
+
+.products-v2__tab:focus-visible {
+    outline: 2px solid var(--bdna-accent);
+    outline-offset: 2px;
+}
+
+.products-v2__tab.is-active {
+    color: var(--bdna-ink);
+    background: color-mix(in srgb, var(--bdna-accent) 14%, transparent);
+    border-color: color-mix(in srgb, var(--bdna-accent) 55%, transparent);
+    /* Subtle per-product glow — the accent is set inline on each tab. */
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--bdna-accent) 22%, transparent),
+        0 10px 30px color-mix(in srgb, var(--bdna-accent) 20%, transparent);
+}
+
+.products-v2__tab-icon { color: var(--bdna-accent); font-size: 1.05rem; }
+
+.products-v2__tabpanel {
+    display: grid;
+    gap: clamp(20px, 3vw, 36px);
+    animation: products-v2-panel-in 0.32s var(--bdna-ease) both;
+}
+
+.products-v2__tabpanel:focus-visible { outline: 2px solid var(--bdna-accent); outline-offset: 6px; }
+
+@keyframes products-v2-panel-in {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to { opacity: 1; transform: none; }
+}
+
+.products-v2__tabpanel-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+}
+
+.products-v2__panel-summary { color: var(--bdna-dim); line-height: 1.6; max-width: 54ch; }
+
+/* Platform preview, now nested inside the active tab panel. */
+.products-v2__panel-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    padding-top: clamp(16px, 2vw, 24px);
+    border-top: 1px solid var(--bdna-panel-edge);
+}
+
+.products-v2__panel-preview .products-v2__browser {
+    border: 1px solid var(--bdna-panel-edge);
+    border-radius: var(--bdna-radius);
+    overflow: hidden;
+    background: var(--bdna-panel);
+}
+
+.products-v2__panel-preview-copy { color: var(--bdna-dim); line-height: 1.65; font-size: 0.95rem; }
+
+@media (max-width: 860px) {
+    .products-v2__tabpanel-grid,
+    .products-v2__panel-preview { grid-template-columns: 1fr; }
+    .products-v2__tabpanel .bdna-btn { align-self: stretch; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .products-v2__tab { transition: none; }
+    .products-v2__tab:hover { transform: none; }
+    .products-v2__tabpanel { animation: none; }
+}
+
 /* ── Ecosystem diagram ────────────────────────────────────────────── */
 .products-v2__diagram { padding: clamp(20px, 3vw, 36px); display: grid; gap: 20px; }
 .products-v2__diagram-svg { width: 100%; height: auto; max-width: 640px; margin: 0 auto; }
@@ -255,25 +366,11 @@ main.products-v2 {
 /* ── Feature cards ────────────────────────────────────────────────── */
 .products-v2__feature-card .products-v2__cat { color: var(--bdna-emerald-glow); }
 
-/* ── Showcase (editorial) ─────────────────────────────────────────── */
-.products-v2__showcase-stack { display: grid; gap: 24px; }
-.products-v2__showcase { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 44px); align-items: center; padding: clamp(24px, 3vw, 40px); }
-.products-v2__showcase--flip .products-v2__showcase-photo { order: -1; }
-.products-v2__showcase-copy { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-.products-v2__showcase-copy h3 { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 650; color: var(--bdna-ink); }
-.products-v2__showcase-copy > p { color: var(--bdna-dim); line-height: 1.6; }
+/* ── Capability chips (shown inside the active tab panel) ─────────── */
 .products-v2__showcase-features { display: flex; flex-wrap: wrap; gap: 8px; }
 .products-v2__showcase-features span { padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; background: color-mix(in srgb, var(--bdna-accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--bdna-accent) 30%, transparent); color: var(--bdna-accent); }
-.products-v2__showcase-photo { position: relative; border-radius: var(--bdna-radius); overflow: hidden; aspect-ratio: 4 / 3; }
-.products-v2__showcase-img, .products-v2__showcase-img img { width: 100%; height: 100%; object-fit: cover; }
-.products-v2__showcase-badge { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; font-family: var(--bdna-mono); font-weight: 800; font-size: 0.8rem; color: var(--bdna-accent); background: rgba(10, 14, 23, 0.65); border: 1px solid color-mix(in srgb, var(--bdna-accent) 45%, transparent); }
-@media (max-width: 760px) { .products-v2__showcase { grid-template-columns: 1fr; } .products-v2__showcase--flip .products-v2__showcase-photo { order: 0; } }
 
-/* ── Platform previews ────────────────────────────────────────────── */
-.products-v2__platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-@media (max-width: 1000px) { .products-v2__platform-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .products-v2__platform-grid { grid-template-columns: 1fr; } }
-.products-v2__platform-card { padding: 0; overflow: hidden; }
+/* ── Platform preview (browser mock, inside the active tab panel) ─── */
 .products-v2__browser { border-bottom: 1px solid var(--bdna-panel-edge); }
 .products-v2__browser-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: rgba(10, 14, 23, 0.5); }
 .products-v2__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--bdna-panel-edge); }
@@ -288,9 +385,6 @@ main.products-v2 {
 .products-v2__screen-rows { display: grid; gap: 6px; }
 .products-v2__screen-row { padding: 8px 10px; border-radius: 8px; font-size: 0.8rem; color: var(--bdna-dim2); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--bdna-panel-edge); }
 .products-v2__screen-row--ok { color: var(--bdna-emerald-glow); border-color: rgba(63, 232, 192, 0.3); }
-.products-v2__platform-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-.products-v2__platform-body h3 { font-size: 1.15rem; font-weight: 650; color: var(--bdna-ink); }
-.products-v2__platform-body p { font-size: 0.88rem; color: var(--bdna-dim); line-height: 1.5; }
 
 /* ── Roadmap ──────────────────────────────────────────────────────── */
 .products-v2__roadmap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
@@ -300,9 +394,5 @@ main.products-v2 {
 .products-v2__roadmap-card h3 { font-size: 1rem; font-weight: 650; color: var(--bdna-ink); }
 .products-v2__roadmap-card p { font-size: 0.84rem; color: var(--bdna-dim); }
 
-/* ── Detail responsive ────────────────────────────────────────────── */
-@media (max-width: 860px) {
-    .products-v2__detail-grid { grid-template-columns: 1fr; }
-    .products-v2__detail--flip .products-v2__detail-visual { order: 0; }
-    .products-v2__detail-content .bdna-btn { align-self: stretch; text-align: center; }
-}
+/* Detail responsive rules now live with the tab-panel block above, which
+   owns the single-column collapse at <=860px. */

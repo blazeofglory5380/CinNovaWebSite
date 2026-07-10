@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
@@ -157,23 +158,81 @@ function CatalogCard({ product, onNavigate }) {
     );
 }
 
-function ProductDetailSection({ product, index, onNavigate }) {
-    const detail = productDetails[product.page];
-    const isEven = index % 2 === 0;
+/* Merges the three former per-product blocks (detail section, editorial
+   showcase, platform preview) into one record so a single tab panel can
+   render every field that used to be spread across three page sections. */
+function buildShowcaseItems() {
+    const showcaseByPage = Object.fromEntries(ecosystemShowcases.map((s) => [s.page, s]));
+    const previewByPage = Object.fromEntries(platformPreviews.map((p) => [p.page, p]));
+
+    return products.map((product) => ({
+        product,
+        page: product.page,
+        // Preview names are the shorter, catalog-friendly labels ("Real Estate
+        // AI" rather than "Cin Nova Real Estate"), which fit the tab strip.
+        tabLabel: previewByPage[product.page]?.name || product.name,
+        detail: productDetails[product.page],
+        showcase: showcaseByPage[product.page],
+        preview: previewByPage[product.page],
+    }));
+}
+
+function ProductPanelPreview({ preview }) {
+    const photo = productMarketing[preview.page]?.card;
     return (
-        <section
+        <div className="products-v2__panel-preview">
+            <div className="products-v2__browser">
+                <div className="products-v2__browser-bar">
+                    <span className="products-v2__dot" /><span className="products-v2__dot" /><span className="products-v2__dot" />
+                    <div className="products-v2__browser-url">cin-nova.app/{preview.page}</div>
+                </div>
+                <div className="products-v2__browser-screen">
+                    {photo && (
+                        <div className="products-v2__screen-photo">
+                            <MarketingPhoto src={photo.src} alt={photo.alt} className="products-v2__screen-img" />
+                            <span className="products-v2__screen-badge">{preview.badge}</span>
+                        </div>
+                    )}
+                    <div className="products-v2__screen-header">
+                        <span>{preview.category.toUpperCase()}</span>
+                        <strong>{preview.name}</strong>
+                    </div>
+                    <div className="products-v2__screen-rows">
+                        {preview.mockupLines.map((line) => (
+                            <div
+                                key={platformMockupLineKey(line)}
+                                className={`products-v2__screen-row${typeof line === "object" && line.success ? " products-v2__screen-row--ok" : ""}`}
+                            >
+                                {typeof line === "string" ? line : line.text}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <p className="products-v2__panel-preview-copy">{preview.desc}</p>
+        </div>
+    );
+}
+
+function ProductTabPanel({ item, onNavigate }) {
+    const { product, detail, showcase, preview } = item;
+    return (
+        <div
             id={product.page}
-            className={`products-v2__section products-v2__detail${isEven ? "" : " products-v2__detail--flip"}`}
+            role="tabpanel"
+            aria-labelledby={`products-tab-${product.page}`}
+            tabIndex={0}
+            className="products-v2__tabpanel"
             style={{ "--bdna-accent": ACCENT[product.page] || "var(--bdna-emerald)" }}
-            aria-label={product.name}
         >
-            <div className="products-v2__detail-grid">
+            <div className="products-v2__tabpanel-grid">
                 <GlassPanel className="products-v2__detail-visual">
                     {product.image && (
                         <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" className="products-v2__detail-img" />
                     )}
                     <div className="products-v2__detail-badge">{product.icon}</div>
                 </GlassPanel>
+
                 <div className="products-v2__detail-content">
                     <div className="products-v2__card-meta">
                         <span className={`products-v2__status products-v2__status--${normalizeProductStatus(product.status).variant}`}>
@@ -181,8 +240,10 @@ function ProductDetailSection({ product, index, onNavigate }) {
                         </span>
                         <span className="products-v2__cat">{product.category}</span>
                     </div>
-                    <h2 className="products-v2__detail-name">{product.name}</h2>
+                    <h3 className="products-v2__detail-name">{product.name}</h3>
                     <p className="products-v2__detail-lead">{product.description}</p>
+                    {showcase && <p className="products-v2__panel-summary">{showcase.summary}</p>}
+
                     {detail && (
                         <>
                             <div className="products-v2__detail-blocks">
@@ -209,12 +270,111 @@ function ProductDetailSection({ product, index, onNavigate }) {
                             </ul>
                         </>
                     )}
-                    <button className="bdna-btn bdna-btn--solid" onClick={() => onNavigate(product.page)}>
+
+                    {showcase && (
+                        <div className="products-v2__showcase-features">
+                            {showcase.features.map((feature) => (
+                                <span key={feature}>{feature}</span>
+                            ))}
+                        </div>
+                    )}
+
+                    <button className="bdna-btn bdna-btn--solid hover-lift" onClick={() => onNavigate(product.page)}>
                         {getButtonLabel(product.page)}
                     </button>
                 </div>
             </div>
-        </section>
+
+            {preview && <ProductPanelPreview preview={preview} />}
+        </div>
+    );
+}
+
+/**
+ * Compact tabbed replacement for the five stacked per-product sections.
+ * Follows the WAI-ARIA tabs pattern: roving tabindex, arrow/Home/End keys,
+ * and only the active panel in the DOM. Each panel keeps its former section
+ * `id` (e.g. `#studynest`) so existing deep links still resolve.
+ */
+function ProductShowcaseTabs({ items, onNavigate }) {
+    // Honour a deep link such as /?page=products#poisonguard on first paint,
+    // resolved in the initializer so the correct tab renders immediately
+    // rather than flashing the default one.
+    const [activePage, setActivePage] = useState(() => {
+        const hash = typeof window === "undefined" ? "" : window.location.hash.replace("#", "");
+        return items.some((item) => item.page === hash) ? hash : items[0].page;
+    });
+    const tabRefs = useRef({});
+    const shouldFocus = useRef(false);
+
+    // Only pull focus when the user drove the change from the keyboard —
+    // never on mount, which would scroll the page down to the tab strip.
+    useEffect(() => {
+        if (!shouldFocus.current) return;
+        shouldFocus.current = false;
+        tabRefs.current[activePage]?.focus();
+    }, [activePage]);
+
+    // Keep the tab in sync when the hash changes without a reload — browser
+    // back/forward between anchors, or an in-page link to #kiddo.
+    useEffect(() => {
+        function onHashChange() {
+            const hash = window.location.hash.replace("#", "");
+            if (items.some((item) => item.page === hash)) setActivePage(hash);
+        }
+        window.addEventListener("hashchange", onHashChange);
+        return () => window.removeEventListener("hashchange", onHashChange);
+    }, [items]);
+
+    function selectByOffset(event, nextIndex) {
+        event.preventDefault();
+        shouldFocus.current = true;
+        setActivePage(items[nextIndex].page);
+    }
+
+    function handleKeyDown(event) {
+        const index = items.findIndex((item) => item.page === activePage);
+        if (event.key === "ArrowRight") selectByOffset(event, (index + 1) % items.length);
+        else if (event.key === "ArrowLeft") selectByOffset(event, (index - 1 + items.length) % items.length);
+        else if (event.key === "Home") selectByOffset(event, 0);
+        else if (event.key === "End") selectByOffset(event, items.length - 1);
+    }
+
+    const activeItem = items.find((item) => item.page === activePage) || items[0];
+
+    return (
+        <div className="products-v2__tabs">
+            <div
+                className="products-v2__tablist"
+                role="tablist"
+                aria-label="Cin Nova products"
+                onKeyDown={handleKeyDown}
+            >
+                {items.map((item) => {
+                    const selected = item.page === activePage;
+                    return (
+                        <button
+                            key={item.page}
+                            type="button"
+                            role="tab"
+                            id={`products-tab-${item.page}`}
+                            aria-selected={selected}
+                            aria-controls={item.page}
+                            tabIndex={selected ? 0 : -1}
+                            ref={(node) => { tabRefs.current[item.page] = node; }}
+                            className={`products-v2__tab${selected ? " is-active" : ""}`}
+                            style={{ "--bdna-accent": ACCENT[item.page] || "var(--bdna-emerald)" }}
+                            onClick={() => setActivePage(item.page)}
+                        >
+                            <span className="products-v2__tab-icon" aria-hidden="true">{item.product.icon}</span>
+                            <span>{item.tabLabel}</span>
+                        </button>
+                    );
+                })}
+            </div>
+
+            <ProductTabPanel key={activeItem.page} item={activeItem} onNavigate={onNavigate} />
+        </div>
     );
 }
 
@@ -290,82 +450,8 @@ function FeatureIconsSection() {
     );
 }
 
-function EcosystemShowcase({ showcase, index, onNavigate }) {
-    const photo = productMarketing[showcase.page]?.hero;
-    return (
-        <GlassPanel
-            as="article"
-            className={`products-v2__showcase${index % 2 === 1 ? " products-v2__showcase--flip" : ""}`}
-            style={{ "--bdna-accent": ACCENT[showcase.page] || "var(--bdna-emerald)" }}
-        >
-            <div className="products-v2__showcase-copy">
-                <span className="products-v2__cat">{showcase.category}</span>
-                <h3>{showcase.name}</h3>
-                <p>{showcase.summary}</p>
-                <div className="products-v2__showcase-features">
-                    {showcase.features.map((feature) => (
-                        <span key={feature}>{feature}</span>
-                    ))}
-                </div>
-                <button type="button" className="bdna-btn bdna-btn--ghost" onClick={() => onNavigate(showcase.page)}>
-                    Learn More
-                </button>
-            </div>
-            {photo && (
-                <div className="products-v2__showcase-photo">
-                    <MarketingPhoto src={photo.src} alt={photo.alt} className="products-v2__showcase-img" />
-                    <span className="products-v2__showcase-badge">{showcase.badge}</span>
-                </div>
-            )}
-        </GlassPanel>
-    );
-}
-
-function PlatformScreenshotCard({ preview, onNavigate }) {
-    const photo = productMarketing[preview.page]?.card;
-    return (
-        <GlassPanel as="article" className="products-v2__platform-card" style={{ "--bdna-accent": preview.accentColor }}>
-            <div className="products-v2__browser">
-                <div className="products-v2__browser-bar">
-                    <span className="products-v2__dot" /><span className="products-v2__dot" /><span className="products-v2__dot" />
-                    <div className="products-v2__browser-url">cin-nova.app/{preview.page}</div>
-                </div>
-                <div className="products-v2__browser-screen">
-                    {photo && (
-                        <div className="products-v2__screen-photo">
-                            <MarketingPhoto src={photo.src} alt={photo.alt} className="products-v2__screen-img" />
-                            <span className="products-v2__screen-badge">{preview.badge}</span>
-                        </div>
-                    )}
-                    <div className="products-v2__screen-header">
-                        <span>{preview.category.toUpperCase()}</span>
-                        <strong>{preview.name}</strong>
-                    </div>
-                    <div className="products-v2__screen-rows">
-                        {preview.mockupLines.map((line) => (
-                            <div
-                                key={platformMockupLineKey(line)}
-                                className={`products-v2__screen-row${typeof line === "object" && line.success ? " products-v2__screen-row--ok" : ""}`}
-                            >
-                                {typeof line === "string" ? line : line.text}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="products-v2__platform-body">
-                <span className="products-v2__cat">{preview.category}</span>
-                <h3>{preview.name}</h3>
-                <p>{preview.desc}</p>
-                <button type="button" className="bdna-btn bdna-btn--ghost" onClick={() => onNavigate(preview.page)}>
-                    Explore {preview.name}
-                </button>
-            </div>
-        </GlassPanel>
-    );
-}
-
 function ProductsPage({ onNavigate, onSubscribe }) {
+    const showcaseItems = buildShowcaseItems();
     const productsSchema = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -433,40 +519,21 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                 </div>
             </section>
 
-            {/* ── Per-product detail ───────────────────────────────── */}
-            {products.map((product, i) => (
-                <ProductDetailSection key={product.name} product={product} index={i} onNavigate={onNavigate} />
-            ))}
-
-            <EcosystemDiagramSection />
-
-            <FeatureIconsSection />
-
-            {/* ── Product previews (editorial) ─────────────────────── */}
-            <section className="products-v2__section" aria-label="Product previews">
-                <SectionHead eyebrow="Product Previews" title="Inside the Cin Nova Ecosystem" />
-                <p className="products-v2__lead">
-                    Editorial previews of each product — real photography paired with the capabilities that define the Cin Nova platform family.
-                </p>
-                <div className="products-v2__showcase-stack">
-                    {ecosystemShowcases.map((showcase, index) => (
-                        <EcosystemShowcase key={showcase.name} showcase={showcase} index={index} onNavigate={onNavigate} />
-                    ))}
-                </div>
-            </section>
-
-            {/* ── Platform previews ────────────────────────────────── */}
+            {/* ── Per-product detail (tabbed) ──────────────────────
+                Replaces the five stacked detail sections plus the editorial
+                showcase stack and the platform preview grid — the same five
+                products used to appear three times over. */}
             <section className="products-v2__section" aria-label="Inside the platform">
                 <SectionHead eyebrow="Inside the Platform" title="A closer look at each product" />
                 <p className="products-v2__lead">
                     Explore what each Cin Nova product does and how it fits into your everyday life or workflow.
                 </p>
-                <div className="products-v2__platform-grid">
-                    {platformPreviews.map((preview) => (
-                        <PlatformScreenshotCard key={preview.name} preview={preview} onNavigate={onNavigate} />
-                    ))}
-                </div>
+                <ProductShowcaseTabs items={showcaseItems} onNavigate={onNavigate} />
             </section>
+
+            <EcosystemDiagramSection />
+
+            <FeatureIconsSection />
 
             {/* ── Roadmap ──────────────────────────────────────────── */}
             <section className="products-v2__section" aria-label="Roadmap">
