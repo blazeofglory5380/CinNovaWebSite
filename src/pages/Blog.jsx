@@ -54,6 +54,9 @@ function Blog({
     );
     const cornerstonePost = useMemo(
         () =>
+            // This week's featured story takes the large lead card. Falls back to the
+            // evergreen AI guide, then any cornerstone, then the first post.
+            posts.find((p) => p.slug === "anthropic-vs-federal-government-military-ai") ||
             posts.find((p) => p.slug === "the-complete-guide-to-artificial-intelligence-in-2026") ||
             posts.find((p) => p.cornerstone) ||
             posts[0],

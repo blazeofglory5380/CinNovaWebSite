@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d211d"/><stop offset=".6" stop-color="#174b3e"/><stop offset="1" stop-color="#08110f"/></linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#493d2b"/><stop offset="1" stop-color="#131b16"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1320" cy="170" r="92" fill="#3fe8c0" opacity=".13"/>
+  <path d="M0 480L210 290l150 100 190-180 170 170 205-220 230 230 180-150 265 210v170H0z" fill="#1d5143"/>
+  <path d="M0 560L270 365l200 150 220-180 205 160 210-115 250 180v170H0z" fill="#0e251f" opacity=".98"/>
+  <rect y="610" width="1600" height="290" fill="url(#ground)"/>
+  <g transform="translate(125 475)"><path d="M0 110h330v165H0z" fill="#081512" stroke="#3fe8c0" stroke-opacity=".3" stroke-width="3"/><path d="M18 84h295l40 26H-22z" fill="#1c463b"/><g fill="#3fe8c0" opacity=".55"><rect x="24" y="142" width="22" height="76" rx="4"/><rect x="61" y="142" width="22" height="76" rx="4"/><rect x="98" y="142" width="22" height="76" rx="4"/><rect x="135" y="142" width="22" height="76" rx="4"/><rect x="172" y="142" width="22" height="76" rx="4"/><rect x="209" y="142" width="22" height="76" rx="4"/><rect x="246" y="142" width="22" height="76" rx="4"/><rect x="283" y="142" width="22" height="76" rx="4"/></g></g>
+  <g transform="translate(525 420)"><path d="M0 120h390v210H0z" fill="#081512" stroke="#3fe8c0" stroke-opacity=".36" stroke-width="3"/><path d="M24 82h342l52 38H-28z" fill="#205345"/><g fill="#3fe8c0" opacity=".68"><rect x="30" y="162" width="25" height="98" rx="4"/><rect x="72" y="162" width="25" height="98" rx="4"/><rect x="114" y="162" width="25" height="98" rx="4"/><rect x="156" y="162" width="25" height="98" rx="4"/><rect x="198" y="162" width="25" height="98" rx="4"/><rect x="240" y="162" width="25" height="98" rx="4"/><rect x="282" y="162" width="25" height="98" rx="4"/><rect x="324" y="162" width="25" height="98" rx="4"/></g></g>
+  <g transform="translate(1050 500)"><path d="M0 82h285v160H0z" fill="#081512" stroke="#3fe8c0" stroke-opacity=".28" stroke-width="3"/><path d="M20 54h245l42 28H-18z" fill="#193f35"/><g fill="#3fe8c0" opacity=".5"><rect x="24" y="115" width="20" height="68" rx="4"/><rect x="61" y="115" width="20" height="68" rx="4"/><rect x="98" y="115" width="20" height="68" rx="4"/><rect x="135" y="115" width="20" height="68" rx="4"/><rect x="172" y="115" width="20" height="68" rx="4"/><rect x="209" y="115" width="20" height="68" rx="4"/><rect x="246" y="115" width="20" height="68" rx="4"/></g></g>
+  <g transform="translate(1370 430)" stroke="#3fe8c0" stroke-opacity=".5" stroke-width="5" fill="none"><path d="M0 0v300M-75 80h150M-48 80L0 0l48 80M-48 135h96"/><path d="M-95 300H95" stroke-dasharray="12 16"/></g>
+  <path d="M0 815c270-38 440-35 640 0s460 40 960-20" fill="none" stroke="#3fe8c0" stroke-opacity=".25" stroke-width="5"/>
+  <text x="800" y="850" text-anchor="middle" fill="#3fe8c0" font-family="monospace" font-size="28" letter-spacing="10">COMPUTE · POWER · WATER · LAND</text>
+  <text x="80" y="90" fill="#9fb3ab" font-family="monospace" font-size="21" letter-spacing="6">CINNOVA RESEARCH BRIEFING · UTAH STRATOS</text>
+</svg>

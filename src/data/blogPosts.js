@@ -63,6 +63,238 @@ const author = "CinNova Team";
 
 const fullArticles = [
     {
+        id: 201,
+        title: "Anthropic vs. the Federal Government: Who Gets the Final Say Over Military AI?",
+        slug: "anthropic-vs-federal-government-military-ai",
+        category: "Artificial Intelligence",
+        excerpt:
+            "The court fight is active, cooperation is quietly resuming, and the real dispute is bigger than one contract: who controls the limits when private AI becomes public power?",
+        date: "July 10, 2026",
+        readTime: "12 min read",
+        author,
+        tags: [
+            "Anthropic",
+            "military AI",
+            "AI policy",
+            "AI governance",
+            "national security",
+            "Claude",
+        ],
+        seoKeywords: [
+            "Anthropic federal government",
+            "military AI policy",
+            "AI supply chain risk designation",
+            "Anthropic Pentagon lawsuit",
+        ],
+        featured: true,
+        trending: true,
+        popular: true,
+        status: "published",
+        heroImage: "/images/blog/ai/anthropic-government-briefing.png",
+        heroImageAlt:
+            "Editorial illustration of Anthropic and the United States federal government facing off over military AI policy",
+        heroImageCaption:
+            "The dispute centers on who sets the limits once a private AI model becomes embedded in national-security systems.",
+        ogImage: "https://getcinnova.com/images/blog/ai/anthropic-government-briefing.png",
+        updatedLabel: "Updated: July 10, 2026",
+        content: [
+            {
+                "heading": "The latest update: the courtroom fight continues while cooperation quietly resumes",
+                "body": "As of July 10, 2026, Anthropic and the federal government have not announced a final settlement. The most important legal protection still in place is the preliminary injunction issued on March 26 by U.S. District Judge Rita Lin in San Francisco. The order did not force the Pentagon to keep buying Claude, and it did not give Anthropic a permanent victory. It temporarily restrained the government from using the most damaging parts of its supply-chain-risk campaign while the lawsuit proceeds.\n\nThe administration is still contesting Anthropic's claims. In a June court filing, the Justice Department denied that the government had unlawfully retaliated and argued that parts of the dispute were not reviewable because Anthropic was not challenging a final agency action. A separate case involving a broader supply-chain designation also remains pending in Washington. That means the legal question is not finished: a preliminary injunction protects the status quo, but the court has not yet decided the full merits of the case.\n\nAt the same time, the relationship is no longer completely frozen. Reuters reported that CEO Dario Amodei returned to the White House for discussions in April and that Anthropic later participated in conversations with federal cyber and economic officials. Those contacts matter because they show that the dispute is not simply 'Anthropic versus America.' The company still wants national-security work, and parts of the government still want access to Anthropic's technology. The hardest conflict remains concentrated around the Pentagon's demand for broad operational flexibility and Anthropic's refusal to remove two specific safeguards.\n\nNewly released communications have also clarified how quickly the negotiations deteriorated. The emails show a disagreement that was both technical and constitutional. Pentagon officials viewed provider restrictions as an unacceptable private veto over lawful military operations. Anthropic viewed the demand as an attempt to make a probabilistic commercial model available for uses it believed were insufficiently tested and potentially incompatible with civil liberties. That gap was never only about contract language. It was about who gets final authority when private AI systems become part of public power."
+            },
+            {
+                "heading": "By the numbers",
+                "body": "A quick snapshot of the figures that define the story.",
+                "list": [
+                    "$200M — maximum value of Anthropic's 2025 Defense Department agreement",
+                    "2 — uses Anthropic says must remain off-limits: fully autonomous lethal weapons and mass domestic surveillance",
+                    "Mar. 26 — date a federal judge temporarily blocked key parts of the Pentagon's action",
+                    "Still active — status of the core litigation as of July 10, 2026"
+                ]
+            },
+            {
+                "heading": "How the dispute unfolded",
+                "body": "A short timeline of how events developed.",
+                "list": [
+                    "Fall 2025 — Contract negotiations harden: The Pentagon asks frontier-model providers to support all lawful military uses. Anthropic accepts broad national-security work but keeps two red lines.",
+                    "Feb. 24–27, 2026 — Ultimatum and federal rupture: The Defense Department demands a change in terms; Anthropic refuses; the administration orders agencies to stop using Anthropic technology and labels the company a supply-chain risk.",
+                    "Mar. 9 — Anthropic sues: The company files actions in federal court, alleging unlawful retaliation, due-process violations, and agency overreach.",
+                    "Mar. 26 — Preliminary injunction: Judge Rita Lin temporarily blocks important parts of the government's measures, finding that Anthropic is likely to succeed on several claims.",
+                    "June–July — A partial thaw, not a settlement: The Justice Department continues defending the case, while Anthropic resumes conversations with other federal officials and newly released communications show how negotiations collapsed."
+                ]
+            },
+            {
+                "heading": "What Anthropic refused to change",
+                "body": "Anthropic did not reject defense work in general. Before the confrontation, it had spent years making Claude available to U.S. national-security customers, including through specialized government models and partnerships capable of operating on classified networks. The company had also received a Defense Department agreement worth up to $200 million. Its position was narrower: Claude should not be used to independently select and engage lethal targets without meaningful human control, and it should not be used for mass domestic surveillance of Americans.\n\nAnthropic's technical argument is that current frontier models remain fallible, probabilistic, and vulnerable to context errors. A model can summarize intelligence, compare documents, write code, or help an analyst search a large body of information. Those uses can still be dangerous, but they usually sit inside a workflow where a human can inspect the output. A fully autonomous weapon is different because a mistaken classification can become an irreversible physical action. The same distinction applies to surveillance: an AI system that cheaply combines location data, communications, images, and behavioral patterns can turn limited investigations into population-scale monitoring.\n\nThe Pentagon's position is that the elected government, acting under U.S. law, must decide how military tools are used. From that perspective, allowing each vendor to impose shifting private policies can create operational uncertainty. A commander cannot rely on a system if a provider can alter its permitted uses during a crisis. Defense officials therefore pushed for access for any lawful purpose, with government rules and human command structures—not a vendor's terms of service—providing the ultimate limits.\n\nBoth positions identify a real risk. Anthropic is warning about unsafe automation and civil-liberties abuse. The government is warning about strategic dependence on a private supplier. The failure was that the procurement structure did not resolve those risks before Claude became deeply integrated into sensitive workflows."
+            },
+            {
+                "heading": "Why the supply-chain-risk label changed the stakes",
+                "body": "The government could have ended or declined to renew Anthropic's contract. Instead, the Pentagon used a supply-chain-risk designation—a tool normally associated with security threats, compromised vendors, or companies tied to hostile states. That distinction is central to Anthropic's lawsuit. Losing one customer is a commercial consequence. Being publicly branded a national-security risk can affect every enterprise customer, cloud partner, bank, investor, and government contractor that evaluates whether to use the same technology.\n\nAnthropic told the court that customers paused negotiations and that the designation threatened hundreds of millions or even billions of dollars in revenue. The company argues that the government used its market power to punish protected speech: Anthropic publicly defended its safeguards, and federal officials then used a stigmatizing designation to pressure the company and its partners. Judge Lin's preliminary ruling treated that allegation seriously, describing the government's conduct as likely retaliatory and insufficiently connected to an actual sabotage or cybersecurity concern.\n\nThe government answers that national-security procurement deserves substantial deference. It says the military cannot be forced to rely on a vendor whose policies might conflict with operational needs. The unresolved issue is whether that concern justified the breadth and language of the response. A government has broad discretion to choose vendors. It has less freedom to use regulatory or contracting power as punishment for a company's public position."
+            },
+            {
+                "heading": "The larger issue: military AI needs architecture, not just promises",
+                "body": "The most useful lesson is not that Anthropic should control the military or that the Pentagon should receive unrestricted model access. It is that no single frontier model should become an irreplaceable control point in a national-security system. A resilient design separates the model from the decision authority. The government can own the logging, identity controls, targeting rules, human-approval gates, audit records, and final authorization. Commercial models can remain replaceable analytical components.\n\nFor example, an intelligence workflow could send the same imagery or text to multiple models, compare results, flag disagreement, and require a cleared analyst to approve any operational recommendation. A weapons system could prohibit a language model from issuing a fire command at all; the model could retrieve information or explain uncertainty while a separate, government-controlled system enforces rules of engagement. A surveillance platform could require individualized legal authorization and strict data-retention limits rather than relying on a model provider's general policy.\n\nThat approach reduces both sides' fears. The Pentagon does not become dependent on one company's changing terms. The AI company is not asked to trust that every downstream integration will preserve its safeguards. Most importantly, the public gets a clearer chain of accountability. When a harmful decision occurs, responsibility cannot disappear into a vague claim that 'the AI did it' or that a vendor's policy should have prevented it."
+            },
+            {
+                "heading": "What to watch next",
+                "body": "The first thing to watch is whether the parties negotiate a narrower contract before the courts reach a final judgment. A settlement could preserve human control over lethal force, prohibit indiscriminate domestic surveillance, and give the government predictable access for approved missions. Such a deal would reduce business uncertainty without answering every constitutional question.\n\nThe second is the scope of the courts' final rulings. A decision limited to defective agency procedure would be important but narrow. A stronger First Amendment ruling could constrain future administrations from using procurement power to punish technology companies for public policy disagreements. Conversely, a broad national-security ruling for the government could encourage agencies to demand fewer vendor restrictions in future AI contracts.\n\nThe third is industry behavior. OpenAI, Google, xAI, Microsoft, Amazon, and defense integrators are all watching. Whatever standard emerges will influence model contracts, insurance, compliance, and product architecture. The precedent may determine whether safety limits are negotiated as binding clauses, implemented only as technical controls, or displaced by government-owned safeguards.\n\nFor businesses outside defense, the case is a warning about concentration risk. If a company builds a critical process around one model, a political dispute, export rule, court order, or provider policy change can interrupt operations. Multi-model routing, documented fallback procedures, and contractual clarity are no longer optional governance extras. They are basic resilience measures."
+            },
+            {
+                "heading": "The case for Anthropic's position",
+                "body": "Pros — the strongest arguments in favor of a vendor holding firm on its safety limits, each with a concrete example:",
+                "list": [
+                    "A company can preserve a meaningful safety boundary. Anthropic's refusal demonstrates that a vendor can negotiate limits even when a government customer is powerful. This may prevent commercial pressure from automatically erasing safeguards in the highest-risk settings. Example: Claude can assist an analyst in reviewing intelligence while the contract separately forbids the model from autonomously initiating lethal force.",
+                    "The dispute forces public debate about AI and state power. Without the confrontation, decisions about autonomous weapons and domestic surveillance could remain buried in classified procurement documents. Litigation creates records, judicial review, and clearer accountability. Example: A court can examine whether a 'supply-chain risk' label was based on technical evidence or used as leverage after public criticism.",
+                    "It may produce stronger, model-independent military controls. The Pentagon now has a reason to design systems that do not depend on one vendor's policy layer. Government-owned audit, authorization, and fallback systems can be more durable than promises from any single company. Example: Multiple models produce recommendations, but a separate government service enforces rules of engagement and records the human approval."
+                ]
+            },
+            {
+                "heading": "The risks and trade-offs",
+                "body": "Cons — the real risks this kind of standoff creates, each with a concrete example:",
+                "list": [
+                    "Operational systems can be disrupted during a crisis. A public rupture with a deeply integrated vendor can force rushed migrations, create compatibility problems, and increase risk for personnel relying on existing tools. Example: A classified workflow built around Claude may need emergency replacement, retraining, and security validation before another model can safely take over.",
+                    "Private companies can gain too much influence over public policy. Even well-intentioned safeguards are written by corporate leaders who are not elected and may change their policies without public oversight. Example: A provider could block a lawful humanitarian, intelligence, or defensive use because its internal policy is broader than legislation or military doctrine.",
+                    "Government retaliation can chill honest safety warnings. If companies believe that raising technical or ethical objections will trigger blacklisting, they may stay silent or quietly loosen controls to protect contracts. Example: A lab discovers that a model performs poorly in target identification but hesitates to disclose the limitation because it fears losing all federal business."
+                ]
+            },
+            {
+                "heading": "Conclusion",
+                "body": "Anthropic's fight with the federal government is not a simple contest between safety and security. It is a governance failure exposed by a powerful technology. The government needs dependable tools and sovereign control over national defense. AI developers need the ability—and sometimes the duty—to disclose when their systems are unreliable or likely to enable abuse. The durable answer is not unlimited vendor control or unlimited government access. It is a transparent procurement framework that keeps humans accountable, makes models replaceable, and places enforceable legal limits around the most consequential uses of AI."
+            },
+            {
+                "heading": "Sources",
+                "body": "Reporting this briefing draws on:",
+                "list": [
+                    "Reuters — Trump administration denies unlawful retaliation in Anthropic AI blacklisting (https://www.reuters.com/legal/litigation/trump-administration-denies-unlawful-retaliation-anthropic-ai-blacklisting-2026-06-09/)",
+                    "Reuters — Blacklisted AI company Anthropic, White House ease tensions ahead of IPO (https://www.reuters.com/business/aerospace-defense/blacklisted-ai-company-anthropic-white-house-ease-tensions-ahead-ipo-sources-say-2026-06-05/)",
+                    "Reuters — Anthropic sues to block Pentagon blacklisting over AI use restrictions (https://www.reuters.com/world/anthropic-sues-block-pentagon-blacklisting-over-ai-use-restrictions-2026-03-09/)",
+                    "Associated Press — Judge questions Pentagon's motives for labeling Anthropic as a security threat (https://apnews.com/article/1c8955eccab9f6f40de5f9897118ac32)",
+                    "The Wall Street Journal — Read the Emails Revealing How Anthropic's Pentagon Relationship Fell Apart (https://www.wsj.com/politics/national-security/read-the-emails-revealing-how-anthropics-pentagon-relationship-fell-apart-b1d123dd)",
+                    "Reuters — Anthropic seeks appeals court stay of Pentagon supply-chain risk designation (https://www.reuters.com/technology/anthropic-seeks-court-stay-pentagon-supply-chain-risk-designation-2026-03-12/)"
+                ]
+            }
+        ],
+    },
+    {
+        id: 202,
+        title: "Utah's Stratos AI Data Center: The Latest Plan, the Backlash, and What Comes Next",
+        slug: "utah-stratos-ai-data-center-latest",
+        category: "Data Centers & Databases",
+        excerpt:
+            "The 40,000-acre proposal was cut roughly in half, but the hardest questions about power, water, permits, jobs, taxes, and community consent are still unresolved.",
+        date: "July 9, 2026",
+        readTime: "13 min read",
+        author,
+        tags: [
+            "data centers",
+            "Utah",
+            "Stratos",
+            "AI infrastructure",
+            "energy and water",
+            "Kevin O'Leary",
+        ],
+        seoKeywords: [
+            "Utah Stratos data center",
+            "AI data center backlash",
+            "Box Elder County data center",
+            "data center water and energy",
+        ],
+        featured: false,
+        trending: true,
+        popular: false,
+        status: "published",
+        heroImage: "/images/blog/datacenters/utah-stratos-data-center.png",
+        heroImageAlt:
+            "Illustration of a large AI data-center campus in the Utah high desert near the Great Salt Lake",
+        heroImageCaption:
+            "The revised Stratos campus still needs environmental, water, air, and building approvals before construction can begin.",
+        ogImage: "https://getcinnova.com/images/blog/datacenters/utah-stratos-data-center.png",
+        updatedLabel: "Updated: July 10, 2026",
+        content: [
+            {
+                "heading": "The latest update: Stratos is smaller, but it is not yet a finished construction project",
+                "body": "The Utah project attracting national attention is Stratos, a proposed hyperscale AI data-center and power campus in Box Elder County. It is backed by O'Leary Digital, associated with investor Kevin O'Leary, and local developer WestGen. Early plans described a roughly 40,000-acre footprint and as much as 9 gigawatts of on-site power generation at full buildout. Those numbers made Stratos one of the largest announced data-center concepts in the world and immediately turned it into a test of how far states should go to attract AI infrastructure.\n\nAs of July 10, 2026, the project has received important state and county approvals, but it has not simply moved into full construction. After weeks of protests, scientific criticism, legal challenges, and pressure from Utah officials, O'Leary agreed in early June to remove roughly 19,430 acres around the Locomotive Springs Waterfowl Management Area plus additional land near a highway. The revised footprint is around 20,000 acres, with promises to preserve much of the remaining property as open space and use water-efficient cooling technology.\n\nThe reduction is substantial, but it does not automatically cut every other project number in half. Public documents and reporting have not yet established a final revised power capacity, tenant list, construction schedule, or total capital budget. The original concept included a first phase of roughly 3 gigawatts and a possible 9-gigawatt full buildout powered primarily by natural gas delivered from the Ruby Pipeline. Until updated engineering and permit applications are filed, those figures should be treated as a development envelope, not a completed facility.\n\nThe next phase is therefore less dramatic but more important: air permits, water rights, wildlife review, building approvals, gas and generation engineering, financing, tenant commitments, and possible changes caused by litigation or local political pressure. Stratos is no longer merely a presentation, but it is also not yet an operating data center."
+            },
+            {
+                "heading": "By the numbers",
+                "body": "A quick snapshot of the figures that define the story.",
+                "list": [
+                    "~20,000 acres — revised footprint after the developer agreed to remove about half of the original 40,000-acre proposal",
+                    "Up to 9 GW — original full-build power concept, more than twice Utah's average statewide electricity use",
+                    "3 GW — power generation discussed for the first phase",
+                    "2,000 — permanent jobs projected by project supporters"
+                ]
+            },
+            {
+                "heading": "How the Stratos plan unfolded",
+                "body": "A short timeline of how events developed.",
+                "list": [
+                    "March 2026 — Stratos is announced: O'Leary Digital and WestGen unveil a hyperscale AI campus in Box Elder County, northwest of the Great Salt Lake.",
+                    "Apr. 24 — MIDA approves incentives and agreement: Utah's Military Installation Development Authority advances the project with a reduced energy tax and a development framework.",
+                    "May 4 — County approval amid protests: Box Elder County commissioners approve the proposal after a packed public meeting and intense local opposition.",
+                    "May 29–June 4 — State pressure changes the plan: Utah adds new data-center safeguards, and the developer agrees to remove roughly 20,000 acres, including land near a waterfowl management area.",
+                    "Late June–July — Project remains pre-construction: The revised campus still needs detailed environmental, air, water, building, and energy approvals; lawsuits and political opposition continue."
+                ]
+            },
+            {
+                "heading": "Why Utah wants a project this large",
+                "body": "AI systems require enormous computing capacity, specialized chips, fast networking, cooling, and dependable electricity. Developers increasingly look beyond established markets such as Northern Virginia, where power and land are constrained. Utah offers large sites, fiber routes, western-market access, and a state government eager to expand its AI economy.\n\nSupporters describe Stratos as strategic infrastructure. The campus could host several hyperscale tenants, generate its own power instead of waiting years for a grid connection, and support secure computing near military facilities. State officials project substantial tax revenue, construction work, and about 2,000 permanent jobs at full buildout.\n\nThe on-site power plan addresses a real bottleneck: a 9-gigawatt load could not quickly connect to Utah's grid. Natural gas from the Ruby Pipeline could let Stratos move faster and avoid placing its direct load on ordinary customers, with possible surplus exports.\n\nThat strategy is attractive to AI companies that value speed. It is also why the project raises concerns normally associated with a major power plant, industrial complex, and regional land-development plan—not only a group of server buildings."
+            },
+            {
+                "heading": "The environmental questions are about scale, not whether a server uses a glass of water",
+                "body": "Closed-loop or low-water cooling can sharply reduce evaporation, an important benefit in drought-prone Utah. It does not eliminate water needs for construction, power generation, dust control, fire protection, or workers. The public still needs to know the initial water source, effects on springs and groundwater, and contingency plans for extreme heat.\n\nEnergy is the larger concern. Natural-gas generation at the original scale would emit substantial carbon dioxide and air pollutants in a state already affected by inversions and ozone. Off-grid power can still influence gas demand, pipeline capacity, emissions, and future compliance costs.\n\nNearly all electricity used by computing becomes heat. At gigawatt scale, Stratos would release an industrial heat load into a high-desert environment. Site-specific modeling is needed to evaluate nighttime temperatures, habitat effects, and air-cooling performance during hot weather. Off-grid does not mean impact-free.\n\nThe revised boundary near Locomotive Springs addresses one visible wildlife conflict. It does not settle the full regional analysis. Roads, pipelines, transmission within the campus, noise, lighting, fencing, and construction can affect birds and other species beyond the building pads."
+            },
+            {
+                "heading": "Jobs and taxes: the headline numbers need a full accounting",
+                "body": "Large data centers create years of demand for electricians, pipefitters, concrete crews, equipment operators, security contractors, network installers, and engineers. Local hospitality, trucking, and suppliers can benefit, and the infrastructure may attract related technology companies.\n\nLong-term employment is less certain because data centers are capital-intensive. The estimate of 2,000 permanent jobs could matter greatly to Box Elder County, but officials should define whether it includes contractors or induced jobs, disclose expected wages and training, and show how many positions arrive in each phase.\n\nTax incentives deserve the same scrutiny. MIDA approved a 0.5 percent energy tax and a framework returning a large share of property-tax revenue to the project. Supporters say the remaining revenue exceeds what vacant land produces; critics want enforceable performance requirements before extraordinary discounts are granted.\n\nA strong agreement would link incentives to verified capital investment, local hiring, wage levels, environmental performance, and completion milestones. It would also include clawbacks if promised tenants, jobs, or infrastructure do not materialize."
+            },
+            {
+                "heading": "What responsible development would look like",
+                "body": "Utah can avoid a binary choice by approving Stratos in phases. Each block of capacity should proceed only after the developer proves power, water, emissions, financing, and tenant demand, rather than receiving the full benefits of a 9-gigawatt vision up front.\n\nIndependent public reporting should cover water, energy, emissions, noise, incidents, jobs, payroll, taxes, and incentives. Monitoring wells, air sensors, wildlife surveys, and noise stations can convert promises into measurable obligations.\n\nThe energy system should be designed for transition. Contracts can require efficiency targets, renewable additions, cleaner generation when available, and grid-support participation. Waste-heat reuse may help in limited nearby applications.\n\nCommunity participation must occur before decisive votes. A community-benefits agreement, local advisory board, public permit dashboard, and funded independent technical review would make future decisions more credible."
+            },
+            {
+                "heading": "What to watch next",
+                "body": "Watch for a revised master plan that clearly states the acreage, buildable area, generation capacity, water source, cooling method, and phases. The difference between 20,000 acres under development control and the actual acreage covered by data halls is important. So is the difference between a 9-gigawatt long-term option and the capacity developers are prepared to finance now.\n\nWatch the permit sequence. Air permits for a large gas-fired generation fleet may become the project's most consequential environmental review. Water-right applications and wildlife protections will show whether the revised plan meaningfully reduces impacts. Building permits will reveal whether construction is imminent or still years away.\n\nWatch for named tenants and financing. Hyperscale campuses are easier to finance when a major cloud or AI company signs a long-term lease. No publicly confirmed anchor tenant means the project may continue changing as developers seek commitments. A tenant announcement would turn Stratos from a speculative platform into a much more concrete build.\n\nAnd watch local politics. Lawsuits, referendums, elections, and new state rules can change the project's economics or timeline. The June downsizing already proved that public pressure can alter a plan after initial approval."
+            },
+            {
+                "heading": "The potential benefits",
+                "body": "Pros — the potential upside if the project is built responsibly, each with a concrete example:",
+                "list": [
+                    "Large investment and construction activity. A multi-phase campus could support years of skilled construction work and purchases from local suppliers, while expanding Utah's tax base. Example: Electricians, pipefitters, civil contractors, security firms, and network specialists may work across repeated building phases rather than a single short project.",
+                    "More domestic AI computing capacity. The United States needs additional secure compute for commercial research, cloud services, and national-security applications. A western campus can diversify capacity beyond crowded eastern markets. Example: A cloud provider could place training and inference clusters in Utah while keeping backup capacity in Texas or Virginia, reducing geographic concentration risk.",
+                    "On-site generation can avoid an immediate grid shock. Generating power behind the meter may prevent the first phases from consuming electricity already allocated to homes and businesses. Example: Dedicated turbines serve the data halls while a controlled interconnection exports only verified surplus power to the regional grid.",
+                    "The controversy can produce a stronger national model. Because Stratos is receiving intense scrutiny, Utah can establish unusually detailed rules for water, emissions, wildlife, transparency, and community benefits. Example: Public dashboards could report hourly power, annual water consumption, emissions, jobs, and tax incentives for every phase."
+                ]
+            },
+            {
+                "heading": "The risks and open questions",
+                "body": "Cons — the concerns that remain unresolved, each with a concrete example:",
+                "list": [
+                    "Natural-gas use and air pollution could be enormous. An off-grid campus still has environmental impacts. At multi-gigawatt scale, on-site generation can become one of the state's largest industrial emission sources. Example: Gas turbines may avoid a utility connection but still emit carbon dioxide, nitrogen oxides, and other pollutants that require controls and monitoring.",
+                    "Water and habitat risks remain in a drought-stressed region. Closed-loop cooling reduces evaporation but does not eliminate water needs or the effects of roads, pipelines, heat, lighting, and construction near sensitive ecosystems. Example: Removing acreage near Locomotive Springs protects one area, while groundwater drawdown or new access roads could still affect wildlife elsewhere.",
+                    "Permanent jobs may not match the physical scale. Data centers create substantial construction work but often operate with relatively small permanent staffs compared with factories or mixed-use developments. Example: A building containing billions of dollars in servers may need only a few hundred technicians, security staff, and facilities workers after construction.",
+                    "Tax incentives can shift risk to the public. If benefits are granted before tenants and financing are secured, taxpayers may subsidize roads, services, or land arrangements without receiving the promised jobs and revenue. Example: A developer could control a large approved site for years while market demand changes, leaving the community with planning costs but little operating revenue."
+                ]
+            },
+            {
+                "heading": "Conclusion",
+                "body": "Stratos could become an important piece of American AI infrastructure, but its scale makes ordinary economic-development promises inadequate. The revised footprint is evidence that public scrutiny works; it is not proof that the remaining impacts are small. Utah's best path is phased approval tied to verified tenants, enforceable environmental limits, transparent tax accounting, and measurable community benefits. A project designed to power the future should not depend on residents accepting vague answers about the land, water, air, and public money it will use."
+            },
+            {
+                "heading": "Sources",
+                "body": "Reporting this briefing draws on:",
+                "list": [
+                    "The Verge — Kevin O'Leary agrees to downsize massive Utah data center (https://www.theverge.com/ai-artificial-intelligence/943234/kevin-oleary-agrees-to-downsize-massive-utah-data-center)",
+                    "The Guardian — Majority of US's new AI datacenters to be built on drought-hit land (https://www.theguardian.com/us-news/2026/jun/08/datacenter-ai-drought-water)",
+                    "Business Insider — Kevin O'Leary has entered a new villain era (https://www.businessinsider.com/kevin-oleary-data-centers-2026-6)",
+                    "Axios Salt Lake City — 3 things to know about Utah's massive proposed data center (https://www.axios.com/local/salt-lake-city/2026/05/04/utah-data-center-kevin-oleary)",
+                    "The Wall Street Journal — Shark Tank's Mr. Wonderful Is Planning One of America's Biggest Data Centers (https://www.wsj.com/real-estate/shark-tanks-mr-wonderful-is-planning-one-of-americas-biggest-data-centers-8c138281)",
+                    "The Verge — The biggest data center ever is becoming a huge problem in Utah (https://www.theverge.com/ai-artificial-intelligence/933687/utah-stratos-project-data-center-kevin-oleary)"
+                ]
+            }
+        ],
+    },
+    {
         id: 1,
         title: "How AI Is Changing Education",
         slug: "how-ai-is-changing-education",
@@ -3178,7 +3410,10 @@ const enrichedFullArticles = fullArticles.map((post) => {
         ...post,
         ...override,
         cornerstone,
-        featured: post.id <= 5 || post.id === 31 || post.id === 32,
+        // id 201 = this week's featured briefing (Anthropic vs. the Federal Government).
+        // id 31 (The Complete Guide to AI in 2026) is intentionally dropped here so it
+        // stays published and fully readable but is no longer a featured story.
+        featured: post.id <= 5 || post.id === 32 || post.id === 201,
         trending: cornerstone || post.trending,
         popular: cornerstone || post.popular,
         thumbnail: override.thumbnail || post.thumbnail || {
