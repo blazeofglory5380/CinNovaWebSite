@@ -2415,18 +2415,23 @@ a {
    Popular, Featured Categories, TOC, Share, Prev/Next
    ============================================================ */
 
-/* Reading Progress Bar — integrated with the top edge of the sticky nav.
-   Previously `top: 72px; z-index: 49` placed it *underneath* the nav, which
-   is ~89px tall and sits at z-index 50, so the bar was never visible. It is
-   now pinned to the very top of the viewport and layered above the nav, which
-   also keeps it correct across breakpoints where the nav height changes. */
+/* Reading Progress Bar — a thin line pinned directly beneath the sticky nav.
+   The original `top: 72px; z-index: 49` placed it *underneath* the 89px-tall
+   nav (z-index 50), so it was never visible. `--cn-nav-height` is measured
+   from the real nav by useNavHeight(), which keeps the bar flush at every
+   breakpoint (89px desktop, 81px <=600px) instead of hardcoding a value.
+
+   z-index sits above page content and above the nav's drop shadow, but below
+   the nav "More" dropdown (60) and the mobile menu overlay (399) so those
+   still occlude it when open. The bar never overlaps the nav links because it
+   begins at the nav's bottom edge. */
 
 .article-progress-bar {
     position: fixed;
-    top: 0;
+    top: var(--cn-nav-height, 88px);
     left: 0;
     right: 0;
-    height: var(--cn-ui-progress-height, 3px);
+    height: var(--cn-ui-progress-height, 4px);
     background: var(--cn-ui-progress-track, rgba(10, 191, 140, 0.1));
     z-index: var(--cn-ui-z-progress, 55);
     pointer-events: none;

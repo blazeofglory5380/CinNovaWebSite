@@ -85,7 +85,7 @@ import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { productDetails, products } from "./data/products.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
-import { useScrollReveal, useStickyNav } from "./ui/index.js";
+import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
 
 // Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
 // Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
@@ -213,6 +213,10 @@ function App() {
 
     // Frosted nav gains a subtle shadow once the page scrolls off the top.
     const navScrolled = useStickyNav();
+
+    // Publishes the measured nav height as `--cn-nav-height` so fixed elements
+    // (e.g. the article reading progress bar) can sit flush beneath the nav.
+    useNavHeight();
 
     // Re-scan for `.reveal-on-scroll` targets whenever the routed view swaps,
     // since this router mounts pages without remounting the shell.

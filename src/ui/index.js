@@ -11,5 +11,6 @@ export { useToast } from "./useToast.js";
 export { useCopyToClipboard } from "./useCopyToClipboard.js";
 export { useScrollReveal } from "./useScrollReveal.js";
 export { useStickyNav } from "./useStickyNav.js";
+export { useNavHeight } from "./useNavHeight.js";
 export { useReducedMotion, prefersReducedMotion } from "./useReducedMotion.js";
 export { Skeleton, SkeletonText, SkeletonCard } from "./Skeleton.jsx";

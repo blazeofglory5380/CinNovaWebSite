@@ -76,9 +76,22 @@
        so those still occlude it correctly when open. */
     --cn-ui-progress-from: #0abf8c;
     --cn-ui-progress-to: #38bdf8;
-    --cn-ui-progress-height: 3px;
+    --cn-ui-progress-height: 4px;
     --cn-ui-progress-track: rgba(10, 191, 140, 0.10);
     --cn-ui-z-progress: 55;
+
+    /* Measured nav height, published by useNavHeight(). The 89px seed matches
+       the desktop nav so the bar lands correctly on the very first paint,
+       before the hook runs; <=600px overrides it to 81px below. */
+    --cn-nav-height: 89px;
+}
+
+/* Pre-JS fallback for the compact nav (padding drops 22px -> 18px at 600px).
+   Once useNavHeight() runs it sets an inline value on <html>, which wins. */
+@media (max-width: 600px) {
+    :root {
+        --cn-nav-height: 81px;
+    }
 }
 
 /* ============================================================
