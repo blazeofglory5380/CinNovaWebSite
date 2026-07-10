@@ -1,3 +1,8 @@
+/* PERF: `backdrop-filter` intentionally removed. These cards sit on a smooth
+   dark gradient plus the ambient field, so blurring the backdrop produced no
+   visible difference — but with an animated field beneath them the browser had
+   to re-blur every card on every frame, which locked up the renderer. The
+   translucent panel + border alone give the same frosted read. */
 /*
  * StudyNest — dark premium ecosystem theme for everything BELOW the hero.
  *
@@ -80,8 +85,6 @@
     background: var(--bdna-panel);
     border: 1px solid var(--bdna-panel-edge);
     box-shadow: var(--sn-shadow-rest);
-    -webkit-backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
-    backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
 }
 
 /* Existing hover lift is preserved — only the lit colors change. */
@@ -225,8 +228,6 @@
         var(--bdna-panel);
     border: 1px solid rgba(10, 191, 140, 0.26);
     box-shadow: var(--sn-shadow-hover);
-    -webkit-backdrop-filter: blur(var(--bdna-glass-blur));
-    backdrop-filter: blur(var(--bdna-glass-blur));
 }
 
 /* The inner form panel was its own white card. */
@@ -268,8 +269,6 @@
     background: var(--bdna-panel);
     border: 1px solid var(--bdna-panel-edge);
     box-shadow: var(--sn-shadow-rest);
-    -webkit-backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
-    backdrop-filter: blur(var(--bdna-glass-blur)) saturate(1.15);
 }
 
 .studynest-scope .home-v12-ecosystem-card h3 { color: var(--bdna-ink); }
@@ -345,8 +344,6 @@
     background: rgba(10, 14, 23, 0.78);
     border: 1px solid rgba(255, 255, 255, 0.16);
     color: var(--bdna-ink);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
 }
 
 .studynest-scope .feature-photo-wrap {

@@ -5,6 +5,9 @@ import "./App.css";
 // Loaded after App.css so the global utilities layer over legacy page styles
 // without needing to edit them.
 import "./styles/cinnova-ui.css";
+// Phase 2: ambient field + premium micro-interactions. CSS-only; loaded last so
+// it layers over App.css / cinnova-ui.css / the product dark themes.
+import "./styles/ambient.css";
 import App from "./App.jsx";
 import { MotionShell } from "./motion/MotionShell.jsx";
 import { ToastProvider } from "./ui/index.js";

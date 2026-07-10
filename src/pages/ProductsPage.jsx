@@ -13,13 +13,24 @@ import { trackProductExploreClick } from "../utils/analytics.js";
 import "../styles/brand-dna.css";
 import "./ProductsPage.css";
 
-/* Per-product accent (Brand DNA identity — decision #4). */
+/*
+ * Per-product accent (Brand DNA identity — decision #4).
+ *
+ * These are the 400-level tints of each product's catalog hue. The 500-level
+ * originals (#0ea5e9 / #10b981 / #f59e0b / #8b5cf6 / #2563eb) are too dark for
+ * small label text on the page's midnight surfaces: on the #0f1826 card panel
+ * the violet measured 4.21:1 and the blue 3.45:1, both below the WCAG AA 4.5:1
+ * floor for body-size text. Every tint below clears it (6.5:1 – 10.7:1).
+ *
+ * They also match the per-product accents already used by ProductDark.css, so
+ * the Products page and the product pages now share one palette.
+ */
 const ACCENT = {
-    studynest: "#0ea5e9",
-    poisonguard: "#10b981",
-    kiddo: "#f59e0b",
-    techmate: "#8b5cf6",
-    "real-estate": "#2563eb",
+    studynest: "#38bdf8",
+    poisonguard: "#34d399",
+    kiddo: "#fbbf24",
+    techmate: "#a78bfa",
+    "real-estate": "#60a5fa",
 };
 
 const ecosystemShowcases = [
@@ -78,37 +89,39 @@ const timeline = [
     { year: "2030+", title: "Public Safety + Global Expansion", items: ["Government edition", "Multilingual support", "Canada expansion", "Agency dashboards"] },
 ];
 
+/* Same 400-level tints as ACCENT: the node abbreviations are text painted on a
+   dark canvas, so they need the same contrast floor. */
 const diagramNodes = [
-    { name: "StudyNest", abbr: "SN", color: "#0ea5e9", angle: -90 },
-    { name: "PoisonGuard", abbr: "PG", color: "#10b981", angle: -18 },
-    { name: "Kiddo", abbr: "KD", color: "#f59e0b", angle: 54 },
-    { name: "TechMate AI", abbr: "TM", color: "#8b5cf6", angle: 126 },
-    { name: "Real Estate AI", abbr: "RE", color: "#2563eb", angle: 198 },
+    { name: "StudyNest", abbr: "SN", color: "#38bdf8", angle: -90 },
+    { name: "PoisonGuard", abbr: "PG", color: "#34d399", angle: -18 },
+    { name: "Kiddo", abbr: "KD", color: "#fbbf24", angle: 54 },
+    { name: "TechMate AI", abbr: "TM", color: "#a78bfa", angle: 126 },
+    { name: "Real Estate AI", abbr: "RE", color: "#60a5fa", angle: 198 },
 ];
 
 const platformPreviews = [
     {
-        name: "StudyNest", badge: "SN", category: "Education AI", accentColor: "#0ea5e9", page: "studynest",
+        name: "StudyNest", badge: "SN", category: "Education AI", page: "studynest",
         desc: "Smart notes, spaced-repetition flashcards, AI tutoring, and a study planner — all in one connected workspace.",
         mockupLines: ["Notes → 32 flashcards generated", "AI Tutor: Biology session ready", "Planner: 3 tasks due tomorrow"],
     },
     {
-        name: "PoisonGuard", badge: "PG", category: "Safety Technology", accentColor: "#10b981", page: "poisonguard",
+        name: "PoisonGuard", badge: "PG", category: "Safety Technology", page: "poisonguard",
         desc: "Scan household products, detect chemical risk levels, and get emergency guidance for pets and families instantly.",
         mockupLines: ["Hazard Scanner: Ready to scan", { text: "Risk Level: Low", success: true }, "Pet Safety: 2 items flagged"],
     },
     {
-        name: "Kiddo", badge: "KD", category: "Early Learning", accentColor: "#f59e0b", page: "kiddo",
+        name: "Kiddo", badge: "KD", category: "Early Learning", page: "kiddo",
         desc: "Playful ABCs, counting games, reading activities, a parent dashboard, and a rewards system for young learners.",
         mockupLines: ["Today: Letter B + Counting", "12 Stars Earned Today", "Parent: Progress Report Ready"],
     },
     {
-        name: "TechMate AI", badge: "TM", category: "Tech Support AI", accentColor: "#8b5cf6", page: "techmate",
+        name: "TechMate AI", badge: "TM", category: "Tech Support AI", page: "techmate",
         desc: "Diagnose devices, look up error codes, troubleshoot Wi-Fi, and follow guided repair steps — no technician needed.",
         mockupLines: [{ text: "Device Health: 98%", success: true }, "Wi-Fi Troubleshooter: Active", "Error Code Lookup: Resolved"],
     },
     {
-        name: "Real Estate AI", badge: "RE", category: "Real Estate AI", accentColor: "#2563eb", page: "real-estate",
+        name: "Real Estate AI", badge: "RE", category: "Real Estate AI", page: "real-estate",
         desc: "Analyze investment deals, estimate mortgage payments, review cash flow, and score properties against your goals.",
         mockupLines: ["Deal Score: A- (Strong Buy)", "Cap Rate: 8.1% | Cash Flow: +$645", "Market Intelligence: Rising ↑"],
     },

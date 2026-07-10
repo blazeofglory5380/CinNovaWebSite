@@ -396,3 +396,15 @@ main.products-v2 {
 
 /* Detail responsive rules now live with the tab-panel block above, which
    owns the single-column collapse at <=860px. */
+
+/* ── Newsletter block contrast ────────────────────────────────────────
+   The shared privacy link inherits `--color-accent` (#0F7A5A), which is a
+   light-theme green: 3.35:1 on this page's dark panel, below the WCAG AA 4.5:1
+   floor. Re-point it to the ecosystem teal (11.5:1) for this page only. */
+.products-v2 .form-privacy-link {
+    color: var(--bdna-emerald-glow, #3fe8c0);
+}
+
+.products-v2 .newsletter-success {
+    color: var(--bdna-emerald-glow, #3fe8c0);
+}

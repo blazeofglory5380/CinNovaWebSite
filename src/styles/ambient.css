@@ -1,0 +1,587 @@
+/*
+ * CinNova — Phase 2: Ambient Intelligence + Premium Micro-Interactions
+ * ===================================================================
+ *
+ * A shared, CSS-only motion layer for the dark surfaces of the site. No new
+ * dependencies: no WebGPU, no Three.js, no particle library, no video or GIF
+ * backgrounds, no images. Everything below is gradients, transforms, and
+ * opacity — all GPU-cheap and all disabled under `prefers-reduced-motion`.
+ *
+ * Loaded last in main.jsx so it can layer over App.css / cinnova-ui.css /
+ * ProductDark.css without editing them.
+ *
+ * ── LOCKED HEROES ───────────────────────────────────────────────────
+ * The cinematic/video heroes are never targeted. Every rule that could reach
+ * into a hero subtree carries the `--amb-not-hero` guard:
+ *
+ *     :not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero,
+ *              .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *)
+ *
+ * Ambient layers are painted with `z-index: 0` *behind* page content, and each
+ * hero is an opaque, isolated block, so nothing renders over or under them.
+ * Do not remove the guards.
+ * ────────────────────────────────────────────────────────────────────
+ */
+
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
+
+:root {
+    /* Timing — slow enough to read as "ambient", never as "animation". */
+    --amb-drift: 34s;
+    --amb-shimmer: 14s;
+    --amb-pulse: 3.2s;
+    --amb-sweep: 2.8s;
+
+    --amb-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --amb-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Ambient field intensity. Kept low on purpose — these sit under text. */
+    --amb-orb-opacity: 0.55;
+    --amb-grid-opacity: 0.16;
+    --amb-dot-opacity: 0.10;
+
+    /* Default field hues (ecosystem teal + sapphire). Product scopes override. */
+    --amb-hue-a: rgba(10, 191, 140, 0.16);
+    --amb-hue-b: rgba(27, 108, 242, 0.13);
+
+    /* Interaction */
+    --amb-ring: 0 0 0 2px rgba(63, 232, 192, 0.55);
+    --amb-glow-soft: 0 0 28px rgba(10, 191, 140, 0.16);
+}
+
+/* Per-product ambient hues, so each page's field matches its accent. */
+.studynest-scope   { --amb-hue-a: rgba(14, 165, 233, 0.15); --amb-hue-b: rgba(10, 191, 140, 0.12); }
+.poisonguard-scope { --amb-hue-a: rgba(16, 185, 129, 0.16); --amb-hue-b: rgba(6, 78, 59, 0.20); }
+.kiddo-scope       { --amb-hue-a: rgba(251, 191, 36, 0.13); --amb-hue-b: rgba(167, 139, 250, 0.13); }
+.techmate-scope    { --amb-hue-a: rgba(139, 92, 246, 0.15); --amb-hue-b: rgba(56, 189, 248, 0.12); }
+.realestate-scope  { --amb-hue-a: rgba(37, 99, 235, 0.15); --amb-hue-b: rgba(56, 189, 248, 0.12); }
+
+/* ============================================================
+   2. AMBIENT FIELD (below-hero backgrounds)
+   ============================================================
+   ONE pseudo layer per dark page root (`::before`), stacking four things in a
+   single background: slow-drifting glowing orbs, a faint data grid, a
+   particle-like dot field, and a gentle shimmer.
+
+   It is `pointer-events: none` and `z-index: 0`. Page children are lifted
+   to `z-index: 1` so all real content, links, and focus rings stay on top.
+   The heroes are excluded from that lift so their own stacking is untouched.
+   ============================================================ */
+
+.product-dark-scope .product-page,
+.studynest-scope .studynest-landing,
+main.homepage-v2,
+main.products-v2,
+main.blog-v2,
+main.resources-v2 {
+    position: relative;
+    isolation: isolate;
+}
+
+/*
+ * WHY THIS LAYER IS `sticky`, AND NOT `absolute` OR `fixed`.
+ *
+ * `absolute; inset: 0` makes the layer as tall as the page. Product pages run
+ * 8,000–13,000px, so animating it means a ~40MB compositor texture and a
+ * full-surface repaint per frame. Measured: it locked the renderer hard enough
+ * that screenshots timed out.
+ *
+ * `fixed` is viewport-sized and cheap, but a fixed layer paints across the
+ * whole viewport — including over the light site footer, which it tinted with a
+ * green haze. Measured and rejected.
+ *
+ * `sticky; top: 0; height: 100vh; margin-bottom: -100vh` gives a viewport-sized
+ * layer that travels with the scroll but is *bounded by its containing block*,
+ * so it stops at the page root and never reaches the footer. The negative
+ * margin removes it from flow, so it costs zero layout height.
+ *
+ * Only `transform` and `opacity` are animated — both compositor-only. The
+ * orbs, data grid, and dot field are all layers of one background, so this is a
+ * single element per page.
+ */
+.product-dark-scope .product-page::before,
+.studynest-scope .studynest-landing::before,
+main.homepage-v2::before,
+main.products-v2::before,
+main.blog-v2::before,
+main.resources-v2::before {
+    content: "";
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    margin-bottom: -100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--amb-orb-opacity);
+    background-image:
+        /* soft glowing orbs */
+        radial-gradient(620px 420px at 12% 6%, var(--amb-hue-a), transparent 62%),
+        radial-gradient(520px 400px at 88% 26%, var(--amb-hue-b), transparent 64%),
+        radial-gradient(720px 520px at 46% 78%, var(--amb-hue-a), transparent 66%),
+        /* particle-like dot field */
+        radial-gradient(rgba(255, 255, 255, var(--amb-dot-opacity)) 1px, transparent 1px),
+        /* faint data grid */
+        linear-gradient(rgba(255, 255, 255, var(--amb-grid-opacity)) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, var(--amb-grid-opacity)) 1px, transparent 1px);
+    background-size: auto, auto, auto, 96px 96px, 64px 64px, 64px 64px;
+    /* Fade the field out toward the edges so it never fights body copy. */
+    mask-image: radial-gradient(130% 90% at 50% 10%, #000 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(130% 90% at 50% 10%, #000 0%, transparent 80%);
+    animation:
+        amb-drift var(--amb-drift) var(--amb-ease) infinite alternate,
+        amb-grid-shimmer var(--amb-shimmer) var(--amb-ease) infinite;
+}
+
+/* Lift real content above the ambient field. Heroes are excluded: they already
+   isolate themselves and must not have their stacking changed. */
+.product-dark-scope .product-page > *:not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d)),
+.studynest-scope .studynest-landing > *:not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d)),
+main.homepage-v2 > *:not(:is(.cn-core-hero, .ph3d)),
+main.products-v2 > *:not(:is(.cn-core-hero, .ph3d)),
+main.blog-v2 > *:not(:is(.cn-core-hero, .ph3d)),
+main.resources-v2 > *:not(:is(.cn-core-hero, .ph3d)) {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes amb-drift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(1.5%, -1%, 0) scale(1.04); }
+    100% { transform: translate3d(-1%, 1.5%, 0) scale(1.02); }
+}
+
+@keyframes amb-grid-shimmer {
+    0%, 100% { opacity: 0.34; }
+    50%      { opacity: 0.6; }
+}
+
+/* ============================================================
+   3. PREMIUM CARD MICRO-INTERACTIONS
+   ============================================================ */
+
+.product-dark-scope .product-page :is(
+    .pg-trust-card, .pg-how-card, .pg-preview-card, .pg-pricing-card, .pg-faq-item, .pg-feature-card-v2,
+    .kd-character-card, .kd-parent-feature, .kd-pricing-card, .kd-world-card, .kd-faq-item,
+    .showcase-card, .pricing-card, .product-card, .feature-card, .preview-card
+):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *),
+.studynest-scope :is(.sn-how-card, .sn-preview-card, .sn-audience-card, .sn-pricing-card, .sn-faq-item),
+.product-dark-scope .pd-eco .home-v12-ecosystem-card,
+.studynest-scope .home-v12-ecosystem-card,
+main.products-v2 .products-v2__catalog-card,
+main.products-v2 .products-v2__feature-card {
+    transition:
+        transform 0.35s var(--amb-ease-soft),
+        box-shadow 0.35s var(--amb-ease),
+        border-color 0.35s var(--amb-ease);
+}
+
+/* Hover: a small lift plus a soft accent glow on the border. No bounce. */
+@media (hover: hover) and (pointer: fine) {
+    .product-dark-scope .product-page :is(
+        .pg-trust-card, .pg-how-card, .pg-preview-card, .pg-pricing-card, .pg-faq-item, .pg-feature-card-v2,
+        .kd-character-card, .kd-parent-feature, .kd-pricing-card, .kd-world-card, .kd-faq-item,
+        .showcase-card, .pricing-card, .product-card, .feature-card, .preview-card
+    ):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *):hover,
+    .studynest-scope :is(.sn-how-card, .sn-preview-card, .sn-audience-card, .sn-pricing-card, .sn-faq-item):hover,
+    .product-dark-scope .pd-eco .home-v12-ecosystem-card:hover,
+    .studynest-scope .home-v12-ecosystem-card:hover,
+    main.products-v2 .products-v2__catalog-card:hover,
+    main.products-v2 .products-v2__feature-card:hover {
+        transform: translate3d(0, -4px, 0);
+        box-shadow:
+            0 22px 48px rgba(0, 0, 0, 0.5),
+            0 0 32px color-mix(in srgb, var(--pd-accent, #3fe8c0) 16%, transparent);
+    }
+}
+
+/* Keyboard parity: focus-within gets the same treatment plus a visible ring,
+   so the card is never hover-only. */
+.product-dark-scope .product-page :is(.pg-pricing-card, .kd-pricing-card, .showcase-card, .product-card, .feature-card, .preview-card):focus-within,
+.studynest-scope :is(.sn-pricing-card, .sn-preview-card):focus-within,
+main.products-v2 .products-v2__catalog-card:focus-within {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: var(--amb-ring), 0 22px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================
+   4. LIVING DASHBOARD DETAILS
+   ============================================================
+   Only existing elements are animated. No new data, no invented rows.
+   ============================================================ */
+
+/* ── Shared: a slow "status" pulse dot ─────────────────────── */
+@keyframes amb-status-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.12); }
+}
+
+/* ── Shared: a shimmer sweep across a static row ───────────── */
+@keyframes amb-row-sweep {
+    0%   { transform: translateX(-120%); }
+    60%, 100% { transform: translateX(120%); }
+}
+
+.amb-sweep-host { position: relative; overflow: hidden; }
+
+.amb-sweep-host::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+    transform: translateX(-120%);
+    animation: amb-row-sweep var(--amb-sweep) var(--amb-ease) infinite;
+}
+
+/* ── StudyNest: study-progress pulse on planner rows ───────── */
+.studynest-scope .sn-planner-row {
+    position: relative;
+    overflow: hidden;
+}
+
+.studynest-scope .sn-planner-row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(63, 232, 192, 0.07), transparent);
+    transform: translateX(-120%);
+    animation: amb-row-sweep 4.6s var(--amb-ease) infinite;
+}
+
+.studynest-scope .sn-planner-row:nth-child(2)::after { animation-delay: 0.9s; }
+.studynest-scope .sn-planner-row:nth-child(3)::after { animation-delay: 1.8s; }
+
+.studynest-scope .sn-planner-row strong { animation: amb-status-pulse 4s var(--amb-ease) infinite; }
+
+/* The AI answer panel breathes very slightly, like a live response. */
+.studynest-scope .sn-chat-ai {
+    animation: amb-ai-breathe 6s var(--amb-ease) infinite;
+}
+
+@keyframes amb-ai-breathe {
+    0%, 100% { box-shadow: 0 0 0 rgba(10, 191, 140, 0); }
+    50%      { box-shadow: 0 0 26px rgba(10, 191, 140, 0.14); }
+}
+
+/* ── PoisonGuard: safety status pulse ──────────────────────── */
+/* The HIGH RISK badge keeps a slow, urgent (not flashing) red glow. */
+.poisonguard-scope .pg-risk-badge--high {
+    animation: amb-risk-pulse 2.6s var(--amb-ease) infinite;
+}
+
+@keyframes amb-risk-pulse {
+    0%, 100% { box-shadow: 0 0 14px rgba(220, 38, 38, 0.24); }
+    50%      { box-shadow: 0 0 26px rgba(220, 38, 38, 0.46); }
+}
+
+/* The confidence meter fill gets a slow travelling highlight. */
+.poisonguard-scope .pg-confidence-bar {
+    position: relative;
+    overflow: hidden;
+}
+
+.poisonguard-scope .pg-confidence-bar span {
+    position: relative;
+    overflow: hidden;
+}
+
+.poisonguard-scope .pg-confidence-bar span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: translateX(-120%);
+    animation: amb-row-sweep 3.4s var(--amb-ease) infinite;
+}
+
+/* The scanner reticle already exists in the markup — give it a soft pulse. */
+.poisonguard-scope .pg-mock-scanner-pulse {
+    animation: amb-status-pulse 2.4s var(--amb-ease) infinite;
+}
+
+/* ── Kiddo: playful sparkle + soft glow ────────────────────── */
+.kiddo-scope .kd-mock-star {
+    animation: amb-sparkle 3.4s var(--amb-ease) infinite;
+}
+
+@keyframes amb-sparkle {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(251, 191, 36, 0); }
+    50%      { transform: scale(1.06); box-shadow: 0 0 18px rgba(251, 191, 36, 0.4); }
+}
+
+/* The progress path gently flows gold -> violet. */
+.kiddo-scope .kd-mock-path {
+    background-size: 200% 100% !important;
+    animation: amb-path-flow 7s var(--amb-ease) infinite alternate;
+}
+
+@keyframes amb-path-flow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* Subject dots breathe in their own hue, staggered so they never sync up. */
+.kiddo-scope .kd-subject-dot {
+    animation: amb-status-pulse 4.2s var(--amb-ease) infinite;
+}
+
+.kiddo-scope .kd-subject-card:nth-child(2n) .kd-subject-dot { animation-delay: 0.7s; }
+.kiddo-scope .kd-subject-card:nth-child(3n) .kd-subject-dot { animation-delay: 1.4s; }
+
+/* ── TechMate: diagnostic scan-line ────────────────────────── */
+.techmate-scope .chat-ai {
+    position: relative;
+    overflow: hidden;
+}
+
+.techmate-scope .chat-ai::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    top: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), transparent);
+    animation: amb-scanline 4.2s var(--amb-ease) infinite;
+}
+
+@keyframes amb-scanline {
+    0%   { transform: translateY(0); opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateY(1400%); opacity: 0; }
+}
+
+/* ── Real Estate: market/data pulse ────────────────────────── */
+.realestate-scope .chat-ai {
+    animation: amb-ai-breathe 6.4s var(--amb-ease) infinite;
+    box-shadow: 0 0 0 rgba(37, 99, 235, 0);
+}
+
+/* `.re-conv-card` has no <strong>; its live element is the category tag. */
+.realestate-scope .re-conv-card__tag {
+    animation: amb-status-pulse 4.4s var(--amb-ease) infinite;
+}
+
+/* ── Products page: browser mock rows shimmer ──────────────── */
+main.products-v2 .products-v2__screen-row {
+    position: relative;
+    overflow: hidden;
+}
+
+main.products-v2 .products-v2__screen-row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-120%);
+    animation: amb-row-sweep 5s var(--amb-ease) infinite;
+}
+
+main.products-v2 .products-v2__screen-row:nth-child(2)::after { animation-delay: 1s; }
+main.products-v2 .products-v2__screen-row:nth-child(3)::after { animation-delay: 2s; }
+
+main.products-v2 .products-v2__screen-row--ok {
+    animation: amb-ai-breathe 5.6s var(--amb-ease) infinite;
+}
+
+/* The browser "traffic light" dots read as a live status indicator. */
+main.products-v2 .products-v2__dot:first-child {
+    animation: amb-status-pulse 3s var(--amb-ease) infinite;
+}
+
+/* ============================================================
+   5. BUTTON + CTA FEEDBACK
+   ============================================================
+   Colors and labels are untouched; only depth and focus change.
+   ============================================================ */
+
+:is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta, .sn-btn-primary):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *) {
+    transition:
+        transform 0.14s var(--amb-ease-soft),
+        box-shadow 0.24s var(--amb-ease),
+        filter 0.24s var(--amb-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    :is(.primary-btn, .bdna-btn--solid, .nav-cta, .sn-btn-primary):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *):hover {
+        filter: brightness(1.06);
+        box-shadow: var(--amb-glow-soft);
+    }
+}
+
+/* Soft press — a 1px settle, not a bounce. */
+:is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta, .sn-btn-primary):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *):active {
+    transform: translateY(1px) scale(0.995);
+}
+
+:is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta):not(:is(.cn-core-hero, .studynest-hero-animation, .pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero, .ph3d) *):focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: var(--amb-ring);
+}
+
+/* Disabled buttons never animate. */
+:is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta)[disabled],
+:is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta)[aria-disabled="true"] {
+    transform: none !important;
+    filter: none !important;
+    box-shadow: none !important;
+}
+
+/* ============================================================
+   6. PRODUCTS PAGE TABS
+   ============================================================
+   An underline that grows from the centre. It lives on a pseudo element and
+   is absolutely positioned, so the tab strip never reflows (no layout shift).
+   ============================================================ */
+
+main.products-v2 .products-v2__tab {
+    position: relative;
+}
+
+main.products-v2 .products-v2__tab::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--bdna-accent, #3fe8c0);
+    opacity: 0;
+    transition:
+        left 0.3s var(--amb-ease-soft),
+        right 0.3s var(--amb-ease-soft),
+        opacity 0.3s var(--amb-ease);
+}
+
+main.products-v2 .products-v2__tab.is-active::after {
+    left: 22%;
+    right: 22%;
+    opacity: 1;
+    box-shadow: 0 0 12px var(--bdna-accent, #3fe8c0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    main.products-v2 .products-v2__tab:not(.is-active):hover::after {
+        left: 38%;
+        right: 38%;
+        opacity: 0.5;
+    }
+}
+
+/* ============================================================
+   7. FORM POLISH
+   ============================================================
+   Logic untouched — only the focus/hover affordance changes.
+   ============================================================ */
+
+.product-dark-scope :is(input, textarea, select),
+.studynest-scope :is(input, textarea, select),
+main.products-v2 :is(input, textarea, select),
+main.homepage-v2 :is(input, textarea, select),
+main.blog-v2 :is(input, textarea, select) {
+    transition:
+        border-color 0.24s var(--amb-ease),
+        box-shadow 0.24s var(--amb-ease),
+        background-color 0.24s var(--amb-ease);
+}
+
+.product-dark-scope :is(input, textarea, select):focus,
+.product-dark-scope :is(input, textarea, select):focus-visible,
+.studynest-scope :is(input, textarea, select):focus,
+.studynest-scope :is(input, textarea, select):focus-visible,
+main.products-v2 :is(input, textarea, select):focus-visible,
+main.homepage-v2 :is(input, textarea, select):focus-visible,
+main.blog-v2 :is(input, textarea, select):focus-visible {
+    outline: none;
+    border-color: color-mix(in srgb, var(--pd-accent, #3fe8c0) 60%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pd-accent, #3fe8c0) 20%, transparent);
+}
+
+/* Existing success/error copy simply fades in rather than snapping. */
+.product-dark-scope .newsletter-success,
+.studynest-scope .newsletter-success,
+main.products-v2 .newsletter-success {
+    animation: amb-fade-in 0.3s var(--amb-ease) both;
+}
+
+@keyframes amb-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   8. REDUCED MOTION
+   ============================================================
+   Everything above collapses to a static, fully-visible state. The ambient
+   field is not merely paused — it is removed, because a frozen orb field
+   still adds visual noise with no benefit. Nothing here hides content.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    /* The ambient field is a single `::before` per page root. Hold it still and
+       drop it right back so it reads as texture, not motion. */
+    .product-dark-scope .product-page::before,
+    .studynest-scope .studynest-landing::before,
+    main.homepage-v2::before,
+    main.products-v2::before,
+    main.blog-v2::before,
+    main.resources-v2::before {
+        animation: none !important;
+        transform: none !important;
+        opacity: 0.18 !important;
+    }
+
+    .amb-sweep-host::after,
+    .studynest-scope .sn-planner-row::after,
+    .studynest-scope .sn-planner-row strong,
+    .studynest-scope .sn-chat-ai,
+    .poisonguard-scope .pg-risk-badge--high,
+    .poisonguard-scope .pg-confidence-bar span::after,
+    .poisonguard-scope .pg-mock-scanner-pulse,
+    .kiddo-scope .kd-mock-star,
+    .kiddo-scope .kd-mock-path,
+    .kiddo-scope .kd-subject-dot,
+    .techmate-scope .chat-ai::after,
+    .realestate-scope .chat-ai,
+    .realestate-scope .re-conv-card__tag,
+    main.products-v2 .products-v2__screen-row::after,
+    main.products-v2 .products-v2__screen-row--ok,
+    main.products-v2 .products-v2__dot:first-child,
+    .product-dark-scope .newsletter-success,
+    .studynest-scope .newsletter-success,
+    main.products-v2 .newsletter-success {
+        animation: none !important;
+    }
+
+    /* Sweep overlays would sit frozen mid-row; remove them entirely. */
+    .studynest-scope .sn-planner-row::after,
+    .poisonguard-scope .pg-confidence-bar span::after,
+    .techmate-scope .chat-ai::after,
+    main.products-v2 .products-v2__screen-row::after,
+    .amb-sweep-host::after {
+        display: none;
+    }
+
+    /* Transitions and lifts off; focus rings stay. */
+    .product-dark-scope .product-page :is(.showcase-card, .pricing-card, .product-card, .feature-card, .preview-card),
+    .studynest-scope :is(.sn-how-card, .sn-preview-card, .sn-audience-card, .sn-pricing-card, .sn-faq-item),
+    main.products-v2 .products-v2__tab::after,
+    :is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta, .sn-btn-primary) {
+        transition: none !important;
+    }
+
+    .product-dark-scope .product-page :is(.showcase-card, .pricing-card, .product-card, .feature-card, .preview-card):hover,
+    .studynest-scope :is(.sn-how-card, .sn-preview-card, .sn-audience-card, .sn-pricing-card, .sn-faq-item):hover,
+    :is(.primary-btn, .secondary-btn, .bdna-btn, .nav-cta, .sn-btn-primary):active {
+        transform: none !important;
+    }
+}
