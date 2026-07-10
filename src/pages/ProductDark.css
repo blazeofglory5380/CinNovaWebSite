@@ -219,12 +219,14 @@
    which is what lets these chip rules outrank the broad `:is(p, span, …)`
    typography rule above. Without it, every <span>-based chip fell back to muted
    gray. */
+/* `.kd-subject-dot` and `.pg-confidence-bar` were removed from this list:
+   the dot carries a per-subject hue (violet / cyan / rose / …) and the
+   confidence bar is a meter fill — tinting both with the page accent erased
+   their meaning. They get dedicated rules further down. */
 .product-dark-scope .product-page :is(
     .kd-gameplay-chip,
     .kd-world-age,
-    .kd-subject-dot,
     .kd-mock-star,
-    .pg-confidence-bar,
     .re-conv-btn
 ):not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
     background: color-mix(in srgb, var(--pd-accent) 14%, transparent);
@@ -330,15 +332,9 @@
     color: var(--bdna-dim2) !important;
 }
 
-/* Footer transition — fade the last dark section into the light site footer. */
-.product-dark-scope .pd-eco .product-ecosystem-section::after {
-    content: "";
-    display: block;
-    height: 96px;
-    margin: 56px -100vw -1px;
-    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.9));
-    pointer-events: none;
-}
+/* Footer transition removed. The old rule faded the last dark section into a
+   `rgba(255,255,255,0.9)` gradient, which rendered as the foggy white/gray band
+   above the footer. The dark content now meets the footer with a clean edge. */
 
 /* ── Reduced motion ───────────────────────────────────────────────── */
 /* This file changes only color/border/shadow; it introduces no animation.
@@ -358,4 +354,161 @@
     .product-dark-scope .product-page :is(.product-card, .feature-card, .showcase-card):hover {
         transform: none;
     }
+}
+
+/* ── Footer seam ──────────────────────────────────────────────────────
+   The site footer is a sibling of this scope and carries `margin-top: 32px`.
+   That gap exposed the white `.site` shell as a pale band between the dark
+   page and the footer. Extend the dark canvas by the same amount and pull the
+   footer back up, so the dark content meets the footer with no light seam
+   while keeping the original breathing room. */
+.product-dark-scope {
+    padding-bottom: 32px;
+    margin-bottom: -32px;
+}
+
+/* ============================================================
+   PRODUCT-PAGE FIXES (post dark-pass review)
+   ============================================================ */
+
+/* ── 1. Join Waitlist / newsletter CTA blocks ─────────────────────────
+   PoisonGuard and Kiddo shipped pale gradients (white -> mint, white -> cream
+   -> lilac) that glared on the dark canvas. StudyNest already had a dark
+   treatment; this standardises all of them on one frosted surface while each
+   page keeps its own accent for the border glow. */
+.product-dark-scope .product-page :is(.pg-waitlist-card, .kd-waitlist-card) {
+    background:
+        radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--pd-accent) 14%, transparent), transparent 60%),
+        var(--pd-panel) !important;
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 26%, transparent) !important;
+    box-shadow: var(--pd-shadow-lit);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    backdrop-filter: blur(14px) saturate(1.15);
+    align-items: center;
+}
+
+.product-dark-scope .product-page :is(.pg-waitlist-copy, .kd-waitlist-copy) h2 {
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page :is(.pg-waitlist-copy, .kd-waitlist-copy) p {
+    color: var(--bdna-dim) !important;
+}
+
+/* The inner form panel was its own light card on both pages. */
+.product-dark-scope .product-page :is(.pg-waitlist-form, .kd-waitlist-form) {
+    background: rgba(8, 12, 20, 0.6) !important;
+    border: 1px solid var(--pd-edge);
+    border-radius: 16px;
+}
+
+/* Waitlist submit button: solid, high-contrast, uses the page accent. */
+.product-dark-scope .product-page :is(.pg-waitlist-form, .kd-waitlist-form) .signup-form button {
+    background: var(--pd-accent) !important;
+    border: none;
+    color: #08111a !important;
+    font-weight: 800;
+}
+
+/* Stack the CTA on narrow screens so the form never squeezes. */
+@media (max-width: 860px) {
+    .product-dark-scope .product-page :is(.pg-waitlist-card, .kd-waitlist-card) {
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+    }
+
+    .product-dark-scope .product-page :is(.pg-waitlist-form, .kd-waitlist-form) {
+        width: 100%;
+    }
+}
+
+/* ── 2. PoisonGuard hazard result card ───────────────────────────────
+   Was `linear-gradient(#ffffff, #f8fafc)` — a bright slab on a dark page.
+   Now a frosted safety panel. Semantic colors are preserved deliberately:
+   the HIGH RISK badge stays red and the confidence meter stays emerald, so
+   risk never reads as generic teal. */
+.product-dark-scope .product-page .pg-mock-result {
+    background: linear-gradient(180deg, rgba(15, 24, 38, 0.92) 0%, rgba(10, 14, 23, 0.86) 100%) !important;
+    border: 1px solid var(--pd-edge) !important;
+    box-shadow: var(--pd-shadow);
+}
+
+.product-dark-scope .product-page .pg-mock-result-header strong {
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page .pg-mock-result-copy {
+    color: var(--bdna-dim) !important;
+}
+
+/* Urgent, not decorative: red fill + red ring + a soft red glow. */
+.product-dark-scope .product-page .pg-risk-badge.pg-risk-badge--high:not(:is(.pgr-hero, .kiddo-hero, .tmxr-hero, .rex-hero) *) {
+    background: rgba(220, 38, 38, 0.22) !important;
+    border: 1px solid rgba(248, 113, 113, 0.55) !important;
+    color: #fecaca !important;
+    box-shadow: 0 0 18px rgba(220, 38, 38, 0.28);
+}
+
+.product-dark-scope .product-page .pg-confidence-label {
+    color: var(--bdna-dim) !important;
+}
+
+.product-dark-scope .product-page .pg-confidence-label strong {
+    color: #3fe8c0 !important;
+}
+
+/* Track dark, fill emerald — the meter must stay legible, not tinted amber. */
+.product-dark-scope .product-page .pg-confidence-bar {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
+}
+
+.product-dark-scope .product-page .pg-confidence-bar span {
+    background: linear-gradient(90deg, #0abf8c, #3fe8c0) !important;
+}
+
+/* ── 4. Kiddo accents + subject circles ──────────────────────────────
+   The subject dots carry a per-subject hue set inline (`--kd-subject-color`:
+   violet, rose, amber, cyan, teal, pink, indigo, emerald). A generic chip rule
+   had overpainted all of them with the page accent, which is what made the
+   circles read as wrong. They now keep their own color, with a soft halo so
+   they sit on the dark card.
+
+   `.kd-subject-card` mixed its border with WHITE (`color-mix(… , white)`),
+   which is where the muddy pale green/brown came from on a dark surface. The
+   mix now happens against the dark canvas. */
+.product-dark-scope .product-page .kd-subject-dot {
+    background: var(--kd-subject-color) !important;
+    border: none !important;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--kd-subject-color) 55%, transparent);
+}
+
+.product-dark-scope .product-page .kd-subject-card {
+    background: var(--pd-panel) !important;
+    border: 1px solid color-mix(in srgb, var(--kd-subject-color) 38%, transparent) !important;
+    box-shadow: var(--pd-shadow);
+}
+
+.product-dark-scope .product-page .kd-subject-card h3 {
+    color: var(--bdna-ink) !important;
+}
+
+/* Progress path was a muddy orange->sand gradient on dark. Gold -> violet keeps
+   it playful and reads cleanly. */
+.product-dark-scope .product-page .kd-mock-path {
+    background: linear-gradient(90deg, #fbbf24, #a78bfa) !important;
+}
+
+/* Character portraits sat in a white radial disc with a 4px white ring. */
+.product-dark-scope .product-page .kd-character-portrait-wrap {
+    background: radial-gradient(120% 120% at 50% 18%, rgba(56, 189, 248, 0.18) 0%, rgba(15, 24, 38, 0.9) 70%) !important;
+    border: 3px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Stars stay warm gold rather than the page accent tint. */
+.product-dark-scope .product-page .kd-mock-star {
+    background: rgba(251, 191, 36, 0.16) !important;
+    border: 1px solid rgba(251, 191, 36, 0.36) !important;
+    color: #fcd34d !important;
 }

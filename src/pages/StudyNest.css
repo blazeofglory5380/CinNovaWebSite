@@ -302,16 +302,9 @@
     color: var(--bdna-dim2);
 }
 
-/* Footer transition — fade the last dark section into the light site footer
-   so the seam does not read as a hard edge. */
-.studynest-scope .product-ecosystem-section::after {
-    content: "";
-    display: block;
-    height: 96px;
-    margin: 56px -100vw -1px;
-    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.9));
-    pointer-events: none;
-}
+/* Footer transition removed. The old rule faded the last dark section into a
+   `rgba(255,255,255,0.9)` gradient, which rendered as the foggy white/gray band
+   above the footer. The dark content now meets the footer with a clean edge. */
 
 /* ── Reduced motion ───────────────────────────────────────────────── */
 /* This file only changes color/border/shadow — no new animation is
@@ -331,4 +324,31 @@
     .studynest-scope .studynest-landing .product-card-photo:hover {
         transform: none;
     }
+}
+
+/* ── Footer seam ──────────────────────────────────────────────────────
+   The site footer is a sibling of this scope and carries `margin-top: 32px`.
+   That gap exposed the white `.site` shell as a pale band between the dark
+   page and the footer. Extend the dark canvas by the same amount and pull the
+   footer back up, so the dark content meets the footer with no light seam
+   while keeping the original breathing room. */
+.studynest-scope {
+    padding-bottom: 32px;
+    margin-bottom: -32px;
+}
+
+/* ── Leftover light surfaces (post dark-pass review) ─────────────────── */
+/* The ecosystem product-name pill shipped a near-white fill; the feature photo
+   wrapper ships a light placeholder that shows for one frame before the image
+   paints (the image is object-fit:cover and covers the box). */
+.studynest-scope .home-v12-product-brand {
+    background: rgba(10, 14, 23, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--bdna-ink);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.studynest-scope .feature-photo-wrap {
+    background: var(--bdna-panel);
 }
