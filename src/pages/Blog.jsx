@@ -340,10 +340,11 @@ function Blog({
                         <h2>Articles people are reading now</h2>
                     </div>
                     <div className="blog-v2__grid">
-                        {trendingPosts.map((post) => (
+                        {trendingPosts.map((post, index) => (
                             <GlassCard
                                 key={post.id}
-                                className="blog-v2__card"
+                                className="blog-v2__card reveal-on-scroll"
+                                style={{ "--cn-reveal-index": index }}
                                 media={<ArticleVisual post={post} />}
                                 onClick={() => onOpenArticle(post)}
                                 onKeyDown={(e) => { if (e.key === "Enter") onOpenArticle(post); }}
@@ -377,10 +378,11 @@ function Blog({
                     </p>
                 </div>
                 <div className="blog-v2__grid">
-                    {filteredPosts.map((post) => (
+                    {filteredPosts.map((post, index) => (
                         <GlassCard
                             key={post.id}
-                            className="blog-v2__card"
+                            className="blog-v2__card reveal-on-scroll"
+                            style={{ "--cn-reveal-index": Math.min(index, 5) }}
                             media={<ArticleVisual post={post} />}
                             onClick={() => onOpenArticle(post)}
                             onKeyDown={(event) => {

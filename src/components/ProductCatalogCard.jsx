@@ -2,7 +2,7 @@ import { normalizeProductStatus } from "../data/products.js";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { trackProductExploreClick } from "../utils/analytics.js";
 
-function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary-btn" }) {
+function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary-btn", revealIndex = 0 }) {
     const status = normalizeProductStatus(product.status);
 
     const handleLearnMore = () => {
@@ -18,7 +18,10 @@ function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary
     };
 
     return (
-        <MotionCardWrap className="home-v12-ecosystem-card product-catalog-card">
+        <MotionCardWrap
+            className="home-v12-ecosystem-card product-catalog-card card-hover-lift reveal-on-scroll"
+            style={{ "--cn-reveal-index": revealIndex }}
+        >
             {product.image && (
                 <div className="home-v12-ecosystem-photo">
                     <img src={product.image} alt={product.imageAlt} loading="lazy" decoding="async" />
@@ -36,7 +39,7 @@ function ProductCatalogCard({ product, onLearnMore, buttonClassName = "secondary
                 </div>
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
-                <button type="button" className={buttonClassName} onClick={handleLearnMore}>
+                <button type="button" className={`${buttonClassName} hover-lift`} onClick={handleLearnMore}>
                     Learn More
                 </button>
             </div>

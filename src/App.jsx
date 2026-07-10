@@ -85,6 +85,7 @@ import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { productDetails, products } from "./data/products.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
+import { useScrollReveal, useStickyNav } from "./ui/index.js";
 
 // Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
 // Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
@@ -209,6 +210,13 @@ function App() {
     useEffect(() => {
         trackPageView(window.location.pathname + window.location.search);
     }, [page, selectedArticle?.slug, selectedResource?.slug]);
+
+    // Frosted nav gains a subtle shadow once the page scrolls off the top.
+    const navScrolled = useStickyNav();
+
+    // Re-scan for `.reveal-on-scroll` targets whenever the routed view swaps,
+    // since this router mounts pages without remounting the shell.
+    useScrollReveal([page, selectedArticle?.slug, selectedResource?.slug, selectedCategory]);
 
     // Timed newsletter popup - fires once per session after 45 s
     useEffect(() => {
@@ -425,7 +433,7 @@ function App() {
                 />
             )}
 
-            <nav className="navbar">
+            <nav className={`navbar glass-nav sticky-nav${navScrolled ? " is-scrolled" : ""}`}>
                 {mobileMenuOpen && (
                     <div
                         className="nav-mobile-overlay"
@@ -474,7 +482,7 @@ function App() {
                 </div>
 
                 <div className="nav-right">
-                    <button className="nav-cta" onClick={() => { openPage("pricing"); setMobileMenuOpen(false); }}>
+                    <button className="nav-cta hover-lift glow-button" onClick={() => { openPage("pricing"); setMobileMenuOpen(false); }}>
                         See Plans
                     </button>
                     <button

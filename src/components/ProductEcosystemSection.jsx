@@ -17,11 +17,12 @@ function ProductEcosystemSection({ currentPage, onNavigate }) {
                 <p>Discover the other platforms built on the same practical AI foundation.</p>
             </div>
             <div className="home-v12-ecosystem-grid product-ecosystem-grid">
-                {otherProducts.map((product) => (
+                {otherProducts.map((product, index) => (
                     <ProductCatalogCard
                         key={product.page}
                         product={product}
                         onLearnMore={openProduct}
+                        revealIndex={index}
                     />
                 ))}
             </div>
