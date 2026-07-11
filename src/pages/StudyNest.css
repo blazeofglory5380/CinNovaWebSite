@@ -77,6 +77,8 @@
 
 /* Frosted card material, shared by every below-hero card. */
 .studynest-scope .sn-how-card,
+.studynest-scope .sn-helps-card,
+.studynest-scope .sn-roadmap-item,
 .studynest-scope .sn-preview-card,
 .studynest-scope .sn-audience-card,
 .studynest-scope .sn-pricing-card,
@@ -89,6 +91,8 @@
 
 /* Existing hover lift is preserved — only the lit colors change. */
 .studynest-scope .sn-how-card:hover,
+.studynest-scope .sn-helps-card:hover,
+.studynest-scope .sn-roadmap-item:hover,
 .studynest-scope .sn-preview-card:hover,
 .studynest-scope .sn-audience-card:hover,
 .studynest-scope .sn-pricing-card:hover,
@@ -305,12 +309,128 @@
    `rgba(255,255,255,0.9)` gradient, which rendered as the foggy white/gray band
    above the footer. The dark content now meets the footer with a clean edge. */
 
+/* ── How StudyNest helps (5-card grid) ────────────────────────────── */
+
+.studynest-scope .sn-helps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.studynest-scope .sn-helps-card {
+    padding: 24px 22px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.studynest-scope .sn-helps-icon {
+    font-size: 28px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.studynest-scope .sn-helps-card h3 { color: var(--bdna-ink); font-size: 1rem; }
+.studynest-scope .sn-helps-card p  { color: var(--bdna-dim); font-size: 0.9rem; line-height: 1.6; margin: 0; }
+
+/* ── Student workflow (5-step grid, reuses sn-how-card styles) ────── */
+
+.studynest-scope .sn-workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* ── Coming-soon roadmap ──────────────────────────────────────────── */
+
+.studynest-scope .sn-roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.studynest-scope .sn-roadmap-item {
+    padding: 20px 22px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.studynest-scope .sn-roadmap-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.studynest-scope .sn-roadmap-item h3 {
+    color: var(--bdna-ink);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.studynest-scope .sn-roadmap-item p {
+    color: var(--bdna-dim);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* "In development" badge */
+.studynest-scope .sn-roadmap-status {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: rgba(10, 191, 140, 0.12);
+    border: 1px solid rgba(10, 191, 140, 0.28);
+    color: var(--bdna-emerald-glow);
+    white-space: nowrap;
+}
+
+/* "Planned later" badge is dimmer */
+.studynest-scope .sn-roadmap-item--future .sn-roadmap-status {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+}
+
+/* ── Waitlist secondary note + ecosystem link ─────────────────────── */
+
+.studynest-scope .sn-waitlist-note {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: var(--bdna-dim);
+}
+
+.studynest-scope .sn-ecosystem-link {
+    color: var(--bdna-emerald-glow);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.15s;
+}
+
+.studynest-scope .sn-ecosystem-link:hover  { opacity: 0.8; }
+.studynest-scope .sn-ecosystem-link:focus-visible {
+    outline: 2px solid var(--bdna-emerald-glow);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
 /* ── Reduced motion ───────────────────────────────────────────────── */
 /* This file only changes color/border/shadow — no new animation is
    introduced. The hover treatments above reuse the transitions already
    defined in App.css, which `.brand-dna *` neutralizes under reduce. */
 @media (prefers-reduced-motion: reduce) {
     .studynest-scope .sn-how-card,
+    .studynest-scope .sn-helps-card,
+    .studynest-scope .sn-roadmap-item,
     .studynest-scope .sn-preview-card,
     .studynest-scope .sn-audience-card,
     .studynest-scope .sn-pricing-card,
