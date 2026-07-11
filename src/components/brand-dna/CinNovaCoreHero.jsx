@@ -46,6 +46,10 @@ function CinNovaCoreHero({
     // overlay) plus a visually-hidden H1 for SEO/screen readers.
     videoOnly = false,
     srHeading = null,
+    // Blog full-frame video hero: show the ENTIRE clip uncropped (object-fit
+    // contain in a 16:9 box) with smaller copy anchored to the lower-left.
+    // Blog-only; omit on other pages to keep the standard cover video hero.
+    fullFrameVideo = false,
 }) {
     const pulseRef = useRef(null);
     const videoRef = useRef(null);
@@ -102,7 +106,9 @@ function CinNovaCoreHero({
 
     return (
         <section
-            className={`cn-core-hero${videoSrc ? " cn-core-hero--video" : ""}`}
+            className={`cn-core-hero${videoSrc ? " cn-core-hero--video" : ""}${
+                videoSrc && fullFrameVideo ? " cn-core-hero--video-full" : ""
+            }`}
             aria-label={`${titleA} ${titleB}`}
         >
             <div className="cn-core-hero__visual" aria-hidden="true">

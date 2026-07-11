@@ -323,3 +323,73 @@
     .cn-core-hero__meta { display: none; }
     .cn-core-hero__orb { left: 50%; top: 34%; }
 }
+
+/* ── Blog full-frame video hero (gated by the fullFrameVideo prop) ──────
+   Shows the ENTIRE 1920x1080 clip uncropped: the hero box is 16:9 and the
+   video is object-fit: contain, so the whole frame is visible with no crop
+   (a dark backdrop fills any letterbox on extreme aspect ratios). The copy
+   is smaller and anchored to the lower-left over a bottom-left scrim. These
+   rules sit after the .cn-core-hero--video block so they win on equal
+   specificity. Blog-only — homepage/other pages never get this class. */
+.cn-core-hero--video-full {
+    min-height: 0;                       /* override the base 88vh */
+    align-items: flex-end;               /* copy drops to the bottom */
+    width: 100%;
+    aspect-ratio: 16 / 9;                /* match the clip so nothing crops */
+    max-height: 90vh;                    /* never taller than the viewport */
+    background: #05100b;                 /* fills any letterbox space */
+}
+.cn-core-hero--video-full .cn-core-hero__video {
+    object-fit: contain;                 /* full frame — never cropped */
+    object-position: center;
+    background: #05100b;
+}
+/* Copy: lower-left, smaller than the default hero. */
+.cn-core-hero--video-full .cn-core-hero__wrap {
+    padding-bottom: clamp(18px, 3.4vw, 44px);
+}
+.cn-core-hero--video-full .cn-core-hero__copy {
+    max-width: 440px;
+}
+.cn-core-hero--video-full .cn-core-hero__title {
+    margin-top: 0;
+    font-size: clamp(26px, 3.2vw, 42px); /* smaller than the 44-84px default */
+}
+.cn-core-hero--video-full .cn-core-hero__sub {
+    margin-top: 12px;
+    font-size: clamp(13px, 1.05vw, 15px);
+    max-width: 42ch;
+    line-height: 1.6;
+}
+.cn-core-hero--video-full .cn-core-hero__ctas {
+    margin-top: 20px;
+}
+/* Diagonal scrim: darkest at the lower-left under the copy, clearing toward
+   the upper-right so the rest of the frame stays bright. */
+.cn-core-hero--video-full .cn-core-hero__scrim {
+    background: linear-gradient(
+        to top right,
+        rgba(5, 16, 11, 0.9) 0%,
+        rgba(5, 16, 11, 0.62) 24%,
+        rgba(5, 16, 11, 0.22) 42%,
+        transparent 60%
+    );
+}
+
+/* Mobile: a 16:9 box is short on narrow screens, so give the hero room and
+   letterbox the contained clip (still the full frame) with copy at the base. */
+@media (max-width: 760px) {
+    .cn-core-hero--video-full {
+        aspect-ratio: auto;
+        min-height: 66vh;
+        padding-bottom: 0;
+    }
+    .cn-core-hero--video-full .cn-core-hero__scrim {
+        background: linear-gradient(
+            0deg,
+            rgba(5, 16, 11, 0.92) 0%,
+            rgba(5, 16, 11, 0.62) 40%,
+            transparent 68%
+        );
+    }
+}
