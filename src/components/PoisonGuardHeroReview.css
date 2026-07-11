@@ -7,9 +7,10 @@
  * + audience chips at TOP-RIGHT — so the lower-left (child), center (protected
  * food island + shield), and lower-right (glowing plant/device) stay clear.
  * Only the two top corners get a subtle radial scrim for readability; there is
- * no full-frame dark overlay, so the video stays bright. `object-fit: cover` +
- * `object-position: center` keep the central composition uncropped and remove
- * any letterbox side bars.
+ * no full-frame dark overlay, so the video stays bright. The hero box is 16:9
+ * and the video is `object-fit: contain` + `object-position: center`, so the
+ * ENTIRE frame is shown uncropped (a dark backdrop fills any letterbox on
+ * off-ratio viewports).
  *
  * On mobile the layout stacks: the video shows in full (16:9, uncropped) with
  * the two text blocks below it. Scoped under `.pgr-hero`; `pgr-` keyframes.
@@ -32,8 +33,9 @@
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    min-height: clamp(520px, 64vh, 760px);
-    background: #05100b;                          /* dark fallback before the video paints */
+    aspect-ratio: 16 / 9;                        /* match the clip so nothing is cropped */
+    max-height: 90vh;                            /* never taller than the viewport */
+    background: #05100b;                          /* dark fallback / letterbox behind the video */
     color: var(--pgr-ink);
     font-family: var(--pgr-font);
     overflow: hidden;
@@ -45,8 +47,8 @@
 .pgr-hero .pgr-video {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover;                           /* fills edge-to-edge — no black side bars */
-    object-position: center;                     /* keep the central child/shield/food-island subject */
+    object-fit: contain;                         /* show the whole 16:9 frame — never crop */
+    object-position: center;
     display: block;
     background: #05100b;
 }
@@ -153,6 +155,8 @@
 @media (max-width: 760px) {
     .pgr-hero {
         display: flex; flex-direction: column;
+        aspect-ratio: auto;                              /* stack: media (16:9) then text */
+        max-height: none;
         min-height: 0;
     }
     .pgr-hero .pgr-media { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 9; }

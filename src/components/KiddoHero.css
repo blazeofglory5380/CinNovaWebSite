@@ -3,8 +3,9 @@
  *
  * A full-bleed looping clip
  * (public/videos/cinnova-kiddo-ai-blog-hero-whimsical-treehouse-library.mp4,
- * 1920x1080 / 16:9) is the dominant visual. `object-fit: cover` +
- * `object-position: center` keep it edge-to-edge with no black bars. A subtle
+ * 1920x1080 / 16:9) is the dominant visual. The hero box is 16:9 and the video
+ * is `object-fit: contain` + `object-position: center`, so the ENTIRE frame is
+ * shown uncropped (a dark backdrop fills any letterbox on off-ratio viewports). A subtle
  * dark scrim localized to the lower-left provides just enough contrast for the
  * small real-HTML text; the rest of the video stays clear. Every selector is
  * scoped under `.kiddo-hero` (kh- prefixed) so nothing leaks. Responsive,
@@ -25,9 +26,10 @@
     box-sizing: border-box;
     display: flex;
     align-items: flex-end;                       /* corner text sits at the bottom */
-    min-height: clamp(460px, 64vh, 760px);
+    aspect-ratio: 16 / 9;                        /* match the clip so nothing is cropped */
+    max-height: 90vh;                            /* never taller than the viewport */
     padding: 0 0 clamp(16px, 3vw, 34px);
-    background: #05100d;                          /* dark fallback before the video paints */
+    background: #05100d;                          /* dark fallback / letterbox behind the video */
     color: var(--kh-ink);
     font-family: var(--kh-font);
     overflow: hidden;
@@ -41,7 +43,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;                           /* fills edge-to-edge — no black side bars */
+    object-fit: contain;                         /* show the whole 16:9 frame — never crop */
     object-position: center;
     display: block;
     background: #05100d;
@@ -127,7 +129,9 @@
 
 /* ── Responsive ────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-    .kiddo-hero { min-height: 70vh; }
+    /* Drop the 16:9 lock: let the hero grow taller and letterbox the contained
+       clip (still the full frame) with the copy over the lower band. */
+    .kiddo-hero { aspect-ratio: auto; min-height: 70vh; }
     .kiddo-hero .kh-scrim {
         background: linear-gradient(0deg, rgba(4, 12, 10, 0.74) 0%, rgba(4, 12, 10, 0.14) 44%, transparent 68%);
     }

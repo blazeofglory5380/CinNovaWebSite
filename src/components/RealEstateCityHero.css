@@ -3,9 +3,11 @@
  * Real Estate AI product page).
  *
  * A full-bleed looping clip
- * (public/videos/cinnova-real-estate-ai-blog-hero-investment-dashboard.mp4) is
- * the dominant visual. `object-fit: cover` + `object-position: center` keep it
- * edge-to-edge with no black bars. A dark scrim — heaviest at the lower-left
+ * (public/videos/cinnova-real-estate-ai-blog-hero-investment-dashboard.mp4,
+ * 1920x1080 / 16:9) is the dominant visual. The hero box is 16:9 and the video
+ * is `object-fit: contain` + `object-position: center`, so the ENTIRE frame is
+ * shown uncropped (a dark backdrop fills any letterbox on off-ratio viewports).
+ * A dark scrim — heaviest at the lower-left
  * under the copy — provides just enough contrast for the real HTML text and
  * CTAs. Every selector is scoped under `.rex-hero` so nothing leaks into the
  * rest of the site. Responsive, prefers-reduced-motion aware.
@@ -24,13 +26,14 @@
 
     position: relative;
     width: 100%;
-    min-height: clamp(520px, 82vh, 900px);
+    aspect-ratio: 16 / 9;                 /* match the clip so nothing is cropped */
+    max-height: 90vh;                     /* never taller than the viewport */
     box-sizing: border-box;
     display: flex;
     align-items: center;
     overflow: hidden;
     isolation: isolate;
-    background: var(--rex-ink-bg);        /* dark fallback before the video paints */
+    background: var(--rex-ink-bg);        /* dark fallback / letterbox behind the video */
     color: var(--rex-ink);
     font-family: var(--rex-font);
 }
@@ -42,7 +45,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;                    /* fills edge-to-edge — no black side bars */
+    object-fit: contain;                  /* show the whole 16:9 frame — never crop */
     object-position: center;
     display: block;
     background: var(--rex-ink-bg);
@@ -193,7 +196,9 @@
 
 /* ── Responsive ────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
-    .rex-hero { min-height: 78vh; align-items: flex-end; }
+    /* Drop the 16:9 lock: let the hero grow taller and letterbox the contained
+       clip (still the full frame) with the copy over the lower band. */
+    .rex-hero { aspect-ratio: auto; min-height: 78vh; align-items: flex-end; }
     .rex-hero .rex-scrim {
         background: linear-gradient(0deg, rgba(5, 11, 24, 0.82) 0%, rgba(5, 11, 24, 0.28) 44%, rgba(5, 11, 24, 0) 74%);
     }
