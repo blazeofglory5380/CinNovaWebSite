@@ -13979,10 +13979,10 @@ button.product-hero-pill {
     max-width: 1080px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 32px;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 44px;
     align-items: center;
-    padding: 36px;
+    padding: 48px;
     border-radius: var(--sn-radius-shell);
     border: var(--sn-border);
     background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
@@ -14006,7 +14006,7 @@ button.product-hero-pill {
     background: #ffffff;
     border: var(--sn-border);
     border-radius: var(--sn-radius-card);
-    padding: 22px;
+    padding: 28px;
     box-shadow: var(--sn-shadow-rest);
 }
 
@@ -14014,18 +14014,33 @@ button.product-hero-pill {
     max-width: none;
     width: 100%;
     margin: 0;
+    /* Desktop: input flexes to fill, button keeps its natural width. */
+    align-items: stretch;
+    gap: 16px;
 }
 
 .sn-waitlist-form .signup-form input {
-    flex: 1 1 70%;
-    width: 70%;
+    flex: 1 1 auto;
+    width: auto;
     min-width: 0;
 }
 
+/* Natural width — never squeezed. white-space: nowrap (base rule) keeps
+   "Join Early Access" on one line; flex: 0 0 auto stops it being compressed. */
 .sn-waitlist-form .signup-form button {
-    flex: 1 1 30%;
-    width: 30%;
+    flex: 0 0 auto;
+    width: auto;
     min-width: 0;
+    white-space: nowrap;
+}
+
+/* Extra breathing room below the CTA so the fixed sticky newsletter bar
+   (position: fixed; bottom: 0) sits over empty space rather than crowding the
+   Early Access card. Scales down on small screens where the bar is a pill.
+   Selector matches `.studynest-landing > .section` (which sets 88px) so this
+   wins on specificity + source order. */
+.studynest-landing > .sn-waitlist {
+    padding-bottom: clamp(128px, 16vw, 176px);
 }
 
 @media (max-width: 1024px) {
