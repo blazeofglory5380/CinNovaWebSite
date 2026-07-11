@@ -7,6 +7,7 @@ import "./ProductDark.css";
 import SEO from "../components/SEO.jsx";
 import ProductHero3D from "../components/ProductHero3D.jsx";
 import PoisonGuardHeroReview from "../components/PoisonGuardHeroReview.jsx";
+import PoisonGuardDemo from "../components/PoisonGuardDemo.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
 import PoisonGuardFeatureModal from "../components/poisonguard/PoisonGuardFeatureModal.jsx";
 import PoisonGuardWorkflowBanner from "../components/poisonguard/PoisonGuardWorkflowBanner.jsx";
@@ -219,6 +220,11 @@ function PoisonGuard() {
                     <span>Part of the Cin Nova ecosystem</span>
                 </div>
             </section>
+
+            {/* ── Interactive "Scan a Household Item" demo (marketing simulation,
+                no backend/API, not medical advice). Sits below the hero, before
+                the main content, inside the dark product-page theme. ── */}
+            <PoisonGuardDemo />
 
             <section className="section pg-how" aria-labelledby="pg-how-title">
                 <div className="pg-section-head">

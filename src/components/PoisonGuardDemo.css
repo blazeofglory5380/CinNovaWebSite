@@ -1,0 +1,671 @@
+/*
+ * PoisonGuardDemo — "Try a sample safety scan" interactive demo.
+ *
+ * Scoped entirely under `.pgd-demo`. Renders inside `.product-dark-scope`
+ * (dark product-page theme), inheriting:
+ *   --pd-accent  #34d399 (emerald)   --bdna-ink / --bdna-dim  text
+ *
+ * Semantic safety colours are LOCAL and preserved (not flattened to the page
+ * accent): red = high / emergency, amber = moderate / pet warning.
+ *
+ * Two deliberate constraints, learned from the sibling demos:
+ *  1. No `backdrop-filter` — these panels sit over an animated ambient field,
+ *     and blurring an animated backdrop re-blurs every frame and locks the
+ *     renderer. The opaque frosted panel gives the same look.
+ *  2. ProductDark.css applies `.product-dark-scope .product-page :is(p, span,
+ *     strong, …){ color: var(--bdna-dim) !important }` at specificity (0,3,1).
+ *     Text colours below are re-asserted with the same scope prefix to reach
+ *     (0,4,0) so they win — a bare `.pgd-demo …` selector would lose.
+ *
+ * All motion collapses under prefers-reduced-motion (bottom of file).
+ */
+
+.pgd-demo {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 48px);
+    --pgd-panel: rgba(15, 24, 38, 0.62);
+    --pgd-edge: rgba(255, 255, 255, 0.08);
+    --pgd-radius: 18px;
+    --pgd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Semantic safety palette */
+    --pgd-high: #f87171;
+    --pgd-high-ink: #fecaca;
+    --pgd-moderate: #fbbf24;
+    --pgd-moderate-ink: #fde68a;
+    --pgd-low: #34d399;
+    --pgd-low-ink: #a7f3d0;
+    box-sizing: border-box;
+}
+
+.pgd-demo *,
+.pgd-demo *::before,
+.pgd-demo *::after {
+    box-sizing: border-box;
+}
+
+.pgd-demo__head {
+    max-width: 760px;
+    margin: 0 auto clamp(24px, 3vw, 40px);
+    text-align: center;
+}
+
+.pgd-demo__head h2 {
+    margin: 10px 0 12px;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--bdna-ink, #f8fafc);
+    letter-spacing: -0.02em;
+}
+
+.pgd-demo__lede {
+    color: var(--bdna-dim, #9fb0bd);
+    line-height: 1.65;
+    font-size: clamp(0.98rem, 1.4vw, 1.08rem);
+}
+
+/* ── Text-colour re-assertions (beat ProductDark's blanket span rule) ── */
+.product-dark-scope .product-page .pgd-demo :is(
+    .pgd-demo__report-head h3,
+    .pgd-demo__idle strong,
+    .pgd-demo__idle p,
+    .pgd-demo__message,
+    .pgd-demo__guidance-steps li,
+    .pgd-demo__confidence-head strong,
+    .pgd-demo__scanner-item,
+    .pgd-demo__emergency strong
+) {
+    color: var(--bdna-ink, #f8fafc) !important;
+}
+
+.product-dark-scope .product-page .pgd-demo .pgd-demo__lede strong {
+    color: var(--pgd-moderate-ink) !important;
+}
+
+.product-dark-scope .product-page .pgd-demo :is(
+    .pgd-demo__steps-title,
+    .pgd-demo__step-status,
+    .pgd-demo__report-tag
+) {
+    color: var(--pd-accent, #34d399) !important;
+}
+
+/* Risk-badge text keeps its semantic tone — the blanket span rule would flatten
+   it to gray, destroying the whole point of the safety colour. */
+.product-dark-scope .product-page .pgd-demo .pgd-demo__risk--high { color: var(--pgd-high-ink) !important; }
+.product-dark-scope .product-page .pgd-demo .pgd-demo__risk--moderate { color: var(--pgd-moderate-ink) !important; }
+.product-dark-scope .product-page .pgd-demo .pgd-demo__risk--low { color: var(--pgd-low-ink) !important; }
+
+.product-dark-scope .product-page .pgd-demo .pgd-demo__idle-item {
+    color: var(--pd-accent, #34d399) !important;
+}
+
+.product-dark-scope .product-page .pgd-demo .pgd-demo__emergency-body > p {
+    color: var(--pgd-high-ink) !important;
+}
+
+/* The "!" mark is dark-on-red by design; the blanket rule flattened it to gray
+   (1.2:1 on the red disc). Restore the near-black ink. */
+.product-dark-scope .product-page .pgd-demo .pgd-demo__emergency-mark {
+    color: #0a0e17 !important;
+}
+
+/* Emergency CTA button — solid emerald action, near-black label for contrast. */
+.product-dark-scope .product-page .pgd-demo .pgd-demo__emergency-btn {
+    color: #04121a !important;
+}
+.product-dark-scope .product-page .pgd-demo .pgd-demo__emergency-link {
+    color: var(--pgd-high-ink) !important;
+}
+
+/* ── Panel ──────────────────────────────────────────────────────────── */
+.pgd-demo__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(18px, 2.5vw, 28px);
+    align-items: start;
+}
+
+/* PERF: no backdrop-filter (see file header). */
+.pgd-demo__controls,
+.pgd-demo__stage {
+    background: var(--pgd-panel);
+    border: 1px solid var(--pgd-edge);
+    border-radius: var(--pgd-radius);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+    min-width: 0;
+}
+
+.pgd-demo__controls {
+    padding: clamp(20px, 2.4vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pgd-demo__label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--bdna-dim, #9fb0bd);
+    margin-top: 4px;
+}
+
+.pgd-demo__samples { display: flex; flex-direction: column; gap: 8px; }
+
+.pgd-demo__chip {
+    text-align: left;
+    padding: 11px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--pgd-edge);
+    color: var(--bdna-dim2, #c4d3dd);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.25s var(--pgd-ease), background 0.25s var(--pgd-ease),
+        color 0.25s var(--pgd-ease), transform 0.15s var(--pgd-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pgd-demo__chip:hover {
+        border-color: color-mix(in srgb, var(--pd-accent, #34d399) 40%, transparent);
+        color: var(--bdna-ink, #f8fafc);
+        transform: translateY(-1px);
+    }
+}
+
+.pgd-demo__chip.is-active {
+    background: color-mix(in srgb, var(--pd-accent, #34d399) 14%, transparent);
+    border-color: color-mix(in srgb, var(--pd-accent, #34d399) 55%, transparent);
+    color: var(--bdna-ink, #f8fafc);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--pd-accent, #34d399) 22%, transparent);
+}
+
+.pgd-demo__chip:focus-visible {
+    outline: 2px solid var(--pd-accent, #34d399);
+    outline-offset: 2px;
+}
+
+.pgd-demo__scan {
+    margin-top: 6px;
+    width: 100%;
+    justify-content: center;
+}
+
+.pgd-demo__scan:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.pgd-demo__disclaimer {
+    margin: 2px 0 0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--bdna-dim, #9fb0bd);
+    opacity: 0.9;
+}
+
+/* ── Stage ──────────────────────────────────────────────────────────── */
+.pgd-demo__stage {
+    padding: clamp(22px, 2.6vw, 30px);
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Screen-reader-only aria-live region (announces scan lifecycle). */
+.pgd-demo__sr-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Mock scanner viewport (decorative reticle + scan line) ──────────── */
+.pgd-demo__scanner {
+    position: relative;
+    min-height: 118px;
+    border-radius: 14px;
+    border: 1px solid var(--pgd-edge);
+    background:
+        radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, var(--pd-accent, #34d399) 10%, transparent), transparent 60%),
+        rgba(6, 12, 20, 0.55);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    overflow: hidden;
+    text-align: center;
+    transition: border-color 0.35s var(--pgd-ease), box-shadow 0.35s var(--pgd-ease);
+}
+
+.pgd-demo__scanner--running {
+    border-color: color-mix(in srgb, var(--pd-accent, #34d399) 45%, transparent);
+    box-shadow: inset 0 0 34px color-mix(in srgb, var(--pd-accent, #34d399) 12%, transparent);
+}
+
+.pgd-demo__scanner--done {
+    border-color: color-mix(in srgb, var(--pd-accent, #34d399) 30%, transparent);
+}
+
+.pgd-demo__scanner-item {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--bdna-ink, #f8fafc);
+    letter-spacing: -0.01em;
+    z-index: 1;
+}
+
+.pgd-demo__scanner-hint {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pd-accent, #34d399);
+    z-index: 1;
+}
+
+/* Corner reticle brackets. */
+.pgd-demo__reticle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid color-mix(in srgb, var(--pd-accent, #34d399) 60%, transparent);
+    opacity: 0.85;
+}
+.pgd-demo__reticle--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-radius: 6px 0 0 0; }
+.pgd-demo__reticle--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-radius: 0 6px 0 0; }
+.pgd-demo__reticle--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-radius: 0 0 0 6px; }
+.pgd-demo__reticle--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-radius: 0 0 6px 0; }
+
+.pgd-demo__scanner--running .pgd-demo__reticle {
+    animation: pgd-reticle-pulse 1.4s var(--pgd-ease) infinite;
+}
+
+@keyframes pgd-reticle-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+/* Glowing progress line sweeping down the viewport while scanning. */
+.pgd-demo__scanline {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--pd-accent, #34d399), transparent);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--pd-accent, #34d399) 70%, transparent);
+    animation: pgd-scan-sweep 1.4s var(--pgd-ease) infinite;
+}
+
+@keyframes pgd-scan-sweep {
+    0% { top: 12%; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { top: 88%; opacity: 0; }
+}
+
+/* ── Idle prompt ────────────────────────────────────────────────────── */
+.pgd-demo__idle {
+    text-align: center;
+    color: var(--bdna-dim, #9fb0bd);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+}
+
+.pgd-demo__idle p { max-width: 42ch; margin: 0; }
+.pgd-demo__idle strong { color: var(--bdna-ink, #f8fafc); }
+
+/* ── Steps ──────────────────────────────────────────────────────────── */
+.pgd-demo__steps-title {
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pd-accent, #34d399);
+    margin-bottom: 16px;
+}
+
+.pgd-demo__steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+
+.pgd-demo__step {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    color: var(--bdna-dim, #9fb0bd);
+    transition: color 0.3s var(--pgd-ease), opacity 0.3s var(--pgd-ease);
+}
+
+.pgd-demo__step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--pgd-edge);
+    background: transparent;
+    transition: all 0.3s var(--pgd-ease);
+}
+
+.pgd-demo__step--todo { opacity: 0.5; }
+.pgd-demo__step--active { color: var(--bdna-ink, #f8fafc); }
+.pgd-demo__step--active .pgd-demo__step-dot {
+    border-color: var(--pd-accent, #34d399);
+    background: color-mix(in srgb, var(--pd-accent, #34d399) 30%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--pd-accent, #34d399) 14%, transparent);
+    animation: pgd-step-pulse 1s var(--pgd-ease) infinite;
+}
+.pgd-demo__step--done { color: var(--bdna-dim2, #c4d3dd); }
+.pgd-demo__step--done .pgd-demo__step-dot {
+    border-color: var(--pd-accent, #34d399);
+    background: var(--pd-accent, #34d399);
+}
+.pgd-demo__step-status { font-weight: 700; }
+
+@keyframes pgd-step-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--pd-accent, #34d399) 14%, transparent); }
+    50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--pd-accent, #34d399) 6%, transparent); }
+}
+
+/* ── Report ─────────────────────────────────────────────────────────── */
+.pgd-demo__report {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: pgd-reveal 0.45s var(--pgd-ease) both;
+}
+
+@keyframes pgd-reveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.pgd-demo__report-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.pgd-demo__report-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pd-accent, #34d399);
+    background: color-mix(in srgb, var(--pd-accent, #34d399) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent, #34d399) 30%, transparent);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+}
+
+.pgd-demo__report-head h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--bdna-ink, #f8fafc);
+}
+
+/* Risk badge — urgent but readable; tone drives the colour. */
+.pgd-demo__risk {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.pgd-demo__risk-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    animation: pgd-risk-pulse 2.4s var(--pgd-ease) infinite;
+}
+
+.pgd-demo__risk--high {
+    background: color-mix(in srgb, var(--pgd-high) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pgd-high) 50%, transparent);
+    color: var(--pgd-high-ink);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--pgd-high) 24%, transparent);
+}
+.pgd-demo__risk--high .pgd-demo__risk-dot { background: var(--pgd-high); }
+
+.pgd-demo__risk--moderate {
+    background: color-mix(in srgb, var(--pgd-moderate) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pgd-moderate) 46%, transparent);
+    color: var(--pgd-moderate-ink);
+}
+.pgd-demo__risk--moderate .pgd-demo__risk-dot { background: var(--pgd-moderate); }
+
+.pgd-demo__risk--low {
+    background: color-mix(in srgb, var(--pgd-low) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pgd-low) 46%, transparent);
+    color: var(--pgd-low-ink);
+}
+.pgd-demo__risk--low .pgd-demo__risk-dot { background: var(--pgd-low); }
+
+@keyframes pgd-risk-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+}
+
+/* ── Confidence meter ───────────────────────────────────────────────── */
+.pgd-demo__confidence {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--pgd-edge);
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+.pgd-demo__confidence-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.pgd-demo__confidence-head strong {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--bdna-ink, #f8fafc);
+}
+
+.pgd-demo__confidence-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.pgd-demo__confidence-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--pd-accent, #34d399);
+    transition: width 0.6s var(--pgd-ease);
+}
+
+.pgd-demo__confidence--high .pgd-demo__confidence-bar > span { background: var(--pgd-high); }
+.pgd-demo__confidence--moderate .pgd-demo__confidence-bar > span { background: var(--pgd-moderate); }
+.pgd-demo__confidence--low .pgd-demo__confidence-bar > span { background: var(--pgd-low); }
+
+/* ── Message + guidance ─────────────────────────────────────────────── */
+.pgd-demo__message {
+    margin: 0;
+    color: var(--bdna-ink, #f8fafc);
+    line-height: 1.6;
+    font-size: 0.98rem;
+}
+
+.pgd-demo__guidance {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--pgd-edge);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pgd-demo__guidance-steps {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 7px;
+}
+
+.pgd-demo__guidance-steps li {
+    color: var(--bdna-ink, #f8fafc);
+    line-height: 1.55;
+    font-size: 0.94rem;
+}
+
+.pgd-demo__guidance-steps li::marker {
+    color: var(--pd-accent, #34d399);
+    font-weight: 700;
+}
+
+.pgd-demo__cell-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bdna-dim, #9fb0bd);
+}
+
+/* ── Emergency callout — the one element that reads with urgency ─────── */
+.pgd-demo__emergency {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--pgd-high) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pgd-high) 34%, transparent);
+}
+
+.pgd-demo__emergency-mark {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 900;
+    color: #0a0e17;
+    background: var(--pgd-high);
+}
+
+.pgd-demo__emergency-body { min-width: 0; }
+
+.pgd-demo__emergency strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--bdna-ink, #f8fafc);
+    font-size: 0.9rem;
+}
+
+.pgd-demo__emergency-body > p {
+    margin: 0 0 10px;
+    color: var(--pgd-high-ink);
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+.pgd-demo__emergency-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+}
+
+.pgd-demo__emergency-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: #04121a;
+    background: var(--pd-accent, #34d399);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--pd-accent, #34d399) 30%, transparent);
+    transition: transform 0.15s var(--pgd-ease), box-shadow 0.25s var(--pgd-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pgd-demo__emergency-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 24px color-mix(in srgb, var(--pd-accent, #34d399) 42%, transparent);
+    }
+}
+
+.pgd-demo__emergency-btn:focus-visible,
+.pgd-demo__emergency-link:focus-visible {
+    outline: 2px solid var(--pd-accent, #34d399);
+    outline-offset: 2px;
+}
+
+.pgd-demo__emergency-link {
+    color: var(--pgd-high-ink);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.pgd-demo__report-note {
+    margin: 2px 0 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--bdna-dim, #9fb0bd);
+    opacity: 0.85;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+    .pgd-demo__panel { grid-template-columns: 1fr; }
+    .pgd-demo__stage { min-height: 0; }
+}
+
+@media (max-width: 560px) {
+    .pgd-demo__report-head { flex-direction: column; }
+    .pgd-demo__risk { align-self: flex-start; }
+    .pgd-demo__emergency-ctas { flex-direction: column; align-items: stretch; }
+    .pgd-demo__emergency-btn { width: 100%; }
+    .pgd-demo__emergency-link { text-align: center; }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .pgd-demo__reticle,
+    .pgd-demo__scanline,
+    .pgd-demo__step--active .pgd-demo__step-dot,
+    .pgd-demo__risk-dot {
+        animation: none !important;
+    }
+    .pgd-demo__report { animation: none !important; }
+    .pgd-demo__confidence-bar > span { transition: none !important; }
+    .pgd-demo__chip,
+    .pgd-demo__step,
+    .pgd-demo__step-dot,
+    .pgd-demo__scanner,
+    .pgd-demo__emergency-btn {
+        transition: none !important;
+    }
+    .pgd-demo__chip:hover,
+    .pgd-demo__emergency-btn:hover { transform: none !important; }
+}
