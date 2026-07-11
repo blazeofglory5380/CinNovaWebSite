@@ -223,6 +223,7 @@ function Blog({
 
             {/* ── Hero ─────────────────────────────────────────────── */}
             <CinNovaCoreHero
+                videoSrc="/videos/blog/hero/cinnova-blog-hero-cinematic-editorial-loop.mp4"
                 eyebrow="CinNova Research · Publication"
                 titleA="The CinNova"
                 titleB="Blog"
