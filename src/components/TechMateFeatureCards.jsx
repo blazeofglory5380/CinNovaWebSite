@@ -13,6 +13,22 @@ import "./TechMateFeatureCards.css";
 
 // Topic-matched cyan line icons (24x24, stroke = currentColor).
 const ICONS = {
+    // ── Phase 3D honest help-card set ──────────────────────────────────
+    "Diagnose common device problems": (
+        <><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /><path d="M8 10l2.2 2.2L16 7" /></>
+    ),
+    "Explain error messages": (
+        <><path d="M4 5h16v10h-7l-4 3v-3H4z" /><path d="M12 8v3M12 12.6h.01" /></>
+    ),
+    "Guide setup and installation": (
+        <><path d="M12 3v10" /><path d="M8 9l4 4 4-4" /><path d="M4 15v4a1 1 0 001 1h14a1 1 0 001-1v-4" /></>
+    ),
+    "Help with smart-home issues": (
+        <><path d="M4 11l8-6 8 6" /><path d="M6 10v9h12v-9" /><path d="M9.4 14.6a3.6 3.6 0 015.2 0" /><path d="M12 17h.01" /></>
+    ),
+    "Organize repair/support steps": (
+        <><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 3h6v3H9z" /><path d="M8.5 11l1.3 1.3L12.5 9.6M8.5 16l1.3 1.3L12.5 14.6" /></>
+    ),
     "Device Troubleshooting": (
         <><rect x="5" y="5" width="14" height="14" rx="2" /><rect x="9" y="9" width="6" height="6" /><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" /></>
     ),

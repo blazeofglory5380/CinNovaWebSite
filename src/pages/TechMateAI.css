@@ -1,0 +1,295 @@
+/*
+ * TechMate AI — Phase 3D foundation refresh.
+ *
+ * Layout-only styles for the honest below-hero sections (clarity, workflow,
+ * roadmap, early-access CTA). Colors, card material, and typography come from
+ * the shared ProductDark.css layer (scoped to `.product-dark-scope`), so this
+ * file deliberately avoids re-declaring text colors — it only lays out the new
+ * TechMate-specific blocks and adds accent chrome using the tokens that layer
+ * already exposes:
+ *   --pd-accent   violet #a78bfa (from .techmate-scope)
+ *   --pd-panel / --pd-edge / --pd-shadow(-lit)   frosted card material
+ *   --bdna-ink / --bdna-dim / --bdna-bg-lift     brand-dna text + canvas
+ *
+ * The hero (.tmxr-hero) is NEVER targeted here. All rules are scoped under
+ * `.techmate-scope` so nothing leaks to other product pages.
+ */
+
+/* ── Trust bar (honest highlights under the hero) ─────────────────────── */
+.techmate-scope .tm-trust-bar {
+    background: rgba(13, 21, 34, 0.85);
+    border-top: 1px solid var(--pd-edge);
+    border-bottom: 1px solid var(--pd-edge);
+    padding: 16px 7%;
+}
+
+.techmate-scope .tm-trust-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 28px;
+    color: var(--bdna-dim);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.techmate-scope .tm-trust-inner span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.techmate-scope .tm-trust-inner span::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pd-accent);
+    flex-shrink: 0;
+}
+
+/* ── 1. Product clarity ───────────────────────────────────────────────── */
+.techmate-scope .tm-clarity-grid {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 44px;
+    align-items: center;
+}
+
+.techmate-scope .tm-clarity-copy h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    margin: 10px 0 16px;
+}
+
+.techmate-scope .tm-clarity-copy p {
+    line-height: 1.7;
+    margin: 0 0 14px;
+}
+
+.techmate-scope .tm-clarity-panel {
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    border-radius: 18px;
+    box-shadow: var(--pd-shadow);
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.techmate-scope .tm-clarity-list-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pd-accent) !important;
+    margin: 0 0 10px;
+}
+
+.techmate-scope .tm-clarity-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.techmate-scope .tm-clarity-list li {
+    position: relative;
+    padding-left: 24px;
+    line-height: 1.5;
+    font-size: 0.92rem;
+}
+
+.techmate-scope .tm-clarity-list li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 800;
+}
+
+.techmate-scope .tm-clarity-list--yes li::before {
+    content: "✓";
+    color: var(--pd-accent);
+}
+
+.techmate-scope .tm-clarity-list--no li::before {
+    content: "—";
+    color: var(--bdna-dim);
+}
+
+.techmate-scope .tm-clarity-divider {
+    height: 1px;
+    background: var(--pd-edge);
+    border: 0;
+    margin: 0;
+}
+
+/* ── 3. Troubleshooting workflow preview (non-interactive) ────────────── */
+.techmate-scope .tm-workflow-grid {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+}
+
+.techmate-scope .tm-step {
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    border-radius: 16px;
+    box-shadow: var(--pd-shadow);
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.techmate-scope .tm-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--pd-accent) !important;
+    background: color-mix(in srgb, var(--pd-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 28%, transparent);
+}
+
+.techmate-scope .tm-step h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.techmate-scope .tm-step p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Illustrative example (early concept, not a live demo) ────────────── */
+.techmate-scope .tm-example-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.techmate-scope .tm-example-note {
+    margin: 16px auto 0;
+    max-width: 760px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--bdna-dim) !important;
+}
+
+/* ── 4. Coming-soon roadmap ───────────────────────────────────────────── */
+.techmate-scope .tm-roadmap-grid {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.techmate-scope .tm-roadmap-item {
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    border-radius: 14px;
+    box-shadow: var(--pd-shadow);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.techmate-scope .tm-roadmap-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.techmate-scope .tm-roadmap-item h3 {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.techmate-scope .tm-roadmap-item p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.techmate-scope .tm-roadmap-status {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    color: var(--pd-accent) !important;
+    background: color-mix(in srgb, var(--pd-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 28%, transparent);
+}
+
+.techmate-scope .tm-roadmap-item--future .tm-roadmap-status {
+    color: var(--bdna-dim) !important;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--pd-edge);
+}
+
+/* ── 5. Early-access CTA ──────────────────────────────────────────────── */
+/* Reuses the shared `.newsletter-card` frosted surface; this only adds the
+   honest sub-copy + ecosystem link treatment. */
+.techmate-scope .tm-cta-sub {
+    max-width: 520px;
+    margin: 6px auto 22px;
+    line-height: 1.6;
+}
+
+.techmate-scope .tm-eco-line {
+    margin: 18px 0 0;
+    font-size: 0.9rem;
+    color: var(--bdna-dim) !important;
+}
+
+.techmate-scope .tm-eco-link {
+    color: var(--pd-accent) !important;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.techmate-scope .tm-eco-link:hover { opacity: 0.85; }
+
+.techmate-scope .tm-eco-link:focus-visible {
+    outline: 2px solid var(--pd-accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+/* ── Responsive: stack clarity + tighten grids on tablet/mobile ───────── */
+@media (max-width: 860px) {
+    .techmate-scope .tm-clarity-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}
+
+/* ── Reduced motion — this file adds no animation; make card hover calm ─ */
+@media (prefers-reduced-motion: reduce) {
+    .techmate-scope .tm-step,
+    .techmate-scope .tm-roadmap-item {
+        transition: none;
+    }
+}
