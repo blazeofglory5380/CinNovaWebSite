@@ -3,6 +3,8 @@ import "../App.css";
 // App.css so they win over the light defaults. Hero CSS is untouched.
 import "../styles/brand-dna.css";
 import "./ProductDark.css";
+// Phase 3E foundation-refresh sections (loaded last so it inherits --pd-* tokens).
+import "./Kiddo.css";
 import SEO from "../components/SEO.jsx";
 import KiddoHero from "../components/KiddoHero.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
@@ -159,6 +161,116 @@ const learningSubjects = [
     { name: "Languages", color: "#34d399" },
 ];
 
+// ── Phase 3E: foundation-refresh content ──────────────────────────────
+// Honest, development-stage messaging. Kiddo is being designed, not shipped —
+// copy here deliberately avoids present-tense "it does X" claims.
+const clarityPoints = [
+    {
+        title: "A learning companion, not a screen filler",
+        copy: "Kiddo is being designed to turn learning into guided missions, friendly explanations, and creative challenges kids actually want to return to.",
+    },
+    {
+        title: "Made for kids and their families",
+        copy: "Built for early learners and the parents guiding them, so curiosity grows inside a safe, supportive, parent-aware space.",
+    },
+    {
+        title: "Characters that guide the way",
+        copy: "Friendly AI characters are being designed to explain ideas in kid-friendly language, cheer on progress, and make each skill feel like a mission worth finishing.",
+    },
+    {
+        title: "Part of the CinNova ecosystem",
+        copy: "Kiddo is the playful, family-facing member of the CinNova family of learning products — sharing the same care for craft and safety.",
+    },
+    {
+        title: "Built carefully, safety first",
+        copy: "We are developing Kiddo deliberately, with family controls and parent-aware design as a foundation rather than an afterthought.",
+    },
+];
+
+const helpCards = [
+    {
+        title: "Turn lessons into adventures",
+        copy: "Everyday learning becomes guided missions and story-driven quests that keep kids curious.",
+    },
+    {
+        title: "Explain ideas in kid-friendly language",
+        copy: "Characters are designed to break big ideas into small, friendly steps a child can follow and enjoy.",
+    },
+    {
+        title: "Create practice missions",
+        copy: "Short, playful challenges reinforce new skills through doing, not just watching.",
+    },
+    {
+        title: "Encourage creativity",
+        copy: "Open-ended, imaginative activities invite kids to make, try, and express themselves.",
+    },
+    {
+        title: "Support parent-guided learning",
+        copy: "Designed so parents can stay informed and involved, guiding learning without hovering.",
+    },
+];
+
+const journeySteps = [
+    {
+        step: "01",
+        title: "Choose a learning world",
+        copy: "Pick a themed world that matches what your child wants to explore next.",
+    },
+    {
+        step: "02",
+        title: "Meet a character guide",
+        copy: "A friendly character introduces the world and becomes a companion for the journey.",
+    },
+    {
+        step: "03",
+        title: "Start a mission",
+        copy: "Begin a guided activity built around a single, achievable learning goal.",
+    },
+    {
+        step: "04",
+        title: "Practice through challenges",
+        copy: "Playful challenges reinforce the skill with encouragement at every step.",
+    },
+    {
+        step: "05",
+        title: "Share progress with parents",
+        copy: "Progress is designed to roll up into simple, parent-friendly updates.",
+    },
+];
+
+const characterWorldPillars = [
+    {
+        title: "Friendly guides",
+        copy: "Character companions who explain, encourage, and make learning feel personal.",
+    },
+    {
+        title: "Learning worlds",
+        copy: "Themed spaces that group skills into imaginative, explorable destinations.",
+    },
+    {
+        title: "Creative missions",
+        copy: "Hands-on challenges that turn practice into play and steady progress.",
+    },
+    {
+        title: "Rewards and progress",
+        copy: "Stars, badges, and milestones designed to celebrate effort and growth.",
+    },
+    {
+        title: "Parent-aware experience",
+        copy: "An experience built to keep parents informed and in control as kids explore.",
+    },
+];
+
+const roadmapItems = [
+    { title: "Character-guided lessons", stage: "In design" },
+    { title: "Creative learning missions", stage: "In design" },
+    { title: "Reading and vocabulary support", stage: "Planned" },
+    { title: "Math practice adventures", stage: "Planned" },
+    { title: "Parent dashboard", stage: "Planned" },
+    { title: "Progress reports", stage: "Planned" },
+    { title: "Classroom & family modes", stage: "Exploring" },
+];
+
 const pricingPlans = [
     {
         name: "Free Explorer",
@@ -193,11 +305,11 @@ const faqItems = [
     },
     {
         question: "Is Kiddo safe?",
-        answer: "Yes. Kiddo is a closed, child-first environment with no open chat, social feeds, or external links in child mode.",
+        answer: "Safety is central to Kiddo's design. It is being built as a closed, child-first environment with no open chat, social feeds, or external links in child mode.",
     },
     {
         question: "Does it have ads?",
-        answer: "No. Kiddo is completely ad-free with no in-app purchases or surprise charges.",
+        answer: "No. Kiddo is being designed to be completely ad-free, with no in-app purchases or surprise charges.",
     },
     {
         question: "What subjects does it teach?",
@@ -205,7 +317,7 @@ const faqItems = [
     },
     {
         question: "Can parents track progress?",
-        answer: "Yes. The parent dashboard shows learning progress, achievements, reports, and subject growth over time.",
+        answer: "Yes — a parent dashboard is planned to show learning progress, achievements, reports, and subject growth over time.",
     },
     {
         question: "Will it work on tablets?",
@@ -233,8 +345,8 @@ function Kiddo() {
     return (
         <main className="product-page kiddo-landing brand-dna">
             <SEO
-                title="Kiddo | Early Learning App for Kids Ages 2\u20137 \u2014 Cin Nova"
-                description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 2\u20137, with a parent dashboard to track progress. In development by Cin Nova."
+                title="Kiddo | Early Learning App for Kids Ages 2–7 — Cin Nova"
+                description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 2–7, with a parent dashboard to track progress. In development by Cin Nova."
                 url={`${siteUrl}/?page=kiddo`}
                 type="website"
                 schema={kiddoSchema}
@@ -243,6 +355,82 @@ function Kiddo() {
             <MotionHeroWrap>
                 <KiddoHero />
             </MotionHeroWrap>
+
+            <section className="section kd-clarity" aria-labelledby="kd-clarity-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">WHAT IS KIDDO</p>
+                    <h2 id="kd-clarity-title">Learning adventures powered by friendly AI characters.</h2>
+                    <p>
+                        Kiddo is being designed as a playful AI learning companion where children can explore lessons,
+                        complete creative missions, and build confidence with friendly character guidance — while
+                        parents stay informed and in control.
+                    </p>
+                    <p className="kd-dev-note">In active development · Not yet a live, child-facing app</p>
+                </div>
+                <div className="kd-clarity-grid">
+                    {clarityPoints.map((point) => (
+                        <MotionCardWrap as="article" key={point.title} className="kd-clarity-card">
+                            <h3>{point.title}</h3>
+                            <p>{point.copy}</p>
+                        </MotionCardWrap>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section kd-help" aria-labelledby="kd-help-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">HOW KIDDO HELPS</p>
+                    <h2 id="kd-help-title">Little missions that build big confidence</h2>
+                    <p>Every part of Kiddo is being designed to make learning feel playful, guided, and safe.</p>
+                </div>
+                <div className="kd-help-grid">
+                    {helpCards.map((card) => (
+                        <MotionCardWrap as="article" key={card.title} className="kd-help-card">
+                            <span className="kd-help-dot" aria-hidden="true" />
+                            <h3>{card.title}</h3>
+                            <p>{card.copy}</p>
+                        </MotionCardWrap>
+                    ))}
+                </div>
+            </section>
+
+            <section className="section kd-journey" aria-labelledby="kd-journey-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">LEARNING JOURNEY PREVIEW</p>
+                    <h2 id="kd-journey-title">How a Kiddo adventure is designed to flow</h2>
+                    <p>A preview of the planned experience — not a live demo. Here is the shape we are building toward.</p>
+                </div>
+                <ol className="kd-journey-steps">
+                    {journeySteps.map((item) => (
+                        <MotionCardWrap as="li" key={item.step} className="kd-journey-step">
+                            <span className="kd-journey-num" aria-hidden="true">{item.step}</span>
+                            <div className="kd-journey-copy">
+                                <h3>{item.title}</h3>
+                                <p>{item.copy}</p>
+                            </div>
+                        </MotionCardWrap>
+                    ))}
+                </ol>
+            </section>
+
+            <section className="section kd-charworld" aria-labelledby="kd-charworld-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">CHARACTERS & WORLDS</p>
+                    <h2 id="kd-charworld-title">A character-driven learning world, taking shape</h2>
+                    <p>
+                        These are the pillars guiding Kiddo&apos;s design — a preview of how characters and worlds fit
+                        together, not a finished product.
+                    </p>
+                </div>
+                <div className="kd-charworld-grid">
+                    {characterWorldPillars.map((pillar) => (
+                        <MotionCardWrap as="article" key={pillar.title} className="kd-charworld-card">
+                            <h3>{pillar.title}</h3>
+                            <p>{pillar.copy}</p>
+                        </MotionCardWrap>
+                    ))}
+                </div>
+            </section>
 
             <section className="section kd-worlds" id="worlds" aria-labelledby="kd-worlds-title">
                 <div className="kd-section-head">
@@ -414,11 +602,28 @@ function Kiddo() {
                 </div>
             </section>
 
+            <section className="section kd-roadmap" aria-labelledby="kd-roadmap-title">
+                <div className="kd-section-head">
+                    <p className="eyebrow">COMING SOON</p>
+                    <h2 id="kd-roadmap-title">On the Kiddo roadmap</h2>
+                    <p>What we are building toward. Timing and features may evolve as Kiddo develops.</p>
+                </div>
+                <ul className="kd-roadmap-list">
+                    {roadmapItems.map((item) => (
+                        <MotionCardWrap as="li" key={item.title} className="kd-roadmap-item">
+                            <span className="kd-roadmap-mark" aria-hidden="true" />
+                            <span className="kd-roadmap-title">{item.title}</span>
+                            <span className="kd-roadmap-stage">{item.stage}</span>
+                        </MotionCardWrap>
+                    ))}
+                </ul>
+            </section>
+
             <section className="section kd-pricing" id="pricing" aria-labelledby="kd-pricing-title">
                 <div className="kd-section-head">
                     <p className="eyebrow">PRICING</p>
                     <h2 id="kd-pricing-title">Plans for every family</h2>
-                    <p>Start free, upgrade when your explorer is ready for more worlds.</p>
+                    <p>Planned pricing while Kiddo is in development. Join the early access list — nothing is charged today.</p>
                 </div>
                 <div className="kd-pricing-grid">
                     {pricingPlans.map((plan) => (
@@ -457,19 +662,23 @@ function Kiddo() {
             <section className="section kd-waitlist" id="waitlist" aria-labelledby="kd-waitlist-title">
                 <MotionSectionWrap className="kd-waitlist-card">
                     <div className="kd-waitlist-copy">
-                        <p className="eyebrow">JOIN THE WAITLIST</p>
-                        <h2 id="kd-waitlist-title">Give your child a head start on the adventure.</h2>
+                        <p className="eyebrow">EARLY ACCESS</p>
+                        <h2 id="kd-waitlist-title">Join the Kiddo early access list</h2>
+                        <p className="kd-waitlist-status">Kiddo is not yet live — it is still being built.</p>
                         <p>
-                            Get launch updates, early access invitations, and family learning tips from the Cin Nova
-                            team. No spam — unsubscribe anytime.
+                            Get honest updates as the product develops, plus early access invitations and family
+                            learning tips from the Cin Nova team. No spam — unsubscribe anytime.
+                        </p>
+                        <p className="kd-waitlist-eco">
+                            <a href="/?page=products">Explore all CinNova products →</a>
                         </p>
                     </div>
                     <div className="kd-waitlist-form">
                         <NewsletterSignup
                             onSubscribe={saveSubscriber}
-                            source="Kiddo Waitlist"
-                            tags={["Kiddo", "Waitlist"]}
-                            buttonLabel="Join Waitlist"
+                            source="Kiddo Early Access"
+                            tags={["Kiddo", "Early Access"]}
+                            buttonLabel="Get Updates"
                         />
                     </div>
                 </MotionSectionWrap>

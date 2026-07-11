@@ -1,0 +1,315 @@
+/*
+ * Kiddo — Phase 3E foundation-refresh sections.
+ *
+ * Styles ONLY the new below-hero blocks added in Phase 3E (clarity, how-it-helps,
+ * learning-journey preview, character/world pillars, coming-soon roadmap, and the
+ * honest early-access CTA touches). Everything is scoped to
+ * `.product-dark-scope .product-page` so it stays on the dark Kiddo route and
+ * cannot leak onto light pages. Loaded AFTER ProductDark.css, so it inherits the
+ * shared --pd-* / --bdna-* tokens and the dark section canvas. The Kiddo hero,
+ * its layout, and its assets are never targeted here.
+ */
+
+/* ── Shared section rhythm ─────────────────────────────────────────── */
+.product-dark-scope .product-page :is(
+    .kd-clarity,
+    .kd-help,
+    .kd-journey,
+    .kd-charworld,
+    .kd-roadmap
+) {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* Development-stage honesty chip under the clarity headline.
+   NOTE on specificity: ProductDark.css themes body text with a guarded selector
+   (`… :is(p, span, …):not(:is(.hero, …))`) that resolves to 0,3,1 !important.
+   The accent/coloured text below therefore carries the section-class ancestor to
+   reach 0,4,0 and win — otherwise these are flattened to muted gray, which on the
+   amber journey badge would fail contrast. */
+.product-dark-scope .product-page .kd-clarity .kd-dev-note {
+    display: inline-block;
+    margin: 18px auto 0;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--pd-accent) !important;
+    background: color-mix(in srgb, var(--pd-accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 34%, transparent);
+}
+
+/* ── Shared card look for the new grids ───────────────────────────── */
+.product-dark-scope .product-page :is(
+    .kd-clarity-card,
+    .kd-help-card,
+    .kd-charworld-card
+) {
+    min-width: 0;
+    padding: 26px 24px;
+    border-radius: var(--bdna-radius-lg, 22px);
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    box-shadow: var(--pd-shadow);
+    transition: transform 0.24s var(--bdna-ease, ease), border-color 0.24s ease,
+        box-shadow 0.24s ease;
+}
+
+.product-dark-scope .product-page :is(
+    .kd-clarity-card,
+    .kd-help-card,
+    .kd-charworld-card
+):hover {
+    transform: translateY(-4px);
+    border-color: var(--pd-edge-lit);
+    box-shadow: var(--pd-shadow-lit);
+}
+
+.product-dark-scope .product-page :is(
+    .kd-clarity-card,
+    .kd-help-card,
+    .kd-charworld-card
+) h3 {
+    margin: 0 0 10px;
+    font-size: 1.12rem;
+    line-height: 1.25;
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page :is(
+    .kd-clarity-card,
+    .kd-help-card,
+    .kd-charworld-card
+) p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--bdna-dim2) !important;
+}
+
+/* ── 1 · Product clarity ──────────────────────────────────────────── */
+.product-dark-scope .product-page .kd-clarity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* ── 2 · How Kiddo helps ──────────────────────────────────────────── */
+.product-dark-scope .product-page .kd-help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.product-dark-scope .product-page .kd-help-dot {
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fbbf24, #fb923c);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--pd-accent) 18%, transparent);
+}
+
+/* ── 3 · Learning journey preview (non-interactive) ───────────────── */
+.product-dark-scope .product-page .kd-journey-steps {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+}
+
+.product-dark-scope .product-page .kd-journey-step {
+    min-width: 0;
+    padding: 24px 22px;
+    border-radius: var(--bdna-radius-lg, 22px);
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    box-shadow: var(--pd-shadow);
+}
+
+.product-dark-scope .product-page .kd-journey .kd-journey-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #1a1206 !important;
+    background: linear-gradient(135deg, #fde68a, #fbbf24, #fb923c);
+    box-shadow: 0 8px 22px rgba(245, 158, 11, 0.28);
+}
+
+.product-dark-scope .product-page .kd-journey-copy h3 {
+    margin: 0 0 8px;
+    font-size: 1.02rem;
+    line-height: 1.3;
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page .kd-journey-copy p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--bdna-dim2) !important;
+}
+
+/* ── 4 · Character & world pillars ────────────────────────────────── */
+.product-dark-scope .product-page .kd-charworld-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* ── 5 · Coming-soon roadmap ──────────────────────────────────────── */
+.product-dark-scope .product-page .kd-roadmap-list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 820px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-dark-scope .product-page .kd-roadmap-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: var(--pd-panel);
+    border: 1px solid var(--pd-edge);
+    box-shadow: var(--pd-shadow);
+    transition: border-color 0.24s ease;
+}
+
+.product-dark-scope .product-page .kd-roadmap-item:hover {
+    border-color: var(--pd-edge-lit);
+}
+
+.product-dark-scope .product-page .kd-roadmap-mark {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--pd-accent) 55%, transparent);
+    border: 2px solid var(--pd-accent);
+}
+
+.product-dark-scope .product-page .kd-roadmap .kd-roadmap-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bdna-ink) !important;
+}
+
+.product-dark-scope .product-page .kd-roadmap .kd-roadmap-stage {
+    flex: none;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--pd-accent) !important;
+    background: color-mix(in srgb, var(--pd-accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-accent) 30%, transparent);
+}
+
+/* ── 6 · Honest early-access CTA touches ──────────────────────────── */
+.product-dark-scope .product-page .kd-waitlist .kd-waitlist-status {
+    margin: 4px 0 12px !important;
+    font-weight: 700;
+    color: var(--pd-accent) !important;
+}
+
+.product-dark-scope .product-page .kd-waitlist-eco {
+    margin-top: 18px !important;
+}
+
+.product-dark-scope .product-page .kd-waitlist-eco a {
+    font-weight: 700;
+    color: var(--bdna-ink) !important;
+    text-decoration: none;
+    border-bottom: 1px solid var(--pd-edge-lit);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.product-dark-scope .product-page .kd-waitlist-eco a:hover,
+.product-dark-scope .product-page .kd-waitlist-eco a:focus-visible {
+    color: var(--pd-accent) !important;
+    border-color: var(--pd-accent);
+}
+
+/* ── Mobile: keep everything single-column, no horizontal overflow ── */
+@media (max-width: 640px) {
+    .product-dark-scope .product-page :is(
+        .kd-clarity,
+        .kd-help,
+        .kd-journey,
+        .kd-charworld,
+        .kd-roadmap
+    ) {
+        padding-top: 56px;
+        padding-bottom: 56px;
+    }
+
+    .product-dark-scope .product-page :is(
+        .kd-clarity-grid,
+        .kd-help-grid,
+        .kd-charworld-grid,
+        .kd-journey-steps
+    ) {
+        grid-template-columns: 1fr;
+    }
+
+    .product-dark-scope .product-page .kd-roadmap-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .product-dark-scope .product-page .kd-roadmap-title {
+        flex: 1 1 100%;
+        order: 2;
+    }
+}
+
+/* ── Reduced motion: no card lift or transition ───────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .product-dark-scope .product-page :is(
+        .kd-clarity-card,
+        .kd-help-card,
+        .kd-charworld-card,
+        .kd-roadmap-item,
+        .kd-waitlist-eco a
+    ) {
+        transition: none;
+    }
+
+    .product-dark-scope .product-page :is(
+        .kd-clarity-card,
+        .kd-help-card,
+        .kd-charworld-card
+    ):hover {
+        transform: none;
+    }
+}
