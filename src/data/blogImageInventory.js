@@ -80,6 +80,16 @@ export const blogImagePool = [
         tags: ["data center", "servers", "hyperscale"],
     },
     {
+        id: "dc-georgia-qts-campus",
+        category: "Data Centers & Databases",
+        localPath: "/images/blog/datacenters/georgia-qts-data-center.webp",
+        alt: "Aerial view of a large data-center campus under construction among pine trees and neighborhoods in Georgia",
+        caption: "The QTS Fayetteville campus is a test of whether major digital infrastructure can grow without leaving nearby communities to absorb poorly measured costs.",
+        unsplashId: "generated-cinnova-qts-fayetteville",
+        creatorName: "CinNova",
+        tags: ["Georgia", "QTS", "data center", "community impact"],
+    },
+    {
         id: "ai-economy-tech-stack",
         category: "Artificial Intelligence",
         localPath: "/images/ai/ai-economy-companies-tech-stack.jpg",
@@ -539,6 +549,7 @@ export const articleHeroAssignments = {
     30: "robotics-industrial-arm-factory",
     31: "ai-complete-guide-2026",
     32: "edu-ai-education-guide-2026",
+    204: "dc-georgia-qts-campus",
 };
 
 /**
