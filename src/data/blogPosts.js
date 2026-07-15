@@ -3517,17 +3517,62 @@ const PILLAR_AI_CATEGORIES = new Set([
     "CinNova Updates",
 ]);
 
+const TOPIC_CLUSTERS = {
+    "Artificial Intelligence": "ai-platforms",
+    "Data Centers & Databases": "ai-platforms",
+    "Robotics & Automation": "ai-platforms",
+    "Future Technology": "ai-platforms",
+    "Education Technology": "learning",
+    "Real Estate Technology": "property",
+    "Construction Technology": "property",
+    "Healthcare Technology": "safety",
+    "Business & Entrepreneurship": "business",
+    "CinNova Updates": "business",
+};
+
+function getTopicTokens(post) {
+    return new Set(
+        [...(post.tags || []), ...(post.seoKeywords || [])]
+            .flatMap((value) => String(value).toLowerCase().split(/[^a-z0-9]+/))
+            .filter((value) => value.length > 3)
+    );
+}
+
 function buildRelatedReading(post) {
+    const effectivePost = { ...post, ...(cornerstoneOverrides[post.id] || {}) };
     const base = cornerstoneRelated[post.id] || post.relatedReading || [];
-    if (post.id === 31 || post.id === 32) return base;
     const pillar = [];
-    if (post.category === "Education Technology") {
+    if (effectivePost.category === "Education Technology") {
         pillar.push(PILLAR_GUIDES.education);
     }
-    if (PILLAR_AI_CATEGORIES.has(post.category)) {
+    if (PILLAR_AI_CATEGORIES.has(effectivePost.category)) {
         pillar.push(PILLAR_GUIDES.ai);
     }
-    return [...new Set([...pillar, ...base])].slice(0, 4);
+
+    const publishedCandidates = fullArticles
+        .map((candidate) => ({ ...candidate, ...(cornerstoneOverrides[candidate.id] || {}) }))
+        .filter(
+            (candidate) => candidate.status === "published" && candidate.slug !== effectivePost.slug
+        );
+    const publishedSlugs = new Set(publishedCandidates.map((candidate) => candidate.slug));
+    const postTokens = getTopicTokens(effectivePost);
+    const cluster = TOPIC_CLUSTERS[effectivePost.category];
+    const ranked = publishedCandidates
+        .map((candidate) => {
+            const candidateTokens = getTopicTokens(candidate);
+            const sharedTokens = [...postTokens].filter((token) => candidateTokens.has(token)).length;
+            let score = sharedTokens * 2;
+            if (candidate.category === effectivePost.category) score += 8;
+            if (cluster && TOPIC_CLUSTERS[candidate.category] === cluster) score += 4;
+            if (candidate.id === 31 || candidate.id === 32) score += 1;
+            return { slug: candidate.slug, score, date: Date.parse(candidate.date) || 0 };
+        })
+        .sort((a, b) => b.score - a.score || b.date - a.date)
+        .map((candidate) => candidate.slug);
+
+    return [...new Set([...pillar, ...base, ...ranked])]
+        .filter((slug) => slug !== effectivePost.slug && publishedSlugs.has(slug))
+        .slice(0, 4);
 }
 
 const enrichedFullArticles = fullArticles.map((post) => {

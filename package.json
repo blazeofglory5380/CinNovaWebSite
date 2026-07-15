@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "audit:seo": "node scripts/audit-seo.mjs",
+    "audit:seo:dist": "node scripts/audit-seo.mjs --dist",
+    "generate:route-metadata": "node scripts/generate-route-metadata.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "validate:sitemap": "node scripts/generate-sitemap.mjs",
     "download:images": "node scripts/download-marketing-images.mjs",
@@ -17,7 +20,7 @@
     "scanner:export": "node scripts/scanner-validation-export.mjs --format both",
     "setup:product-hero-posters": "node scripts/setup-product-hero-posters.mjs",
     "capture:realestate-hero-poster": "node scripts/capture-realestate-hero-poster.mjs",
-    "build": "npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build",
+    "build": "npm run audit:seo && npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build && npm run generate:route-metadata && npm run audit:seo:dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
