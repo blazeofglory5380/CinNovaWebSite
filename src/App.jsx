@@ -83,6 +83,7 @@ import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
+import { resolveLegacyRouteRedirect } from "./data/legacyRouteRedirects.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
 import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
@@ -245,26 +246,15 @@ function App() {
         () => safeGetSessionFlag(STICKY_KEY)
     );
 
-    // Canonicalize legacy product/resource query URLs to their clean path.
-    // Direct/external hits to `/?page=studynest` or `/?resource=<slug>` are
-    // 308-redirected at the edge (vercel.json); this also strips any query the
-    // edge forwards onto the clean destination, and normalizes the address bar
-    // for in-app history entries. Runs once on mount; only touches the product/
-    // resource legacy forms — other `?page=` routes are left untouched.
+    // Client-side fallback that canonicalizes legacy product/resource query URLs
+    // to their clean path. On Vercel the edge Routing Middleware (middleware.js)
+    // is the PRIMARY handler — it issues a true 308 with a query-free Location, so
+    // this rarely fires there. It remains for local dev (`vite`) and any non-Vercel
+    // host where middleware does not run, and it uses the SAME shared resolver as
+    // the middleware so the two can never diverge. Runs once on mount; only the
+    // 19 supported legacy forms resolve — other `?page=` routes are left untouched.
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const resourceSlug = params.get("resource");
-        const pageKey = params.get("page");
-        let cleanPath = null;
-        if (resourceSlug && getResourceBySlug(resourceSlug)) {
-            cleanPath = `/resources/${resourceSlug}`;
-        } else if (pageKey === "products") {
-            cleanPath = "/products";
-        } else if (pageKey === "resources") {
-            cleanPath = "/resources";
-        } else if (pageKey && PRODUCT_PAGE_KEYS.has(pageKey)) {
-            cleanPath = `/products/${pageKey}`;
-        }
+        const cleanPath = resolveLegacyRouteRedirect(window.location.search);
         if (!cleanPath) return;
         const current = window.location.pathname + window.location.search;
         const onLegacyRoot = window.location.pathname === "/";

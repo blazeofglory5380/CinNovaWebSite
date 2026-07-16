@@ -11,6 +11,7 @@ import {
 import { defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
+import { LEGACY_PRODUCT_KEYS, LEGACY_RESOURCE_SLUGS, resolveLegacyRouteRedirect } from "../src/data/legacyRouteRedirects.js";
 import {
     buildArticleSchema,
     buildProductSchema,
@@ -200,6 +201,73 @@ for (const { scope, resource, metadata } of resourceMetas) {
     const types = new Set(buildResourceSchema(resource, { siteUrl, defaultOgImage })["@graph"].map((node) => node["@type"]));
     if (!types.has("WebPage") || !types.has("CreativeWork") || !types.has("BreadcrumbList")) {
         error(scope, "schema must contain WebPage, CreativeWork, and BreadcrumbList nodes");
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Legacy redirect resolver — drift guard + correctness (Phase 2A middleware)
+// Fails the build if a product/resource is added or removed without updating
+// src/data/legacyRouteRedirects.js, or if the resolver would ever emit a query,
+// a duplicate, an invalid route, or a self-referential "/" target.
+// ─────────────────────────────────────────────────────────────────────────
+{
+    const productPageKeySet = new Set(products.map((product) => product.page));
+    const resourceSlugSet = new Set(resources.map((resource) => resource.slug));
+
+    for (const key of productPageKeySet) {
+        if (!LEGACY_PRODUCT_KEYS.has(key)) error("legacy-redirects", `product "${key}" is missing from LEGACY_PRODUCT_KEYS`);
+    }
+    for (const key of LEGACY_PRODUCT_KEYS) {
+        if (!productPageKeySet.has(key)) error("legacy-redirects", `LEGACY_PRODUCT_KEYS has stale product "${key}"`);
+    }
+    for (const slug of resourceSlugSet) {
+        if (!LEGACY_RESOURCE_SLUGS.has(slug)) error("legacy-redirects", `resource "${slug}" is missing from LEGACY_RESOURCE_SLUGS`);
+    }
+    for (const slug of LEGACY_RESOURCE_SLUGS) {
+        if (!resourceSlugSet.has(slug)) error("legacy-redirects", `LEGACY_RESOURCE_SLUGS has stale resource "${slug}"`);
+    }
+
+    // The full set of 19 supported legacy → clean pairs, derived from live data.
+    const expected = new Map([
+        ["?page=products", "/products"],
+        ["?page=resources", "/resources"],
+        ...products.map((product) => [`?page=${product.page}`, `/products/${product.page}`]),
+        ...resources.map((resource) => [`?resource=${resource.slug}`, `/resources/${resource.slug}`]),
+    ]);
+    if (expected.size !== 19) error("legacy-redirects", `expected 19 legacy routes, computed ${expected.size}`);
+
+    const validGeneratedRoutes = new Set([
+        getProductsUrl().replace(siteUrl, ""),
+        getResourcesUrl().replace(siteUrl, ""),
+        ...products.map((product) => getProductUrl(product).replace(siteUrl, "")),
+        ...resources.map((resource) => getResourceUrl(resource).replace(siteUrl, "")),
+    ]);
+
+    const seenTargets = new Set();
+    for (const [legacy, want] of expected) {
+        const got = resolveLegacyRouteRedirect(legacy);
+        if (got !== want) error("legacy-redirects", `resolver("${legacy}") = ${got}; expected ${want}`);
+        if (!got) continue;
+        if (/[?#]/.test(got)) error("legacy-redirects", `resolver target contains a query or fragment: ${got}`);
+        if (/(?:^|[?&])(page|resource)=/.test(got)) error("legacy-redirects", `resolver target carries a legacy parameter: ${got}`);
+        if (got === "/") error("legacy-redirects", `resolver target resolves back to "/": ${legacy}`);
+        if (!validGeneratedRoutes.has(got)) error("legacy-redirects", `resolver target is not a valid generated route: ${got}`);
+        if (seenTargets.has(got)) error("legacy-redirects", `duplicate resolver target: ${got}`);
+        seenTargets.add(got);
+    }
+
+    // Unrelated and invalid values must NOT redirect (resolver returns null).
+    for (const legacy of ["?page=about", "?page=pricing", "?page=contact", "", "?foo=bar", "?page=", "?page=not-a-real-product", "?resource=not-a-real-resource"]) {
+        if (resolveLegacyRouteRedirect(legacy) !== null) error("legacy-redirects", `resolver("${legacy}") must be null (unrelated/invalid)`);
+    }
+
+    // Root middleware must exist, use the shared resolver, and emit a 308.
+    try {
+        const mw = await readFile(path.join(root, "middleware.js"), "utf8");
+        if (!/status:\s*308/.test(mw)) error("middleware.js", "edge redirect must use HTTP status 308");
+        if (!/resolveLegacyRouteRedirect/.test(mw)) error("middleware.js", "must use the shared resolveLegacyRouteRedirect");
+    } catch {
+        error("middleware.js", "root middleware.js is missing");
     }
 }
 

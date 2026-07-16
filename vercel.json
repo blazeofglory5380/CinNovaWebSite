@@ -31,27 +31,6 @@
       ]
     }
   ],
-  "redirects": [
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "products" }], "destination": "/products", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "resources" }], "destination": "/resources", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "studynest" }], "destination": "/products/studynest", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "poisonguard" }], "destination": "/products/poisonguard", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "kiddo" }], "destination": "/products/kiddo", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "techmate" }], "destination": "/products/techmate", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "page", "value": "real-estate" }], "destination": "/products/real-estate", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "ai-study-planning-starter-guide" }], "destination": "/resources/ai-study-planning-starter-guide", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "poison-safety-technology-white-paper" }], "destination": "/resources/poison-safety-technology-white-paper", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "cin-nova-product-ecosystem-brochure" }], "destination": "/resources/cin-nova-product-ecosystem-brochure", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "real-estate-deal-analysis-template" }], "destination": "/resources/real-estate-deal-analysis-template", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "techmate-ai-troubleshooting-brochure" }], "destination": "/resources/techmate-ai-troubleshooting-brochure", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "kiddo-early-learning-case-study" }], "destination": "/resources/kiddo-early-learning-case-study", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "newsletter-growth-playbook-for-app-companies" }], "destination": "/resources/newsletter-growth-playbook-for-app-companies", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "family-safety-resource-kit" }], "destination": "/resources/family-safety-resource-kit", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "ai-product-launch-checklist" }], "destination": "/resources/ai-product-launch-checklist", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "household-chemical-safety-checklist" }], "destination": "/resources/household-chemical-safety-checklist", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "weekly-student-study-planner-template" }], "destination": "/resources/weekly-student-study-planner-template", "permanent": true },
-    { "source": "/", "has": [{ "type": "query", "key": "resource", "value": "real-estate-cash-flow-analysis-template" }], "destination": "/resources/real-estate-cash-flow-analysis-template", "permanent": true }
-  ],
   "rewrites": [
     {
       "source": "/((?!assets/)(?!images/)(?!models/)(?!draco/)(?!favicon\\.svg)(?!icons\\.svg)(?!robots\\.txt)(?!sitemap\\.xml).*)",
