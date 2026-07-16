@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { trackSponsorCtaClick } from "../utils/analytics.js";
 
@@ -60,7 +61,7 @@ const newsletterSponsorSchema = {
     name: "Sponsor the Cin Nova Newsletter",
     description:
         "Sponsor the Cin Nova newsletter and reach AI professionals, educators, students, real estate professionals, and technology enthusiasts.",
-    url: `${siteUrl}/?page=sponsor-newsletter`,
+    url: getPublicPageUrl("sponsor-newsletter"),
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -75,7 +76,7 @@ function SponsorNewsletter({ onNavigate }) {
             <SEO
                 title="Sponsor the Newsletter | Cin Nova"
                 description="Sponsor the Cin Nova newsletter to reach AI professionals, educators, students, real estate professionals, and technology enthusiasts."
-                url={`${siteUrl}/?page=sponsor-newsletter`}
+                url={getPublicPageUrl("sponsor-newsletter")}
                 type="website"
                 schema={newsletterSponsorSchema}
             />

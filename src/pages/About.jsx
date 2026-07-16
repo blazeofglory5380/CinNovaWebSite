@@ -1,10 +1,11 @@
-// About — CinNova About page (route: /?page=about)
+// About — CinNova About page (route: /about)
 // Visual redesign; renders inside the existing app layout (navbar/footer live
 // outside). SEO is preserved via the shared SEO.jsx system; the final CTA
 // newsletter form is wired to the real saveSubscriber service.
 import React from "react";
 import "./about.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 
@@ -14,7 +15,7 @@ const aboutSchema = {
   name: "About Cin Nova",
   description:
     "Learn about Cin Nova — the company building practical AI software products for education, safety, real estate, tech support, and early childhood learning.",
-  url: `${siteUrl}/?page=about`,
+  url: getPublicPageUrl("about"),
   publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -158,7 +159,7 @@ function About() {
       <SEO
         title="About Cin Nova | Practical AI Software Company"
         description="Cin Nova builds AI-powered products for learning, safety, real estate, tech support, and early childhood education. Learn about our products, values, and roadmap."
-        url={`${siteUrl}/?page=about`}
+        url={getPublicPageUrl("about")}
         type="website"
         schema={aboutSchema}
       />
@@ -181,7 +182,7 @@ function About() {
             </ul>
             <div className="about-page-hero-actions">
               <a className="about-page-btn about-page-btn--primary" href="/products">Explore Products</a>
-              <a className="about-page-btn about-page-btn--ghost" href="/?page=partner-with-us">Partner With Us</a>
+              <a className="about-page-btn about-page-btn--ghost" href="/company/partner-with-us">Partner With Us</a>
             </div>
           </div>
           <div className="about-page-hero-visual" aria-hidden="true">
@@ -411,7 +412,7 @@ function About() {
             <div className="about-page-cta-links">
               <a className="about-page-btn" href="/products">View Products</a>
               <a className="about-page-btn" href="/blog">Read the Blog</a>
-              <a className="about-page-btn" href="/?page=contact">Contact</a>
+              <a className="about-page-btn" href="/contact">Contact</a>
             </div>
           </div>
         </div>

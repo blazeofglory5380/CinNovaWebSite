@@ -84,6 +84,7 @@ import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
 import { resolveLegacyRouteRedirect } from "./data/legacyRouteRedirects.js";
+import { getPublicPageKeyFromPath, getPublicPagePath } from "./data/publicPageRoutes.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
 import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
@@ -158,6 +159,14 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         return { page: "not-found", article: null, resource: null, category: null };
     }
 
+    // Migrated public pages (Phase 2B): clean path → the same page key/component
+    // as the legacy ?page= route (e.g. /pricing → "pricing", /company/press →
+    // "press-center", /guides → "ai-tutorials", /tools/... → calculator).
+    const publicPageKey = getPublicPageKeyFromPath(path);
+    if (publicPageKey) {
+        return { page: publicPageKey, article: null, resource: null, category: null };
+    }
+
     const categoryMatch = path.match(/^\/blog\/category\/([^/]+)$/);
     if (categoryMatch) {
         const category = getCategoryBySlug(decodeURIComponent(categoryMatch[1]));
@@ -218,6 +227,10 @@ function pathForPage(nextPage) {
     if (nextPage === "products") return "/products";
     if (nextPage === "resources") return "/resources";
     if (PRODUCT_PAGE_KEYS.has(nextPage)) return `/products/${nextPage}`;
+    // Migrated public pages resolve to their clean route; unmigrated guide keys
+    // and everything else keep their legacy ?page= form for now.
+    const publicPath = getPublicPagePath(nextPage);
+    if (publicPath) return publicPath;
     return `/?page=${nextPage}`;
 }
 

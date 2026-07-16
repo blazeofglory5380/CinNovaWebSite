@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
-import { siteUrl } from "../data/seoConfig.js";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { newsletterBenefits, newsletterTopics } from "../data/marketingImages.js";
@@ -72,7 +72,7 @@ function NewsletterPage({ onSubscribe }) {
             "@type": "WebPage",
             name: "Cin Nova Newsletter",
             description: "Join the Cin Nova newsletter. Get product updates, free guides, and early access.",
-            url: `${siteUrl}/?page=newsletter`,
+            url: getPublicPageUrl("newsletter"),
         },
         buildFaqSchema(faqs),
     );
@@ -82,7 +82,7 @@ function NewsletterPage({ onSubscribe }) {
             <SEO
                 title="Cin Nova Newsletter — Free Product Updates, Guides, and Early Access"
                 description="Join the Cin Nova newsletter for product launches, free downloadable guides, behind-the-scenes builds, and early access to new features."
-                url={`${siteUrl}/?page=newsletter`}
+                url={getPublicPageUrl("newsletter")}
                 type="website"
                 schema={nlSchema}
             />
@@ -154,7 +154,7 @@ function NewsletterPage({ onSubscribe }) {
                                 </form>
                                 <p className="nl-form-note">
                                     Free. No spam. Unsubscribe any time. By subscribing, you agree to our{" "}
-                                    <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                                    <a className="form-privacy-link" href="/privacy">Privacy Policy</a>.
                                 </p>
                                 <div className="nl-form-social-proof">
                                     <div className="nl-avatar-stack">
@@ -262,7 +262,7 @@ function NewsletterPage({ onSubscribe }) {
                     )}
                     <p className="form-privacy-note nl-inline-privacy">
                         By subscribing, you agree to our{" "}
-                        <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                        <a className="form-privacy-link" href="/privacy">Privacy Policy</a>.
                     </p>
                 </div>
             </section>

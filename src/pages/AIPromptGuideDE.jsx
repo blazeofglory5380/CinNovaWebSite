@@ -1,4 +1,4 @@
-// AIPromptGuideDE — /?page=ai-prompt-writing-guide-de   CSS prefix: ait-
+// AIPromptGuideDE — /guides/ai-prompt-writing/de   CSS prefix: ait-
 // German translation of the AI prompt writing guide (multilingual starter pilot).
 import "../App.css";
 import "./AITutorials.css";
@@ -23,7 +23,7 @@ export default function AIPromptGuideDE() {
             />
 
             <section className="section ait-guide-hero">
-                <a className="ait-breadcrumb" href="/?page=ai-tutorials">← KI-Tutorials</a>
+                <a className="ait-breadcrumb" href="/guides">← KI-Tutorials</a>
                 <p className="eyebrow">PROMPTS SCHREIBEN · ANFÄNGER</p>
                 <h1>Bessere KI-Prompts schreiben: Schritt-für-Schritt-Anleitung für Anfänger</h1>
                 <p className="ait-guide-intro">
@@ -151,8 +151,8 @@ export default function AIPromptGuideDE() {
                     <h2>Lernen Sie weiter über KI</h2>
                     <p>Entdecken Sie weitere anfängerfreundliche, schrittweise KI-Tutorials im KI-Tutorials-Center von CinNova.</p>
                     <div className="ait-guide-cta-actions">
-                        <a className="primary-btn" href="/?page=ai-tutorials">← Zurück zu den KI-Tutorials</a>
-                        <a className="ait-link-btn" href="/?page=ai-prompt-writing-guide">Read this guide in English</a>
+                        <a className="primary-btn" href="/guides">← Zurück zu den KI-Tutorials</a>
+                        <a className="ait-link-btn" href="/guides/ai-prompt-writing">Read this guide in English</a>
                     </div>
                 </div>
             </section>

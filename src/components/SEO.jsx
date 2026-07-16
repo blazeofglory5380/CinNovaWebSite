@@ -27,6 +27,13 @@ function upsertCanonical(url) {
     element.setAttribute("href", url);
 }
 
+// Actively strip any canonical the previous route left behind. Used by noindex
+// error pages (e.g. the 404 NotFound), which must expose NO canonical — neither
+// in the static shell nor after client-side navigation to an invalid path.
+function removeCanonical() {
+    document.head.querySelector('link[rel="canonical"]')?.remove();
+}
+
 // Manage <link rel="alternate" hreflang> tags for multilingual pages.
 // Idempotent: clears any previously-managed alternates first, then re-adds.
 // Tags are marked with data-cinnova-hreflang so cleanup never touches other links.
@@ -62,14 +69,15 @@ function upsertStructuredData(schema) {
     document.head.appendChild(script);
 }
 
-function SEO({ title, description, url, type = "website", image, schema, noindex = false, alternates }) {
+function SEO({ title, description, url, type = "website", image, schema, noindex = false, noCanonical = false, alternates }) {
     useEffect(() => {
         document.title = title;
 
         const previewImage = image || defaultOgImage;
 
         upsertMeta("name", "description", description);
-        upsertMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow");
+        // Error pages (noCanonical) stay indexable-excluded but link-followable.
+        upsertMeta("name", "robots", noindex ? (noCanonical ? "noindex, follow" : "noindex, nofollow") : "index, follow");
         upsertMeta("property", "og:title", title);
         upsertMeta("property", "og:description", description);
         upsertMeta("property", "og:type", type);
@@ -81,14 +89,18 @@ function SEO({ title, description, url, type = "website", image, schema, noindex
         upsertMeta("name", "twitter:description", description);
         upsertMeta("name", "twitter:site", "@CinNova");
         upsertMeta("name", "twitter:image", previewImage);
-        upsertCanonical(url);
+        if (noCanonical) {
+            removeCanonical();
+        } else {
+            upsertCanonical(url);
+        }
         upsertAlternates(alternates);
         upsertStructuredData(schema);
 
         // Clear managed hreflang alternates on unmount / route change so they
         // never leak onto pages that have no language alternates.
         return removeManagedAlternates;
-    }, [title, description, url, type, image, schema, noindex, alternates]);
+    }, [title, description, url, type, image, schema, noindex, noCanonical, alternates]);
 
     return null;
 }

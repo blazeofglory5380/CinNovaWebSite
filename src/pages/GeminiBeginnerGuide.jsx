@@ -1,4 +1,4 @@
-// GeminiBeginnerGuide — /?page=gemini-beginner-guide   CSS prefix: ait-
+// GeminiBeginnerGuide — /guides/gemini   CSS prefix: ait-
 // Beginner-first, screen-aware tutorial matching the AI Workspace Setup master
 // template. Vendor-neutral; CinNova is independent of Google. Interfaces change,
 // so steps describe common places rather than exact, version-specific UI. We use

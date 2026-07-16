@@ -1,4 +1,4 @@
-// AIWorkspaceSetupGuide — /?page=ai-workspace-setup-guide   CSS prefix: ait-
+// AIWorkspaceSetupGuide — /guides/ai-workspace-setup   CSS prefix: ait-
 // Master template for beginner tutorials: click-by-click and screen-aware.
 // Every major setup step uses StepDetail rows (Where to look / What to click /
 // What you should see / If you don't see it / Common mistake) + a screenshot

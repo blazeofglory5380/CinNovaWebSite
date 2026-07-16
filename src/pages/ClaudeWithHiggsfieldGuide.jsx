@@ -1,4 +1,4 @@
-// ClaudeWithHiggsfieldGuide — /?page=claude-with-higgsfield-guide   CSS prefix: ait-
+// ClaudeWithHiggsfieldGuide — /guides/claude-with-higgsfield   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

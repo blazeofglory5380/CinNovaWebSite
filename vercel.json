@@ -31,10 +31,5 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/((?!assets/)(?!images/)(?!models/)(?!draco/)(?!favicon\\.svg)(?!icons\\.svg)(?!robots\\.txt)(?!sitemap\\.xml).*)",
-      "destination": "/index"
-    }
-  ]
+  "rewrites": []
 }

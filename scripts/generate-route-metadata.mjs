@@ -17,10 +17,13 @@ import {
     resources,
     withLibraryMeta,
 } from "../src/data/resources.js";
+import { PUBLIC_PAGE_ROUTES, getGuideAlternates } from "../src/data/publicPageRoutes.js";
 import {
     buildArticleSchema,
     buildCollectionSchema,
+    buildGuideSchema,
     buildProductSchema,
+    buildPublicPageSchema,
     buildResourceSchema,
     escapeHtml,
     getArticleMetadata,
@@ -28,8 +31,10 @@ import {
     getCategoryMetadata,
     getProductMetadata,
     getProductsIndexMetadata,
+    getPublicPageMetadata,
     getResourceMetadata,
     getResourcesIndexMetadata,
+    publicPageH1,
     renderHeadTags,
 } from "./seo-shared.mjs";
 
@@ -48,7 +53,7 @@ function escapeRegExp(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function withRouteHead(html, metadata, schema) {
+function withRouteHead(html, metadata, schema, { alternates, lang } = {}) {
     let output = html.replace(/<title>[\s\S]*?<\/title>\s*/i, "");
     for (const key of managedMetaKeys) {
         output = output.replace(
@@ -59,7 +64,11 @@ function withRouteHead(html, metadata, schema) {
     output = output
         .replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>\s*/gi, "")
         .replace(/<script\b[^>]*id=["']cinnova-structured-data["'][^>]*>[\s\S]*?<\/script>\s*/gi, "");
-    return output.replace("</head>", `    ${renderHeadTags(metadata, schema)}\n  </head>`);
+    if (lang) {
+        // Translated guide pages carry their factual document language.
+        output = output.replace(/<html lang="[a-zA-Z-]*"/, `<html lang="${lang}"`);
+    }
+    return output.replace("</head>", `    ${renderHeadTags(metadata, schema, alternates)}\n  </head>`);
 }
 
 function articleShell(post, relatedPosts) {
@@ -126,10 +135,10 @@ function resourceDetailShell(libraryResource) {
     return `<div id="root"><main class="product-page resource-detail" data-seo-shell="resource"><article><p>${meta}</p><h1>${escapeHtml(libraryResource.title)}</h1><p>${escapeHtml(libraryResource.description)}</p>${cover}${sections}<nav aria-label="Related resources"><a href="/resources">All resources</a><ul>${relatedResourceLinks}</ul><p>Related products: ${relatedProductLinks}</p></nav></article></main></div>`;
 }
 
-async function writeRoute(relativePath, metadata, schema, shell) {
+async function writeRoute(relativePath, metadata, schema, shell, options = {}) {
     const outputPath = path.join(distDir, relativePath);
     await mkdir(path.dirname(outputPath), { recursive: true });
-    const html = withRouteHead(baseHtml, metadata, schema).replace('<div id="root"></div>', shell);
+    const html = withRouteHead(baseHtml, metadata, schema, options).replace('<div id="root"></div>', shell);
     await writeFile(outputPath, html, "utf8");
 }
 
@@ -229,7 +238,100 @@ for (const resource of resources) {
     );
 }
 
+// ── Migrated public marketing/company/tool/hub pages (Phase 2B, Checkpoint 1) ──
+function publicPageShell(route) {
+    const links = [
+        ["/", "Home"],
+        ["/products", "Products"],
+        ["/resources", "Resources"],
+        ["/blog", "Blog"],
+        ["/guides", "Guides"],
+        ["/pricing", "Pricing"],
+        ["/about", "About"],
+        ["/contact", "Contact"],
+    ]
+        .map(([href, label]) => `<li><a href="${href}">${escapeHtml(label)}</a></li>`)
+        .join("");
+    return `<div id="root"><main class="product-page public-page" data-seo-shell="public"><h1>${escapeHtml(publicPageH1(route))}</h1><p>${escapeHtml(route.description)}</p><nav aria-label="Site"><ul>${links}</ul></nav></main></div>`;
+}
+
+// Crawlable shell for an individual guide: breadcrumb, description, language
+// switcher for translated families, and hub/related links. Content mirrors the
+// registry (which mirrors the live TutorialSEO props) — nothing is invented.
+function guideShell(route, alternates) {
+    const langLinks = (alternates || [])
+        .filter((alt) => alt.hreflang !== "x-default" && alt.path !== route.path)
+        .map((alt) => `<li><a href="${alt.path}" hreflang="${alt.hreflang}" lang="${alt.hreflang}">${escapeHtml(alt.hreflang.toUpperCase())}</a></li>`)
+        .join("");
+    const languageNav = langLinks ? `<nav aria-label="Guide language"><ul>${langLinks}</ul></nav>` : "";
+    return `<div id="root"><main class="product-page ait-page" data-seo-shell="guide"><article><nav aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/guides">AI Tutorials</a></nav><h1>${escapeHtml(publicPageH1(route))}</h1><p>${escapeHtml(route.description)}</p>${languageNav}<nav aria-label="More guides"><ul><li><a href="/guides">All AI Tutorials</a></li><li><a href="/guides/ai-prompt-writing">Prompt Writing Guide</a></li><li><a href="/guides/ai-research">AI Research Guide</a></li><li><a href="/guides/ai-coding">AI Coding Guide</a></li><li><a href="/blog">CinNova Blog</a></li></ul></nav></article></main></div>`;
+}
+
+for (const route of PUBLIC_PAGE_ROUTES) {
+    const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+    const outputFile = `${route.path.replace(/^\//, "")}.html`;
+    if (route.group === "guide") {
+        const alternates = getGuideAlternates(route.key);
+        const absoluteAlternates = alternates
+            ? alternates.map((alt) => ({ hreflang: alt.hreflang, href: `${siteUrl}${alt.path}` }))
+            : undefined;
+        await writeRoute(outputFile, metadata, buildGuideSchema(route, { siteUrl, defaultOgImage }), guideShell(route, alternates), {
+            alternates: absoluteAlternates,
+            lang: route.language || "en",
+        });
+    } else {
+        await writeRoute(outputFile, metadata, buildPublicPageSchema(route, { siteUrl, defaultOgImage }), publicPageShell(route));
+    }
+}
+
+// ── Branded static 404 (Phase 2B, Checkpoint 3) ────────────────────────────
+// Served natively by Vercel with HTTP 404 for any path with no filesystem file
+// (the SPA catch-all rewrite is gone). Deliberately: NO canonical, NO content
+// schema, NO redirect/refresh — robots noindex,follow only. The normal React
+// entry script stays in the head, so the app mounts and renders the existing
+// NotFound component on the unchanged requested URL.
+function notFoundHead() {
+    return [
+        "<title>Page Not Found | CinNova</title>",
+        '<meta name="description" content="The page you requested could not be found on CinNova. It may have moved or never existed. Use the links below to keep exploring." />',
+        '<meta name="robots" content="noindex, follow" />',
+    ].join("\n    ");
+}
+
+function notFoundShell() {
+    const links = [
+        ["/", "Home"],
+        ["/products", "Products"],
+        ["/resources", "Resources"],
+        ["/blog", "Blog"],
+        ["/guides", "AI Guides"],
+    ]
+        .map(([href, label]) => `<li><a href="${href}">${escapeHtml(label)}</a></li>`)
+        .join("");
+    return `<div id="root"><main class="product-page not-found-page"><section class="section" aria-labelledby="not-found-title"><p class="eyebrow">404</p><h1 id="not-found-title">Page not found</h1><p>The page you are looking for does not exist or may have moved. CinNova builds practical AI products for learning, safety, and smarter decisions — the links below will get you back on track.</p><nav aria-label="Popular destinations"><ul>${links}</ul></nav></section></main></div>`;
+}
+
+{
+    // Strip the base head exactly like normal routes (title, managed metas, the
+    // static homepage canonical, structured data), then add the 404 head — which
+    // intentionally re-adds NO canonical and NO schema.
+    let html = baseHtml.replace(/<title>[\s\S]*?<\/title>\s*/i, "");
+    for (const key of managedMetaKeys) {
+        html = html.replace(
+            new RegExp(`<meta\\b(?=[^>]*(?:name|property)=["']${escapeRegExp(key)}["'])[^>]*>\\s*`, "gi"),
+            ""
+        );
+    }
+    html = html
+        .replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>\s*/gi, "")
+        .replace(/<script\b[^>]*id=["']cinnova-structured-data["'][^>]*>[\s\S]*?<\/script>\s*/gi, "");
+    html = html.replace("</head>", `    ${notFoundHead()}\n  </head>`);
+    html = html.replace('<div id="root"></div>', notFoundShell());
+    await writeFile(path.join(distDir, "404.html"), html, "utf8");
+}
+
 console.log(
     `Generated crawlable metadata for ${posts.length} articles, ${blogCategories.length} categories, the blog index, ` +
-        `${products.length} products + product index, and ${resources.length} resources + resource index.`
+        `${products.length} products + product index, ${resources.length} resources + resource index, ` +
+        `${PUBLIC_PAGE_ROUTES.length} migrated public pages, and the branded 404 page.`
 );

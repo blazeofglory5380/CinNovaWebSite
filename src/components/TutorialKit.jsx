@@ -1,31 +1,43 @@
 // Reusable building blocks for AI tutorial pages. Prefix: ait-
 import SEO from "./SEO.jsx";
 import { trackAiTutorialClick } from "../utils/analytics.js";
+import {
+    PUBLIC_SITE_URL,
+    getGuideAlternates,
+    getPublicPageKeyFromPath,
+    getPublicPagePath,
+    getPublicPageUrl,
+} from "../data/publicPageRoutes.js";
 
-export const HUB_URL = "/?page=ai-tutorials";
+export const HUB_URL = "/guides";
 
-// Current ?page= key, used as the source_page for related-guide clicks.
+// Current page key, used as the source_page for related-guide clicks.
+// Clean routes resolve via the shared registry; legacy ?page= is the fallback.
 function currentPageKey() {
     if (typeof window === "undefined") return "";
-    return new URLSearchParams(window.location.search).get("page") || "";
+    return (
+        getPublicPageKeyFromPath(window.location.pathname) ||
+        new URLSearchParams(window.location.search).get("page") ||
+        ""
+    );
 }
 
 // Language versions of the AI prompt writing guide (multilingual starter pilot).
-// Every route here exists, so the switcher never produces a dead link.
+// Clean routes come from the shared registry, so the switcher never produces a
+// dead link and never drifts from routing/sitemap/redirects.
 const PROMPT_GUIDE_LANGS = [
-    { code: "en", label: "English",  href: "/?page=ai-prompt-writing-guide" },
-    { code: "es", label: "Español",  href: "/?page=ai-prompt-writing-guide-es" },
-    { code: "fr", label: "Français", href: "/?page=ai-prompt-writing-guide-fr" },
-    { code: "de", label: "Deutsch",  href: "/?page=ai-prompt-writing-guide-de" },
+    { code: "en", label: "English",  href: getPublicPagePath("ai-prompt-writing-guide") },
+    { code: "es", label: "Español",  href: getPublicPagePath("ai-prompt-writing-guide-es") },
+    { code: "fr", label: "Français", href: getPublicPagePath("ai-prompt-writing-guide-fr") },
+    { code: "de", label: "Deutsch",  href: getPublicPagePath("ai-prompt-writing-guide-de") },
 ];
 
 // Language versions of the AI research guide (multilingual starter pilot).
-// Every route here exists, so the switcher never produces a dead link.
 const RESEARCH_GUIDE_LANGS = [
-    { code: "en", label: "English",  href: "/?page=ai-research-guide" },
-    { code: "es", label: "Español",  href: "/?page=ai-research-guide-es" },
-    { code: "fr", label: "Français", href: "/?page=ai-research-guide-fr" },
-    { code: "de", label: "Deutsch",  href: "/?page=ai-research-guide-de" },
+    { code: "en", label: "English",  href: getPublicPagePath("ai-research-guide") },
+    { code: "es", label: "Español",  href: getPublicPagePath("ai-research-guide-es") },
+    { code: "fr", label: "Français", href: getPublicPagePath("ai-research-guide-fr") },
+    { code: "de", label: "Deutsch",  href: getPublicPagePath("ai-research-guide-de") },
 ];
 
 // Shared renderer so both switchers behave identically (active = non-link span).
@@ -58,12 +70,11 @@ export function ResearchGuideLangNav({ current = "en" }) {
 }
 
 // Language versions of the AI coding guide (multilingual starter pilot).
-// Every route here exists, so the switcher never produces a dead link.
 const CODING_GUIDE_LANGS = [
-    { code: "en", label: "English",  href: "/?page=ai-coding-guide" },
-    { code: "es", label: "Español",  href: "/?page=ai-coding-guide-es" },
-    { code: "fr", label: "Français", href: "/?page=ai-coding-guide-fr" },
-    { code: "de", label: "Deutsch",  href: "/?page=ai-coding-guide-de" },
+    { code: "en", label: "English",  href: getPublicPagePath("ai-coding-guide") },
+    { code: "es", label: "Español",  href: getPublicPagePath("ai-coding-guide-es") },
+    { code: "fr", label: "Français", href: getPublicPagePath("ai-coding-guide-fr") },
+    { code: "de", label: "Deutsch",  href: getPublicPagePath("ai-coding-guide-de") },
 ];
 
 /** Language switcher shown on each version of the AI coding guide. */
@@ -188,9 +199,9 @@ export function RelatedGuides() {
             <div className="ait-related">
                 {[
                     { href: HUB_URL, key: "ai-tutorials", label: "All AI Tutorials" },
-                    { href: "/?page=ai-prompt-writing-guide", key: "ai-prompt-writing-guide", label: "Prompt Writing Guide" },
-                    { href: "/?page=ai-research-guide", key: "ai-research-guide", label: "AI Research Guide" },
-                    { href: "/?page=ai-coding-guide", key: "ai-coding-guide", label: "AI Coding Guide" },
+                    { href: getPublicPagePath("ai-prompt-writing-guide"), key: "ai-prompt-writing-guide", label: "Prompt Writing Guide" },
+                    { href: getPublicPagePath("ai-research-guide"), key: "ai-research-guide", label: "AI Research Guide" },
+                    { href: getPublicPagePath("ai-coding-guide"), key: "ai-coding-guide", label: "AI Coding Guide" },
                 ].map((l) => (
                     <a
                         key={l.key}
@@ -220,24 +231,19 @@ export function SafetyNote() {
 }
 
 /** Convenience SEO wrapper for a tutorial page. */
-// Guide families that have EN/ES/FR/DE versions. Used to emit hreflang
-// alternates so search engines connect the translated versions of each guide.
-const GUIDE_FAMILIES = [PROMPT_GUIDE_LANGS, RESEARCH_GUIDE_LANGS, CODING_GUIDE_LANGS];
-
-/** hreflang alternates for a guide pageKey, or undefined for non-guide pages. */
-function alternatesForPageKey(pageKey, siteUrl) {
-    const href = `/?page=${pageKey}`;
-    const family = GUIDE_FAMILIES.find((langs) => langs.some((l) => l.href === href));
-    if (!family) return undefined;
-    const alternates = family.map((l) => ({ hreflang: l.code, href: `${siteUrl}${l.href}` }));
-    const english = family.find((l) => l.code === "en");
-    if (english) alternates.push({ hreflang: "x-default", href: `${siteUrl}${english.href}` });
-    return alternates;
+// hreflang alternates come from the shared registry (translated families only);
+// English-only guides get none. URLs are always clean — never query forms.
+function alternatesForPageKey(pageKey) {
+    const alternates = getGuideAlternates(pageKey);
+    if (!alternates) return undefined;
+    return alternates.map((alt) => ({ hreflang: alt.hreflang, href: `${PUBLIC_SITE_URL}${alt.path}` }));
 }
 
 export function TutorialSEO({ title, description, pageKey, siteUrl }) {
-    const url = `${siteUrl}/?page=${pageKey}`;
-    const alternates = alternatesForPageKey(pageKey, siteUrl);
+    // All guide pages are migrated to clean routes; the legacy form remains only
+    // as a defensive fallback for a pageKey missing from the registry.
+    const url = getPublicPageUrl(pageKey) || `${siteUrl}/?page=${pageKey}`;
+    const alternates = alternatesForPageKey(pageKey);
     const schema = {
         "@context": "https://schema.org",
         "@type": "TechArticle",

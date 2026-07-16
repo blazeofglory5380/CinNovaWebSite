@@ -1,4 +1,4 @@
-// PerplexityBeginnerGuide — /?page=perplexity-beginner-guide   CSS prefix: ait-
+// PerplexityBeginnerGuide — /guides/perplexity   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

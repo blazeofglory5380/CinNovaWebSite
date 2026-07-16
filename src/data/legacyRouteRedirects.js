@@ -1,16 +1,20 @@
 /**
- * Shared resolver for legacy product/resource query URLs → clean pathnames.
+ * Shared resolver for legacy product / resource / migrated-public-page query URLs
+ * → clean pathnames.
  *
  * Single source of truth used by:
  *   - middleware.js       (Vercel Routing Middleware: emits the edge 308)
  *   - src/App.jsx         (client-side replaceState fallback for local dev / non-Vercel hosting)
- *   - scripts/audit-seo.mjs (drift guard: fails the build if products/resources change without updating the sets below)
+ *   - scripts/audit-seo.mjs (drift guard: fails the build if products/resources/pages change without updating the registries)
  *
  * Deliberately self-contained and browser/edge-neutral: it imports no heavy data
  * graph (no analytics, images, or blog inventory), so it stays small and safe in
- * the Vercel Edge runtime. The `audit-seo` sync check keeps the sets below in
- * lock-step with src/data/products.js and src/data/resources.js.
+ * the Vercel Edge runtime. The migrated public-page map comes from the equally
+ * light publicPageRoutes.js registry so page routes are never duplicated here.
+ * The `audit-seo` sync check keeps the sets below in lock-step with
+ * src/data/products.js and src/data/resources.js.
  */
+import { getPublicPagePath } from "./publicPageRoutes.js";
 
 /** Product `page` keys — mirrors src/data/products.js `page` values. */
 export const LEGACY_PRODUCT_KEYS = new Set([
@@ -59,9 +63,10 @@ function toSearchParams(input) {
  * Resolve a legacy product/resource query URL to its canonical clean pathname.
  *
  * @param {URL|URLSearchParams|string|{search?:string,searchParams?:URLSearchParams}} input
- * @returns {string|null} A clean pathname (no query, no fragment) for one of the
- *   19 supported legacy routes, or null for unrelated/invalid values (which must
- *   continue through normal application behavior — never redirect to an invented route).
+ * @returns {string|null} A clean pathname (no query, no fragment) for a supported
+ *   legacy route (products, resources, or a migrated public page), or null for
+ *   unrelated/invalid/unmigrated/admin values (which must continue through normal
+ *   application behavior — never redirect to an invented route).
  */
 export function resolveLegacyRouteRedirect(input) {
     const params = toSearchParams(input);
@@ -80,5 +85,7 @@ export function resolveLegacyRouteRedirect(input) {
     if (page === "resources") return "/resources";
     if (LEGACY_PRODUCT_KEYS.has(page)) return `/products/${page}`;
 
-    return null;
+    // Migrated public marketing/company/tool/hub pages (Phase 2B). Admin keys,
+    // unmigrated guides, and invalid values are not in the registry → null.
+    return getPublicPagePath(page);
 }

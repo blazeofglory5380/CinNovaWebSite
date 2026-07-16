@@ -6,9 +6,10 @@ import {
     getPublishedBlogPosts,
     siteUrl,
 } from "./blogPosts.js";
-import { productMarketing } from "./marketingImages.js";
+import { getResourceHeroImage, productMarketing } from "./marketingImages.js";
 import { getProductUrl, getProductsUrl, products } from "./products.js";
 import { getResourceUrl, getResourcesUrl, resources } from "./resources.js";
+import { getPublicPageUrl, isMigratedPublicPageKey } from "./publicPageRoutes.js";
 
 export { siteUrl };
 
@@ -136,8 +137,10 @@ export function collectSitemapEntries() {
     const entries = [];
 
     for (const page of STATIC_PUBLIC_PAGES) {
+        // Migrated public pages (Phase 2B) emit their clean route; unmigrated
+        // pages keep the legacy ?page= form until their own checkpoint.
         entries.push({
-            loc: getStaticPageUrl(page.key),
+            loc: isMigratedPublicPageKey(page.key) ? getPublicPageUrl(page.key) : getStaticPageUrl(page.key),
             lastmod: page.lastmod,
             changefreq: page.changefreq,
             priority: page.priority,
@@ -242,7 +245,11 @@ export function attachSitemapImages(entries) {
 
         const resource = resourcesByUrl.get(entry.loc);
         if (resource) {
-            pushImage(resource.coverImage, resource.title);
+            // The raw resource has no `coverImage` field (that is added by
+            // withLibraryMeta); resolve the cover straight from the existing
+            // hero registry so every resource detail URL gets its correct image.
+            const cover = getResourceHeroImage(resource.id);
+            pushImage(cover?.src, resource.title);
         }
 
         const product = productsByUrl.get(entry.loc);

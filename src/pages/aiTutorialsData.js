@@ -12,7 +12,7 @@ export const weeklyCards = [
     statusLabel: 'Available',
     title: 'How to Set Up Your First AI Workspace',
     desc: "Create accounts, pick your core tools, and organize a clean AI workspace you'll actually use.",
-    href: '/?page=ai-workspace-setup-guide',
+    href: '/guides/ai-workspace-setup',
     linkLabel: 'Read the guide →',
   },
   {
@@ -66,29 +66,29 @@ export const filterCategories = [
   'Video & Content',
 ];
 
-// Guide slugs map to the real, existing CinNova guide routes (?page=<key>).
-// The guides live at ?page= routes on this site, not at /blog/{slug}, so links
-// resolve to real pages instead of a blog not-found.
+// Guide slugs map to the real, existing CinNova guide routes (/guides/...).
+// The guides live at clean /guides/ routes on this site, not at /blog/{slug},
+// so links resolve to real pages instead of a blog not-found.
 const GUIDE_ROUTE = {
-  'how-to-write-better-ai-prompts': '/?page=ai-prompt-writing-guide',
-  'how-to-use-ai-for-research': '/?page=ai-research-guide',
-  'how-to-use-ai-for-coding': '/?page=ai-coding-guide',
-  'how-to-use-chatgpt': '/?page=chatgpt-beginner-guide',
-  'how-to-use-claude': '/?page=claude-beginner-guide',
-  'how-to-use-google-gemini': '/?page=gemini-beginner-guide',
-  'how-to-use-microsoft-copilot': '/?page=microsoft-copilot-beginner-guide',
-  'how-to-use-perplexity': '/?page=perplexity-beginner-guide',
-  'how-to-use-cursor': '/?page=cursor-beginner-guide',
-  'how-to-use-replit-ai': '/?page=replit-beginner-guide',
-  'how-to-use-canva-ai': '/?page=canva-ai-beginner-guide',
-  'using-claude-with-adobe': '/?page=claude-with-adobe-guide',
-  'designing-a-website-with-claude': '/?page=claude-website-design-guide',
-  'better-art-prompts-with-claude': '/?page=claude-art-prompts-guide',
-  'branding-and-marketing-with-claude': '/?page=claude-branding-marketing-guide',
-  'using-claude-with-canva': '/?page=claude-with-canva-guide',
-  'using-claude-with-figma': '/?page=claude-with-figma-guide',
-  'using-claude-with-cursor': '/?page=claude-with-cursor-guide',
-  'using-claude-with-higgsfield': '/?page=claude-with-higgsfield-guide',
+  'how-to-write-better-ai-prompts': '/guides/ai-prompt-writing',
+  'how-to-use-ai-for-research': '/guides/ai-research',
+  'how-to-use-ai-for-coding': '/guides/ai-coding',
+  'how-to-use-chatgpt': '/guides/chatgpt',
+  'how-to-use-claude': '/guides/claude',
+  'how-to-use-google-gemini': '/guides/gemini',
+  'how-to-use-microsoft-copilot': '/guides/microsoft-copilot',
+  'how-to-use-perplexity': '/guides/perplexity',
+  'how-to-use-cursor': '/guides/cursor',
+  'how-to-use-replit-ai': '/guides/replit',
+  'how-to-use-canva-ai': '/guides/canva-ai',
+  'using-claude-with-adobe': '/guides/claude-with-adobe',
+  'designing-a-website-with-claude': '/guides/claude-website-design',
+  'better-art-prompts-with-claude': '/guides/claude-art-prompts',
+  'branding-and-marketing-with-claude': '/guides/claude-branding-marketing',
+  'using-claude-with-canva': '/guides/claude-with-canva',
+  'using-claude-with-figma': '/guides/claude-with-figma',
+  'using-claude-with-cursor': '/guides/claude-with-cursor',
+  'using-claude-with-higgsfield': '/guides/claude-with-higgsfield',
 };
 export const guideRouteFor = (slug) => GUIDE_ROUTE[slug] || `/blog/${slug}`;
 
@@ -209,7 +209,7 @@ export const featuredCreatorPlatform = {
   badge: 'Featured platform',
   name: 'Higgsfield',
   desc: 'Our featured AI video platform for creators — cinematic video from text and images, covered across setup, prompting, and full workflow guides.',
-  href: '/?page=higgsfield-ai-video-setup-guide',
+  href: '/guides/higgsfield-ai-video-setup',
   linkLabel: 'Start with Higgsfield →',
 };
 
@@ -249,5 +249,5 @@ export const ctaButtons = [
   { label: 'Blog', href: '/blog' },
   { label: 'Products', href: '/products' },
   { label: 'Real Estate AI', href: '/products/real-estate' },
-  { label: 'Free Rental Calculator', href: '/?page=free-rental-property-calculator' },
+  { label: 'Free Rental Calculator', href: '/tools/rental-property-calculator' },
 ];

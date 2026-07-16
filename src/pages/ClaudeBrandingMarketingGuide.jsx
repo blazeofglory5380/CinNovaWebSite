@@ -1,4 +1,4 @@
-// ClaudeBrandingMarketingGuide — /?page=claude-branding-marketing-guide   CSS prefix: ait-
+// ClaudeBrandingMarketingGuide — /guides/claude-branding-marketing   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

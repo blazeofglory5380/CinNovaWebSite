@@ -6,6 +6,7 @@ import {
     ROBOTS_DISALLOW_PATHS,
     siteUrl,
 } from "../src/data/seoConfig.js";
+import { MIGRATED_PUBLIC_PAGE_KEYS } from "../src/data/publicPageRoutes.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = path.join(root, "public");
@@ -124,6 +125,14 @@ function validateSitemapXml(xml, entries) {
         }
     }
 
+    // Every migrated public page (Phase 2B) must appear only as its clean route.
+    for (const loc of locMatches) {
+        const match = loc.match(/[?&]page=([a-z0-9-]+)/);
+        if (match && MIGRATED_PUBLIC_PAGE_KEYS.has(match[1])) {
+            errors.push(`Migrated public page present as legacy query URL in sitemap: ${loc}`);
+        }
+    }
+
     const imageEntries = entries.filter((entry) => entry.images?.length).length;
     if (imageEntries && !xml.includes("xmlns:image=")) {
         errors.push("Image entries present but image namespace missing");
@@ -155,14 +164,24 @@ console.log(`✓ public/sitemap.xml (${entries.length} URLs, ${imageUrlCount} im
 console.log("✓ public/sitemap-video.xml (stub for future video URLs)");
 console.log("✓ public/robots.txt");
 
+const isCleanPublic = (loc) =>
+    ["/pricing", "/about", "/contact", "/newsletter", "/languages", "/privacy", "/terms", "/guides"].includes(
+        loc.replace(siteUrl, "")
+    ) ||
+    loc.startsWith(`${siteUrl}/company/`) ||
+    loc.startsWith(`${siteUrl}/tools/`) ||
+    loc.startsWith(`${siteUrl}/guides/`);
 const breakdown = {
-    static: entries.filter((e) => e.loc.includes("?page=") || e.loc === `${siteUrl}/`).length,
+    legacyQuery: entries.filter((e) => e.loc.includes("?page=")).length,
+    cleanPublic: entries.filter((e) => isCleanPublic(e.loc)).length,
+    home: entries.filter((e) => e.loc === `${siteUrl}/`).length,
     products: entries.filter((e) => e.loc === `${siteUrl}/products` || e.loc.startsWith(`${siteUrl}/products/`)).length,
     blog: entries.filter((e) => e.loc.includes("/blog")).length,
     resources: entries.filter((e) => e.loc === `${siteUrl}/resources` || e.loc.startsWith(`${siteUrl}/resources/`)).length,
 };
 console.log(
-    `  Breakdown: ${breakdown.static} static pages, ${breakdown.products} product URLs, ${breakdown.blog} blog URLs, ${breakdown.resources} resource URLs`,
+    `  Breakdown: ${breakdown.home} home, ${breakdown.cleanPublic} clean public pages, ${breakdown.legacyQuery} legacy ?page= pages, ` +
+        `${breakdown.products} product URLs, ${breakdown.blog} blog URLs, ${breakdown.resources} resource URLs`,
 );
 
 if (process.env.CI) {

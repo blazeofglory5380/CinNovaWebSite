@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { partnerTypeImages } from "../data/marketingImages.js";
-import { siteUrl } from "../data/blogPosts.js";
 import {
     isValidEmail,
     normalizeEmailInput,
@@ -93,7 +93,7 @@ function Partners({ onSubscribe }) {
         name: "Cin Nova Partner Program",
         description:
             "Work with Cin Nova as a content partner, affiliate, technology partner, or sponsor.",
-        url: `${siteUrl}/?page=partners`,
+        url: getPublicPageUrl("partners"),
     };
 
     return (
@@ -101,7 +101,7 @@ function Partners({ onSubscribe }) {
             <SEO
                 title="Partner Program | Cin Nova"
                 description="Work with Cin Nova as a content partner, affiliate, technology partner, or sponsor. Apply to join the Cin Nova partner network."
-                url={`${siteUrl}/?page=partners`}
+                url={getPublicPageUrl("partners")}
                 type="website"
                 schema={partnerSchema}
             />

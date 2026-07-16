@@ -1,4 +1,4 @@
-// AIPromptGuideES — /?page=ai-prompt-writing-guide-es   CSS prefix: ait-
+// AIPromptGuideES — /guides/ai-prompt-writing/es   CSS prefix: ait-
 // Spanish translation of the AI prompt writing guide (multilingual starter pilot).
 import "../App.css";
 import "./AITutorials.css";
@@ -23,7 +23,7 @@ export default function AIPromptGuideES() {
             />
 
             <section className="section ait-guide-hero">
-                <a className="ait-breadcrumb" href="/?page=ai-tutorials">← Tutoriales de IA</a>
+                <a className="ait-breadcrumb" href="/guides">← Tutoriales de IA</a>
                 <p className="eyebrow">ESCRIBIR PROMPTS · PRINCIPIANTES</p>
                 <h1>Cómo escribir mejores prompts de IA: guía paso a paso para principiantes</h1>
                 <p className="ait-guide-intro">
@@ -151,8 +151,8 @@ export default function AIPromptGuideES() {
                     <h2>Sigue aprendiendo IA</h2>
                     <p>Explora más tutoriales de IA para principiantes, paso a paso, en el centro de Tutoriales de IA de CinNova.</p>
                     <div className="ait-guide-cta-actions">
-                        <a className="primary-btn" href="/?page=ai-tutorials">← Volver a Tutoriales de IA</a>
-                        <a className="ait-link-btn" href="/?page=ai-prompt-writing-guide">Read this guide in English</a>
+                        <a className="primary-btn" href="/guides">← Volver a Tutoriales de IA</a>
+                        <a className="ait-link-btn" href="/guides/ai-prompt-writing">Read this guide in English</a>
                     </div>
                 </div>
             </section>

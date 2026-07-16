@@ -1,4 +1,4 @@
-// ChatGPTBeginnerGuide — /?page=chatgpt-beginner-guide   CSS prefix: ait-
+// ChatGPTBeginnerGuide — /guides/chatgpt   CSS prefix: ait-
 // Beginner-first, screen-aware tutorial matching the AI Workspace Setup master
 // template. Vendor-neutral; CinNova is independent of OpenAI. Interfaces change,
 // so steps describe common places rather than exact, version-specific UI.

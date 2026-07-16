@@ -1,4 +1,4 @@
-// RunwayAIVideoGuide — /?page=runway-ai-video-guide   CSS prefix: ait-
+// RunwayAIVideoGuide — /guides/runway-ai-video   CSS prefix: ait-
 // Beginner-first, screen-aware creator tutorial matching the master template.
 // Vendor-neutral; CinNova is independent of Runway. Interfaces and model names
 // change, so steps describe common places and use "if you see this option"

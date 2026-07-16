@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import BusinessHero from "../components/business/BusinessHero.jsx";
 import BusinessSection from "../components/business/BusinessSection.jsx";
 import BusinessStats from "../components/business/BusinessStats.jsx";
@@ -17,7 +18,7 @@ const pressSchema = withSchemaGraph(
         name: "Cin Nova Press Center",
         description:
             "Press resources, company news, media assets, and contact information for journalists covering Cin Nova.",
-        url: `${siteUrl}/?page=press-center`,
+        url: getPublicPageUrl("press-center"),
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(pressFaq),
@@ -62,7 +63,7 @@ function PressCenter({ onNavigate }) {
             <SEO
                 title="Press Center | Cin Nova"
                 description="Press resources, company updates, media assets, and journalist contact information for Cin Nova."
-                url={`${siteUrl}/?page=press-center`}
+                url={getPublicPageUrl("press-center")}
                 type="website"
                 schema={pressSchema}
             />

@@ -1,4 +1,4 @@
-// ClaudeWithCanvaGuide — /?page=claude-with-canva-guide   CSS prefix: ait-
+// ClaudeWithCanvaGuide — /guides/claude-with-canva   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

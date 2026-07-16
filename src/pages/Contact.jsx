@@ -7,6 +7,7 @@ import { saveSubscriber } from "../data/newsletterService.js";
 import { isValidEmail, normalizeEmailInput, sanitizeText } from "../utils/security.js";
 import { trackContactSubmit } from "../utils/analytics.js";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 
 const inquiryTypes = [
@@ -24,7 +25,7 @@ const contactSchema = {
     "@type": "ContactPage",
     name: "Contact Cin Nova",
     description: "Contact Cin Nova for product questions, partnerships, school and business plans, media inquiries, and support.",
-    url: `${siteUrl}/?page=contact`,
+    url: getPublicPageUrl("contact"),
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -83,7 +84,7 @@ function Contact() {
             <SEO
                 title="Contact Cin Nova | Get in Touch"
                 description="Contact Cin Nova for product questions, partnership inquiries, school and business plans, media collaborations, or technical support."
-                url={`${siteUrl}/?page=contact`}
+                url={getPublicPageUrl("contact")}
                 type="website"
                 schema={contactSchema}
             />
@@ -198,7 +199,7 @@ function Contact() {
                         </button>
                         <p className="form-privacy-note">
                             We'll use your information according to our{" "}
-                            <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                            <a className="form-privacy-link" href="/privacy">Privacy Policy</a>.
                         </p>
                     </form>
                 </div>

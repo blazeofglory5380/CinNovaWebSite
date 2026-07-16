@@ -1,4 +1,4 @@
-// HiggsfieldRunwayGoogleFlowComparison — /?page=higgsfield-vs-runway-vs-google-flow
+// HiggsfieldRunwayGoogleFlowComparison — /guides/higgsfield-vs-runway-vs-google-flow
 // CSS prefix: ait-. Neutral, evergreen AI-video-tool comparison for creators.
 // Vendor-neutral; CinNova is independent of Higgsfield, Runway, and Google.
 // No pricing claims, no exact feature promises — uses "when available" wording.

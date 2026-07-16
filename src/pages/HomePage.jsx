@@ -27,7 +27,7 @@ const homeSchema = {
             logo: buildImageObject({ src: defaultOgImage, alt: "Cin Nova" }),
             description:
                 "Cin Nova builds practical AI software products for education, safety, real estate, and everyday decision-making.",
-            sameAs: [`${siteUrl}/blog`, `${siteUrl}/?page=newsletter`],
+            sameAs: [`${siteUrl}/blog`, `${siteUrl}/newsletter`],
         },
         {
             "@type": "WebSite",

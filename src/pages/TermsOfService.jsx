@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 
 const termsSchema = {
@@ -8,7 +9,7 @@ const termsSchema = {
     name: "Terms of Service — Cin Nova",
     description:
         "Terms governing use of the Cin Nova website, blog, resources, and product information, including AI and informational disclaimers.",
-    url: `${siteUrl}/?page=terms`,
+    url: getPublicPageUrl("terms"),
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -93,7 +94,7 @@ const sections = [
         title: "Contact",
         body: [
             "For questions about these Terms, contact us through the Contact page.",
-            `Contact page: ${siteUrl}/?page=contact`,
+            `Contact page: ${siteUrl}/contact`,
         ],
     },
 ];
@@ -104,7 +105,7 @@ function TermsOfService({ onNavigate }) {
             <SEO
                 title="Terms of Service | Cin Nova"
                 description="Terms governing use of the Cin Nova website, including informational disclaimers, AI limitations, acceptable use, and limitation of liability."
-                url={`${siteUrl}/?page=terms`}
+                url={getPublicPageUrl("terms")}
                 type="website"
                 schema={termsSchema}
             />

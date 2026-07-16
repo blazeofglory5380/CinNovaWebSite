@@ -1,4 +1,4 @@
-// AICodingGuide — /?page=ai-coding-guide   CSS prefix: ait-
+// AICodingGuide — /guides/ai-coding   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";
