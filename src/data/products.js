@@ -1,3 +1,5 @@
+import { siteUrl } from "./blogPosts.js";
+
 export const products = [
     {
         name: "StudyNest",
@@ -147,3 +149,20 @@ export function getProductByPage(page) {
 export function getOtherProducts(page) {
     return products.filter((product) => product.page !== page);
 }
+
+/** Canonical clean URL for the product index page. */
+export function getProductsUrl() {
+    return `${siteUrl}/products`;
+}
+
+/**
+ * Canonical clean URL for a product landing page.
+ * Accepts either a product object or a product `page` key string.
+ */
+export function getProductUrl(productOrPage) {
+    const page = typeof productOrPage === "string" ? productOrPage : productOrPage?.page;
+    return page ? `${siteUrl}/products/${page}` : getProductsUrl();
+}
+
+/** Set of valid product `page` keys for clean `/products/:key` routing. */
+export const PRODUCT_PAGE_KEYS = new Set(products.map((product) => product.page));

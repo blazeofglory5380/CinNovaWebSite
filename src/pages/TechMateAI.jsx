@@ -11,6 +11,7 @@ import TechMateFeatureCards from "../components/TechMateFeatureCards.jsx";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { getProductUrl } from "../data/products.js";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
@@ -122,7 +123,7 @@ const techmateSchema = {
     description:
         "An AI-powered tech support companion in development by Cin Nova. It helps people understand device, computer, smart-home, and software problems and follow clearer step-by-step troubleshooting.",
     operatingSystem: "Web",
-    url: `${siteUrl}/?page=techmate`,
+    url: getProductUrl("techmate"),
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
@@ -133,7 +134,7 @@ function TechMateAI() {
             <SEO
                 title="TechMate AI | AI Tech Support Companion — Cin Nova"
                 description="TechMate AI is an AI-powered tech support companion in development by Cin Nova. It turns confusing device, computer, smart-home, and software problems into simple step-by-step guidance."
-                url={`${siteUrl}/?page=techmate`}
+                url={getProductUrl("techmate")}
                 type="website"
                 schema={techmateSchema}
             />

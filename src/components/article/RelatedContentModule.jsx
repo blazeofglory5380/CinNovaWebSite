@@ -45,7 +45,7 @@ function RelatedContentModule({
                     <div className="article-download-list">
                         {resources.map((resource) => (
                             <a
-                                href={`/?resource=${resource.slug}`}
+                                href={`/resources/${resource.slug}`}
                                 key={resource.slug}
                                 className="article-download-card"
                                 onClick={(event) => {

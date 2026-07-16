@@ -16,9 +16,9 @@ export const productHero3DConfigs = {
         description:
             "Connected software for education, family safety, technology support, early learning, and real estate, plus free guides and research.",
         ctaText: "Explore Products",
-        ctaHref: "/?page=products",
+        ctaHref: "/products",
         secondaryCtaText: "Browse Resources",
-        secondaryCtaHref: "/?page=resources",
+        secondaryCtaHref: "/resources",
     },
     poisonguard: {
         modelSrc: "/models/product-heroes/poisonguard-plant-scanner.web.glb",
@@ -36,7 +36,7 @@ export const productHero3DConfigs = {
         ctaText: "Join Waitlist",
         ctaHref: "#waitlist",
         secondaryCtaText: "Safety Resources",
-        secondaryCtaHref: "/?page=resources",
+        secondaryCtaHref: "/resources",
     },
     "real-estate": {
         heroVisual: "poster",

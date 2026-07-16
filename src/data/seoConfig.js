@@ -7,8 +7,8 @@ import {
     siteUrl,
 } from "./blogPosts.js";
 import { productMarketing } from "./marketingImages.js";
-import { products } from "./products.js";
-import { getResourceUrl, resources } from "./resources.js";
+import { getProductUrl, getProductsUrl, products } from "./products.js";
+import { getResourceUrl, getResourcesUrl, resources } from "./resources.js";
 
 export { siteUrl };
 
@@ -58,8 +58,9 @@ export function getStaticPageUrl(pageKey) {
  */
 export const STATIC_PUBLIC_PAGES = [
     { key: "home", changefreq: "weekly", priority: "1.0", lastmod: BUILD_LASTMOD },
-    { key: "products", changefreq: "weekly", priority: "0.9", lastmod: BUILD_LASTMOD },
-    { key: "resources", changefreq: "weekly", priority: "0.9", lastmod: BUILD_LASTMOD },
+    // NOTE: the product index (/products) and resource index (/resources) are
+    // emitted separately via their clean-route helpers in collectSitemapEntries,
+    // so they are intentionally NOT listed here as `?page=` query routes.
     { key: "free-rental-property-calculator", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "ai-tutorials", changefreq: "weekly", priority: "0.9", lastmod: BUILD_LASTMOD },
     { key: "ai-prompt-writing-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
@@ -116,6 +117,11 @@ export const STATIC_PUBLIC_PAGES = [
 export const VALID_PAGE_KEYS = new Set([
     ...STATIC_PUBLIC_PAGES.map((page) => page.key),
     ...products.map((product) => product.page),
+    // Product/resource index keys are served on clean routes (/products,
+    // /resources) but remain valid `?page=` keys so legacy query URLs still
+    // resolve for backward compatibility (they 308-redirect to the clean route).
+    "products",
+    "resources",
     "blog-manager",
     "newsletter-admin",
     "newsletter-success",
@@ -154,14 +160,30 @@ export function collectSitemapEntries() {
         });
     }
 
+    // Product index + clean product landing routes (/products, /products/:key).
+    entries.push({
+        loc: getProductsUrl(),
+        lastmod: BUILD_LASTMOD,
+        changefreq: "weekly",
+        priority: "0.9",
+    });
+
     for (const product of products) {
         entries.push({
-            loc: getStaticPageUrl(product.page),
+            loc: getProductUrl(product),
             lastmod: BUILD_LASTMOD,
             changefreq: "monthly",
             priority: "0.85",
         });
     }
+
+    // Resource index (/resources); resource detail routes are added below.
+    entries.push({
+        loc: getResourcesUrl(),
+        lastmod: BUILD_LASTMOD,
+        changefreq: "weekly",
+        priority: "0.9",
+    });
 
     for (const post of getPublishedBlogPosts()) {
         entries.push({
@@ -200,7 +222,7 @@ export function collectSitemapEntries() {
 export function attachSitemapImages(entries) {
     const postsByUrl = new Map(getPublishedBlogPosts().map((post) => [getArticleUrl(post), post]));
     const resourcesByUrl = new Map(resources.map((resource) => [getResourceUrl(resource), resource]));
-    const productsByUrl = new Map(products.map((product) => [getStaticPageUrl(product.page), product]));
+    const productsByUrl = new Map(products.map((product) => [getProductUrl(product), product]));
 
     return entries.map((entry) => {
         const images = [];

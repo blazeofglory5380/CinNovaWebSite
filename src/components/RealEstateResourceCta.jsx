@@ -4,7 +4,7 @@ import "./RealEstateResourceCta.css";
  * RealEstateResourceCta — below-hero conversion section for the Real Estate AI
  * page. Frames investor vs. broker use cases and surfaces the two existing Real
  * Estate templates. The templates are gated content pages (no physical download
- * file exists), so cards link to the resource detail routes (/?resource=<slug>)
+ * file exists), so cards link to the resource detail routes (/resources/<slug>)
  * and the section CTA links to the Resources hub — no broken download links.
  *
  * Fully self-contained; scoped `re-conv-` classes (see RealEstateResourceCta.css).
@@ -16,7 +16,7 @@ const TEMPLATES = [
         title: "Real Estate Deal Analysis Template",
         description:
             "A beginner-friendly framework for reviewing rent, expenses, financing, cash flow, and risk before you commit to a deeper analysis.",
-        href: "/?resource=real-estate-deal-analysis-template",
+        href: "/resources/real-estate-deal-analysis-template",
         linkLabel: "View the template",
     },
     {
@@ -24,7 +24,7 @@ const TEMPLATES = [
         title: "Real Estate Cash Flow Analysis Template",
         description:
             "A ready-to-use worksheet for running income, expense, financing, and return calculations on any residential investment property.",
-        href: "/?resource=real-estate-cash-flow-analysis-template",
+        href: "/resources/real-estate-cash-flow-analysis-template",
         linkLabel: "View the template",
     },
 ];
@@ -79,7 +79,7 @@ function RealEstateResourceCta() {
                 </div>
 
                 <div className="re-conv-actions">
-                    <a className="re-conv-btn re-conv-btn--primary" href="/?page=resources">
+                    <a className="re-conv-btn re-conv-btn--primary" href="/resources">
                         Browse all templates
                     </a>
                     <a className="re-conv-btn re-conv-btn--ghost" href="#waitlist">

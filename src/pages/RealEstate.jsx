@@ -14,6 +14,7 @@ import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
+import { getProductUrl } from "../data/products.js";
 import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
@@ -40,7 +41,7 @@ const realestateSchema = {
     applicationCategory: "FinanceApplication",
     description: "AI-powered real estate investment tools for deal analysis, cash flow modeling, mortgage calculators, and market intelligence. Live beta available in the browser.",
     operatingSystem: "Web",
-    url: `${siteUrl}/?page=real-estate`,
+    url: getProductUrl("real-estate"),
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
@@ -68,7 +69,7 @@ function RealEstate() {
             <SEO
                 title="Cin Nova Real Estate | AI Investment Tools — Live Beta"
                 description="Score properties, explore a real interactive map, ask an AI advisor, and generate investor reports. The Cin Nova Real Estate beta is live — try it free in your browser."
-                url={`${siteUrl}/?page=real-estate`}
+                url={getProductUrl("real-estate")}
                 type="website"
                 schema={realestateSchema}
             />

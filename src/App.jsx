@@ -82,7 +82,8 @@ import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
-import { productDetails, products } from "./data/products.js";
+import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
+import { resolveLegacyRouteRedirect } from "./data/legacyRouteRedirects.js";
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
 import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
@@ -133,6 +134,30 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         return { page: "blog-manager", article: null, resource: null, category: null };
     }
 
+    // Clean product routes: /products (index) and /products/:key (detail).
+    if (path === "/products") {
+        return { page: "products", article: null, resource: null, category: null };
+    }
+    const productMatch = path.match(/^\/products\/([^/]+)$/);
+    if (productMatch) {
+        const productKey = decodeURIComponent(productMatch[1]);
+        if (PRODUCT_PAGE_KEYS.has(productKey)) {
+            return { page: productKey, article: null, resource: null, category: null };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    // Clean resource routes: /resources (index) and /resources/:slug (detail).
+    if (path === "/resources") {
+        return { page: "resources", article: null, resource: null, category: null };
+    }
+    const resourceMatch = path.match(/^\/resources\/([^/]+)$/);
+    if (resourceMatch) {
+        const resource = getResourceBySlug(decodeURIComponent(resourceMatch[1]));
+        if (resource) return { page: "resource", article: null, resource, category: null };
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
     const categoryMatch = path.match(/^\/blog\/category\/([^/]+)$/);
     if (categoryMatch) {
         const category = getCategoryBySlug(decodeURIComponent(categoryMatch[1]));
@@ -181,6 +206,21 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     return { page: "home", article: null, resource: null, category: null };
 }
 
+/**
+ * Map an internal page key to its canonical URL path. Products and the product
+ * index resolve to clean `/products` routes; the resource index to `/resources`.
+ * All other static keys keep their legacy `?page=` form (not migrated in this
+ * phase). Resource detail navigation uses `openResource` (clean `/resources/:slug`).
+ */
+function pathForPage(nextPage) {
+    if (nextPage === "blog") return "/blog";
+    if (nextPage === "blog-manager") return "/blog-admin";
+    if (nextPage === "products") return "/products";
+    if (nextPage === "resources") return "/resources";
+    if (PRODUCT_PAGE_KEYS.has(nextPage)) return `/products/${nextPage}`;
+    return `/?page=${nextPage}`;
+}
+
 const POPUP_KEY = "newsletterDismissed";
 const EXIT_KEY = "cn_exit_popup_dismissed";
 const STICKY_KEY = "cn_sticky_dismissed";
@@ -205,6 +245,25 @@ function App() {
     const [stickyDismissed, setStickyDismissed] = useState(
         () => safeGetSessionFlag(STICKY_KEY)
     );
+
+    // Client-side fallback that canonicalizes legacy product/resource query URLs
+    // to their clean path. On Vercel the edge Routing Middleware (middleware.js)
+    // is the PRIMARY handler — it issues a true 308 with a query-free Location, so
+    // this rarely fires there. It remains for local dev (`vite`) and any non-Vercel
+    // host where middleware does not run, and it uses the SAME shared resolver as
+    // the middleware so the two can never diverge. Runs once on mount; only the
+    // 19 supported legacy forms resolve — other `?page=` routes are left untouched.
+    useEffect(() => {
+        const cleanPath = resolveLegacyRouteRedirect(window.location.search);
+        if (!cleanPath) return;
+        const current = window.location.pathname + window.location.search;
+        const onLegacyRoot = window.location.pathname === "/";
+        const onCleanPathWithStrayQuery =
+            window.location.pathname === cleanPath && Boolean(window.location.search);
+        if ((onLegacyRoot || onCleanPathWithStrayQuery) && current !== cleanPath) {
+            window.history.replaceState({}, "", cleanPath);
+        }
+    }, []);
 
     // Track SPA page views whenever the routed view changes.
     useEffect(() => {
@@ -337,7 +396,7 @@ function App() {
         setSelectedResource(null);
         setSelectedCategory("All");
         setPage("resources");
-        pushRoute("/?page=resources");
+        pushRoute("/resources");
         scrollTop();
     }
 
@@ -355,7 +414,7 @@ function App() {
         setSelectedResource(resource);
         setSelectedCategory("All");
         setPage("resource");
-        pushRoute(`/?resource=${resource.slug}`);
+        pushRoute(`/resources/${resource.slug}`);
         scrollTop();
     }
 
@@ -364,13 +423,7 @@ function App() {
         setSelectedResource(null);
         setSelectedCategory("All");
         setPage(nextPage);
-        pushRoute(
-            nextPage === "blog"
-                ? "/blog"
-                : nextPage === "blog-manager"
-                  ? "/blog-admin"
-                  : `/?page=${nextPage}`,
-        );
+        pushRoute(pathForPage(nextPage));
         scrollTop();
     }
 

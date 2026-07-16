@@ -130,6 +130,149 @@ export function buildArticleSchema(post, relatedPosts, { siteUrl, defaultOgImage
     };
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// Product / resource / index metadata + schema (Phase 2A)
+// All values are derived strictly from repository data. No prices, ratings,
+// reviews, launch dates, download counts, or availability claims are invented.
+// ─────────────────────────────────────────────────────────────────────────
+
+export function getProductsIndexMetadata({ siteUrl, defaultOgImage }) {
+    return {
+        title: "CinNova Products | AI Tools for Learning, Safety, Support & Real Estate",
+        description:
+            "Explore the CinNova product ecosystem: StudyNest, PoisonGuard, Kiddo, TechMate AI, and CinNova Real Estate AI — five practical AI platforms built for real everyday problems.",
+        canonical: `${siteUrl}/products`,
+        type: "website",
+        image: toAbsoluteUrl(siteUrl, defaultOgImage),
+    };
+}
+
+export function getProductMetadata(product, { siteUrl, defaultOgImage }) {
+    return {
+        title: `${product.name} | ${product.category} — CinNova`,
+        description: product.description,
+        canonical: `${siteUrl}/products/${product.page}`,
+        type: "website",
+        image: toAbsoluteUrl(siteUrl, product.image || defaultOgImage),
+    };
+}
+
+export function getResourcesIndexMetadata({ siteUrl, defaultOgImage }) {
+    return {
+        title: "CinNova Resources | Free Guides, Templates, Checklists & White Papers",
+        description:
+            "Browse free CinNova resources: starter guides, checklists, templates, white papers, product brochures, and case studies for learning, safety, real estate, and building AI products.",
+        canonical: `${siteUrl}/resources`,
+        type: "website",
+        image: toAbsoluteUrl(siteUrl, defaultOgImage),
+    };
+}
+
+export function getResourceMetadata(resource, { siteUrl, defaultOgImage }) {
+    return {
+        title: `${resource.title} | CinNova Resources`,
+        description: resource.description,
+        canonical: `${siteUrl}/resources/${resource.slug}`,
+        type: "article",
+        image: toAbsoluteUrl(siteUrl, resource.coverImage?.src || defaultOgImage),
+    };
+}
+
+export function buildProductSchema(product, { siteUrl, defaultOgImage }) {
+    const metadata = getProductMetadata(product, { siteUrl, defaultOgImage });
+    const image = toAbsoluteUrl(siteUrl, product.image || defaultOgImage);
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                name: metadata.title,
+                description: metadata.description,
+                url: metadata.canonical,
+                isPartOf: { "@type": "WebSite", name: "CinNova", url: siteUrl },
+            },
+            {
+                "@type": "SoftwareApplication",
+                name: product.name,
+                applicationCategory: product.category,
+                operatingSystem: "Web",
+                description: product.description,
+                url: metadata.canonical,
+                image: {
+                    "@type": "ImageObject",
+                    url: image,
+                    ...(product.imageAlt ? { name: product.imageAlt } : {}),
+                },
+                publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
+            },
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+                    { "@type": "ListItem", position: 2, name: "Products", item: `${siteUrl}/products` },
+                    { "@type": "ListItem", position: 3, name: product.name, item: metadata.canonical },
+                ],
+            },
+        ],
+    };
+}
+
+export function buildResourceSchema(resource, { siteUrl, defaultOgImage }) {
+    const metadata = getResourceMetadata(resource, { siteUrl, defaultOgImage });
+    const cover = resource.coverImage?.src ? toAbsoluteUrl(siteUrl, resource.coverImage.src) : null;
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                name: metadata.title,
+                description: metadata.description,
+                url: metadata.canonical,
+                isPartOf: { "@type": "WebSite", name: "CinNova", url: siteUrl },
+            },
+            {
+                "@type": "CreativeWork",
+                name: resource.title,
+                headline: resource.title,
+                description: resource.description,
+                url: metadata.canonical,
+                genre: resource.category,
+                about: resource.product,
+                learningResourceType: resource.format,
+                ...(cover
+                    ? {
+                          image: {
+                              "@type": "ImageObject",
+                              url: cover,
+                              ...(resource.coverImage.alt ? { name: resource.coverImage.alt } : {}),
+                          },
+                      }
+                    : {}),
+                publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
+            },
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+                    { "@type": "ListItem", position: 2, name: "Resources", item: `${siteUrl}/resources` },
+                    { "@type": "ListItem", position: 3, name: resource.title, item: metadata.canonical },
+                ],
+            },
+        ],
+    };
+}
+
+export function buildCollectionSchema(metadata, items) {
+    return {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: metadata.title,
+        url: metadata.canonical,
+        description: metadata.description,
+        hasPart: items.map((item) => ({ "@type": item.type, name: item.name, url: item.url })),
+    };
+}
+
 export function renderHeadTags(metadata, schema) {
     const tags = [
         `<title>${escapeHtml(metadata.title)}</title>`,

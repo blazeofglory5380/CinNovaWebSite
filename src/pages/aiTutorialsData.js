@@ -247,7 +247,7 @@ export const youtubePaths = [
 
 export const ctaButtons = [
   { label: 'Blog', href: '/blog' },
-  { label: 'Products', href: '/?page=products' },
-  { label: 'Real Estate AI', href: '/?page=real-estate' },
+  { label: 'Products', href: '/products' },
+  { label: 'Real Estate AI', href: '/products/real-estate' },
   { label: 'Free Rental Calculator', href: '/?page=free-rental-property-calculator' },
 ];
