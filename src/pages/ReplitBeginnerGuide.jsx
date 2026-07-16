@@ -1,4 +1,4 @@
-// ReplitBeginnerGuide — /?page=replit-beginner-guide   CSS prefix: ait-
+// ReplitBeginnerGuide — /guides/replit   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

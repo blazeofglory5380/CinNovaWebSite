@@ -1,5 +1,5 @@
 // ============================================================
-// CinNova — AI Tutorials page (/?page=ai-tutorials)
+// CinNova — AI Tutorials page (/guides)
 // Drop-in page component. Assumes the existing CinNova app
 // renders the navbar and footer around it.
 // ============================================================
@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import './AiTutorialsPage.css';
 import SEO from '../components/SEO.jsx';
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from '../data/blogPosts.js';
 import { saveSubscriber } from '../data/newsletterService.js';
 import {
@@ -33,8 +34,8 @@ import {
 const GUIDES_VISIBLE_LIMIT = 6;
 
 // Preserve the existing SEO system: canonical + CollectionPage schema for the
-// /?page=ai-tutorials route (registered in seoConfig / sitemap).
-const PAGE_URL = `${siteUrl}/?page=ai-tutorials`;
+// /guides route (registered in seoConfig / sitemap).
+const PAGE_URL = getPublicPageUrl("ai-tutorials");
 const hubSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -576,7 +577,7 @@ export default function AiTutorialsPage() {
             ))}
           </div>
           <p className="ai-tutorials-cta-fineprint">
-            By subscribing you agree to our <a href="/?page=privacy">Privacy Policy</a>.
+            By subscribing you agree to our <a href="/privacy">Privacy Policy</a>.
           </p>
         </div>
       </section>

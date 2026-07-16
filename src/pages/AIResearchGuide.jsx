@@ -1,4 +1,4 @@
-// AIResearchGuide — /?page=ai-research-guide   CSS prefix: ait-
+// AIResearchGuide — /guides/ai-research   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import BusinessHero from "../components/business/BusinessHero.jsx";
 import BusinessSection from "../components/business/BusinessSection.jsx";
 import BusinessFAQ from "../components/business/BusinessFAQ.jsx";
@@ -16,7 +17,7 @@ const partnershipsSchema = withSchemaGraph(
         name: "Cin Nova Partnerships",
         description:
             "Explore technology, education, real estate, media, affiliate, and contributor partnership opportunities with Cin Nova.",
-        url: `${siteUrl}/?page=partnerships`,
+        url: getPublicPageUrl("partnerships"),
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(partnershipsFaq),
@@ -33,7 +34,7 @@ function Partnerships({ onNavigate }) {
             <SEO
                 title="Partnerships | Cin Nova"
                 description="Partner with Cin Nova across technology, education, real estate, media, affiliate programs, and guest contributor opportunities."
-                url={`${siteUrl}/?page=partnerships`}
+                url={getPublicPageUrl("partnerships")}
                 type="website"
                 schema={partnershipsSchema}
             />

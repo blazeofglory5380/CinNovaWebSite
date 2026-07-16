@@ -1,4 +1,4 @@
-// CinNovaCinematicAssetLibraryGuide — /?page=cinnova-cinematic-asset-library-guide
+// CinNovaCinematicAssetLibraryGuide — /guides/cinnova-cinematic-asset-library
 // CSS prefix: ait-. A practical production-workflow guide for organizing a
 // reusable cinematic asset library across CinNova products. Evergreen, neutral.
 // Only use assets CinNova owns, created, licensed, or has permission to use.

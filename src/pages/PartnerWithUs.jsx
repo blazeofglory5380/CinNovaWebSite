@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { trackSponsorCtaClick } from "../utils/analytics.js";
 
@@ -72,7 +73,7 @@ const partnerSchema = {
     name: "Partner With Cin Nova",
     description:
         "Partner with Cin Nova through technology, education, real estate, affiliate, and guest contributor opportunities.",
-    url: `${siteUrl}/?page=partner-with-us`,
+    url: getPublicPageUrl("partner-with-us"),
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -87,7 +88,7 @@ function PartnerWithUs({ onNavigate }) {
             <SEO
                 title="Partner With Us | Cin Nova"
                 description="Explore technology, education, real estate, affiliate, and guest contributor partnership opportunities with Cin Nova."
-                url={`${siteUrl}/?page=partner-with-us`}
+                url={getPublicPageUrl("partner-with-us")}
                 type="website"
                 schema={partnerSchema}
             />

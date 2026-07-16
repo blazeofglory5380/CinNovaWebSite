@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 
 const privacySchema = {
@@ -8,7 +9,7 @@ const privacySchema = {
     name: "Privacy Policy — Cin Nova",
     description:
         "How Cin Nova collects, uses, and protects information on getcinnova.com, including analytics, newsletter signups, downloads, and contact forms.",
-    url: `${siteUrl}/?page=privacy`,
+    url: getPublicPageUrl("privacy"),
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 
@@ -64,7 +65,7 @@ const sections = [
         title: "Data deletion requests",
         body: [
             "To request deletion of personal information we hold about you (such as a newsletter subscription once backend processing is enabled), contact us through the Contact page and include “Privacy — Data Deletion Request” in your message along with the email address associated with your request.",
-            `Contact page: ${siteUrl}/?page=contact`,
+            `Contact page: ${siteUrl}/contact`,
         ],
     },
     {
@@ -87,7 +88,7 @@ function PrivacyPolicy({ onNavigate }) {
             <SEO
                 title="Privacy Policy | Cin Nova"
                 description="Learn how Cin Nova handles analytics, newsletter signups, resource downloads, localStorage, contact forms, and your privacy rights."
-                url={`${siteUrl}/?page=privacy`}
+                url={getPublicPageUrl("privacy")}
                 type="website"
                 schema={privacySchema}
             />

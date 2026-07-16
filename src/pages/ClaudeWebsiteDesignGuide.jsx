@@ -1,4 +1,4 @@
-// ClaudeWebsiteDesignGuide — /?page=claude-website-design-guide   CSS prefix: ait-
+// ClaudeWebsiteDesignGuide — /guides/claude-website-design   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

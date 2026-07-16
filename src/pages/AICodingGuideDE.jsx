@@ -1,4 +1,4 @@
-// AICodingGuideDE — /?page=ai-coding-guide-de   CSS prefix: ait-
+// AICodingGuideDE — /guides/ai-coding/de   CSS prefix: ait-
 // German translation of the AI coding guide (multilingual starter pilot).
 import "../App.css";
 import "./AITutorials.css";
@@ -23,7 +23,7 @@ export default function AICodingGuideDE() {
             />
 
             <section className="section ait-guide-hero">
-                <a className="ait-breadcrumb" href="/?page=ai-tutorials">← KI-Tutorials</a>
+                <a className="ait-breadcrumb" href="/guides">← KI-Tutorials</a>
                 <p className="eyebrow">KI ZUM PROGRAMMIEREN · ANFÄNGER</p>
                 <h1>KI zum Programmieren nutzen: Schritt-für-Schritt-Anleitung für Anfänger</h1>
                 <p className="ait-guide-intro">
@@ -146,8 +146,8 @@ export default function AICodingGuideDE() {
                     <h2>Lernen Sie weiter über KI</h2>
                     <p>Entdecken Sie weitere anfängerfreundliche, schrittweise KI-Tutorials im KI-Tutorials-Center von CinNova.</p>
                     <div className="ait-guide-cta-actions">
-                        <a className="primary-btn" href="/?page=ai-tutorials">← Zurück zu den KI-Tutorials</a>
-                        <a className="ait-link-btn" href="/?page=ai-coding-guide">Read this guide in English</a>
+                        <a className="primary-btn" href="/guides">← Zurück zu den KI-Tutorials</a>
+                        <a className="ait-link-btn" href="/guides/ai-coding">Read this guide in English</a>
                     </div>
                 </div>
             </section>

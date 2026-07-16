@@ -1,4 +1,4 @@
-// HiggsfieldWebsiteHeroVideoGuide — /?page=higgsfield-website-hero-video-guide
+// HiggsfieldWebsiteHeroVideoGuide — /guides/higgsfield-website-hero-video
 // CSS prefix: ait-. Production-focused, screen-aware guide for making clean,
 // loop-friendly website hero videos with Higgsfield. Evergreen, vendor-neutral;
 // CinNova is independent of Higgsfield. No pricing/quality promises; "if you

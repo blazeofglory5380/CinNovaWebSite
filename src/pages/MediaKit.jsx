@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./MediaKit.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { mediaKitAssets, mediaKitPlacements, mediaKitSegments } from "../data/marketingImages.js";
 import { siteUrl } from "../data/blogPosts.js";
 import {
@@ -123,7 +124,7 @@ function downloadAsset(assetType) {
                 "",
                 "PLACEMENT OPPORTUNITIES",
                 "For advertising rates and placement specs, see the Cin Nova Media Kit.",
-                `Website: ${siteUrl}/?page=media-kit`,
+                `Website: ${siteUrl}/company/media-kit`,
                 `Email: ${CONTACT_EMAIL}`,
                 "",
                 "© 2026 Cin Nova. All Rights Reserved.",
@@ -158,7 +159,7 @@ const mediaKitSchema = {
     "@type": "WebPage",
     name: "Cin Nova Media Kit",
     description: "Advertise with Cin Nova. Audience stats, ad placement options, and brand assets.",
-    url: `${siteUrl}/?page=media-kit`,
+    url: getPublicPageUrl("media-kit"),
 };
 
 export default function MediaKit() {
@@ -201,7 +202,7 @@ export default function MediaKit() {
             <SEO
                 title="Media Kit | Advertise with Cin Nova"
                 description="CinNova media kit: audience stats, ad placements, brand assets, and advertising contact. Reach students, parents, real estate investors, and tech professionals."
-                url={`${siteUrl}/?page=media-kit`}
+                url={getPublicPageUrl("media-kit")}
                 type="website"
                 schema={mediaKitSchema}
             />
@@ -231,7 +232,7 @@ export default function MediaKit() {
                                 Download Press Pack
                             </button>
                             <a className="mk-btn mk-btn--outline" href="#contact">Contact for Rates</a>
-                            <a className="mk-btn mk-btn--outline" href="/?page=advertise">Advertise With Us</a>
+                            <a className="mk-btn mk-btn--outline" href="/company/advertise">Advertise With Us</a>
                         </div>
                     </div>
                     <div className="mk-hero-art" aria-hidden="true">
@@ -336,8 +337,8 @@ export default function MediaKit() {
                     use the contact form below for a quote.
                 </p>
                 <div className="mk-hero-ctas mk-placements-actions">
-                    <a className="mk-btn mk-btn--outline" href="/?page=sponsor-newsletter">Sponsor the Newsletter</a>
-                    <a className="mk-btn mk-btn--outline" href="/?page=partnerships">Partnerships</a>
+                    <a className="mk-btn mk-btn--outline" href="/company/sponsor-newsletter">Sponsor the Newsletter</a>
+                    <a className="mk-btn mk-btn--outline" href="/company/partnerships">Partnerships</a>
                 </div>
             </section>
 

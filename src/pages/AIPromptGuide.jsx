@@ -1,4 +1,4 @@
-// AIPromptGuide — /?page=ai-prompt-writing-guide   CSS prefix: ait-
+// AIPromptGuide — /guides/ai-prompt-writing   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

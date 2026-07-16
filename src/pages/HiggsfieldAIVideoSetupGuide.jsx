@@ -1,4 +1,4 @@
-// HiggsfieldAIVideoSetupGuide — /?page=higgsfield-ai-video-setup-guide   CSS prefix: ait-
+// HiggsfieldAIVideoSetupGuide — /guides/higgsfield-ai-video-setup   CSS prefix: ait-
 // Beginner-first, screen-aware creator tutorial matching the master template.
 // Vendor-neutral; CinNova is independent of Higgsfield. Interfaces change, so
 // steps describe common places and use "if you see this option" framing. No

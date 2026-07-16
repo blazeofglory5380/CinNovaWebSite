@@ -1,8 +1,9 @@
-// FreeRentalCalculator — /?page=free-rental-property-calculator   CSS prefix: frc-
+// FreeRentalCalculator — /tools/rental-property-calculator   CSS prefix: frc-
 import { useEffect, useMemo, useRef, useState } from "react";
 import "../App.css";
 import "./FreeRentalCalculator.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import {
     trackRentalCalculatorView,
@@ -12,7 +13,7 @@ import {
 } from "../utils/analytics.js";
 
 const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
-const PAGE_URL = `${siteUrl}/?page=free-rental-property-calculator`;
+const PAGE_URL = getPublicPageUrl("free-rental-property-calculator");
 
 const calcSchema = {
     "@context": "https://schema.org",

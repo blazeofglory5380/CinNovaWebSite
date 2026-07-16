@@ -1,20 +1,20 @@
-// Languages — /?page=languages   CSS prefix: lang-
+// Languages — /languages   CSS prefix: lang-
 // Lightweight multilingual welcome. All content is static and local — no
 // external translation APIs, scripts, or widgets. Only the sections below are
 // translated; the rest of the site remains in English for now.
 import "../App.css";
 import "./Languages.css";
 import SEO from "../components/SEO.jsx";
-import { siteUrl } from "../data/blogPosts.js";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { trackLanguageSectionClick, trackLanguageInternalLinkClick } from "../utils/analytics.js";
 
-const PAGE_URL = `${siteUrl}/?page=languages`;
+const PAGE_URL = getPublicPageUrl("languages");
 
 // key -> { href, destPage } so link clicks can report a stable destination_page.
 const LINKS = {
-    tutorials:  { href: "/?page=ai-tutorials",                    dest: "ai-tutorials" },
+    tutorials:  { href: "/guides",                    dest: "ai-tutorials" },
     products:   { href: "/products",                              dest: "products" },
-    calculator: { href: "/?page=free-rental-property-calculator", dest: "free-rental-property-calculator" },
+    calculator: { href: "/tools/rental-property-calculator", dest: "free-rental-property-calculator" },
     realEstate: { href: "/products/real-estate",                  dest: "real-estate" },
     blog:       { href: "/blog",                                  dest: "blog" },
 };
@@ -48,9 +48,9 @@ const SECTIONS = [
             realEstate: "IA para bienes raíces",
             blog: "Blog",
         },
-        promptGuide: { href: "/?page=ai-prompt-writing-guide-es", dest: "ai-prompt-writing-guide-es", label: "Nuevo: Guía para escribir mejores prompts de IA" },
-        researchGuide: { href: "/?page=ai-research-guide-es", dest: "ai-research-guide-es", label: "Nuevo: Guía para usar la IA en la investigación" },
-        codingGuide: { href: "/?page=ai-coding-guide-es", dest: "ai-coding-guide-es", label: "Nuevo: Guía para usar la IA en la programación" },
+        promptGuide: { href: "/guides/ai-prompt-writing/es", dest: "ai-prompt-writing-guide-es", label: "Nuevo: Guía para escribir mejores prompts de IA" },
+        researchGuide: { href: "/guides/ai-research/es", dest: "ai-research-guide-es", label: "Nuevo: Guía para usar la IA en la investigación" },
+        codingGuide: { href: "/guides/ai-coding/es", dest: "ai-coding-guide-es", label: "Nuevo: Guía para usar la IA en la programación" },
         note: "Esta sección en tu idioma es un punto de partida. Próximamente habrá más páginas traducidas.",
     },
     {
@@ -71,9 +71,9 @@ const SECTIONS = [
             realEstate: "IA pour l'immobilier",
             blog: "Blog",
         },
-        promptGuide: { href: "/?page=ai-prompt-writing-guide-fr", dest: "ai-prompt-writing-guide-fr", label: "Nouveau : Guide pour écrire de meilleurs prompts IA" },
-        researchGuide: { href: "/?page=ai-research-guide-fr", dest: "ai-research-guide-fr", label: "Nouveau : Guide pour utiliser l'IA dans la recherche" },
-        codingGuide: { href: "/?page=ai-coding-guide-fr", dest: "ai-coding-guide-fr", label: "Nouveau : Guide pour utiliser l'IA en programmation" },
+        promptGuide: { href: "/guides/ai-prompt-writing/fr", dest: "ai-prompt-writing-guide-fr", label: "Nouveau : Guide pour écrire de meilleurs prompts IA" },
+        researchGuide: { href: "/guides/ai-research/fr", dest: "ai-research-guide-fr", label: "Nouveau : Guide pour utiliser l'IA dans la recherche" },
+        codingGuide: { href: "/guides/ai-coding/fr", dest: "ai-coding-guide-fr", label: "Nouveau : Guide pour utiliser l'IA en programmation" },
         note: "Cette section dans votre langue est un point de départ. D'autres pages traduites arrivent bientôt.",
     },
     {
@@ -94,9 +94,9 @@ const SECTIONS = [
             realEstate: "KI für Immobilien",
             blog: "Blog",
         },
-        promptGuide: { href: "/?page=ai-prompt-writing-guide-de", dest: "ai-prompt-writing-guide-de", label: "Neu: Bessere KI-Prompts schreiben" },
-        researchGuide: { href: "/?page=ai-research-guide-de", dest: "ai-research-guide-de", label: "Neu: KI für die Recherche nutzen" },
-        codingGuide: { href: "/?page=ai-coding-guide-de", dest: "ai-coding-guide-de", label: "Neu: KI zum Programmieren nutzen" },
+        promptGuide: { href: "/guides/ai-prompt-writing/de", dest: "ai-prompt-writing-guide-de", label: "Neu: Bessere KI-Prompts schreiben" },
+        researchGuide: { href: "/guides/ai-research/de", dest: "ai-research-guide-de", label: "Neu: KI für die Recherche nutzen" },
+        codingGuide: { href: "/guides/ai-coding/de", dest: "ai-coding-guide-de", label: "Neu: KI zum Programmieren nutzen" },
         note: "Dieser Abschnitt in Ihrer Sprache ist ein Ausgangspunkt. Weitere übersetzte Seiten folgen bald.",
     },
 ];
@@ -167,7 +167,7 @@ export default function Languages() {
                 <p className="lang-featured">
                     <a
                         className="lang-featured-link"
-                        href="/?page=ai-prompt-writing-guide"
+                        href="/guides/ai-prompt-writing"
                         onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-prompt-writing-guide" })}
                     >
                         New: How to Write Better AI Prompts →
@@ -176,7 +176,7 @@ export default function Languages() {
                 <p className="lang-featured">
                     <a
                         className="lang-featured-link"
-                        href="/?page=ai-research-guide"
+                        href="/guides/ai-research"
                         onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-research-guide" })}
                     >
                         New: How to Use AI for Research →
@@ -185,7 +185,7 @@ export default function Languages() {
                 <p className="lang-featured">
                     <a
                         className="lang-featured-link"
-                        href="/?page=ai-coding-guide"
+                        href="/guides/ai-coding"
                         onClick={() => trackLanguageInternalLinkClick({ language: "English", destinationPage: "ai-coding-guide" })}
                     >
                         New: How to Use AI for Coding →

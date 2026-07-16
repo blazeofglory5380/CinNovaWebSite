@@ -262,6 +262,91 @@ export function buildResourceSchema(resource, { siteUrl, defaultOgImage }) {
     };
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// Migrated public marketing/company/tool/hub pages (Phase 2B, Checkpoint 1).
+// Metadata comes from the shared publicPageRoutes.js registry; no invented
+// prices, ratings, reviews, counts, dates, or contact details.
+// ─────────────────────────────────────────────────────────────────────────
+
+/** Meaningful H1 derived from a page title (text before the " | " / " — " suffix). */
+export function publicPageH1(route) {
+    return route.title.split(/\s[|—]\s/)[0].trim();
+}
+
+export function getPublicPageMetadata(route, { siteUrl, defaultOgImage }) {
+    return {
+        title: route.title,
+        description: route.description,
+        canonical: `${siteUrl}${route.path}`,
+        // Individual guides are long-form articles; other public pages are plain pages.
+        type: route.group === "guide" ? "article" : "website",
+        image: toAbsoluteUrl(siteUrl, defaultOgImage),
+    };
+}
+
+/**
+ * JSON-LD for an individual guide page: TechArticle (mirroring the client-side
+ * TutorialSEO schema: headline/description/url/publisher, plus factual
+ * inLanguage) and a Home → AI Tutorials → Guide BreadcrumbList.
+ * No dates, authors, ratings, reviews, or reading statistics are invented.
+ */
+export function buildGuideSchema(route, { siteUrl, defaultOgImage }) {
+    const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "TechArticle",
+                headline: route.title,
+                description: route.description,
+                url: metadata.canonical,
+                inLanguage: route.language || "en",
+                publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+                isPartOf: { "@type": "WebSite", name: "CinNova", url: siteUrl },
+            },
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+                    { "@type": "ListItem", position: 2, name: "AI Tutorials", item: `${siteUrl}/guides` },
+                    { "@type": "ListItem", position: 3, name: publicPageH1(route), item: metadata.canonical },
+                ],
+            },
+        ],
+    };
+}
+
+export function buildPublicPageSchema(route, { siteUrl, defaultOgImage }) {
+    const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+    const primary = {
+        "@type": route.schemaType,
+        name: metadata.title,
+        description: metadata.description,
+        url: metadata.canonical,
+        isPartOf: { "@type": "WebSite", name: "CinNova", url: siteUrl },
+    };
+    if (route.schemaType === "AboutPage") {
+        primary.about = { "@type": "Organization", name: "CinNova", url: siteUrl };
+    }
+    if (route.schemaType === "WebApplication") {
+        primary.applicationCategory = "FinanceApplication";
+        primary.operatingSystem = "Web";
+    }
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            primary,
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+                    { "@type": "ListItem", position: 2, name: publicPageH1(route), item: metadata.canonical },
+                ],
+            },
+        ],
+    };
+}
+
 export function buildCollectionSchema(metadata, items) {
     return {
         "@context": "https://schema.org",
@@ -273,7 +358,7 @@ export function buildCollectionSchema(metadata, items) {
     };
 }
 
-export function renderHeadTags(metadata, schema) {
+export function renderHeadTags(metadata, schema, alternates) {
     const tags = [
         `<title>${escapeHtml(metadata.title)}</title>`,
         `<meta name="description" content="${escapeHtml(metadata.description)}" />`,
@@ -291,6 +376,9 @@ export function renderHeadTags(metadata, schema) {
         '<meta name="twitter:site" content="@CinNova" />',
         `<meta name="twitter:image" content="${escapeHtml(metadata.image)}" />`,
     ];
+    for (const alt of alternates || []) {
+        tags.push(`<link rel="alternate" hreflang="${escapeHtml(alt.hreflang)}" href="${escapeHtml(alt.href)}" />`);
+    }
     if (schema) {
         tags.push(`<script id="cinnova-structured-data" type="application/ld+json">${escapeJsonForHtml(schema)}</script>`);
     }

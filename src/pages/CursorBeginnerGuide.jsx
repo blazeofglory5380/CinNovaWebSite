@@ -1,4 +1,4 @@
-// CursorBeginnerGuide — /?page=cursor-beginner-guide   CSS prefix: ait-
+// CursorBeginnerGuide — /guides/cursor   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

@@ -1,4 +1,4 @@
-// ClaudeWithFigmaGuide — /?page=claude-with-figma-guide   CSS prefix: ait-
+// ClaudeWithFigmaGuide — /guides/claude-with-figma   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

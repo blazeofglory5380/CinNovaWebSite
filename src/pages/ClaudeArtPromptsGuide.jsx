@@ -1,4 +1,4 @@
-// ClaudeArtPromptsGuide — /?page=claude-art-prompts-guide   CSS prefix: ait-
+// ClaudeArtPromptsGuide — /guides/claude-art-prompts   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

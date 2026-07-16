@@ -1,5 +1,6 @@
 import "../App.css";
 import SEO from "../components/SEO.jsx";
+import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import BusinessHero from "../components/business/BusinessHero.jsx";
 import BusinessSection from "../components/business/BusinessSection.jsx";
 import BusinessStats from "../components/business/BusinessStats.jsx";
@@ -64,7 +65,7 @@ const advertiseSchema = withSchemaGraph(
         name: "Advertise With Cin Nova",
         description:
             "Advertise with Cin Nova through website sponsorships, sponsored articles, and newsletter sponsorship opportunities.",
-        url: `${siteUrl}/?page=advertise`,
+        url: getPublicPageUrl("advertise"),
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(advertiseFaq),
@@ -81,7 +82,7 @@ function Advertise({ onNavigate }) {
             <SEO
                 title="Advertise With Us | Cin Nova"
                 description="Reach the Cin Nova audience through website sponsorships, sponsored articles, newsletter sponsorships, and resource placements."
-                url={`${siteUrl}/?page=advertise`}
+                url={getPublicPageUrl("advertise")}
                 type="website"
                 schema={advertiseSchema}
             />

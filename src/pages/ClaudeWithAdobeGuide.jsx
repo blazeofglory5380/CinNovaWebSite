@@ -1,4 +1,4 @@
-// ClaudeWithAdobeGuide — /?page=claude-with-adobe-guide   CSS prefix: ait-
+// ClaudeWithAdobeGuide — /guides/claude-with-adobe   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

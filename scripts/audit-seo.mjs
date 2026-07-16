@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -8,19 +8,32 @@ import {
     getPublishedBlogPosts,
     slugifyCategory,
 } from "../src/data/blogPosts.js";
-import { defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
+import { STATIC_PUBLIC_PAGES, defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
+import { getResourceHeroImage } from "../src/data/marketingImages.js";
 import { LEGACY_PRODUCT_KEYS, LEGACY_RESOURCE_SLUGS, resolveLegacyRouteRedirect } from "../src/data/legacyRouteRedirects.js";
 import {
+    GUIDE_PAGE_ROUTES,
+    PUBLIC_PAGE_ROUTES,
+    PUBLIC_SITE_URL,
+    MIGRATED_PUBLIC_PAGE_KEYS,
+    getGuideAlternates,
+    getPublicPagePath,
+} from "../src/data/publicPageRoutes.js";
+import {
     buildArticleSchema,
+    buildGuideSchema,
     buildProductSchema,
+    buildPublicPageSchema,
     buildResourceSchema,
     getArticleMetadata,
     getProductMetadata,
     getProductsIndexMetadata,
+    getPublicPageMetadata,
     getResourceMetadata,
     getResourcesIndexMetadata,
+    publicPageH1,
 } from "./seo-shared.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -256,8 +269,10 @@ for (const { scope, resource, metadata } of resourceMetas) {
         seenTargets.add(got);
     }
 
-    // Unrelated and invalid values must NOT redirect (resolver returns null).
-    for (const legacy of ["?page=about", "?page=pricing", "?page=contact", "", "?foo=bar", "?page=", "?page=not-a-real-product", "?resource=not-a-real-resource"]) {
+    // Unrelated / admin / unmigrated / invalid values must NOT redirect (resolver
+    // returns null). NOTE: about/pricing/contact are migrated public pages as of
+    // Phase 2B and are asserted to redirect in the public-pages block below.
+    for (const legacy of ["?page=newsletter-admin", "?page=blog-manager", "?page=newsletter-success", "", "?foo=bar", "?page=", "?page=not-a-real-product", "?resource=not-a-real-resource"]) {
         if (resolveLegacyRouteRedirect(legacy) !== null) error("legacy-redirects", `resolver("${legacy}") must be null (unrelated/invalid)`);
     }
 
@@ -268,6 +283,167 @@ for (const { scope, resource, metadata } of resourceMetas) {
         if (!/resolveLegacyRouteRedirect/.test(mw)) error("middleware.js", "must use the shared resolveLegacyRouteRedirect");
     } catch {
         error("middleware.js", "root middleware.js is missing");
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Phase 2B Checkpoint 1 — migrated public pages + resource sitemap images.
+// ─────────────────────────────────────────────────────────────────────────
+const RESERVED_PREFIXES = ["/blog", "/products", "/resources"];
+{
+    // Registry integrity.
+    if (PUBLIC_SITE_URL !== siteUrl) error("public-pages", `PUBLIC_SITE_URL (${PUBLIC_SITE_URL}) must equal siteUrl (${siteUrl})`);
+    if (PUBLIC_PAGE_ROUTES.length !== 50) error("public-pages", `expected exactly 50 migrated public pages, found ${PUBLIC_PAGE_ROUTES.length}`);
+    if (MIGRATED_PUBLIC_PAGE_KEYS.size !== 50) error("public-pages", `expected 50 unique migrated keys, found ${MIGRATED_PUBLIC_PAGE_KEYS.size}`);
+
+    // The 404 error page must never be a real route: no registry entry for /404
+    // and the NotFound component must suppress its canonical (no /404 canonical).
+    if (PUBLIC_PAGE_ROUTES.some((r) => r.path === "/404") || MIGRATED_PUBLIC_PAGE_KEYS.has("404")) {
+        error("404", "the registry must not contain a /404 route");
+    }
+    try {
+        const notFoundSrc = await readFile(path.join(root, "src", "pages", "NotFound.jsx"), "utf8");
+        if (/url\s*=\s*\{[^}]*\/404/.test(notFoundSrc) || /["'`][^"'`]*\/404["'`]/.test(notFoundSrc)) {
+            error("404", "NotFound.jsx must not set /404 as a canonical/url");
+        }
+        if (!/\bnoCanonical\b/.test(notFoundSrc)) {
+            error("404", "NotFound.jsx must use the SEO noCanonical prop to suppress its canonical");
+        }
+    } catch {
+        error("404", "could not read src/pages/NotFound.jsx");
+    }
+
+    const seenKeys = new Set();
+    const seenPaths = new Set();
+    const staticKeys = new Set(STATIC_PUBLIC_PAGES.map((p) => p.key));
+    for (const route of PUBLIC_PAGE_ROUTES) {
+        const scope = `public:${route.key}`;
+        if (seenKeys.has(route.key)) error(scope, "duplicate page key");
+        seenKeys.add(route.key);
+        if (seenPaths.has(route.path)) error(scope, `duplicate clean path ${route.path}`);
+        seenPaths.add(route.path);
+        if (!/^\/[a-z0-9/-]*$/.test(route.path)) error(scope, `clean path is not lowercase/simple: ${route.path}`);
+        if (/[?#]/.test(route.path)) error(scope, `clean path contains a query or fragment: ${route.path}`);
+        if (route.path !== route.path.toLowerCase()) error(scope, "clean path is not lowercase");
+        for (const reserved of RESERVED_PREFIXES) {
+            if (route.path === reserved || route.path.startsWith(`${reserved}/`)) error(scope, `clean path collides with reserved namespace ${reserved}`);
+        }
+        if (!staticKeys.has(route.key)) error(scope, "migrated key is not present in STATIC_PUBLIC_PAGES");
+
+        // Metadata + schema.
+        const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+        if (metadata.canonical !== `${siteUrl}${route.path}`) error(scope, "canonical does not match clean route");
+        if (!metadata.canonical.startsWith("https://getcinnova.com/") || /[?#]/.test(metadata.canonical)) error(scope, "canonical must be absolute production HTTPS without query/fragment");
+        if (!route.title?.trim()) error(scope, "missing title");
+        if (!route.description?.trim()) error(scope, "missing meta description");
+        const schemaBuilder = route.group === "guide" ? buildGuideSchema : buildPublicPageSchema;
+        const schemaGraph = schemaBuilder(route, { siteUrl, defaultOgImage })["@graph"];
+        const types = new Set(schemaGraph.map((n) => n["@type"]));
+        if (!types.has(route.schemaType) || !types.has("BreadcrumbList")) error(scope, `schema must contain ${route.schemaType} and BreadcrumbList`);
+        if (route.group === "guide") {
+            const article = schemaGraph.find((n) => n["@type"] === "TechArticle");
+            if (article?.inLanguage !== (route.language || "en")) error(scope, `schema inLanguage (${article?.inLanguage}) does not match route language (${route.language})`);
+        }
+
+        // Resolver must 308 this legacy key to the clean path (query-free).
+        const resolved = resolveLegacyRouteRedirect(`?page=${route.key}`);
+        if (resolved !== route.path) error(scope, `resolver("?page=${route.key}") = ${resolved}; expected ${route.path}`);
+        if (resolved && /[?#]/.test(resolved)) error(scope, `resolver target contains query/fragment: ${resolved}`);
+        if (getPublicPagePath(route.key) !== route.path) error(scope, "getPublicPagePath disagrees with registry path");
+    }
+    // Unique titles/descriptions among the 16.
+    for (const [label, pick] of [["title", (r) => r.title], ["description", (r) => r.description]]) {
+        const seen = new Map();
+        for (const route of PUBLIC_PAGE_ROUTES) {
+            const v = normalized(pick(route));
+            if (seen.has(v)) error(`public:${route.key}`, `duplicate ${label} also used by ${seen.get(v)}`);
+            else seen.set(v, route.key);
+        }
+    }
+    // Admin + excluded + invalid keys must NOT redirect.
+    for (const key of ["newsletter-admin", "blog-manager", "newsletter-success", "not-a-real-page"]) {
+        if (resolveLegacyRouteRedirect(`?page=${key}`) !== null) error("public-pages", `?page=${key} must not redirect (admin/excluded/invalid)`);
+    }
+
+    // ── Guide registry checks (Phase 2B, Checkpoint 2) ──
+    if (GUIDE_PAGE_ROUTES.length !== 34) error("guides", `expected exactly 34 guide entries, found ${GUIDE_PAGE_ROUTES.length}`);
+    const VALID_LANGS = new Set(["en", "es", "fr", "de"]);
+    for (const route of GUIDE_PAGE_ROUTES) {
+        const scope = `guide:${route.key}`;
+        if (!route.path.startsWith("/guides/")) error(scope, `guide path must live under /guides/: ${route.path}`);
+        if (!VALID_LANGS.has(route.language)) error(scope, `invalid language "${route.language}"`);
+        if (route.schemaType !== "TechArticle") error(scope, `guide schemaType must be TechArticle, found ${route.schemaType}`);
+    }
+    // Translated families: en/es/fr/de all present, one x-default → English, no
+    // duplicates, every alternate resolves to a real registry path, and each
+    // member's own path is inside its family.
+    const families = new Map();
+    for (const route of GUIDE_PAGE_ROUTES) {
+        if (!route.alternateGroup) continue;
+        if (!families.has(route.alternateGroup)) families.set(route.alternateGroup, []);
+        families.get(route.alternateGroup).push(route);
+    }
+    if (families.size !== 3) error("guides", `expected 3 translated families, found ${families.size}`);
+    const registryPaths = new Set(PUBLIC_PAGE_ROUTES.map((r) => r.path));
+    for (const [group, members] of families) {
+        const langs = members.map((m) => m.language).sort().join(",");
+        if (langs !== "de,en,es,fr") error(`guides:${group}`, `family languages incomplete/duplicated: ${langs}`);
+        for (const member of members) {
+            const alternates = getGuideAlternates(member.key);
+            if (!alternates) { error(`guides:${group}`, `${member.key} has no alternates`); continue; }
+            const hreflangs = alternates.map((a) => a.hreflang).sort().join(",");
+            if (hreflangs !== "de,en,es,fr,x-default") error(`guides:${group}`, `${member.key} hreflang set wrong: ${hreflangs}`);
+            const xDefault = alternates.find((a) => a.hreflang === "x-default");
+            const english = members.find((m) => m.language === "en");
+            if (xDefault?.path !== english?.path) error(`guides:${group}`, `${member.key} x-default must point at the English route`);
+            for (const alt of alternates) {
+                if (/[?#]/.test(alt.path)) error(`guides:${group}`, `alternate contains query/fragment: ${alt.path}`);
+                if (!registryPaths.has(alt.path)) error(`guides:${group}`, `alternate does not resolve to a registry route: ${alt.path}`);
+            }
+            if (!alternates.some((a) => a.hreflang === member.language && a.path === member.path)) {
+                error(`guides:${group}`, `${member.key} is missing its own language/path pairing in the family`);
+            }
+        }
+    }
+    // English-only guides must not receive invented translations.
+    for (const route of GUIDE_PAGE_ROUTES) {
+        if (!route.alternateGroup && getGuideAlternates(route.key) !== null) {
+            error(`guide:${route.key}`, "English-only guide must not have hreflang alternates");
+        }
+    }
+
+    // ── Internal navigation scan: no query-form links for ANY migrated key ──
+    {
+        const { readdir } = await import("node:fs/promises");
+        async function* walk(dir) {
+            for (const entry of await readdir(dir, { withFileTypes: true })) {
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) yield* walk(full);
+                else if (/\.(js|jsx)$/.test(entry.name)) yield full;
+            }
+        }
+        const skip = new Set(["legacyRouteRedirects.js", "publicPageRoutes.js"]);
+        for await (const file of walk(path.join(root, "src"))) {
+            if (skip.has(path.basename(file))) continue;
+            const content = await readFile(file, "utf8");
+            for (const match of content.matchAll(/\?page=([a-z0-9-]+)/g)) {
+                if (MIGRATED_PUBLIC_PAGE_KEYS.has(match[1])) {
+                    error("internal-links", `${path.relative(root, file)} still references ?page=${match[1]}`);
+                }
+            }
+        }
+    }
+
+    // Resource sitemap-image registry: every resource has an existing, correctly-mapped cover.
+    const seenCovers = new Set();
+    for (const resource of resources) {
+        const scope = `resource-image:${resource.slug}`;
+        const cover = getResourceHeroImage(resource.id);
+        if (!cover?.src) { error(scope, "missing cover image in the resource hero registry"); continue; }
+        if (withLibraryMeta(resource).coverImage?.src !== cover.src) error(scope, "cover image is assigned to the wrong resource");
+        if (seenCovers.has(cover.src)) warning(scope, `cover image ${cover.src} is shared with another resource`);
+        seenCovers.add(cover.src);
+        try { await stat(path.join(root, "public", cover.src)); } catch { error(scope, `cover file does not exist: public${cover.src}`); }
     }
 }
 
@@ -355,7 +531,7 @@ if (validateDist) {
         const twTitle = extractAttribute(html, "meta", "content", "twitter:title");
         const twImage = extractAttribute(html, "meta", "content", "twitter:image");
         const schemaText = html.match(/<script[^>]+id=["']cinnova-structured-data["'][^>]*>([\s\S]*?)<\/script>/i)?.[1];
-        const internalLinks = [...html.matchAll(/href=["'](\/(?:products|resources|blog)(?:\/[^"']*)?)["']/gi)].map((m) => m[1]);
+        const internalLinks = [...html.matchAll(/href=["'](\/(?:products|resources|blog|guides|company|tools)(?:\/[^"']*)?)["']/gi)].map((m) => m[1]);
         const expectedFromPath = `${siteUrl}/${relativeFile.replace(/\\/g, "/").replace(/\.html$/, "")}`;
 
         if (title !== metadata.title) error(scope, "generated title does not match metadata");
@@ -420,6 +596,159 @@ if (validateDist) {
         if (locSet.size !== locs.length) error("sitemap.xml", "duplicate <loc> entries in sitemap");
     } catch {
         error("sitemap.xml", "missing public/sitemap.xml");
+    }
+
+    // ── Phase 2B: generated public-page + guide HTML, sitemap, and guards ──
+    for (const route of PUBLIC_PAGE_ROUTES) {
+        const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+        const relativeFile = `${route.path.replace(/^\//, "")}.html`;
+        await validateGeneratedRoute(
+            `public:${route.key}`,
+            relativeFile,
+            metadata,
+            [route.schemaType, "BreadcrumbList"],
+            3
+        );
+        if (route.group !== "guide") continue;
+        // Guide-specific raw-HTML checks: document language + hreflang family.
+        let html;
+        try { html = await readFile(path.join(root, "dist", relativeFile), "utf8"); } catch { continue; }
+        const scope = `guide:${route.key}`;
+        const langAttr = html.match(/<html lang="([^"]*)"/)?.[1];
+        if (langAttr !== (route.language || "en")) error(scope, `generated <html lang> is "${langAttr}"; expected "${route.language}"`);
+        const hreflangTags = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)]
+            .map((m) => ({ hreflang: m[1], href: m[2] }));
+        const expectedAlternates = getGuideAlternates(route.key);
+        if (expectedAlternates) {
+            const got = hreflangTags.map((t) => t.hreflang).sort().join(",");
+            if (got !== "de,en,es,fr,x-default") error(scope, `generated hreflang set wrong: ${got}`);
+            for (const tag of hreflangTags) {
+                if (/[?#]/.test(tag.href)) error(scope, `hreflang href contains query/fragment: ${tag.href}`);
+                if (!tag.href.startsWith(`${siteUrl}/guides/`)) error(scope, `hreflang href not a clean guide URL: ${tag.href}`);
+                const expected = expectedAlternates.find((a) => a.hreflang === tag.hreflang);
+                if (!expected || `${siteUrl}${expected.path}` !== tag.href) error(scope, `hreflang ${tag.hreflang} points at ${tag.href}; expected ${siteUrl}${expected?.path}`);
+            }
+            // Every alternate must resolve to a real generated file.
+            for (const alt of expectedAlternates) {
+                try { await stat(path.join(root, "dist", `${alt.path.replace(/^\//, "")}.html`)); }
+                catch { error(scope, `hreflang alternate has no generated file: ${alt.path}`); }
+            }
+        } else if (hreflangTags.length) {
+            error(scope, "English-only guide must not emit hreflang alternates");
+        }
+    }
+
+    try {
+        const sitemap = await readFile(path.join(root, "public", "sitemap.xml"), "utf8");
+        const locSet = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+        for (const route of PUBLIC_PAGE_ROUTES) {
+            if (!locSet.has(`${siteUrl}${route.path}`)) error("sitemap.xml", `missing migrated clean URL ${siteUrl}${route.path}`);
+            if (locSet.has(`${siteUrl}/?page=${route.key}`)) error("sitemap.xml", `migrated page still present as legacy ?page=${route.key}`);
+        }
+        // Every resource detail URL must carry its correct <image:image> entry.
+        for (const resource of resources) {
+            const locTag = `<loc>${getResourceUrl(resource)}</loc>`;
+            const i = sitemap.indexOf(locTag);
+            if (i < 0) { error("sitemap.xml", `resource ${resource.slug} <loc> missing`); continue; }
+            const block = sitemap.slice(i, sitemap.indexOf("</url>", i));
+            if (!/<image:image>/.test(block)) { error("sitemap.xml", `resource ${resource.slug} is missing an <image:image> entry`); continue; }
+            const cover = getResourceHeroImage(resource.id);
+            if (cover?.src && !block.includes(`${siteUrl}${cover.src}`)) error("sitemap.xml", `resource ${resource.slug} sitemap image does not match its registry cover`);
+        }
+    } catch {
+        error("sitemap.xml", "missing public/sitemap.xml for Phase 2B checks");
+    }
+
+    // Checkpoint invariants: all 50 non-home public pages migrated (16 core +
+    // 34 guides), every one with generated HTML.
+    for (const route of PUBLIC_PAGE_ROUTES) {
+        try { await stat(path.join(root, "dist", `${route.path.replace(/^\//, "")}.html`)); }
+        catch { error("checkpoint", `missing generated HTML for ${route.path}`); }
+    }
+    const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter((k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k));
+    if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
+    if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
+    if (unmigrated.length !== 0) error("checkpoint", `expected 0 unmigrated public pages, found ${unmigrated.length}: ${unmigrated.join(", ")}`);
+
+    // ── Checkpoint 3: true HTTP 404 architecture ──
+    // The broad SPA catch-all rewrite must be GONE (filesystem-first + native
+    // 404.html now own routing), while cleanUrls and security headers remain.
+    try {
+        const vercel = JSON.parse(await readFile(path.join(root, "vercel.json"), "utf8"));
+        for (const rewrite of vercel.rewrites || []) {
+            if (rewrite.destination === "/index" || rewrite.destination === "/index.html") {
+                error("checkpoint-3", `catch-all rewrite to ${rewrite.destination} must be removed`);
+            }
+        }
+        if (vercel.cleanUrls !== true) error("checkpoint-3", "cleanUrls must remain enabled");
+        const headerKeys = new Set((vercel.headers?.[0]?.headers || []).map((h) => h.key));
+        for (const required of ["Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy", "Content-Security-Policy"]) {
+            if (!headerKeys.has(required)) error("checkpoint-3", `security header missing from vercel.json: ${required}`);
+        }
+    } catch (err) {
+        error("checkpoint-3", `could not read/parse vercel.json (${err.message})`);
+    }
+
+    // Branded static 404: present, noindex, one H1, recovery links, no
+    // canonical, no content schema, no auto-redirect, absent from the sitemap.
+    try {
+        const notFound = await readFile(path.join(root, "dist", "404.html"), "utf8");
+        const title = notFound.match(/<title>([\s\S]*?)<\/title>/i)?.[1] || "";
+        if (title !== "Page Not Found | CinNova") error("404.html", `unexpected title "${title}"`);
+        if (!/name="description" content="[^"]*could not be found/i.test(notFound)) error("404.html", "missing not-found meta description");
+        if (!/name="robots" content="noindex, follow"/.test(notFound)) error("404.html", "robots must be noindex, follow");
+        if (/rel=["']canonical["']/i.test(notFound)) error("404.html", "must not contain a canonical tag");
+        const h1Count = (notFound.match(/<h1[ >]/gi) || []).length;
+        if (h1Count !== 1) error("404.html", `expected exactly one H1, found ${h1Count}`);
+        for (const link of ["/", "/products", "/resources", "/blog", "/guides"]) {
+            if (!notFound.includes(`href="${link}"`)) error("404.html", `missing recovery link to ${link}`);
+        }
+        if (/application\/ld\+json/i.test(notFound)) error("404.html", "must not contain structured-data schema");
+        if (/http-equiv=["']refresh["']/i.test(notFound)) error("404.html", "must not auto-refresh/redirect");
+        if (!/<script type="module"[^>]*src="\/assets\//.test(notFound)) error("404.html", "React entry script missing (app cannot mount)");
+    } catch {
+        error("404.html", "dist/404.html is missing");
+    }
+    try {
+        const sitemap = await readFile(path.join(root, "public", "sitemap.xml"), "utf8");
+        if (/\/404/.test(sitemap)) error("sitemap.xml", "404 page must not appear in the sitemap");
+    } catch { /* reported elsewhere */ }
+
+    // Route-manifest completeness: every valid clean pathname ↔ generated file.
+    {
+        const manifest = {
+            blog: ["/blog", ...blogCategories.map((c) => `/blog/category/${slugifyCategory(c)}`), ...posts.map((p) => `/blog/${p.slug}`)],
+            products: ["/products", ...products.map((p) => `/products/${p.page}`)],
+            resources: ["/resources", ...resources.map((r) => `/resources/${r.slug}`)],
+            public: PUBLIC_PAGE_ROUTES.map((r) => r.path),
+        };
+        const counts = [];
+        let routeTotal = 0;
+        for (const [group, paths] of Object.entries(manifest)) {
+            let present = 0;
+            for (const cleanPath of paths) {
+                routeTotal++;
+                try { await stat(path.join(root, "dist", `${cleanPath.replace(/^\//, "")}.html`)); present++; }
+                catch { error("route-manifest", `${group}: missing generated file for ${cleanPath}`); }
+            }
+            counts.push(`${group}=${present}/${paths.length}`);
+        }
+        if (routeTotal !== 118) error("route-manifest", `expected 118 route-specific files, manifest lists ${routeTotal}`);
+        try { await stat(path.join(root, "dist", "index.html")); } catch { error("route-manifest", "dist/index.html missing"); }
+        console.log(`Route manifest: ${counts.join(", ")} (+ index.html + 404.html)`);
+
+        // Every sitemap URL must resolve to a generated file (home → index.html).
+        try {
+            const sitemap = await readFile(path.join(root, "public", "sitemap.xml"), "utf8");
+            for (const match of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+                const loc = match[1];
+                const pathname = loc.replace(siteUrl, "") || "/";
+                if (pathname.includes("?")) continue; // legacy query URLs live on index.html
+                const file = pathname === "/" ? "index.html" : `${pathname.replace(/^\//, "")}.html`;
+                try { await stat(path.join(root, "dist", file)); }
+                catch { error("route-manifest", `sitemap URL has no generated file: ${loc}`); }
+            }
+        } catch { /* reported elsewhere */ }
     }
 }
 

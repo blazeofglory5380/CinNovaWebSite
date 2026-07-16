@@ -1,4 +1,4 @@
-// ClaudeWithCursorGuide — /?page=claude-with-cursor-guide   CSS prefix: ait-
+// ClaudeWithCursorGuide — /guides/claude-with-cursor   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";

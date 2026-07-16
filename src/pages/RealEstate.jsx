@@ -142,7 +142,7 @@ function RealEstate() {
                         Try the Live Beta →
                     </a>
                     <a
-                        href="/?page=free-rental-property-calculator"
+                        href="/tools/rental-property-calculator"
                         onClick={() => trackEvent("free_calculator_cta_click", { source_page: "real-estate", destination_page: "free-rental-property-calculator" })}
                     >
                         Or try the free Rental Property Calculator →

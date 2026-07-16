@@ -1,4 +1,4 @@
-// AIResearchGuideFR — /?page=ai-research-guide-fr   CSS prefix: ait-
+// AIResearchGuideFR — /guides/ai-research/fr   CSS prefix: ait-
 // French translation of the AI research guide (multilingual starter pilot).
 import "../App.css";
 import "./AITutorials.css";
@@ -23,7 +23,7 @@ export default function AIResearchGuideFR() {
             />
 
             <section className="section ait-guide-hero">
-                <a className="ait-breadcrumb" href="/?page=ai-tutorials">← Tutoriels d'IA</a>
+                <a className="ait-breadcrumb" href="/guides">← Tutoriels d'IA</a>
                 <p className="eyebrow">IA POUR LA RECHERCHE · DÉBUTANT</p>
                 <h1>Comment utiliser l'IA pour la recherche : guide étape par étape pour débutants</h1>
                 <p className="ait-guide-intro">
@@ -149,8 +149,8 @@ export default function AIResearchGuideFR() {
                     <h2>Continuez à apprendre l'IA</h2>
                     <p>Explorez d'autres tutoriels d'IA pour débutants, étape par étape, sur le centre de Tutoriels d'IA de CinNova.</p>
                     <div className="ait-guide-cta-actions">
-                        <a className="primary-btn" href="/?page=ai-tutorials">← Retour aux Tutoriels d'IA</a>
-                        <a className="ait-link-btn" href="/?page=ai-research-guide">Read this guide in English</a>
+                        <a className="primary-btn" href="/guides">← Retour aux Tutoriels d'IA</a>
+                        <a className="ait-link-btn" href="/guides/ai-research">Read this guide in English</a>
                     </div>
                 </div>
             </section>

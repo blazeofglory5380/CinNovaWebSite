@@ -47,7 +47,7 @@ function NewsletterSignup({
             </form>
             <p className="form-privacy-note">
                 By subscribing, you agree to our{" "}
-                <a className="form-privacy-link" href="/?page=privacy">Privacy Policy</a>.
+                <a className="form-privacy-link" href="/privacy">Privacy Policy</a>.
             </p>
             {message && (
                 <p className="newsletter-success" role="status">

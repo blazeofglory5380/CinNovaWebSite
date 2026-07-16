@@ -1,4 +1,4 @@
-// AICodingGuideFR — /?page=ai-coding-guide-fr   CSS prefix: ait-
+// AICodingGuideFR — /guides/ai-coding/fr   CSS prefix: ait-
 // French translation of the AI coding guide (multilingual starter pilot).
 import "../App.css";
 import "./AITutorials.css";
@@ -23,7 +23,7 @@ export default function AICodingGuideFR() {
             />
 
             <section className="section ait-guide-hero">
-                <a className="ait-breadcrumb" href="/?page=ai-tutorials">← Tutoriels d'IA</a>
+                <a className="ait-breadcrumb" href="/guides">← Tutoriels d'IA</a>
                 <p className="eyebrow">IA POUR CODER · DÉBUTANT</p>
                 <h1>Comment utiliser l'IA pour coder : guide étape par étape pour débutants</h1>
                 <p className="ait-guide-intro">
@@ -146,8 +146,8 @@ export default function AICodingGuideFR() {
                     <h2>Continuez à apprendre l'IA</h2>
                     <p>Explorez d'autres tutoriels d'IA pour débutants, étape par étape, sur le centre de Tutoriels d'IA de CinNova.</p>
                     <div className="ait-guide-cta-actions">
-                        <a className="primary-btn" href="/?page=ai-tutorials">← Retour aux Tutoriels d'IA</a>
-                        <a className="ait-link-btn" href="/?page=ai-coding-guide">Read this guide in English</a>
+                        <a className="primary-btn" href="/guides">← Retour aux Tutoriels d'IA</a>
+                        <a className="ait-link-btn" href="/guides/ai-coding">Read this guide in English</a>
                     </div>
                 </div>
             </section>

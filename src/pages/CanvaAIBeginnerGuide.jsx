@@ -1,4 +1,4 @@
-// CanvaAIBeginnerGuide — /?page=canva-ai-beginner-guide   CSS prefix: ait-
+// CanvaAIBeginnerGuide — /guides/canva-ai   CSS prefix: ait-
 import "../App.css";
 import "./AITutorials.css";
 import { siteUrl } from "../data/blogPosts.js";
