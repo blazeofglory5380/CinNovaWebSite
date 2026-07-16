@@ -18,6 +18,7 @@ import { poisonGuardFeatures } from "../data/poisonGuardFeatures.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
+import { getProductUrl } from "../data/products.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
@@ -169,7 +170,7 @@ const poisonguardSchema = withSchemaGraph(
         description:
             "Household chemical and poison safety assistant for families, pets, and schools. Scan products for hazards and get emergency guidance.",
         operatingSystem: "Web",
-        url: `${siteUrl}/?page=poisonguard`,
+        url: getProductUrl("poisonguard"),
         screenshot: buildImageObject({ src: poisonGuardHero.posterSrc, alt: poisonGuardHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
@@ -195,7 +196,7 @@ function PoisonGuard() {
             <SEO
                 title="PoisonGuard | Household Chemical Safety App — Cin Nova"
                 description="PoisonGuard scans household chemicals for hazard information, provides pet-safe warnings, and delivers emergency guidance. In development by Cin Nova."
-                url={`${siteUrl}/?page=poisonguard`}
+                url={getProductUrl("poisonguard")}
                 type="website"
                 schema={poisonguardSchema}
             />
@@ -206,7 +207,7 @@ function PoisonGuard() {
                 retained: the config still feeds the SEO schema below, and the 3D hero
                 plus its optimized GLB assets stay in the repo for rollback/reference. */}
             <MotionHeroWrap>
-                <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
+                <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/resources" />
             </MotionHeroWrap>
 
             <div className="pg-disclaimer-wrap">

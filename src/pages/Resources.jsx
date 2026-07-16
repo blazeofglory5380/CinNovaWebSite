@@ -15,6 +15,7 @@ import {
     getPublicationStatusBadge,
     getResourceLibraryStats,
     getResourceUrl,
+    getResourcesUrl,
     resourceCategories,
     resourceCategoryConfig,
     resourceDifficultyFilters,
@@ -162,7 +163,7 @@ function Resources({ onOpenResource, onSubscribe }) {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         name: "Cin Nova Resources Center",
-        url: `${siteUrl}/?page=resources`,
+        url: getResourcesUrl(),
         description:
             "Free guides, checklists, templates, white papers, product brochures, and case studies from Cin Nova.",
         publisher: {
@@ -185,7 +186,7 @@ function Resources({ onOpenResource, onSubscribe }) {
             <SEO
                 title="Resources Center | Cin Nova"
                 description="Free guides, checklists, templates, white papers, product brochures, and case studies from Cin Nova."
-                url={`${siteUrl}/?page=resources`}
+                url={getResourcesUrl()}
                 type="website"
                 schema={resourcesSchema}
             />

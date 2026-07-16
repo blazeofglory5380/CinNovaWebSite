@@ -1025,6 +1025,16 @@ export function getResourceBySlug(slug) {
     return resources.find((resource) => resource.slug === slug);
 }
 
-export function getResourceUrl(resource) {
-    return `${siteUrl}/?resource=${resource.slug}`;
+/** Canonical clean URL for the resource index page. */
+export function getResourcesUrl() {
+    return `${siteUrl}/resources`;
+}
+
+/**
+ * Canonical clean URL for a resource detail page.
+ * Accepts either a resource object or a slug string.
+ */
+export function getResourceUrl(resourceOrSlug) {
+    const slug = typeof resourceOrSlug === "string" ? resourceOrSlug : resourceOrSlug?.slug;
+    return slug ? `${siteUrl}/resources/${slug}` : getResourcesUrl();
 }

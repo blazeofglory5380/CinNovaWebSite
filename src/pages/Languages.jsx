@@ -13,9 +13,9 @@ const PAGE_URL = `${siteUrl}/?page=languages`;
 // key -> { href, destPage } so link clicks can report a stable destination_page.
 const LINKS = {
     tutorials:  { href: "/?page=ai-tutorials",                    dest: "ai-tutorials" },
-    products:   { href: "/?page=products",                        dest: "products" },
+    products:   { href: "/products",                              dest: "products" },
     calculator: { href: "/?page=free-rental-property-calculator", dest: "free-rental-property-calculator" },
-    realEstate: { href: "/?page=real-estate",                     dest: "real-estate" },
+    realEstate: { href: "/products/real-estate",                  dest: "real-estate" },
     blog:       { href: "/blog",                                  dest: "blog" },
 };
 const LINK_ORDER = ["tutorials", "products", "calculator", "realEstate", "blog"];

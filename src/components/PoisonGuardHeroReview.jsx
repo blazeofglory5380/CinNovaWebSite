@@ -17,7 +17,7 @@ import "./PoisonGuardHeroReview.css";
  * video is muted/decorative and respects prefers-reduced-motion (paused, first
  * frame held). React + CSS only, scoped under `.pgr-hero`, responsive.
  *
- * Usage:  <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/?page=resources" />
+ * Usage:  <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/resources" />
  */
 
 const VIDEO_SRC = "/videos/cinnova-poisonguard-blog-hero.mp4";

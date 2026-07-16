@@ -7,7 +7,7 @@ import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
 import SectionHead from "../components/brand-dna/SectionHead.jsx";
 import Dispatch from "../components/brand-dna/Dispatch.jsx";
 import { featureCapabilityPhotos, productMarketing } from "../data/marketingImages.js";
-import { normalizeProductStatus, productDetails, products } from "../data/products.js";
+import { getProductsUrl, normalizeProductStatus, productDetails, products } from "../data/products.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { trackProductExploreClick } from "../utils/analytics.js";
 import "../styles/brand-dna.css";
@@ -310,7 +310,7 @@ function ProductTabPanel({ item, onNavigate }) {
  * `id` (e.g. `#studynest`) so existing deep links still resolve.
  */
 function ProductShowcaseTabs({ items, onNavigate }) {
-    // Honour a deep link such as /?page=products#poisonguard on first paint,
+    // Honour a deep link such as /products#poisonguard on first paint,
     // resolved in the initializer so the correct tab renders immediately
     // rather than flashing the default one.
     const [activePage, setActivePage] = useState(() => {
@@ -470,7 +470,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
         "@type": "CollectionPage",
         name: "Cin Nova Product Catalog",
         description: "Explore StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI.",
-        url: `${siteUrl}/?page=products`,
+        url: getProductsUrl(),
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     };
 
@@ -479,7 +479,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
             <SEO
                 title="Products | Cin Nova AI Software Ecosystem"
                 description="Explore the Cin Nova product catalog: StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI. Five platforms solving real-world problems."
-                url={`${siteUrl}/?page=products`}
+                url={getProductsUrl()}
                 type="website"
                 image={defaultOgImage}
                 schema={productsSchema}

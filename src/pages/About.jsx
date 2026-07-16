@@ -24,7 +24,7 @@ const PRODUCTS = [
     cat: "Education AI",
     chip: "Education AI",
     desc: "AI-powered studying with notes, flashcards, quizzes, and a 24/7 AI tutor.",
-    href: "/?page=studynest",
+    href: "/products/studynest",
     initials: "SN",
     grad: "linear-gradient(135deg, #d9efe4, #bfe3d2)",
     markColor: "#0b5d43",
@@ -34,7 +34,7 @@ const PRODUCTS = [
     cat: "Safety Technology",
     chip: "Safety Tools",
     desc: "Poison and chemical safety lookup with emergency guidance for families and pets.",
-    href: "/?page=poisonguard",
+    href: "/products/poisonguard",
     initials: "PG",
     grad: "linear-gradient(135deg, #fdeee3, #f8dcc8)",
     markColor: "#b45a1b",
@@ -44,7 +44,7 @@ const PRODUCTS = [
     cat: "Tech Support AI",
     chip: "Support AI",
     desc: "AI troubleshooting for devices, software, networks, and error codes.",
-    href: "/?page=techmate",
+    href: "/products/techmate",
     initials: "TM",
     grad: "linear-gradient(135deg, #e4edfb, #cfdef5)",
     markColor: "#1d4f9c",
@@ -54,7 +54,7 @@ const PRODUCTS = [
     cat: "Early Learning",
     chip: "Early Learning",
     desc: "Reading, writing, counting, and math for ages 3–8 with a parent dashboard.",
-    href: "/?page=kiddo",
+    href: "/products/kiddo",
     initials: "K",
     grad: "linear-gradient(135deg, #fbeff3, #f3d9e4)",
     markColor: "#a83a68",
@@ -64,7 +64,7 @@ const PRODUCTS = [
     cat: "Real Estate AI",
     chip: "Investor Tools",
     desc: "Deal analysis, cash flow modeling, and AI investment guidance for every investor.",
-    href: "/?page=real-estate",
+    href: "/products/real-estate",
     initials: "RE",
     grad: "linear-gradient(135deg, #e8f1ee, #d2e4dc)",
     markColor: "#0a4a36",
@@ -180,7 +180,7 @@ function About() {
               <li className="about-page-pill">Long-term build</li>
             </ul>
             <div className="about-page-hero-actions">
-              <a className="about-page-btn about-page-btn--primary" href="/?page=products">Explore Products</a>
+              <a className="about-page-btn about-page-btn--primary" href="/products">Explore Products</a>
               <a className="about-page-btn about-page-btn--ghost" href="/?page=partner-with-us">Partner With Us</a>
             </div>
           </div>
@@ -409,7 +409,7 @@ function About() {
               <p className="about-page-cta-error" role="alert">Please enter a valid email address.</p>
             )}
             <div className="about-page-cta-links">
-              <a className="about-page-btn" href="/?page=products">View Products</a>
+              <a className="about-page-btn" href="/products">View Products</a>
               <a className="about-page-btn" href="/blog">Read the Blog</a>
               <a className="about-page-btn" href="/?page=contact">Contact</a>
             </div>

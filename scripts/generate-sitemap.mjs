@@ -106,6 +106,24 @@ function validateSitemapXml(xml, entries) {
         }
     }
 
+    // Product/resource pages must only appear as clean routes — never as the
+    // legacy query forms. Guards against a regression that reintroduces them.
+    const legacyQueryPatterns = [
+        "?resource=",
+        "page=products",
+        "page=resources",
+        "page=studynest",
+        "page=poisonguard",
+        "page=kiddo",
+        "page=techmate",
+        "page=real-estate",
+    ];
+    for (const loc of locMatches) {
+        if (legacyQueryPatterns.some((pattern) => loc.includes(pattern))) {
+            errors.push(`Legacy query-form product/resource URL present in sitemap: ${loc}`);
+        }
+    }
+
     const imageEntries = entries.filter((entry) => entry.images?.length).length;
     if (imageEntries && !xml.includes("xmlns:image=")) {
         errors.push("Image entries present but image namespace missing");
@@ -139,11 +157,12 @@ console.log("✓ public/robots.txt");
 
 const breakdown = {
     static: entries.filter((e) => e.loc.includes("?page=") || e.loc === `${siteUrl}/`).length,
-    blog: entries.filter((e) => e.loc.includes("/blog/")).length,
-    resources: entries.filter((e) => e.loc.includes("?resource=")).length,
+    products: entries.filter((e) => e.loc === `${siteUrl}/products` || e.loc.startsWith(`${siteUrl}/products/`)).length,
+    blog: entries.filter((e) => e.loc.includes("/blog")).length,
+    resources: entries.filter((e) => e.loc === `${siteUrl}/resources` || e.loc.startsWith(`${siteUrl}/resources/`)).length,
 };
 console.log(
-    `  Breakdown: ${breakdown.static} static/product pages, ${breakdown.blog} blog URLs, ${breakdown.resources} resources`,
+    `  Breakdown: ${breakdown.static} static pages, ${breakdown.products} product URLs, ${breakdown.blog} blog URLs, ${breakdown.resources} resource URLs`,
 );
 
 if (process.env.CI) {

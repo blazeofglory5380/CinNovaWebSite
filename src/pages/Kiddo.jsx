@@ -13,6 +13,7 @@ import { kiddoAssets } from "../data/kiddoAssets.js";
 import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
+import { getProductUrl } from "../data/products.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 import { MotionHeroWrap } from "../motion/MotionHeroWrap.jsx";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
@@ -333,7 +334,7 @@ const kiddoSchema = withSchemaGraph(
         description:
             "Interactive early learning app for children ages 2\u20137 with reading, writing, math, science, and a parent dashboard.",
         operatingSystem: "Web",
-        url: `${siteUrl}/?page=kiddo`,
+        url: getProductUrl("kiddo"),
         screenshot: buildImageObject({ src: kiddoHero.posterSrc, alt: kiddoHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
@@ -347,7 +348,7 @@ function Kiddo() {
             <SEO
                 title="Kiddo | Early Learning App for Kids Ages 2–7 — Cin Nova"
                 description="Kiddo makes learning to read, write, count, and explore the world a joyful adventure for children ages 2–7, with a parent dashboard to track progress. In development by Cin Nova."
-                url={`${siteUrl}/?page=kiddo`}
+                url={getProductUrl("kiddo")}
                 type="website"
                 schema={kiddoSchema}
             />
@@ -670,7 +671,7 @@ function Kiddo() {
                             learning tips from the Cin Nova team. No spam — unsubscribe anytime.
                         </p>
                         <p className="kd-waitlist-eco">
-                            <a href="/?page=products">Explore all CinNova products →</a>
+                            <a href="/products">Explore all CinNova products →</a>
                         </p>
                     </div>
                     <div className="kd-waitlist-form">

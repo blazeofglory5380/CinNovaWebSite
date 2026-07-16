@@ -10,6 +10,7 @@ import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { siteUrl } from "../data/seoConfig.js";
+import { getProductUrl } from "../data/products.js";
 import { buildFaqSchema, buildImageObject, withSchemaGraph } from "../data/schemaHelpers.js";
 import { MotionCardWrap } from "../motion/MotionCardWrap.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
@@ -184,7 +185,7 @@ const studynestSchema = withSchemaGraph(
         description:
             "AI-powered study tools with notes, flashcards, quizzes, AI tutoring, and study planning for students.",
         operatingSystem: "Web",
-        url: `${siteUrl}/?page=studynest`,
+        url: getProductUrl("studynest"),
         screenshot: buildImageObject({ src: studyNestHero.posterSrc, alt: studyNestHero.alt }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
@@ -201,7 +202,7 @@ function StudyNest() {
             <SEO
                 title="StudyNest | AI Study Tools for Students — Cin Nova"
                 description="StudyNest helps students organize notes, generate flashcards, take quizzes, create study guides, and get AI tutoring support. Currently in development by Cin Nova."
-                url={`${siteUrl}/?page=studynest`}
+                url={getProductUrl("studynest")}
                 type="website"
                 schema={studynestSchema}
             />
