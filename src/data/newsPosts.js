@@ -7,6 +7,10 @@
  *   - src/data/seoConfig.js        (sitemap entries for public stories)
  *   - scripts/generate-route-metadata.mjs, scripts/audit-seo.mjs (build-time SEO)
  *
+ * Drafts do NOT live here. Editorial drafts are JSON files under
+ * `src/data/news-drafts/` (see `src/data/newsDrafts.js` + docs/NEWS_EDITORIAL_WORKFLOW.md).
+ * Promote with `npm run news:publish -- <slug>` after validation.
+ *
  * The array holds two kinds of entry:
  *   - Real reporting (`isDemo: false`) — public, indexable, sitemapped, and
  *     prerendered. Every one carries at least two labeled sources.
@@ -1616,8 +1620,8 @@ export function getNewsStoryMetadata(story) {
         type: "article",
         image: toAbsolute(story.heroImage),
         imageAlt: story.heroAlt || story.title,
-        // Demo fixtures must never be indexed as reporting.
-        noindex: Boolean(story.isDemo),
+        // Demo fixtures and drafts must never be indexed as reporting.
+        noindex: Boolean(story.isDemo || story.isDraft || story.isPublished === false),
     };
 }
 
