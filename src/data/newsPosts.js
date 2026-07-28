@@ -143,14 +143,14 @@ const demoSources = [
     {
         label: "Cin Nova editorial approach",
         publisher: "Cin Nova",
-        url: `${siteUrl}/?page=about`,
+        url: `${siteUrl}/about`,
         type: "official",
         note: "Cin Nova's own published description of its editorial approach.",
     },
     {
         label: "Cin Nova Press Center",
         publisher: "Cin Nova",
-        url: `${siteUrl}/?page=press-center`,
+        url: `${siteUrl}/company/press`,
         type: "verified",
         note: "Primary Cin Nova record; verifiable on this site.",
     },
