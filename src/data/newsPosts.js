@@ -225,10 +225,7 @@ export const newsPosts = [
             "news-state-2026-07-nj-data-center-rate-class",
             "news-national-2026-06-ferc-large-load",
         ],
-        relatedBlogSlugs: [
-            "why-data-centers-are-becoming-the-new-gold-rush",
-            "can-americas-power-grid-handle-ai",
-        ],
+        relatedBlogSlugs: ["why-data-centers-are-becoming-the-new-gold-rush", "can-americas-power-grid-handle-ai"],
         seoTitle: "Sarasota County freezes hyperscale data center applications | Cin Nova News",
         seoDescription:
             "Sarasota County commissioners voted 5-0 for a twelve-month pause on hyperscale data center applications, citing electricity and water demand. What the freeze covers.",
@@ -307,10 +304,7 @@ export const newsPosts = [
             "news-state-2026-06-texas-abbott-data-centers",
             "news-national-2026-06-ferc-large-load",
         ],
-        relatedBlogSlugs: [
-            "can-americas-power-grid-handle-ai",
-            "why-data-centers-are-becoming-the-new-gold-rush",
-        ],
+        relatedBlogSlugs: ["can-americas-power-grid-handle-ai", "why-data-centers-are-becoming-the-new-gold-rush"],
         seoTitle: "New Jersey sets a separate power rate class for data centers | Cin Nova News",
         seoDescription:
             "New Jersey's Data Center Fair Share law puts data centers of 50 MW and up in their own rate class and sends tariff standards to the Board of Public Utilities.",
@@ -395,10 +389,7 @@ export const newsPosts = [
             "news-state-2026-07-nj-data-center-rate-class",
             "news-national-2026-06-cisa-bod-26-04",
         ],
-        relatedBlogSlugs: [
-            "can-americas-power-grid-handle-ai",
-            "the-hidden-infrastructure-behind-chatgpt-and-ai",
-        ],
+        relatedBlogSlugs: ["can-americas-power-grid-handle-ai", "the-hidden-infrastructure-behind-chatgpt-and-ai"],
         seoTitle: "FERC orders grid operators to justify large-load rules | Cin Nova News",
         seoDescription:
             "FERC issued Section 206 show cause orders to all six regional grid operators over how data centers and other large loads interconnect. What the orders require.",
@@ -476,10 +467,7 @@ export const newsPosts = [
             "news-international-2026-01-uk-ai-action-plan",
             "news-international-2025-09-japan-ai-promotion-act",
         ],
-        relatedBlogSlugs: [
-            "the-companies-building-the-ai-economy",
-            "the-hidden-infrastructure-behind-chatgpt-and-ai",
-        ],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy", "the-hidden-infrastructure-behind-chatgpt-and-ai"],
         seoTitle: "EU AI Act transparency rules become enforceable August 2 | Cin Nova News",
         seoDescription:
             "The EU AI Act's Article 50 transparency duties become enforceable on August 2, 2026, while the Digital Omnibus moved high-risk obligations to 2027 and 2028.",
@@ -1109,7 +1097,7 @@ export const newsPosts = [
             },
         ],
         relatedNewsIds: ["news-national-2026-04-nist-ai-rmf-critical-infrastructure", "news-national-2026-06-cisa-bod-26-04", "news-international-2026-01-korea-ai-basic-act"],
-        relatedBlogSlugs: ["ai-news-meta-iris-chip-agent-standards", "the-companies-building-the-ai-economy"],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
         seoTitle: "CISA guide addresses careful adoption of agentic AI | Cin Nova News",
         seoDescription: "CISA and international partners advise lower-risk starts, limited access, and security-model updates for agentic AI services.",
     },
@@ -1166,7 +1154,7 @@ export const newsPosts = [
             { label: "AI directive focuses patching efforts on highest-risk vulnerabilities", publisher: "Federal News Network", url: "https://federalnewsnetwork.com/cybersecurity/2026/06/ai-directive-focuses-patching-efforts-on-highest-risk-vulnerabilities/", type: "verified", note: "Independent reporting on the directive and AI-accelerated exploit-discovery context." },
         ],
         relatedNewsIds: ["news-national-2026-05-cisa-agentic-ai", "news-national-2026-04-nist-ai-rmf-critical-infrastructure", "news-international-2026-01-korea-ai-basic-act"],
-        relatedBlogSlugs: ["how-digital-triage-can-improve-family-safety", "ai-news-meta-iris-chip-agent-standards"],
+        relatedBlogSlugs: ["how-digital-triage-can-improve-family-safety", "the-companies-building-the-ai-economy"],
         seoTitle: "CISA BOD 26-04 requires risk-based patch prioritization | Cin Nova News",
         seoDescription: "CISA's BOD 26-04 requires covered federal agencies to prioritize security updates by risk, with a three-day deadline for high-risk cases.",
     },
@@ -1238,7 +1226,7 @@ export const newsPosts = [
             },
         ],
         relatedNewsIds: ["news-national-2026-05-cisa-agentic-ai", "news-national-2026-04-nist-ai-rmf-critical-infrastructure", "news-international-2026-08-eu-ai-act-transparency"],
-        relatedBlogSlugs: ["ai-news-meta-iris-chip-agent-standards"],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
         seoTitle: "Reuters reports Meta Iris AI chip manufacturing plan | Cin Nova News",
         seoDescription:
             "Reuters reported that an internal Meta memo targets September 2026 manufacturing for Iris. The memo's chip, testing, and capacity details remain attributed claims.",
@@ -1296,7 +1284,7 @@ export const newsPosts = [
             { label: "AI Opportunities Action Plan", publisher: "Department for Science, Innovation and Technology", url: "https://www.gov.uk/government/publications/ai-opportunities-action-plan", type: "official", note: "Original action-plan publication and implementation context." },
         ],
         relatedNewsIds: ["news-international-2026-01-korea-ai-basic-act", "news-international-2025-09-japan-ai-promotion-act", "news-international-2026-08-eu-ai-act-transparency"],
-        relatedBlogSlugs: ["the-companies-building-the-ai-economy", "ai-news-meta-iris-chip-agent-standards"],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
         seoTitle: "UK reports progress on AI Opportunities Action Plan | Cin Nova News",
         seoDescription: "The UK says it completed 38 of 50 AI action-plan measures after one year; the figures and targets are government claims.",
     },
@@ -1353,7 +1341,7 @@ export const newsPosts = [
             { label: "Japan's AI Promotion Act comes into force", publisher: "Government of Japan Online", url: "https://www.gov-online.go.jp/hlj/en/november_2025/november_2025-08.html", type: "official", note: "Government explanation of the law's full enforcement and policy direction." },
         ],
         relatedNewsIds: ["news-international-2026-01-korea-ai-basic-act", "news-international-2026-01-uk-ai-action-plan", "news-international-2026-canada-aida-gap"],
-        relatedBlogSlugs: ["the-companies-building-the-ai-economy", "ai-news-meta-iris-chip-agent-standards"],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
         seoTitle: "Japan AI Promotion Act framework explained | Cin Nova News",
         seoDescription:
             "Japan's AI Promotion Act entered full force in 2025, creating a national AI strategy structure centered on guidance, advice, and public announcements.",
@@ -1411,7 +1399,7 @@ export const newsPosts = [
             { label: "South Korea AI Basic Act", publisher: "International Trade Administration, U.S. Department of Commerce", url: "https://www.trade.gov/market-intelligence/south-korea-ai-basic-act", type: "verified", note: "Government market-intelligence overview of the Act's requirements." },
         ],
         relatedNewsIds: ["news-international-2025-09-japan-ai-promotion-act", "news-international-2026-01-uk-ai-action-plan", "news-international-2026-08-eu-ai-act-transparency"],
-        relatedBlogSlugs: ["the-complete-guide-to-ai-in-education-2026", "ai-news-meta-iris-chip-agent-standards"],
+        relatedBlogSlugs: ["the-complete-guide-to-ai-in-education-2026", "the-companies-building-the-ai-economy"],
         seoTitle: "South Korea AI Basic Act enters force | Cin Nova News",
         seoDescription:
             "South Korea's AI Basic Act took effect January 22, 2026, with transparency expectations and at least a year of deferred enforcement for most cases.",
@@ -1481,7 +1469,7 @@ export const newsPosts = [
             },
         ],
         relatedNewsIds: ["news-international-2025-09-japan-ai-promotion-act", "news-international-2026-01-korea-ai-basic-act", "news-international-2026-08-eu-ai-act-transparency"],
-        relatedBlogSlugs: ["ai-news-meta-iris-chip-agent-standards", "the-companies-building-the-ai-economy"],
+        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
         seoTitle: "Canada's federal AI law gap after AIDA | Cin Nova News",
         seoDescription: "Canada has no comprehensive federal AI statute after Bill C-27 and AIDA died in 2025; privacy and provincial rules remain in effect.",
     },
