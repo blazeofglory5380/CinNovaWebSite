@@ -8,7 +8,17 @@ import {
     getPublishedBlogPosts,
     slugifyCategory,
 } from "../src/data/blogPosts.js";
-import { STATIC_PUBLIC_PAGES, defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
+import {
+    NEWS_COVERAGE_KEYS,
+    NEWS_SOURCE_TYPE_KEYS,
+    NEWS_STATUSES,
+    buildNewsArticleSchema,
+    getNewsStoryMetadata,
+    getPublicNewsStories,
+    getPublishedNewsStories,
+    getRelatedNewsStories,
+} from "../src/data/newsPosts.js";
+import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
 import { getResourceHeroImage } from "../src/data/marketingImages.js";
@@ -112,6 +122,113 @@ for (const post of posts) {
         error(scope, "schema must contain BlogPosting and BreadcrumbList nodes");
     }
 }
+
+/* ── News Center ─────────────────────────────────────────────────────────────
+   Structural validation for every published story (demo fixtures included), so
+   the data model stays sound before real reporting lands. Demo fixtures are
+   held to the same rules except indexing: they are expected to be noindex and
+   absent from the sitemap. */
+const newsStories = getPublishedNewsStories();
+const newsBySlug = new Map(newsStories.map((story) => [story.slug, story]));
+const newsSeen = { title: new Map(), slug: new Map(), description: new Map() };
+
+for (const story of newsStories) {
+    const scope = `news:${story.slug}`;
+    const metadata = getNewsStoryMetadata(story);
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(story.slug)) error(scope, "slug is not clean kebab-case");
+    if (metadata.canonical !== `${siteUrl}/news/${story.slug}`) error(scope, "canonical does not match the /news/<slug> route");
+    if (!NEWS_COVERAGE_KEYS.includes(story.coverageLevel)) error(scope, `invalid coverageLevel: ${story.coverageLevel}`);
+    if (!NEWS_STATUSES.includes(story.status)) error(scope, `invalid status: ${story.status}`);
+    if (!story.category?.trim()) error(scope, "missing category");
+    if (!story.title?.trim()) error(scope, "missing title/H1");
+    if (!story.dek?.trim()) error(scope, "missing dek");
+    if (!story.summary?.trim()) error(scope, "missing summary");
+    if (!story.whyItMatters?.trim()) error(scope, "missing 'why it matters'");
+    if (!story.publishedAt || Number.isNaN(Date.parse(story.publishedAt))) error(scope, "publishedAt is missing or unparseable");
+    if (story.updatedAt && Number.isNaN(Date.parse(story.updatedAt))) error(scope, "updatedAt is unparseable");
+    if (story.heroImage && !story.heroAlt?.trim()) error(scope, "hero image is missing alt text");
+    if (!story.sections?.length) error(scope, "story has no sections");
+    if (!story.sources?.length) error(scope, "story has no sources — every reported story must support source links");
+    if (metadata.description.length < 70 || metadata.description.length > 200) {
+        warning(scope, `meta description is ${metadata.description.length} characters (recommended 70-200)`);
+    }
+
+    for (const [index, section] of (story.sections || []).entries()) {
+        if (!section.id) error(scope, `section ${index + 1} is missing an id`);
+        if (!section.heading?.trim()) error(scope, `section ${index + 1} is missing a heading`);
+        if (!section.body?.length) error(scope, `section ${index + 1} has no body copy`);
+        if (section.claimType && !NEWS_SOURCE_TYPE_KEYS.includes(section.claimType)) {
+            error(scope, `section ${index + 1} has an unknown claimType: ${section.claimType}`);
+        }
+    }
+
+    for (const source of story.sources || []) {
+        if (!NEWS_SOURCE_TYPE_KEYS.includes(source.type)) {
+            error(scope, `source "${source.label}" must declare a type (${NEWS_SOURCE_TYPE_KEYS.join(", ")})`);
+        }
+        if (!/^https?:\/\//i.test(source.url || "")) error(scope, `source "${source.label}" needs an absolute URL`);
+    }
+
+    for (const id of story.relatedNewsIds || []) {
+        if (id === story.id) error(scope, "related news links to itself");
+        if (!newsStories.some((item) => item.id === id)) error(scope, `related news does not resolve: ${id}`);
+    }
+    for (const slug of story.relatedBlogSlugs || []) {
+        if (!postsBySlug.has(slug)) error(scope, `related blog article does not resolve: ${slug}`);
+    }
+
+    for (const [field, value] of [
+        ["title", story.title],
+        ["slug", story.slug],
+        ["description", metadata.description],
+    ]) {
+        const key = normalized(value);
+        if (newsSeen[field].has(key)) error(scope, `duplicate ${field} also used by ${newsSeen[field].get(key)}`);
+        else newsSeen[field].set(key, story.slug);
+    }
+
+    const graphTypes = new Set(buildNewsArticleSchema(story, getRelatedNewsStories(story))["@graph"].map((node) => node["@type"]));
+    if (!graphTypes.has("NewsArticle") || !graphTypes.has("BreadcrumbList")) {
+        error(scope, "schema must contain NewsArticle and BreadcrumbList nodes");
+    }
+
+    if (story.isDemo && !metadata.noindex) error(scope, "demo fixture must be noindex");
+    if (!story.isDemo && metadata.noindex) error(scope, "published story must not be noindex");
+
+    /* Published reporting is held to a higher bar than fixtures. */
+    if (!story.isDemo) {
+        if ((story.sources || []).length < 2) error(scope, "published story needs at least two sources");
+        if (!story.heroCaption?.trim()) error(scope, "published story must disclose its hero image origin via heroCaption");
+        if (story.status === "breaking" || story.status === "developing") {
+            warning(scope, `status "${story.status}" is reserved for live desk use — confirm it is justified`);
+        }
+        // Curly or straight quote marks in body copy usually mean a direct
+        // quotation slipped in. Published Cin Nova stories paraphrase instead.
+        const bodyText = (story.sections || []).flatMap((section) => section.body || []).join(" ");
+        if (/[“”"]/.test(bodyText)) {
+            warning(scope, "body copy contains quotation marks — confirm every quote is real and sourced");
+        }
+    }
+}
+
+const newsTemplate = await readFile(path.join(root, "src", "pages", "NewsStoryPage.jsx"), "utf8");
+const newsH1Count = (newsTemplate.match(/<h1>\{story\.title\}<\/h1>/g) || []).length;
+if (newsH1Count !== 1) {
+    error("NewsStoryPage.jsx", `expected one story H1 template, found ${newsH1Count}`);
+}
+
+const publicNews = getPublicNewsStories();
+const sitemapNewsUrls = collectSitemapEntries().filter((entry) => entry.loc.includes("/news/"));
+if (sitemapNewsUrls.length !== publicNews.length) {
+    error("news sitemap", `expected ${publicNews.length} news URLs in the sitemap, found ${sitemapNewsUrls.length}`);
+}
+for (const story of newsStories) {
+    if (story.isDemo && sitemapNewsUrls.some((entry) => entry.loc === `${siteUrl}/news/${story.slug}`)) {
+        error(`news:${story.slug}`, "demo fixture must not appear in the sitemap");
+    }
+}
+if (newsBySlug.size !== newsStories.length) error("news", "duplicate news slugs detected");
 
 // ─────────────────────────────────────────────────────────────────────────
 // Product & resource data-level SEO checks (Phase 2A)
@@ -289,7 +406,7 @@ for (const { scope, resource, metadata } of resourceMetas) {
 // ─────────────────────────────────────────────────────────────────────────
 // Phase 2B Checkpoint 1 — migrated public pages + resource sitemap images.
 // ─────────────────────────────────────────────────────────────────────────
-const RESERVED_PREFIXES = ["/blog", "/products", "/resources"];
+const RESERVED_PREFIXES = ["/blog", "/products", "/resources", "/news"];
 {
     // Registry integrity.
     if (PUBLIC_SITE_URL !== siteUrl) error("public-pages", `PUBLIC_SITE_URL (${PUBLIC_SITE_URL}) must equal siteUrl (${siteUrl})`);
@@ -659,15 +776,20 @@ if (validateDist) {
         error("sitemap.xml", "missing public/sitemap.xml for Phase 2B checks");
     }
 
-    // Checkpoint invariants: all 50 non-home public pages migrated (16 core +
-    // 34 guides), every one with generated HTML.
+    // Checkpoint invariants: all 50 non-home Phase 2B public pages migrated
+    // (16 core + 34 guides). News Center intentionally stays on ?page=news
+    // until its own clean-route checkpoint; it is the only allowed holdout.
     for (const route of PUBLIC_PAGE_ROUTES) {
         try { await stat(path.join(root, "dist", `${route.path.replace(/^\//, "")}.html`)); }
         catch { error("checkpoint", `missing generated HTML for ${route.path}`); }
     }
-    const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter((k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k));
+    const INTENTIONAL_QUERY_PAGE_KEYS = new Set(["news"]);
+    const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter(
+        (k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k) && !INTENTIONAL_QUERY_PAGE_KEYS.has(k),
+    );
     if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
     if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
+    if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "news")) error("checkpoint", "news must remain in STATIC_PUBLIC_PAGES as ?page=news");
     if (unmigrated.length !== 0) error("checkpoint", `expected 0 unmigrated public pages, found ${unmigrated.length}: ${unmigrated.join(", ")}`);
 
     // ── Checkpoint 3: true HTTP 404 architecture ──
@@ -716,11 +838,13 @@ if (validateDist) {
 
     // Route-manifest completeness: every valid clean pathname ↔ generated file.
     {
+        const publicNews = getPublicNewsStories();
         const manifest = {
             blog: ["/blog", ...blogCategories.map((c) => `/blog/category/${slugifyCategory(c)}`), ...posts.map((p) => `/blog/${p.slug}`)],
             products: ["/products", ...products.map((p) => `/products/${p.page}`)],
             resources: ["/resources", ...resources.map((r) => `/resources/${r.slug}`)],
             public: PUBLIC_PAGE_ROUTES.map((r) => r.path),
+            news: publicNews.map((story) => `/news/${story.slug}`),
         };
         const counts = [];
         let routeTotal = 0;
@@ -733,7 +857,8 @@ if (validateDist) {
             }
             counts.push(`${group}=${present}/${paths.length}`);
         }
-        if (routeTotal !== 118) error("route-manifest", `expected 118 route-specific files, manifest lists ${routeTotal}`);
+        const expectedRouteTotal = Object.values(manifest).reduce((sum, paths) => sum + paths.length, 0);
+        if (routeTotal !== expectedRouteTotal) error("route-manifest", `expected ${expectedRouteTotal} route-specific files, manifest lists ${routeTotal}`);
         try { await stat(path.join(root, "dist", "index.html")); } catch { error("route-manifest", "dist/index.html missing"); }
         console.log(`Route manifest: ${counts.join(", ")} (+ index.html + 404.html)`);
 
@@ -759,7 +884,8 @@ if (errors.length) {
     process.exitCode = 1;
 } else {
     console.log(
-        `SEO audit passed for ${posts.length} published articles, ${products.length} products, and ${resources.length} resources` +
+        `SEO audit passed for ${posts.length} published articles, ${products.length} products, ${resources.length} resources, and ${newsStories.length} news stories` +
+            ` (${publicNews.length} public, ${newsStories.length - publicNews.length} demo fixtures)` +
             `${validateDist ? " (including generated route HTML, homepage canonical, and sitemap)" : ""}.`
     );
     console.log(`Checked unique titles, descriptions, slugs, canonicals, H1s, image alt text, schema, and internal links.`);

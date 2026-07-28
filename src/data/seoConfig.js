@@ -6,6 +6,7 @@ import {
     getPublishedBlogPosts,
     siteUrl,
 } from "./blogPosts.js";
+import { getNewsStoryUrl, getPublicNewsStories } from "./newsPosts.js";
 import { getResourceHeroImage, productMarketing } from "./marketingImages.js";
 import { getProductUrl, getProductsUrl, products } from "./products.js";
 import { getResourceUrl, getResourcesUrl, resources } from "./resources.js";
@@ -100,6 +101,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "claude-with-higgsfield-guide", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "languages", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "pricing", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
+    { key: "news", changefreq: "daily", priority: "0.9", lastmod: BUILD_LASTMOD },
     { key: "about", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "contact", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "newsletter", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
@@ -197,6 +199,17 @@ export function collectSitemapEntries() {
         });
     }
 
+    /* News stories. Demo fixtures are filtered out by getPublicNewsStories(),
+       so nothing enters the sitemap until real, sourced reporting is published. */
+    for (const story of getPublicNewsStories()) {
+        entries.push({
+            loc: getNewsStoryUrl(story),
+            lastmod: toIsoDate(story.updatedAt || story.publishedAt),
+            changefreq: "daily",
+            priority: "0.8",
+        });
+    }
+
     for (const resource of resources) {
         entries.push({
             loc: getResourceUrl(resource),
@@ -225,6 +238,7 @@ export function collectSitemapEntries() {
 export function attachSitemapImages(entries) {
     const postsByUrl = new Map(getPublishedBlogPosts().map((post) => [getArticleUrl(post), post]));
     const resourcesByUrl = new Map(resources.map((resource) => [getResourceUrl(resource), resource]));
+    const newsByUrl = new Map(getPublicNewsStories().map((story) => [getNewsStoryUrl(story), story]));
     const productsByUrl = new Map(products.map((product) => [getProductUrl(product), product]));
 
     return entries.map((entry) => {
@@ -250,6 +264,11 @@ export function attachSitemapImages(entries) {
             // hero registry so every resource detail URL gets its correct image.
             const cover = getResourceHeroImage(resource.id);
             pushImage(cover?.src, resource.title);
+        }
+
+        const story = newsByUrl.get(entry.loc);
+        if (story) {
+            pushImage(story.heroImage, story.heroAlt || story.title);
         }
 
         const product = productsByUrl.get(entry.loc);

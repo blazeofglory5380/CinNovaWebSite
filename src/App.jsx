@@ -8,6 +8,8 @@ import RealEstate from "./pages/RealEstate.jsx";
 import TechMateAI from "./pages/TechMateAI.jsx";
 import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
+import News from "./pages/News.jsx";
+import NewsStoryPage from "./pages/NewsStoryPage.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
@@ -80,6 +82,7 @@ import { getResourceBySlug, resources } from "./data/resources.js";
 import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
+import { getNewsStoryBySlug } from "./data/newsPosts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
@@ -123,6 +126,24 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     const articleSlug = params.get("article");
     const resourceSlug = params.get("resource");
     const routedPage = params.get("page");
+    const newsStorySlug = params.get("story");
+
+    // News stories use clean paths (/news/<slug>) to match the blog. The
+    // ?page=news&story=<slug> form is supported as a fallback so shared links
+    // built from the query-routed landing page still resolve.
+    const newsStoryMatch = path.match(/^\/news\/([^/]+)$/);
+    if (newsStoryMatch || (routedPage === "news" && newsStorySlug)) {
+        const slug = decodeURIComponent(newsStoryMatch ? newsStoryMatch[1] : newsStorySlug);
+        const story = getNewsStoryBySlug(slug);
+        if (story) {
+            return { page: "news-story", article: null, resource: null, category: null, newsStory: story };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    if (path === "/news") {
+        return { page: "news", article: null, resource: null, category: null };
+    }
 
     if (path === "/blog") {
         return { page: "blog", article: null, resource: null, category: "All" };
@@ -206,6 +227,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         path === "/" ||
         path === "/blog" ||
         path === "/blog-admin" ||
+        path === "/news" ||
         path.startsWith("/blog/");
 
     if (!isKnownPath) {
@@ -246,6 +268,9 @@ function App() {
     const [selectedArticle, setSelectedArticle] = useState(initialRoute.article);
     const [selectedResource, setSelectedResource] = useState(initialRoute.resource);
     const [selectedCategory, setSelectedCategory] = useState(initialRoute.category || "All");
+    const [selectedNewsStory, setSelectedNewsStory] = useState(initialRoute.newsStory || null);
+    // Coverage level the News Center should open on (set by story breadcrumbs).
+    const [newsCoverage, setNewsCoverage] = useState("all");
 
     // Mobile nav state
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -281,7 +306,7 @@ function App() {
     // Track SPA page views whenever the routed view changes.
     useEffect(() => {
         trackPageView(window.location.pathname + window.location.search);
-    }, [page, selectedArticle?.slug, selectedResource?.slug]);
+    }, [page, selectedArticle?.slug, selectedResource?.slug, selectedNewsStory?.slug]);
 
     // Frosted nav gains a subtle shadow once the page scrolls off the top.
     const navScrolled = useStickyNav();
@@ -292,7 +317,13 @@ function App() {
 
     // Re-scan for `.reveal-on-scroll` targets whenever the routed view swaps,
     // since this router mounts pages without remounting the shell.
-    useScrollReveal([page, selectedArticle?.slug, selectedResource?.slug, selectedCategory]);
+    useScrollReveal([
+        page,
+        selectedArticle?.slug,
+        selectedResource?.slug,
+        selectedNewsStory?.slug,
+        selectedCategory,
+    ]);
 
     // Timed newsletter popup - fires once per session after 45 s
     useEffect(() => {
@@ -361,6 +392,7 @@ function App() {
             setPage(route.page);
             setSelectedArticle(route.article);
             setSelectedResource(route.resource);
+            setSelectedNewsStory(route.newsStory || null);
             setSelectedCategory(route.category || "All");
             scrollTop();
         }
@@ -380,6 +412,7 @@ function App() {
     function goHome() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedNewsStory(null);
         setSelectedCategory("All");
         setPage("home");
         pushRoute("/");
@@ -389,6 +422,7 @@ function App() {
     function goBlog() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedNewsStory(null);
         setSelectedCategory("All");
         setPage("blog");
         pushRoute("/blog");
@@ -398,6 +432,7 @@ function App() {
     function goBlogCategory(category) {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedNewsStory(null);
         setSelectedCategory(category);
         setPage("blog");
         pushRoute(category === "All" ? "/blog" : `/blog/category/${slugifyCategory(category)}`);
@@ -407,6 +442,7 @@ function App() {
     function goResources() {
         setSelectedArticle(null);
         setSelectedResource(null);
+        setSelectedNewsStory(null);
         setSelectedCategory("All");
         setPage("resources");
         pushRoute("/resources");
@@ -416,6 +452,7 @@ function App() {
     function openArticle(post) {
         setSelectedArticle(post);
         setSelectedResource(null);
+        setSelectedNewsStory(null);
         setSelectedCategory("All");
         setPage("article");
         pushRoute(`/blog/${post.slug}`);
@@ -425,16 +462,43 @@ function App() {
     function openResource(resource) {
         setSelectedArticle(null);
         setSelectedResource(resource);
+        setSelectedNewsStory(null);
         setSelectedCategory("All");
         setPage("resource");
         pushRoute(`/resources/${resource.slug}`);
         scrollTop();
     }
 
-    function openPage(nextPage) {
+    /* News Center: the landing page keeps its existing `?page=news` route,
+       while individual stories use clean `/news/<slug>` paths. */
+    function goNews(coverageLevel = "all") {
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setSelectedNewsStory(null);
+        setSelectedCategory("All");
+        setNewsCoverage(coverageLevel);
+        setPage("news");
+        pushRoute("/?page=news");
+        scrollTop();
+    }
+
+    function openNewsStory(story) {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedCategory("All");
+        setSelectedNewsStory(story);
+        setPage("news-story");
+        pushRoute(`/news/${story.slug}`);
+        scrollTop();
+    }
+
+    function openPage(nextPage) {
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setSelectedNewsStory(null);
+        setSelectedCategory("All");
+        // Nav/menu entries to News always open the unfiltered feed.
+        if (nextPage === "news") setNewsCoverage("all");
         setPage(nextPage);
         pushRoute(pathForPage(nextPage));
         scrollTop();
@@ -528,7 +592,7 @@ function App() {
                     {/* Primary links — always inline on desktop */}
                     <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
                     <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
-                    <button onClick={() => { openPage("pricing");            setMobileMenuOpen(false); }}>Pricing</button>
+                    <button onClick={() => { openPage("news");               setMobileMenuOpen(false); }}>News</button>
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
                     <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
@@ -538,6 +602,7 @@ function App() {
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
+                            { label: "Pricing", onSelect: () => { openPage("pricing"); setMobileMenuOpen(false); } },
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
                             { label: "Contact",         onSelect: () => { openPage("contact");         setMobileMenuOpen(false); } },
@@ -630,6 +695,24 @@ function App() {
                 />
             )}
             {page === "pricing" && <Pricing />}
+            {page === "news" && (
+                <News
+                    key={`news-${newsCoverage}`}
+                    onNavigate={openPage}
+                    onOpenStory={openNewsStory}
+                    initialCoverage={newsCoverage}
+                />
+            )}
+            {page === "news-story" && selectedNewsStory && (
+                <NewsStoryPage
+                    story={selectedNewsStory}
+                    onNavigate={openPage}
+                    onGoHome={goHome}
+                    onGoNews={goNews}
+                    onOpenStory={openNewsStory}
+                    onOpenArticle={openArticle}
+                />
+            )}
             {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
             {page === "ai-tutorials" && <AiTutorialsPage />}
             {page === "ai-prompt-writing-guide" && <AIPromptGuide />}
