@@ -175,6 +175,61 @@ export function trackArticleView(post = {}) {
     });
 }
 
+/* ── News Center ─────────────────────────────────────────────────────────────
+   Structural only: coverage level, category, slug, and the UI surface a click
+   came from. No reader identifiers and no derived traffic/trending metrics. */
+
+export function trackNewsPageView({ storyCount = 0, isDemoFeed = false } = {}) {
+    trackEvent("news_page_view", {
+        news_story_count: storyCount,
+        news_demo_feed: isDemoFeed,
+    });
+}
+
+export function trackNewsFilterChange({ coverageLevel = "all", source = "filter_pills", resultCount = 0 } = {}) {
+    trackEvent("news_filter_change", {
+        news_coverage_level: coverageLevel,
+        news_filter_source: source,
+        news_result_count: resultCount,
+    });
+}
+
+export function trackNewsStoryClick(story = {}, { surface = "" } = {}) {
+    trackEvent("news_story_click", {
+        news_story_id: story.id,
+        news_story_slug: story.slug,
+        news_coverage_level: story.coverageLevel,
+        news_category: story.category,
+        news_surface: surface,
+    });
+}
+
+export function trackNewsStoryView(story = {}) {
+    trackEvent("news_story_view", {
+        news_story_id: story.id,
+        news_story_slug: story.slug,
+        news_coverage_level: story.coverageLevel,
+        news_category: story.category,
+        news_status: story.status,
+        news_demo_story: Boolean(story.isDemo),
+    });
+}
+
+export function trackRelatedNewsClick({ fromSlug = "", toSlug = "", type = "news" } = {}) {
+    trackEvent("related_news_click", {
+        news_from_slug: fromSlug,
+        news_to_slug: toSlug,
+        related_type: type,
+    });
+}
+
+export function trackNewsNewsletterClick({ location = "", storySlug = "" } = {}) {
+    trackEvent("news_newsletter_click", {
+        click_location: location,
+        news_story_slug: storySlug,
+    });
+}
+
 export function trackOutboundLinkClick({ url = "", label = "", location = "" } = {}) {
     trackEvent("outbound_link_click", {
         link_url: url,

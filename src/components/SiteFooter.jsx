@@ -24,6 +24,7 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
 
                 <div className="site-footer-col">
                     <p className="site-footer-col-title">Resources</p>
+                    <button type="button" onClick={() => onNavigate("news")}>News</button>
                     <button type="button" onClick={onGoBlog}>Blog</button>
                     <button type="button" onClick={onGoResources}>Library</button>
                     <button type="button" onClick={onGoResources}>Templates</button>
