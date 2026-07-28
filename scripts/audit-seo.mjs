@@ -776,15 +776,20 @@ if (validateDist) {
         error("sitemap.xml", "missing public/sitemap.xml for Phase 2B checks");
     }
 
-    // Checkpoint invariants: all 50 non-home public pages migrated (16 core +
-    // 34 guides), every one with generated HTML.
+    // Checkpoint invariants: all 50 non-home Phase 2B public pages migrated
+    // (16 core + 34 guides). News Center intentionally stays on ?page=news
+    // until its own clean-route checkpoint; it is the only allowed holdout.
     for (const route of PUBLIC_PAGE_ROUTES) {
         try { await stat(path.join(root, "dist", `${route.path.replace(/^\//, "")}.html`)); }
         catch { error("checkpoint", `missing generated HTML for ${route.path}`); }
     }
-    const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter((k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k));
+    const INTENTIONAL_QUERY_PAGE_KEYS = new Set(["news"]);
+    const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter(
+        (k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k) && !INTENTIONAL_QUERY_PAGE_KEYS.has(k),
+    );
     if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
     if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
+    if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "news")) error("checkpoint", "news must remain in STATIC_PUBLIC_PAGES as ?page=news");
     if (unmigrated.length !== 0) error("checkpoint", `expected 0 unmigrated public pages, found ${unmigrated.length}: ${unmigrated.join(", ")}`);
 
     // ── Checkpoint 3: true HTTP 404 architecture ──
@@ -833,11 +838,13 @@ if (validateDist) {
 
     // Route-manifest completeness: every valid clean pathname ↔ generated file.
     {
+        const publicNews = getPublicNewsStories();
         const manifest = {
             blog: ["/blog", ...blogCategories.map((c) => `/blog/category/${slugifyCategory(c)}`), ...posts.map((p) => `/blog/${p.slug}`)],
             products: ["/products", ...products.map((p) => `/products/${p.page}`)],
             resources: ["/resources", ...resources.map((r) => `/resources/${r.slug}`)],
             public: PUBLIC_PAGE_ROUTES.map((r) => r.path),
+            news: publicNews.map((story) => `/news/${story.slug}`),
         };
         const counts = [];
         let routeTotal = 0;
@@ -850,7 +857,8 @@ if (validateDist) {
             }
             counts.push(`${group}=${present}/${paths.length}`);
         }
-        if (routeTotal !== 118) error("route-manifest", `expected 118 route-specific files, manifest lists ${routeTotal}`);
+        const expectedRouteTotal = Object.values(manifest).reduce((sum, paths) => sum + paths.length, 0);
+        if (routeTotal !== expectedRouteTotal) error("route-manifest", `expected ${expectedRouteTotal} route-specific files, manifest lists ${routeTotal}`);
         try { await stat(path.join(root, "dist", "index.html")); } catch { error("route-manifest", "dist/index.html missing"); }
         console.log(`Route manifest: ${counts.join(", ")} (+ index.html + 404.html)`);
 
