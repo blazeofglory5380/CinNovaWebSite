@@ -83,6 +83,7 @@ import { saveSubscriber } from "./data/newsletterService.js";
 import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { getNewsStoryBySlug } from "./data/newsPosts.js";
+import { getNewsDraftBySlug } from "./data/newsDrafts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
@@ -127,6 +128,27 @@ function getRouteFromUrl(posts = getManagedPosts()) {
     const resourceSlug = params.get("resource");
     const routedPage = params.get("page");
     const newsStorySlug = params.get("story");
+    const newsPreviewSlug = params.get("slug");
+
+    // DEV-only draft preview. Never registered in VALID_PAGE_KEYS / sitemap.
+    // Production builds always 404 this route even if a draft JSON ships in the repo.
+    if (routedPage === "news-preview") {
+        if (!import.meta.env.DEV) {
+            return { page: "not-found", article: null, resource: null, category: null };
+        }
+        const slug = newsPreviewSlug ? decodeURIComponent(newsPreviewSlug) : "";
+        const draft = slug ? getNewsDraftBySlug(slug) : null;
+        if (draft) {
+            return {
+                page: "news-preview",
+                article: null,
+                resource: null,
+                category: null,
+                newsStory: draft,
+            };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
 
     // News stories use clean paths (/news/<slug>) to match the blog. The
     // ?page=news&story=<slug> form is supported as a fallback so shared links
@@ -706,6 +728,17 @@ function App() {
             {page === "news-story" && selectedNewsStory && (
                 <NewsStoryPage
                     story={selectedNewsStory}
+                    onNavigate={openPage}
+                    onGoHome={goHome}
+                    onGoNews={goNews}
+                    onOpenStory={openNewsStory}
+                    onOpenArticle={openArticle}
+                />
+            )}
+            {import.meta.env.DEV && page === "news-preview" && selectedNewsStory && (
+                <NewsStoryPage
+                    story={selectedNewsStory}
+                    previewMode
                     onNavigate={openPage}
                     onGoHome={goHome}
                     onGoNews={goNews}

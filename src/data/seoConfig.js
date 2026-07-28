@@ -22,6 +22,7 @@ export const EXCLUDED_PAGE_KEYS = new Set([
     "blog-manager",
     "newsletter-admin",
     "newsletter-success",
+    "news-preview",
 ]);
 
 /**
@@ -33,7 +34,12 @@ export const EXCLUDED_PAGE_KEYS = new Set([
 export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin"]);
 
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
-export const ROBOTS_DISALLOW_PATHS = ["/blog-admin", "/?page=newsletter-admin", "/?page=blog-manager"];
+export const ROBOTS_DISALLOW_PATHS = [
+    "/blog-admin",
+    "/?page=newsletter-admin",
+    "/?page=blog-manager",
+    "/?page=news-preview",
+];
 
 function toAbsoluteImageUrl(path = "") {
     if (!path) return null;

@@ -71,8 +71,27 @@ function SourceList({ sources = [] }) {
     );
 }
 
-function NewsStoryPage({ story, onNavigate, onGoHome, onGoNews, onOpenStory, onOpenArticle }) {
-    const metadata = useMemo(() => getNewsStoryMetadata(story), [story]);
+function NewsStoryPage({
+    story,
+    previewMode = false,
+    onNavigate,
+    onGoHome,
+    onGoNews,
+    onOpenStory,
+    onOpenArticle,
+}) {
+    const isPreview = Boolean(previewMode || story?.isDraft || story?.isPublished === false);
+    const metadata = useMemo(() => {
+        const base = getNewsStoryMetadata(story);
+        if (!isPreview) return base;
+        return {
+            ...base,
+            noindex: true,
+            // Keep editors from confusing draft previews with the public canonical.
+            canonical: `${base.canonical}?preview=1`,
+        };
+    }, [story, isPreview]);
+    // Related news resolves only against the public catalog (drafts are never related targets).
     const relatedStories = useMemo(() => getRelatedNewsStories(story), [story]);
     const relatedArticles = useMemo(
         () => (story.relatedBlogSlugs || []).map((slug) => getPostBySlug(slug)).filter(Boolean),
@@ -90,8 +109,9 @@ function NewsStoryPage({ story, onNavigate, onGoHome, onGoNews, onOpenStory, onO
     const updatedIso = toNewsDateTimeAttr(story.updatedAt);
 
     useEffect(() => {
+        if (isPreview) return;
         trackNewsStoryView(story);
-    }, [story]);
+    }, [story, isPreview]);
 
     function handleRelatedStory(related, surface) {
         trackNewsStoryClick(related, { surface });
@@ -202,6 +222,15 @@ function NewsStoryPage({ story, onNavigate, onGoHome, onGoNews, onOpenStory, onO
                                 )}
                             </p>
                         </div>
+
+                        {isPreview && (
+                            <p className="news-demo-banner" role="note">
+                                <strong>Editorial draft preview.</strong> This story is not public,
+                                not in the sitemap, and is marked <code>noindex</code>. Available
+                                only in local Vite development via{" "}
+                                <code>?page=news-preview&amp;slug=…</code>.
+                            </p>
+                        )}
 
                         {story.isDemo && (
                             <p className="news-demo-banner" role="note">
