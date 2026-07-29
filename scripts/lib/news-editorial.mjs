@@ -443,18 +443,20 @@ export function toNewsPostsLiteral(value, indent = 1) {
 
 export function promoteDraftIntoNewsPosts(story) {
     const source = readFileSync(NEWS_POSTS_PATH, "utf8");
-    const marker = "\n];\n\n/* ── URLs";
-    const index = source.indexOf(marker);
-    if (index === -1) {
+    // Accept LF or CRLF endings (Windows checkouts often use CRLF).
+    const markerMatch = source.match(/\r?\n\];\r?\n\r?\n\/\* ── URLs/);
+    if (!markerMatch) {
         throw new Error("Could not locate newsPosts array closing marker in newsPosts.js");
     }
+    const index = markerMatch.index;
 
     if (newsPosts.some((entry) => entry.id === story.id || entry.slug === story.slug)) {
         throw new Error(`Story id/slug already exists in newsPosts.js (${story.id} / ${story.slug})`);
     }
 
+    const nl = source.includes("\r\n") ? "\r\n" : "\n";
     const literal = toNewsPostsLiteral(story, 1);
-    const insertion = `\n    ${literal},`;
+    const insertion = `${nl}    ${literal},`;
     const next = `${source.slice(0, index)}${insertion}${source.slice(index)}`;
     writeFileSync(NEWS_POSTS_PATH, next, "utf8");
 }
