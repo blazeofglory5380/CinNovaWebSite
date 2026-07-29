@@ -6,9 +6,13 @@
  * real gtag.js load, and asserts on the Measurement Protocol hits the tag tries
  * to send:
  *
- *   1. the first load produces exactly one `page_view` for the correct tid
- *   2. a client-side route change produces exactly one more `page_view`
- *   3. no duplicate `page_view` is emitted for the same location
+ *   1. Home (`/`) produces exactly one `page_view`
+ *   2. SPA nav to `/?page=news` produces +1
+ *   3. SPA nav to `/?page=products` produces +1
+ *   4. SPA nav to `/privacy` produces +1
+ *   5. Re-tracking the same URL does not duplicate
+ *
+ * Expected total: 4 page_view events, all with tid=G-CD944CHBK6.
  *
  * The `/g/collect` requests are recorded and then ABORTED, so running this test
  * never writes data into the live GA4 property.
@@ -66,15 +70,40 @@ function startPreview() {
     return child;
 }
 
-function parseHit(url) {
+function parseHit(request) {
+    const url = request.url();
     const params = new URL(url).searchParams;
-    return {
+    const hit = {
         url,
         tid: params.get("tid"),
         en: params.get("en"),
         dl: params.get("dl"),
         dt: params.get("dt"),
+        // GA4 encodes event params as ep.<name> on the collect query string.
+        pagePath: params.get("ep.page_path"),
     };
+
+    // Some gtag collects are POST with the Measurement Protocol fields in the
+    // body (often URL-encoded). Merge those so we do not miss `en=page_view`.
+    try {
+        const post = request.postData();
+        if (post) {
+            const body = new URLSearchParams(post);
+            hit.tid = hit.tid || body.get("tid");
+            hit.en = hit.en || body.get("en");
+            hit.dl = hit.dl || body.get("dl");
+            hit.dt = hit.dt || body.get("dt");
+            hit.pagePath = hit.pagePath || body.get("ep.page_path");
+        }
+    } catch {
+        // Ignore body parse failures; query-string fields still apply.
+    }
+
+    return hit;
+}
+
+function pageViews(hits) {
+    return hits.filter((h) => h.en === "page_view");
 }
 
 async function waitForHits(hits, predicate, timeoutMs = 25000) {
@@ -84,6 +113,13 @@ async function waitForHits(hits, predicate, timeoutMs = 25000) {
         await new Promise((resolve) => setTimeout(resolve, 250));
     }
     return false;
+}
+
+async function spaGoto(page, path) {
+    await page.evaluate((nextPath) => {
+        window.history.pushState({}, "", nextPath);
+        window.dispatchEvent(new PopStateEvent("popstate"));
+    }, path);
 }
 
 async function main() {
@@ -102,7 +138,7 @@ async function main() {
         // Record every Measurement Protocol hit, then abort it so the live GA4
         // property never receives synthetic test traffic.
         await context.route(COLLECT_PATTERN, async (route) => {
-            hits.push(parseHit(route.request().url()));
+            hits.push(parseHit(route.request()));
             await route.abort();
         });
 
@@ -149,69 +185,125 @@ async function main() {
         );
 
         // Let any stray duplicate arrive before counting.
-        await page.waitForTimeout(2500);
-        const firstLoadViews = hits.filter((h) => h.en === "page_view");
+        await page.waitForTimeout(2000);
         check(
             "initial load sends exactly one page_view",
-            firstLoadViews.length === 1,
-            `saw ${firstLoadViews.length}`
+            pageViews(hits).length === 1,
+            `saw ${pageViews(hits).length}`
         );
         check(
             "hit carries the correct measurement id",
-            firstLoadViews.every((h) => h.tid === EXPECTED_ID),
-            firstLoadViews.map((h) => h.tid).join(", ")
+            pageViews(hits).every((h) => h.tid === EXPECTED_ID),
+            pageViews(hits)
+                .map((h) => h.tid)
+                .join(", ")
         );
         check(
             "hit page_location matches the loaded route",
-            firstLoadViews[0]?.dl === `${ORIGIN}/`,
-            String(firstLoadViews[0]?.dl)
+            pageViews(hits)[0]?.dl === `${ORIGIN}/`,
+            String(pageViews(hits)[0]?.dl)
         );
 
-        // ── 2. Client-side route change ──────────────────────────────────────
-        const target = await page.evaluate(() => {
-            const hrefs = Array.from(globalThis.document.querySelectorAll('a[href^="/"]'))
-                .map((a) => a.getAttribute("href"))
-                .filter((h) => h && h !== "/" && !h.startsWith("//"));
-            return hrefs[0] || null;
-        });
+        // ── 2. Query + clean SPA destinations ────────────────────────────────
+        // Home → ?page=news → ?page=products → /privacy  => 4 distinct page_views
+        // News uses the real nav button (pushRoute + eager track). Remaining
+        // query/clean hops use popstate so React state stays in sync.
 
-        if (!target) {
-            check("found an internal link to exercise SPA routing", false);
-        } else {
-            await page.click(`a[href="${target}"]`);
-            const gotSecond = await waitForHits(
+        // Blog → News was the failing case; from Home, News still lands on /?page=news.
+        await page.getByRole("button", { name: "News", exact: true }).first().click();
+        const gotNews = await waitForHits(hits, (h) => pageViews(h).length >= 2);
+        check("legacy News query route (/?page=news) sends a page_view", gotNews);
+        await page.waitForTimeout(800);
+
+        // Diagnostic: confirm the SPA URL and that dataLayer queued a page_view.
+        const newsProbe = await page.evaluate(() => ({
+            href: window.location.href,
+            commands: Array.from(window.dataLayer || []).map((args) => {
+                try {
+                    return Array.from(args);
+                } catch {
+                    return args;
+                }
+            }),
+        }));
+        const newsPageViewQueued = newsProbe.commands.some(
+            (c) => Array.isArray(c) && c[0] === "event" && c[1] === "page_view"
+        );
+        check("News navigation lands on /?page=news", /[?&]page=news\b/.test(newsProbe.href) || newsProbe.href.endsWith("/?page=news"), newsProbe.href);
+        check("dataLayer contains at least one page_view event command", newsPageViewQueued);
+
+        check(
+            "News navigation reaches 2 total page_views",
+            pageViews(hits).length === 2,
+            `saw ${pageViews(hits).length}; raw=${JSON.stringify(hits.map((h) => ({ en: h.en, dl: h.dl })))}`
+        );
+        check(
+            "News page_view reports /?page=news",
+            pageViews(hits)[1]?.dl === `${ORIGIN}/?page=news`,
+            String(pageViews(hits)[1]?.dl)
+        );
+
+        const routeSteps = [
+            { path: "/?page=products", label: "legacy Products query route", expectedCount: 3 },
+            { path: "/privacy", label: "Privacy destination", expectedCount: 4 },
+        ];
+
+        for (const step of routeSteps) {
+            await spaGoto(page, step.path);
+            const got = await waitForHits(
                 hits,
-                (h) => h.filter((x) => x.en === "page_view").length >= 2
+                (h) => pageViews(h).length >= step.expectedCount
             );
-            check(`SPA navigation to ${target} sends a page_view`, gotSecond);
+            check(`${step.label} (${step.path}) sends a page_view`, got);
 
-            await page.waitForTimeout(2500);
-            const views = hits.filter((h) => h.en === "page_view");
+            await page.waitForTimeout(800);
+            const views = pageViews(hits);
             check(
-                "SPA navigation sends exactly one additional page_view",
-                views.length === 2,
+                `${step.label} reaches ${step.expectedCount} total page_views`,
+                views.length === step.expectedCount,
                 `saw ${views.length}`
             );
             check(
-                "second page_view reports the new route",
-                views[1]?.dl === `${ORIGIN}${target}`,
-                String(views[1]?.dl)
-            );
-
-            const locations = views.map((v) => v.dl);
-            check(
-                "no duplicate page_view for the same location",
-                new Set(locations).size === locations.length,
-                locations.join(" | ")
+                `${step.label} reports the destination location`,
+                views[step.expectedCount - 1]?.dl === `${ORIGIN}${step.path}`,
+                String(views[step.expectedCount - 1]?.dl)
             );
         }
+
+        await page.waitForTimeout(1500);
+        const views = pageViews(hits);
+        check("exactly 4 page_view events after the route matrix", views.length === 4, `saw ${views.length}`);
+        check(
+            "every page_view uses the expected measurement id",
+            views.every((h) => h.tid === EXPECTED_ID),
+            views.map((h) => h.tid).join(", ")
+        );
+
+        const locations = views.map((v) => v.dl);
+        check(
+            "no duplicate page_view for the same location",
+            new Set(locations).size === locations.length,
+            locations.join(" | ")
+        );
+
+        // Re-track the same destination; dedupe must suppress a 5th page_view.
+        const beforeDedupe = pageViews(hits).length;
+        await spaGoto(page, "/privacy");
+        await page.waitForTimeout(1500);
+        check(
+            "re-tracking the same URL does not emit a duplicate page_view",
+            pageViews(hits).length === beforeDedupe,
+            `saw ${pageViews(hits).length}`
+        );
 
         const gaErrors = consoleErrors.filter((t) => t.includes("[GA4]"));
         check("no [GA4] console errors", gaErrors.length === 0, gaErrors.join(" | "));
 
         console.log(`\nRecorded ${hits.length} Measurement Protocol hit(s):`);
         for (const hit of hits) {
-            console.log(`  en=${hit.en} tid=${hit.tid} dl=${hit.dl}`);
+            console.log(
+                `  en=${hit.en} tid=${hit.tid} dl=${hit.dl}${hit.pagePath ? ` ep.page_path=${hit.pagePath}` : ""}`
+            );
         }
     } finally {
         if (browser) await browser.close();

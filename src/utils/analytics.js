@@ -4,9 +4,11 @@ const GA_DEBUG =
 
 let scriptRequested = false;
 // Guards against duplicate page views when a React re-render re-runs the route
-// effect without the URL actually changing. Only consecutive repeats of the same
-// location are suppressed, so A → B → A still reports three page views.
-let lastPageLocation = null;
+// effect without the URL actually changing. Keyed on pathname + search (+ hash
+// when present) so legacy query routes like `/?page=news` are distinct from `/`.
+// Only consecutive repeats of the same key are suppressed, so A → B → A still
+// reports three page views.
+let lastPageKey = null;
 
 function log(...args) {
     if (GA_DEBUG) {
@@ -110,34 +112,55 @@ export function initAnalytics() {
     }
 }
 
-export function trackPageView(path = window.location.pathname + window.location.search) {
+/**
+ * Normalize an SPA destination into stable analytics fields.
+ * Resolves against `location.origin` (not the current href) so a relative
+ * `/?page=news` never accidentally inherits a prior path like `/blog`.
+ */
+function resolvePageViewTarget(pathInput) {
+    const fallbackPath =
+        window.location.pathname + window.location.search + window.location.hash;
+    const raw = (pathInput && String(pathInput)) || fallbackPath;
+
+    try {
+        const url = new URL(raw, window.location.origin);
+        const pagePath = `${url.pathname}${url.search}${url.hash}`;
+        return {
+            pageKey: pagePath || "/",
+            pagePath: pagePath || "/",
+            pageLocation: url.href,
+        };
+    } catch {
+        return {
+            pageKey: fallbackPath || "/",
+            pagePath: fallbackPath || "/",
+            pageLocation: window.location.href,
+        };
+    }
+}
+
+export function trackPageView(
+    path = window.location.pathname + window.location.search + window.location.hash
+) {
     if (!isEnabled()) {
         log("disabled — missing VITE_GA_MEASUREMENT_ID");
         return;
     }
 
-    const pagePath = path || window.location.pathname + window.location.search;
+    const { pageKey, pagePath, pageLocation } = resolvePageViewTarget(path);
 
-    let pageLocation;
-    try {
-        pageLocation = new URL(pagePath, window.location.href).href;
-    } catch {
-        pageLocation = window.location.href;
-    }
-
-    if (pageLocation === lastPageLocation) {
-        log("page_view skipped — already reported", pageLocation);
+    if (pageKey === lastPageKey) {
+        log("page_view skipped — already reported", pageKey);
         return;
     }
-    lastPageLocation = pageLocation;
+    lastPageKey = pageKey;
 
     // Google's documented SPA pattern: the initial `config` disables the
     // automatic page view, and every view — including the first — is reported
-    // as an explicit `page_view` event. A repeated `config` for an
-    // already-configured measurement ID is not a supported way to do this.
-    // GA4 derives the page path from `page_location`; `page_path` is a
-    // Universal Analytics parameter and is ignored, so it is not sent.
+    // as an explicit `page_view` event. Include page_path so legacy query
+    // destinations (`/?page=news`) remain identifiable in reports.
     const payload = {
+        page_path: pagePath,
         page_location: pageLocation,
         page_title: document.title,
     };

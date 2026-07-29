@@ -54,7 +54,11 @@ export default defineConfig([
     },
     {
         // Playwright page.evaluate() callbacks run in a browser context.
-        files: ["scripts/capture-*-poster.mjs", "scripts/capture-*.mjs"],
+        files: [
+            "scripts/capture-*-poster.mjs",
+            "scripts/capture-*.mjs",
+            "scripts/test-analytics.mjs",
+        ],
         languageOptions: {
             globals: {
                 ...globals.node,
