@@ -197,12 +197,12 @@ function LaunchChecklistBlock({ post }) {
     const [checked, setChecked] = useState(() => launchChecklistItems.map(() => false));
 
     useEffect(() => {
-        let next = checklist.items.map(() => false);
+        let next = launchChecklistItems.map(() => false);
         try {
             const saved = localStorage.getItem(storageKey);
             if (saved) {
                 const parsed = JSON.parse(saved);
-                if (Array.isArray(parsed) && parsed.length === checklist.items.length) {
+                if (Array.isArray(parsed) && parsed.length === launchChecklistItems.length) {
                     next = parsed;
                 }
             }
@@ -210,7 +210,7 @@ function LaunchChecklistBlock({ post }) {
             /* ignore */
         }
         setChecked(next);
-    }, [storageKey, checklist.items.length]);
+    }, [storageKey, launchChecklistItems.length]);
 
     function toggle(i) {
         const next = checked.map((value, idx) => (idx === i ? !value : value));

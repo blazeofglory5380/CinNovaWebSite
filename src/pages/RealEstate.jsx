@@ -4,13 +4,11 @@ import "../App.css";
 import "../styles/brand-dna.css";
 import "./ProductDark.css";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
 import RealEstateCityHero from "../components/RealEstateCityHero.jsx";
 import RealEstateResourceCta from "../components/RealEstateResourceCta.jsx";
 import RealEstateDemo from "../components/RealEstateDemo.jsx";
 import FeaturePhotoCard from "../components/FeaturePhotoCard.jsx";
 import { productMarketing } from "../data/marketingImages.js";
-import { productHero3DConfigs } from "../data/productHero3D.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import SEO from "../components/SEO.jsx";
 import { siteUrl } from "../data/blogPosts.js";
@@ -22,7 +20,6 @@ import { MotionAiPanelWrap } from "../motion/MotionAiPanelWrap.jsx";
 import { trackLiveBetaClick, trackEvent } from "../utils/analytics.js";
 
 const { features } = productMarketing["real-estate"];
-const realEstateHero = productHero3DConfigs["real-estate"];
 
 const LIVE_BETA_URL = "https://cin-nova.vercel.app/getting-started";
 // "Try the Live Beta" opens the Real Estate AI app dashboard. Environment-aware so
@@ -75,9 +72,7 @@ function RealEstate() {
             />
 
             {/* Main Real Estate hero — approved full-bleed city hero
-                (RealEstateCityHero). ProductHero3D and productHero3DConfigs
-                ["real-estate"] (realEstateHero) are intentionally retained for
-                rollback — nothing is deleted; the 3D model assets stay in the repo. */}
+                (RealEstateCityHero). 3D model assets stay in the repo for rollback. */}
             <MotionHeroWrap>
                 <RealEstateCityHero
                     primaryHref={realEstateAppUrl}
