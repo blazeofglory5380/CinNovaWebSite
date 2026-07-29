@@ -5,7 +5,6 @@ import "../App.css";
 import "../styles/brand-dna.css";
 import "./ProductDark.css";
 import SEO from "../components/SEO.jsx";
-import ProductHero3D from "../components/ProductHero3D.jsx";
 import PoisonGuardHeroReview from "../components/PoisonGuardHeroReview.jsx";
 import PoisonGuardDemo from "../components/PoisonGuardDemo.jsx";
 import PoisonGuardFeatureCard from "../components/poisonguard/PoisonGuardFeatureCard.jsx";
@@ -203,9 +202,8 @@ function PoisonGuard() {
 
             {/* Main PoisonGuard hero — approved image-based PoisonGuardHeroReview
                 (real HTML copy + frameless animated scene), rendering the page <h1>.
-                ProductHero3D and productHero3DConfigs.poisonguard are intentionally
-                retained: the config still feeds the SEO schema below, and the 3D hero
-                plus its optimized GLB assets stay in the repo for rollback/reference. */}
+                productHero3DConfigs.poisonguard still feeds the SEO schema below;
+                3D hero GLB assets stay in the repo for rollback/reference. */}
             <MotionHeroWrap>
                 <PoisonGuardHeroReview primaryHref="#waitlist" secondaryHref="/resources" />
             </MotionHeroWrap>

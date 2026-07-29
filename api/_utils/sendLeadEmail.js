@@ -49,7 +49,7 @@ export async function sendLeadEmail({ subject, text, replyTo } = {}) {
             return { ok: false, configured: true, status: response.status, error: `Resend error ${response.status}` };
         }
         return { ok: true, configured: true };
-    } catch (err) {
+    } catch {
         return { ok: false, configured: true, error: "Email send failed" };
     }
 }

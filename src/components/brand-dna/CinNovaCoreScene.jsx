@@ -60,7 +60,6 @@ function CinNovaCoreScene({
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 
-            const emerald = new THREE.Color("#0abf8c");
             const emeraldGlow = new THREE.Color("#3fe8c0");
             const sapphire = new THREE.Color("#1b6cf2");
             const gold = new THREE.Color("#c9a962");
