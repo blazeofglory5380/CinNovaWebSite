@@ -1,0 +1,174 @@
+name: Editorial Daily
+
+# Phase 10A — preparation only.
+# Never merges, never deploys, never publishes to production catalogs.
+# Does not store API keys in the repository.
+
+on:
+  schedule:
+    # 13:00 UTC ≈ morning US editorial window
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Editorial date YYYY-MM-DD (defaults to today UTC)"
+        required: false
+        default: ""
+      packet_path:
+        description: "Optional research packet path inside the repo"
+        required: false
+        default: ""
+      dry_run:
+        description: "If true, run pipeline without writing drafts"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: editorial-daily
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Resolve date
+        id: meta
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE="${{ github.event.inputs.date }}"
+          else
+            DATE="$(date -u +%F)"
+          fi
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+          echo "branch=editorial/daily-$DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Research
+        shell: bash
+        run: |
+          EXTRA=()
+          if [ -n "${{ github.event.inputs.packet_path }}" ]; then
+            EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            EXTRA+=(--dry-run)
+          fi
+          npm run editorial:research -- --date="${{ steps.meta.outputs.date }}" "${EXTRA[@]}"
+
+      - name: Daily pipeline
+        shell: bash
+        run: |
+          EXTRA=()
+          if [ -n "${{ github.event.inputs.packet_path }}" ]; then
+            EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            EXTRA+=(--dry-run)
+          fi
+          npm run editorial:daily -- --date="${{ steps.meta.outputs.date }}" --skip-existing "${EXTRA[@]}"
+
+      - name: Fact-check + review
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          npm run editorial:factcheck -- --date="${{ steps.meta.outputs.date }}"
+          npm run editorial:review -- --date="${{ steps.meta.outputs.date }}"
+
+      - name: Unit tests
+        run: |
+          npm run test:social-utm
+          npm run test:editorial
+
+      - name: Validate catalogs
+        continue-on-error: true
+        run: |
+          npm run validate:news
+          npm run validate:blog
+
+      - name: Lint and build
+        run: |
+          npm run lint
+          npm run build
+
+      - name: Detect editorial changes
+        id: changes
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        shell: bash
+        run: |
+          git add editorial-reports src/data/news-drafts src/data/blog-drafts src/data/social-drafts || true
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No editorial automation output to commit."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            git status --short
+          fi
+
+      - name: Commit automation output
+        if: ${{ steps.changes.outputs.has_changes == 'true' }}
+        shell: bash
+        run: |
+          git config user.name "cinnova-editorial-bot"
+          git config user.email "editorial-bot@users.noreply.github.com"
+          git checkout -B "${{ steps.meta.outputs.branch }}"
+          git commit -m "editorial: daily preparation ${{ steps.meta.outputs.date }}"
+          git push -u origin "HEAD:${{ steps.meta.outputs.branch }}"
+
+      - name: Open or update Draft PR
+        if: ${{ steps.changes.outputs.has_changes == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          DATE="${{ steps.meta.outputs.date }}"
+          BRANCH="${{ steps.meta.outputs.branch }}"
+          TITLE="Editorial Daily — ${DATE}"
+          BODY_FILE="$(mktemp)"
+          {
+            echo "## Summary"
+            echo "- Automated editorial preparation for **${DATE}**"
+            echo "- Drafts only — no publish, no merge, no deploy"
+            echo "- HOLD items must not be published"
+            echo ""
+            echo "## Readiness"
+            echo '```'
+            if [ -f "editorial-reports/${DATE}-review.md" ]; then
+              sed -n '1,120p' "editorial-reports/${DATE}-review.md"
+            elif [ -f "editorial-reports/${DATE}.md" ]; then
+              sed -n '1,120p' "editorial-reports/${DATE}.md"
+            else
+              echo "Review report unavailable."
+            fi
+            echo '```'
+            echo ""
+            echo "## Test plan"
+            echo "- [ ] Review READY/REVIEW drafts in DEV preview"
+            echo "- [ ] Confirm sources + fact-check dispositions"
+            echo "- [ ] Resolve IMAGE REQUIRED heroes"
+            echo "- [ ] Human publishes selectively; do not merge HOLD content"
+          } > "$BODY_FILE"
+
+          EXISTING="$(gh pr list --head "$BRANCH" --json number,url --jq '.[0].number')"
+          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file "$BODY_FILE"
+            echo "Updated PR #$EXISTING"
+          else
+            gh pr create --draft --title "$TITLE" --body-file "$BODY_FILE" --head "$BRANCH"
+          fi
