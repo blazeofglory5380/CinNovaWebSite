@@ -80,6 +80,36 @@ export const blogImagePool = [
         tags: ["data center", "servers", "hyperscale"],
     },
     {
+        id: "ai-anthropic-government-briefing",
+        category: "Artificial Intelligence",
+        localPath: "/images/blog/ai/anthropic-government-briefing.png",
+        alt: "Editorial illustration for Anthropic and federal AI policy coverage",
+        caption: "Library image used for illustration of AI policy and governance themes.",
+        unsplashId: null,
+        creatorName: "CinNova Editorial",
+        tags: ["anthropic", "policy", "ai"],
+    },
+    {
+        id: "dc-utah-stratos-campus",
+        category: "Data Centers & Databases",
+        localPath: "/images/blog/datacenters/utah-stratos-data-center.png",
+        alt: "Editorial illustration of a data center campus in an arid landscape",
+        caption: "Library image used for illustration of Utah AI data center coverage.",
+        unsplashId: null,
+        creatorName: "CinNova Editorial",
+        tags: ["utah", "data center", "stratos"],
+    },
+    {
+        id: "ai-meta-iris-chip-news",
+        category: "Artificial Intelligence",
+        localPath: "/images/blog/ai/meta-iris-ai-chip-news.png",
+        alt: "Editorial illustration for Meta Iris AI chip news coverage",
+        caption: "Library image used for illustration of AI chip and infrastructure news.",
+        unsplashId: null,
+        creatorName: "CinNova Editorial",
+        tags: ["meta", "iris", "chip"],
+    },
+    {
         id: "dc-georgia-qts-campus",
         category: "Data Centers & Databases",
         localPath: "/images/blog/datacenters/georgia-qts-data-center.webp",
@@ -582,7 +612,11 @@ export const articleHeroAssignments = {
     108: "re-future-of-ai",
     109: "re-beginner-deal-analysis",
     110: "re-rental-10-minute-screen",
+    201: "ai-anthropic-government-briefing",
+    202: "dc-utah-stratos-campus",
+    203: "ai-meta-iris-chip-news",
     204: "dc-georgia-qts-campus",
+    205: "pool-dc-fiber-network",
 };
 
 /**
