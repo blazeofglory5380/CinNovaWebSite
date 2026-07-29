@@ -1,8 +1,52 @@
+/*
+ * GA4 event reporting.
+ *
+ * The Google tag itself lives in index.html — see the "Google tag (gtag.js)"
+ * block in <head>. That is the ONLY place gtag.js is loaded and the ONLY place
+ * `gtag('config', …)` runs. This module deliberately owns neither: it just
+ * reports events through the global `dataLayer` that the tag already set up.
+ *
+ * GA_ID is read here solely to decide whether analytics is switched on for this
+ * build. It is never used to load a script or to configure a measurement ID.
+ */
 const GA_ID = import.meta.env?.VITE_GA_MEASUREMENT_ID?.trim();
-const GA_DEBUG =
-    import.meta.env?.DEV || import.meta.env?.VITE_GA_DEBUG === "true";
 
-let scriptRequested = false;
+/**
+ * Survives SPA route changes, which drop the query string that started the
+ * debug session. Session-scoped, so it disappears when the tab closes.
+ */
+const GA_DEBUG_SESSION_KEY = "cn:ga-debug";
+
+/**
+ * Opt-in debug session. True for `vite dev`, for a build with
+ * `VITE_GA_DEBUG=true`, or for a browser that landed on `?ga_debug=1`.
+ *
+ * `gtm_debug` is the parameter Google Tag Assistant appends when it connects.
+ * gtag.js reads it natively, so honouring it here is belt-and-braces: it keeps
+ * debug sessions working even if the tag initialises after Tag Assistant's
+ * connection attempt.
+ *
+ * Normal production traffic never matches any of these, so it is never tagged.
+ */
+function resolveDebugSession() {
+    if (typeof window === "undefined") return false;
+    if (import.meta.env?.DEV || import.meta.env?.VITE_GA_DEBUG === "true") return true;
+
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("ga_debug") === "1" || params.has("gtm_debug")) {
+            window.sessionStorage?.setItem(GA_DEBUG_SESSION_KEY, "1");
+            return true;
+        }
+        return window.sessionStorage?.getItem(GA_DEBUG_SESSION_KEY) === "1";
+    } catch {
+        // Private mode / storage disabled — fall back to "not debugging".
+        return false;
+    }
+}
+
+const GA_DEBUG = resolveDebugSession();
+
 // Guards against duplicate page views when a React re-render re-runs the route
 // effect without the URL actually changing. Keyed on pathname + search (+ hash
 // when present) so legacy query routes like `/?page=news` are distinct from `/`.
@@ -20,69 +64,63 @@ function isEnabled() {
     return typeof window !== "undefined" && Boolean(GA_ID);
 }
 
+function pushGtagCommand() {
+    window.dataLayer.push(arguments);
+}
+
 /**
- * Hands a gtag command to `dataLayer`.
+ * Guarantees `dataLayer` and a `gtag` shim exist before anything is pushed.
  *
- * Commands are pushed immediately rather than being held until gtag.js fires
- * `onload`. `dataLayer` is gtag.js's own buffer: anything queued before the
- * library arrives is replayed in order once it does, and anything queued after
- * is processed synchronously. Gating on `onload` added no safety and lost every
- * event whenever the script was slow, cached oddly, or blocked outright.
+ * index.html defines both before this bundle evaluates, so normally this is a
+ * no-op. It stays as a safety net: if the inline snippet is ever stripped by a
+ * proxy or blocked, commands buffer harmlessly instead of throwing.
  */
-function sendGtag(...args) {
+function ensureGtag() {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || pushGtagCommand;
+}
+
+/**
+ * Reports one GA4 event.
+ *
+ * Pushes straight to `dataLayer`, which is gtag.js's own buffer: commands queued
+ * before the library finishes loading are replayed in order once it does, and
+ * commands queued after are processed synchronously. Nothing is gated on a
+ * script `onload`, so a slow or blocked gtag.js can never silently discard
+ * events.
+ */
+function sendEvent(name, params = {}) {
     if (!isEnabled()) {
         log("disabled — missing VITE_GA_MEASUREMENT_ID");
         return;
     }
 
-    // Idempotent: guarantees dataLayer, the gtag shim, and the script request.
-    initAnalytics();
-    window.gtag(...args);
+    ensureGtag();
+
+    // Google documents debug_mode either on `config` or per event. The single
+    // `config` now lives in static HTML, so the flag is stamped per event here.
+    // The key is only ever added, never set to false — per Google's DebugView
+    // docs, `debug_mode: false` does not disable debug mode.
+    const payload = GA_DEBUG ? { ...params, debug_mode: true } : params;
+
+    window.gtag("event", name, payload);
 }
 
-function pushGtagCommand() {
-    window.dataLayer.push(arguments);
-}
-
+/**
+ * Prepares client-side analytics.
+ *
+ * Deliberately does NOT load gtag.js and does NOT issue `gtag('js', …)` or
+ * `gtag('config', …)` — index.html owns all three. This only makes sure the
+ * globals exist and binds the delegated outbound-link listener.
+ */
 export function initAnalytics() {
     if (!isEnabled()) {
         log("init skipped — no measurement ID");
         return;
     }
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || pushGtagCommand;
-
-    if (scriptRequested) {
-        log("init already requested");
-        return;
-    }
-
-    scriptRequested = true;
-    log("initializing", GA_ID);
-
-    window.gtag("js", new Date());
-    window.gtag("config", GA_ID, { send_page_view: false });
-    log("queued config", { send_page_view: false });
-
-    if (document.getElementById("ga4-script")) {
-        log("script tag already present");
-        return;
-    }
-
-    const script = document.createElement("script");
-    script.id = "ga4-script";
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    script.onload = () => {
-        log("gtag.js loaded");
-    };
-    script.onerror = () => {
-        // Commands stay buffered in dataLayer; nothing else needs to unwind.
-        console.error("[GA4] failed to load gtag.js");
-    };
-    document.head.appendChild(script);
-    log("injected gtag.js");
+    ensureGtag();
+    log("ready — tag installed in index.html", GA_ID);
 
     if (!document.documentElement.dataset.outboundAnalyticsBound) {
         document.documentElement.dataset.outboundAnalyticsBound = "true";
@@ -155,22 +193,24 @@ export function trackPageView(
     }
     lastPageKey = pageKey;
 
-    // Google's documented SPA pattern: the initial `config` disables the
+    // Google's documented SPA pattern: the `config` in index.html disables the
     // automatic page view, and every view — including the first — is reported
-    // as an explicit `page_view` event. Include page_path so legacy query
-    // destinations (`/?page=news`) remain identifiable in reports.
+    // here as an explicit `page_view` event. A repeated `config` for an
+    // already-configured measurement ID is not a supported way to do this.
+    // Include page_path so legacy query destinations (`/?page=news`) remain
+    // identifiable alongside page_location.
     const payload = {
         page_path: pagePath,
         page_location: pageLocation,
         page_title: document.title,
     };
 
-    sendGtag("event", "page_view", payload);
+    sendEvent("page_view", payload);
     log("page_view sent", payload);
 }
 
 export function trackEvent(eventName, params = {}) {
-    sendGtag("event", eventName, params);
+    sendEvent(eventName, params);
     log("event sent", eventName, params);
 }
 

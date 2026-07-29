@@ -6,13 +6,11 @@
  * real gtag.js load, and asserts on the Measurement Protocol hits the tag tries
  * to send:
  *
- *   1. Home (`/`) produces exactly one `page_view`
- *   2. SPA nav to `/?page=news` produces +1
- *   3. SPA nav to `/?page=products` produces +1
- *   4. SPA nav to `/privacy` produces +1
- *   5. Re-tracking the same URL does not duplicate
- *
- * Expected total: 4 page_view events, all with tid=G-CD944CHBK6.
+ *   1. dist/index.html carries exactly one canonical Google tag in <head>
+ *   2. the first load produces exactly one `page_view` for the correct tid
+ *   3. SPA matrix Home → /?page=news → /?page=products → /privacy yields 4 views
+ *   4. no duplicate `page_view` is emitted for the same location
+ *   5. debug_mode is applied only to opt-in debug sessions
  *
  * The `/g/collect` requests are recorded and then ABORTED, so running this test
  * never writes data into the live GA4 property.
@@ -20,6 +18,7 @@
  * Usage: npm run test:analytics
  */
 
+import { readFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -31,6 +30,51 @@ const ORIGIN = `http://localhost:${PORT}`;
 const COLLECT_PATTERN = /^https:\/\/([a-z0-9-]+\.)?(google-analytics\.com|analytics\.google\.com)\/(g\/)?collect/;
 
 const failures = [];
+
+/** gtag.js emits `_dbg=true`; other debug surfaces emit `_dbg=1`. */
+function isDebugFlagged(value) {
+    return value === "1" || value === "true";
+}
+
+function countOccurrences(haystack, needle) {
+    return haystack.split(needle).length - 1;
+}
+
+/**
+ * The served HTML is what Google's Tag Diagnostics crawler sees, so the canonical
+ * tag has to be verifiable statically — not just at runtime.
+ */
+function verifyDistHtml() {
+    const distIndex = fileURLToPath(new URL("../dist/index.html", import.meta.url));
+    const html = readFileSync(distIndex, "utf8");
+    const head = html.slice(0, html.indexOf("</head>"));
+    const loaders = countOccurrences(html, "googletagmanager.com/gtag/js");
+    const configs =
+        countOccurrences(html, 'gtag("config"') + countOccurrences(html, "gtag('config'");
+
+    check(
+        "no unreplaced Vite env placeholder",
+        !html.includes("%VITE_"),
+        (html.match(/%VITE_[A-Z_]+%/g) || []).join(", ")
+    );
+    check("loads gtag.js exactly once", loaders === 1, `saw ${loaders}`);
+    check(
+        "the gtag.js loader sits inside <head>",
+        head.includes(`googletagmanager.com/gtag/js?id=${EXPECTED_ID}`)
+    );
+    check("issues gtag config exactly once", configs === 1, `saw ${configs}`);
+    check(
+        "the static config disables the automatic page view",
+        /gtag\(\s*["']config["']\s*,\s*["']G-[A-Z0-9]+["']\s*,\s*\{\s*send_page_view:\s*false/.test(
+            html
+        )
+    );
+    check(
+        "no Google Tag Manager container",
+        !/GTM-[A-Z0-9]/.test(html) && !html.includes("gtm.js")
+    );
+    check("no retired measurement id", !html.includes("G-JGC9SCT63K"));
+}
 
 function check(label, condition, detail = "") {
     if (condition) {
@@ -70,40 +114,46 @@ function startPreview() {
     return child;
 }
 
-function parseHit(request) {
-    const url = request.url();
+function parseHit(url, postData = null) {
     const params = new URL(url).searchParams;
-    const hit = {
+    // gtag may send event name / page_location in the URL or in a POST body.
+    if (postData) {
+        try {
+            const body = new URLSearchParams(String(postData));
+            for (const [key, value] of body.entries()) {
+                if (!params.has(key)) params.set(key, value);
+            }
+        } catch {
+            // Ignore non-form bodies; URL params are still usable.
+        }
+    }
+    return {
         url,
         tid: params.get("tid"),
         en: params.get("en"),
         dl: params.get("dl"),
         dt: params.get("dt"),
-        // GA4 encodes event params as ep.<name> on the collect query string.
-        pagePath: params.get("ep.page_path"),
+        // `_dbg` is what routes a hit into GA4 DebugView. gtag.js serialises
+        // `debug_mode: true` as `_dbg=true`; other surfaces emit `_dbg=1`.
+        debug: params.get("_dbg") ?? params.get("ep.debug_mode"),
+        // Consent Mode signals — absent means consent mode is not in play.
+        gcs: params.get("gcs"),
+        gcd: params.get("gcd"),
+        cid: params.get("cid"),
+        sid: params.get("sid"),
     };
-
-    // Some gtag collects are POST with the Measurement Protocol fields in the
-    // body (often URL-encoded). Merge those so we do not miss `en=page_view`.
-    try {
-        const post = request.postData();
-        if (post) {
-            const body = new URLSearchParams(post);
-            hit.tid = hit.tid || body.get("tid");
-            hit.en = hit.en || body.get("en");
-            hit.dl = hit.dl || body.get("dl");
-            hit.dt = hit.dt || body.get("dt");
-            hit.pagePath = hit.pagePath || body.get("ep.page_path");
-        }
-    } catch {
-        // Ignore body parse failures; query-string fields still apply.
-    }
-
-    return hit;
 }
 
 function pageViews(hits) {
     return hits.filter((h) => h.en === "page_view");
+}
+
+/** Drive an SPA destination via history + popstate so React route state updates. */
+async function spaGoto(page, path) {
+    await page.evaluate((nextPath) => {
+        globalThis.history.pushState({}, "", nextPath);
+        globalThis.dispatchEvent(new PopStateEvent("popstate"));
+    }, path);
 }
 
 async function waitForHits(hits, predicate, timeoutMs = 25000) {
@@ -115,15 +165,12 @@ async function waitForHits(hits, predicate, timeoutMs = 25000) {
     return false;
 }
 
-async function spaGoto(page, path) {
-    await page.evaluate((nextPath) => {
-        window.history.pushState({}, "", nextPath);
-        window.dispatchEvent(new PopStateEvent("popstate"));
-    }, path);
-}
-
 async function main() {
     console.log(`GA4 e2e check — expecting measurement ID ${EXPECTED_ID}\n`);
+
+    console.log("Static dist/index.html:");
+    verifyDistHtml();
+    console.log("\nRuntime behaviour:");
 
     const server = startPreview();
     let browser;
@@ -138,7 +185,8 @@ async function main() {
         // Record every Measurement Protocol hit, then abort it so the live GA4
         // property never receives synthetic test traffic.
         await context.route(COLLECT_PATTERN, async (route) => {
-            hits.push(parseHit(route.request()));
+            const request = route.request();
+            hits.push(parseHit(request.url(), request.postData()));
             await route.abort();
         });
 
@@ -157,16 +205,23 @@ async function main() {
         const tagState = await page.evaluate(() => ({
             dataLayerIsArray: Array.isArray(globalThis.dataLayer),
             gtagType: typeof globalThis.gtag,
-            scriptSrc: globalThis.document.getElementById("ga4-script")?.src || null,
+            loaderScripts: Array.from(globalThis.document.scripts)
+                .map((el) => el.src)
+                .filter((src) => src.includes("googletagmanager.com/gtag/js")),
             commands: Array.from(globalThis.dataLayer || []).map((args) => Array.from(args)),
         }));
 
         check("window.dataLayer is initialised", tagState.dataLayerIsArray);
         check("window.gtag is a function", tagState.gtagType === "function");
         check(
-            "gtag.js is injected with the expected id",
-            tagState.scriptSrc?.includes(EXPECTED_ID),
-            String(tagState.scriptSrc)
+            "exactly one gtag.js loader is present in the DOM",
+            tagState.loaderScripts.length === 1,
+            `saw ${tagState.loaderScripts.length}: ${tagState.loaderScripts.join(", ")}`
+        );
+        check(
+            "the loader uses the expected measurement id",
+            tagState.loaderScripts[0]?.includes(EXPECTED_ID),
+            String(tagState.loaderScripts[0])
         );
 
         const configCommands = tagState.commands.filter((c) => c[0] === "config");
@@ -185,23 +240,22 @@ async function main() {
         );
 
         // Let any stray duplicate arrive before counting.
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(2500);
+        const firstLoadViews = hits.filter((h) => h.en === "page_view");
         check(
             "initial load sends exactly one page_view",
-            pageViews(hits).length === 1,
-            `saw ${pageViews(hits).length}`
+            firstLoadViews.length === 1,
+            `saw ${firstLoadViews.length}`
         );
         check(
             "hit carries the correct measurement id",
-            pageViews(hits).every((h) => h.tid === EXPECTED_ID),
-            pageViews(hits)
-                .map((h) => h.tid)
-                .join(", ")
+            firstLoadViews.every((h) => h.tid === EXPECTED_ID),
+            firstLoadViews.map((h) => h.tid).join(", ")
         );
         check(
             "hit page_location matches the loaded route",
-            pageViews(hits)[0]?.dl === `${ORIGIN}/`,
-            String(pageViews(hits)[0]?.dl)
+            firstLoadViews[0]?.dl === `${ORIGIN}/`,
+            String(firstLoadViews[0]?.dl)
         );
 
         // ── 2. Query + clean SPA destinations ────────────────────────────────
@@ -209,34 +263,24 @@ async function main() {
         // News uses the real nav button (pushRoute + eager track). Remaining
         // query/clean hops use popstate so React state stays in sync.
 
-        // Blog → News was the failing case; from Home, News still lands on /?page=news.
         await page.getByRole("button", { name: "News", exact: true }).first().click();
         const gotNews = await waitForHits(hits, (h) => pageViews(h).length >= 2);
         check("legacy News query route (/?page=news) sends a page_view", gotNews);
         await page.waitForTimeout(800);
 
-        // Diagnostic: confirm the SPA URL and that dataLayer queued a page_view.
         const newsProbe = await page.evaluate(() => ({
-            href: window.location.href,
-            commands: Array.from(window.dataLayer || []).map((args) => {
-                try {
-                    return Array.from(args);
-                } catch {
-                    return args;
-                }
-            }),
+            href: globalThis.location.href,
+            commands: Array.from(globalThis.dataLayer || []).map((args) => Array.from(args)),
         }));
         const newsPageViewQueued = newsProbe.commands.some(
             (c) => Array.isArray(c) && c[0] === "event" && c[1] === "page_view"
         );
-        check("News navigation lands on /?page=news", /[?&]page=news\b/.test(newsProbe.href) || newsProbe.href.endsWith("/?page=news"), newsProbe.href);
-        check("dataLayer contains at least one page_view event command", newsPageViewQueued);
-
         check(
-            "News navigation reaches 2 total page_views",
-            pageViews(hits).length === 2,
-            `saw ${pageViews(hits).length}; raw=${JSON.stringify(hits.map((h) => ({ en: h.en, dl: h.dl })))}`
+            "News navigation lands on /?page=news",
+            /[?&]page=news\b/.test(newsProbe.href) || newsProbe.href.endsWith("/?page=news"),
+            newsProbe.href
         );
+        check("dataLayer contains at least one page_view event command", newsPageViewQueued);
         check(
             "News page_view reports /?page=news",
             pageViews(hits)[1]?.dl === `${ORIGIN}/?page=news`,
@@ -255,18 +299,11 @@ async function main() {
                 (h) => pageViews(h).length >= step.expectedCount
             );
             check(`${step.label} (${step.path}) sends a page_view`, got);
-
             await page.waitForTimeout(800);
-            const views = pageViews(hits);
             check(
-                `${step.label} reaches ${step.expectedCount} total page_views`,
-                views.length === step.expectedCount,
-                `saw ${views.length}`
-            );
-            check(
-                `${step.label} reports the destination location`,
-                views[step.expectedCount - 1]?.dl === `${ORIGIN}${step.path}`,
-                String(views[step.expectedCount - 1]?.dl)
+                `${step.label} page_view reports ${step.path}`,
+                pageViews(hits)[step.expectedCount - 1]?.dl === `${ORIGIN}${step.path}`,
+                String(pageViews(hits)[step.expectedCount - 1]?.dl)
             );
         }
 
@@ -293,17 +330,76 @@ async function main() {
         check(
             "re-tracking the same URL does not emit a duplicate page_view",
             pageViews(hits).length === beforeDedupe,
-            `saw ${pageViews(hits).length}`
+            `before=${beforeDedupe} after=${pageViews(hits).length}`
         );
 
         const gaErrors = consoleErrors.filter((t) => t.includes("[GA4]"));
         check("no [GA4] console errors", gaErrors.length === 0, gaErrors.join(" | "));
 
-        console.log(`\nRecorded ${hits.length} Measurement Protocol hit(s):`);
+        // ── 3. Production traffic must NOT be flagged for DebugView ───────────
+        check(
+            "normal traffic carries no debug flag",
+            hits.every((h) => !h.debug),
+            hits.map((h) => `${h.en}:_dbg=${h.debug ?? "absent"}`).join(" | ")
+        );
+
+        // ── 4. Opt-in debug session IS flagged ───────────────────────────────
+        for (const probe of ["ga_debug=1", "gtm_debug=1785400000000"]) {
+            const debugPage = await context.newPage();
+            const debugHits = [];
+            await debugPage.route(COLLECT_PATTERN, async (route) => {
+                const request = route.request();
+                debugHits.push(parseHit(request.url(), request.postData()));
+                await route.abort();
+            });
+
+            await debugPage.goto(`${ORIGIN}/?${probe}`, { waitUntil: "domcontentloaded" });
+            const gotDebug = await waitForHits(
+                debugHits,
+                (h) => h.some((x) => x.en === "page_view")
+            );
+            check(`?${probe} sends a page_view`, gotDebug);
+
+            const view = debugHits.find((h) => h.en === "page_view");
+            check(
+                `?${probe} flags the hit for DebugView (_dbg)`,
+                isDebugFlagged(view?.debug),
+                `_dbg=${view?.debug ?? "absent"}`
+            );
+            check(
+                `?${probe} still reports the correct measurement id`,
+                view?.tid === EXPECTED_ID,
+                String(view?.tid)
+            );
+            check(
+                `?${probe} sends exactly one page_view`,
+                debugHits.filter((h) => h.en === "page_view").length === 1,
+                `saw ${debugHits.filter((h) => h.en === "page_view").length}`
+            );
+
+            // The flag must persist past the route change that drops the query.
+            await spaGoto(debugPage, "/blog");
+            await waitForHits(
+                debugHits,
+                (h) => h.filter((x) => x.en === "page_view").length >= 2
+            );
+            const second = debugHits.filter((h) => h.en === "page_view")[1];
+            check(
+                `?${probe} keeps debug_mode across SPA navigation`,
+                isDebugFlagged(second?.debug),
+                `_dbg=${second?.debug ?? "absent"}`
+            );
+
+            await debugPage.close();
+        }
+
+        console.log(`\nRecorded ${hits.length} production-mode hit(s):`);
         for (const hit of hits) {
             console.log(
-                `  en=${hit.en} tid=${hit.tid} dl=${hit.dl}${hit.pagePath ? ` ep.page_path=${hit.pagePath}` : ""}`
+                `  en=${hit.en} tid=${hit.tid} _dbg=${hit.debug ?? "absent"} ` +
+                    `gcs=${hit.gcs ?? "absent"} cid=${hit.cid} sid=${hit.sid}`
             );
+            console.log(`     dl=${hit.dl}`);
         }
     } finally {
         if (browser) await browser.close();
