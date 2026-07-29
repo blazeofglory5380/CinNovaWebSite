@@ -8,7 +8,7 @@
  *
  *   1. dist/index.html carries exactly one canonical Google tag in <head>
  *   2. the first load produces exactly one `page_view` for the correct tid
- *   3. a client-side route change produces exactly one more `page_view`
+ *   3. SPA matrix Home → /?page=news → /?page=products → /privacy yields 4 views
  *   4. no duplicate `page_view` is emitted for the same location
  *   5. debug_mode is applied only to opt-in debug sessions
  *
@@ -114,8 +114,19 @@ function startPreview() {
     return child;
 }
 
-function parseHit(url) {
+function parseHit(url, postData = null) {
     const params = new URL(url).searchParams;
+    // gtag may send event name / page_location in the URL or in a POST body.
+    if (postData) {
+        try {
+            const body = new URLSearchParams(String(postData));
+            for (const [key, value] of body.entries()) {
+                if (!params.has(key)) params.set(key, value);
+            }
+        } catch {
+            // Ignore non-form bodies; URL params are still usable.
+        }
+    }
     return {
         url,
         tid: params.get("tid"),
@@ -131,6 +142,18 @@ function parseHit(url) {
         cid: params.get("cid"),
         sid: params.get("sid"),
     };
+}
+
+function pageViews(hits) {
+    return hits.filter((h) => h.en === "page_view");
+}
+
+/** Drive an SPA destination via history + popstate so React route state updates. */
+async function spaGoto(page, path) {
+    await page.evaluate((nextPath) => {
+        globalThis.history.pushState({}, "", nextPath);
+        globalThis.dispatchEvent(new PopStateEvent("popstate"));
+    }, path);
 }
 
 async function waitForHits(hits, predicate, timeoutMs = 25000) {
@@ -162,7 +185,8 @@ async function main() {
         // Record every Measurement Protocol hit, then abort it so the live GA4
         // property never receives synthetic test traffic.
         await context.route(COLLECT_PATTERN, async (route) => {
-            hits.push(parseHit(route.request().url()));
+            const request = route.request();
+            hits.push(parseHit(request.url(), request.postData()));
             await route.abort();
         });
 
@@ -234,44 +258,80 @@ async function main() {
             String(firstLoadViews[0]?.dl)
         );
 
-        // ── 2. Client-side route change ──────────────────────────────────────
-        const target = await page.evaluate(() => {
-            const hrefs = Array.from(globalThis.document.querySelectorAll('a[href^="/"]'))
-                .map((a) => a.getAttribute("href"))
-                .filter((h) => h && h !== "/" && !h.startsWith("//"));
-            return hrefs[0] || null;
-        });
+        // ── 2. Query + clean SPA destinations ────────────────────────────────
+        // Home → ?page=news → ?page=products → /privacy  => 4 distinct page_views
+        // News uses the real nav button (pushRoute + eager track). Remaining
+        // query/clean hops use popstate so React state stays in sync.
 
-        if (!target) {
-            check("found an internal link to exercise SPA routing", false);
-        } else {
-            await page.click(`a[href="${target}"]`);
-            const gotSecond = await waitForHits(
+        await page.getByRole("button", { name: "News", exact: true }).first().click();
+        const gotNews = await waitForHits(hits, (h) => pageViews(h).length >= 2);
+        check("legacy News query route (/?page=news) sends a page_view", gotNews);
+        await page.waitForTimeout(800);
+
+        const newsProbe = await page.evaluate(() => ({
+            href: globalThis.location.href,
+            commands: Array.from(globalThis.dataLayer || []).map((args) => Array.from(args)),
+        }));
+        const newsPageViewQueued = newsProbe.commands.some(
+            (c) => Array.isArray(c) && c[0] === "event" && c[1] === "page_view"
+        );
+        check(
+            "News navigation lands on /?page=news",
+            /[?&]page=news\b/.test(newsProbe.href) || newsProbe.href.endsWith("/?page=news"),
+            newsProbe.href
+        );
+        check("dataLayer contains at least one page_view event command", newsPageViewQueued);
+        check(
+            "News page_view reports /?page=news",
+            pageViews(hits)[1]?.dl === `${ORIGIN}/?page=news`,
+            String(pageViews(hits)[1]?.dl)
+        );
+
+        const routeSteps = [
+            { path: "/?page=products", label: "legacy Products query route", expectedCount: 3 },
+            { path: "/privacy", label: "Privacy destination", expectedCount: 4 },
+        ];
+
+        for (const step of routeSteps) {
+            await spaGoto(page, step.path);
+            const got = await waitForHits(
                 hits,
-                (h) => h.filter((x) => x.en === "page_view").length >= 2
+                (h) => pageViews(h).length >= step.expectedCount
             );
-            check(`SPA navigation to ${target} sends a page_view`, gotSecond);
-
-            await page.waitForTimeout(2500);
-            const views = hits.filter((h) => h.en === "page_view");
+            check(`${step.label} (${step.path}) sends a page_view`, got);
+            await page.waitForTimeout(800);
             check(
-                "SPA navigation sends exactly one additional page_view",
-                views.length === 2,
-                `saw ${views.length}`
-            );
-            check(
-                "second page_view reports the new route",
-                views[1]?.dl === `${ORIGIN}${target}`,
-                String(views[1]?.dl)
-            );
-
-            const locations = views.map((v) => v.dl);
-            check(
-                "no duplicate page_view for the same location",
-                new Set(locations).size === locations.length,
-                locations.join(" | ")
+                `${step.label} page_view reports ${step.path}`,
+                pageViews(hits)[step.expectedCount - 1]?.dl === `${ORIGIN}${step.path}`,
+                String(pageViews(hits)[step.expectedCount - 1]?.dl)
             );
         }
+
+        await page.waitForTimeout(1500);
+        const views = pageViews(hits);
+        check("exactly 4 page_view events after the route matrix", views.length === 4, `saw ${views.length}`);
+        check(
+            "every page_view uses the expected measurement id",
+            views.every((h) => h.tid === EXPECTED_ID),
+            views.map((h) => h.tid).join(", ")
+        );
+
+        const locations = views.map((v) => v.dl);
+        check(
+            "no duplicate page_view for the same location",
+            new Set(locations).size === locations.length,
+            locations.join(" | ")
+        );
+
+        // Re-track the same destination; dedupe must suppress a 5th page_view.
+        const beforeDedupe = pageViews(hits).length;
+        await spaGoto(page, "/privacy");
+        await page.waitForTimeout(1500);
+        check(
+            "re-tracking the same URL does not emit a duplicate page_view",
+            pageViews(hits).length === beforeDedupe,
+            `before=${beforeDedupe} after=${pageViews(hits).length}`
+        );
 
         const gaErrors = consoleErrors.filter((t) => t.includes("[GA4]"));
         check("no [GA4] console errors", gaErrors.length === 0, gaErrors.join(" | "));
@@ -288,7 +348,8 @@ async function main() {
             const debugPage = await context.newPage();
             const debugHits = [];
             await debugPage.route(COLLECT_PATTERN, async (route) => {
-                debugHits.push(parseHit(route.request().url()));
+                const request = route.request();
+                debugHits.push(parseHit(request.url(), request.postData()));
                 await route.abort();
             });
 
@@ -317,25 +378,17 @@ async function main() {
             );
 
             // The flag must persist past the route change that drops the query.
-            const link = await debugPage.evaluate(() => {
-                const hrefs = Array.from(globalThis.document.querySelectorAll('a[href^="/"]'))
-                    .map((a) => a.getAttribute("href"))
-                    .filter((h) => h && h !== "/" && !h.startsWith("//"));
-                return hrefs[0] || null;
-            });
-            if (link) {
-                await debugPage.click(`a[href="${link}"]`);
-                await waitForHits(
-                    debugHits,
-                    (h) => h.filter((x) => x.en === "page_view").length >= 2
-                );
-                const second = debugHits.filter((h) => h.en === "page_view")[1];
-                check(
-                    `?${probe} keeps debug_mode across SPA navigation`,
-                    isDebugFlagged(second?.debug),
-                    `_dbg=${second?.debug ?? "absent"}`
-                );
-            }
+            await spaGoto(debugPage, "/blog");
+            await waitForHits(
+                debugHits,
+                (h) => h.filter((x) => x.en === "page_view").length >= 2
+            );
+            const second = debugHits.filter((h) => h.en === "page_view")[1];
+            check(
+                `?${probe} keeps debug_mode across SPA navigation`,
+                isDebugFlagged(second?.debug),
+                `_dbg=${second?.debug ?? "absent"}`
+            );
 
             await debugPage.close();
         }

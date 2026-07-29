@@ -343,9 +343,14 @@ function App() {
         }
     }, []);
 
-    // Track SPA page views whenever the routed view changes.
+    // Backup SPA page-view tracking when routed view state changes (covers
+    // initial load + popstate). pushRoute also tracks eagerly with the
+    // destination URL so query-only navigations like `/?page=news` cannot miss
+    // a hit if the effect timing races the history update.
     useEffect(() => {
-        trackPageView(window.location.pathname + window.location.search);
+        trackPageView(
+            window.location.pathname + window.location.search + window.location.hash
+        );
     }, [page, selectedArticle?.slug, selectedResource?.slug, selectedNewsStory?.slug]);
 
     // Frosted nav gains a subtle shadow once the page scrolls off the top.
@@ -447,6 +452,10 @@ function App() {
 
     function pushRoute(url) {
         window.history.pushState({}, "", url);
+        // Track immediately with the known destination. Critical for legacy
+        // `?page=` routes where pathname stays `/` and only search changes —
+        // relying solely on a later effect can miss the collect entirely.
+        trackPageView(url);
     }
 
     function goHome() {
