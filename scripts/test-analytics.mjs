@@ -49,8 +49,18 @@ function verifyDistHtml() {
     const html = readFileSync(distIndex, "utf8");
     const head = html.slice(0, html.indexOf("</head>"));
     const loaders = countOccurrences(html, "googletagmanager.com/gtag/js");
-    const configs =
-        countOccurrences(html, 'gtag("config"') + countOccurrences(html, "gtag('config'");
+
+    // An inline *executable* script without a nonce is blocked by the production
+    // CSP, so anything GA depends on living inline would silently kill collection.
+    // Comments are stripped first (prose may mention tags), and data blocks such as
+    // `type="application/ld+json"` are excluded — CSP's script-src does not govern
+    // them because the browser never executes them.
+    const withoutComments = html.replace(/<!--[\s\S]*?-->/g, "");
+    const inlineScripts = (
+        withoutComments.match(/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/gi) || []
+    )
+        .filter((s) => !/type\s*=\s*["'][^"']*\/(ld\+json|json)["']/i.test(s))
+        .filter((s) => s.replace(/<\/?script[^>]*>/gi, "").trim().length > 0);
 
     check(
         "no unreplaced Vite env placeholder",
@@ -62,18 +72,37 @@ function verifyDistHtml() {
         "the gtag.js loader sits inside <head>",
         head.includes(`googletagmanager.com/gtag/js?id=${EXPECTED_ID}`)
     );
-    check("issues gtag config exactly once", configs === 1, `saw ${configs}`);
     check(
-        "the static config disables the automatic page view",
-        /gtag\(\s*["']config["']\s*,\s*["']G-[A-Z0-9]+["']\s*,\s*\{\s*send_page_view:\s*false/.test(
-            html
-        )
+        "no CSP-blocked inline script in the HTML",
+        inlineScripts.length === 0,
+        `${inlineScripts.length} inline script(s); script-src has no 'unsafe-inline'`
+    );
+    check(
+        "the HTML does not attempt gtag config (CSP would block it)",
+        !html.includes('gtag("config"') && !html.includes("gtag('config'")
     );
     check(
         "no Google Tag Manager container",
         !/GTM-[A-Z0-9]/.test(html) && !html.includes("gtm.js")
     );
     check("no retired measurement id", !html.includes("G-JGC9SCT63K"));
+}
+
+/**
+ * The production CSP lives in vercel.json and is applied by Vercel's edge, so
+ * `vite preview` serves dist/ with no headers at all. Without replaying the CSP
+ * here, a CSP-fatal regression passes every assertion locally and breaks in
+ * production — which is exactly what happened once.
+ */
+function readProductionCsp() {
+    const cfgPath = fileURLToPath(new URL("../vercel.json", import.meta.url));
+    const cfg = JSON.parse(readFileSync(cfgPath, "utf8"));
+    for (const entry of cfg.headers || []) {
+        for (const h of entry.headers || []) {
+            if (h.key.toLowerCase() === "content-security-policy") return h.value;
+        }
+    }
+    return null;
 }
 
 function check(label, condition, detail = "") {
@@ -181,6 +210,32 @@ async function main() {
         browser = await chromium.launch();
         const context = await browser.newContext();
 
+        // Replay the production CSP onto the document response, so this run fails
+        // the same way production would. Only the top-level document matters — a
+        // CSP header on a sub-resource is ignored by the browser — and rewriting
+        // every asset would needlessly proxy images that SPA navigation cancels
+        // mid-flight, which surfaces as an ECONNRESET from route.fetch().
+        const CSP = readProductionCsp();
+        check("production CSP found in vercel.json", Boolean(CSP));
+        if (CSP) {
+            await context.route(`${ORIGIN}/**`, async (route) => {
+                if (route.request().resourceType() !== "document") {
+                    await route.continue().catch(() => {});
+                    return;
+                }
+                try {
+                    const response = await route.fetch();
+                    await route.fulfill({
+                        response,
+                        headers: { ...response.headers(), "content-security-policy": CSP },
+                    });
+                } catch {
+                    // Navigation was superseded or cancelled; let it proceed unmodified.
+                    await route.continue().catch(() => {});
+                }
+            });
+        }
+
         const hits = [];
         // Record every Measurement Protocol hit, then abort it so the live GA4
         // property never receives synthetic test traffic.
@@ -192,8 +247,11 @@ async function main() {
 
         const page = await context.newPage();
         const consoleErrors = [];
+        const cspViolations = [];
         page.on("console", (msg) => {
-            if (msg.type() === "error") consoleErrors.push(msg.text());
+            if (msg.type() !== "error") return;
+            consoleErrors.push(msg.text());
+            if (/Content Security Policy/i.test(msg.text())) cspViolations.push(msg.text());
         });
 
         // ── 1. Initial load ──────────────────────────────────────────────────
@@ -335,6 +393,11 @@ async function main() {
 
         const gaErrors = consoleErrors.filter((t) => t.includes("[GA4]"));
         check("no [GA4] console errors", gaErrors.length === 0, gaErrors.join(" | "));
+        check(
+            "no Content Security Policy violations under the production CSP",
+            cspViolations.length === 0,
+            cspViolations.map((v) => v.slice(0, 160)).join(" | ")
+        );
 
         // ── 3. Production traffic must NOT be flagged for DebugView ───────────
         check(

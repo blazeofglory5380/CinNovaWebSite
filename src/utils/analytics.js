@@ -47,6 +47,9 @@ function resolveDebugSession() {
 
 const GA_DEBUG = resolveDebugSession();
 
+// Ensures exactly one `gtag('config', …)` per page load. See ensureConfigured().
+let configured = false;
+
 // Guards against duplicate page views when a React re-render re-runs the route
 // effect without the URL actually changing. Keyed on pathname + search (+ hash
 // when present) so legacy query routes like `/?page=news` are distinct from `/`.
@@ -69,15 +72,39 @@ function pushGtagCommand() {
 }
 
 /**
- * Guarantees `dataLayer` and a `gtag` shim exist before anything is pushed.
+ * Initialises `dataLayer`, the `gtag` shim, and the single `config` command.
  *
- * index.html defines both before this bundle evaluates, so normally this is a
- * no-op. It stays as a safety net: if the inline snippet is ever stripped by a
- * proxy or blocked, commands buffer harmlessly instead of throwing.
+ * The gtag.js LOADER lives in index.html so Google's Tag Diagnostics crawler can
+ * find it in the served HTML. The `js`/`config` commands must NOT live there:
+ * vercel.json sets `script-src 'self' https://www.googletagmanager.com` with no
+ * `'unsafe-inline'` and no nonce, so an inline <script> is blocked outright.
+ * Bundled JS is `'self'`, so it runs.
+ *
+ * Confirmed against production: with the loader present but the config blocked,
+ * gtag.js initialised and then sent zero hits. That also proves gtag.js does not
+ * self-configure from the `?id=` in the loader URL, so issuing the config from
+ * here — a moment after the loader starts — cannot produce an unwanted automatic
+ * page view.
+ *
+ * Idempotent: exactly one `config` per page load, whichever caller arrives first.
  */
-function ensureGtag() {
+function ensureConfigured() {
     window.dataLayer = window.dataLayer || [];
     window.gtag = window.gtag || pushGtagCommand;
+
+    if (configured) return;
+    configured = true;
+
+    window.gtag("js", new Date());
+
+    // Per Google's DebugView docs, `debug_mode: false` does NOT turn debug mode
+    // off — only omitting the key does. So the key is added conditionally.
+    const configParams = { send_page_view: false };
+    if (GA_DEBUG) {
+        configParams.debug_mode = true;
+    }
+    window.gtag("config", GA_ID, configParams);
+    log("configured", GA_ID, configParams);
 }
 
 /**
@@ -95,23 +122,19 @@ function sendEvent(name, params = {}) {
         return;
     }
 
-    ensureGtag();
+    // Guarantees the config precedes the event even if an event somehow fires
+    // before initAnalytics(). debug_mode is set once on the config, not per event.
+    ensureConfigured();
 
-    // Google documents debug_mode either on `config` or per event. The single
-    // `config` now lives in static HTML, so the flag is stamped per event here.
-    // The key is only ever added, never set to false — per Google's DebugView
-    // docs, `debug_mode: false` does not disable debug mode.
-    const payload = GA_DEBUG ? { ...params, debug_mode: true } : params;
-
-    window.gtag("event", name, payload);
+    window.gtag("event", name, params);
 }
 
 /**
  * Prepares client-side analytics.
  *
- * Deliberately does NOT load gtag.js and does NOT issue `gtag('js', …)` or
- * `gtag('config', …)` — index.html owns all three. This only makes sure the
- * globals exist and binds the delegated outbound-link listener.
+ * Deliberately does NOT load gtag.js — index.html owns the loader. This issues
+ * the single `config` (which cannot live in the HTML; see ensureConfigured) and
+ * binds the delegated outbound-link listener.
  */
 export function initAnalytics() {
     if (!isEnabled()) {
@@ -119,8 +142,7 @@ export function initAnalytics() {
         return;
     }
 
-    ensureGtag();
-    log("ready — tag installed in index.html", GA_ID);
+    ensureConfigured();
 
     if (!document.documentElement.dataset.outboundAnalyticsBound) {
         document.documentElement.dataset.outboundAnalyticsBound = "true";
