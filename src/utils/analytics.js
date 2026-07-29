@@ -3,8 +3,10 @@ const GA_DEBUG =
     import.meta.env?.DEV || import.meta.env?.VITE_GA_DEBUG === "true";
 
 let scriptRequested = false;
-let scriptLoaded = false;
-const pendingCalls = [];
+// Guards against duplicate page views when a React re-render re-runs the route
+// effect without the URL actually changing. Only consecutive repeats of the same
+// location are suppressed, so A → B → A still reports three page views.
+let lastPageLocation = null;
 
 function log(...args) {
     if (GA_DEBUG) {
@@ -16,31 +18,24 @@ function isEnabled() {
     return typeof window !== "undefined" && Boolean(GA_ID);
 }
 
-function flushPendingCalls() {
-    const queue = pendingCalls.splice(0, pendingCalls.length);
-    log("flushing queued calls", queue.length);
-    queue.forEach((call) => {
-        try {
-            call();
-        } catch (error) {
-            console.error("[GA4] queued call failed", error);
-        }
-    });
-}
-
-function runWhenReady(callback) {
+/**
+ * Hands a gtag command to `dataLayer`.
+ *
+ * Commands are pushed immediately rather than being held until gtag.js fires
+ * `onload`. `dataLayer` is gtag.js's own buffer: anything queued before the
+ * library arrives is replayed in order once it does, and anything queued after
+ * is processed synchronously. Gating on `onload` added no safety and lost every
+ * event whenever the script was slow, cached oddly, or blocked outright.
+ */
+function sendGtag(...args) {
     if (!isEnabled()) {
         log("disabled — missing VITE_GA_MEASUREMENT_ID");
         return;
     }
 
-    if (scriptLoaded && typeof window.gtag === "function") {
-        callback();
-        return;
-    }
-
-    pendingCalls.push(callback);
+    // Idempotent: guarantees dataLayer, the gtag shim, and the script request.
     initAnalytics();
+    window.gtag(...args);
 }
 
 function pushGtagCommand() {
@@ -78,11 +73,10 @@ export function initAnalytics() {
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
     script.onload = () => {
-        scriptLoaded = true;
         log("gtag.js loaded");
-        flushPendingCalls();
     };
     script.onerror = () => {
+        // Commands stay buffered in dataLayer; nothing else needs to unwind.
         console.error("[GA4] failed to load gtag.js");
     };
     document.head.appendChild(script);
@@ -117,25 +111,44 @@ export function initAnalytics() {
 }
 
 export function trackPageView(path = window.location.pathname + window.location.search) {
-    runWhenReady(() => {
-        const pagePath = path || window.location.pathname + window.location.search;
-        const payload = {
-            page_path: pagePath,
-            page_location: window.location.href,
-            page_title: document.title,
-        };
+    if (!isEnabled()) {
+        log("disabled — missing VITE_GA_MEASUREMENT_ID");
+        return;
+    }
 
-        // Recommended SPA pattern with manual page views disabled at init.
-        window.gtag("config", GA_ID, payload);
-        log("page_view sent", payload);
-    });
+    const pagePath = path || window.location.pathname + window.location.search;
+
+    let pageLocation;
+    try {
+        pageLocation = new URL(pagePath, window.location.href).href;
+    } catch {
+        pageLocation = window.location.href;
+    }
+
+    if (pageLocation === lastPageLocation) {
+        log("page_view skipped — already reported", pageLocation);
+        return;
+    }
+    lastPageLocation = pageLocation;
+
+    // Google's documented SPA pattern: the initial `config` disables the
+    // automatic page view, and every view — including the first — is reported
+    // as an explicit `page_view` event. A repeated `config` for an
+    // already-configured measurement ID is not a supported way to do this.
+    // GA4 derives the page path from `page_location`; `page_path` is a
+    // Universal Analytics parameter and is ignored, so it is not sent.
+    const payload = {
+        page_location: pageLocation,
+        page_title: document.title,
+    };
+
+    sendGtag("event", "page_view", payload);
+    log("page_view sent", payload);
 }
 
 export function trackEvent(eventName, params = {}) {
-    runWhenReady(() => {
-        window.gtag("event", eventName, params);
-        log("event sent", eventName, params);
-    });
+    sendGtag("event", eventName, params);
+    log("event sent", eventName, params);
 }
 
 export function trackNewsletterSignup({ source = "Website", tags = [], status = "unknown" } = {}) {
