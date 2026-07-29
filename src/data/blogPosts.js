@@ -2241,8 +2241,8 @@ const fullArticles = [
         seoDescription:
             `A practical guide to AI data center joint ventures, long-term leases, and reservation rights—and what communities, investors, and product builders should watch.`,
         heroImage: "/images/blog/datacenters/fiber-optic-network-cables.jpg",
-        heroImageAlt: `Close-up of illuminated fiber-optic network cables in a data infrastructure setting.`,
-        heroImageCaption: `Library image used for illustration of digital infrastructure financing themes.`,
+        heroImageAlt: `Professional reviewing notes and a laptop at a desk, representing diligence on infrastructure financing deals.`,
+        heroImageCaption: `Library image used for illustration of deal review and infrastructure financing themes. Filename retained from the image pool; the photo depicts an analyst at work, not fiber cabling.`,
         ogImage: "/images/blog/datacenters/fiber-optic-network-cables.jpg",
         relatedReading: ["why-data-centers-are-becoming-the-new-gold-rush","can-americas-power-grid-handle-ai","the-companies-building-the-ai-economy","the-hidden-infrastructure-behind-chatgpt-and-ai","why-data-centers-matter-to-everyday-apps"],
         relatedNewsIds: ["news-state-2026-07-texas-puct-ercot-seek-data-center-authority","news-national-2026-06-ferc-large-load","news-local-2026-07-sarasota-data-center","news-international-2026-07-eu-ai-omnibus-enters-into-force"],
