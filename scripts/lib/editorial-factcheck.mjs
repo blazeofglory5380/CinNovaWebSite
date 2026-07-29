@@ -40,7 +40,6 @@ function daysSince(iso) {
  * @param {{ duplicateClassification?: string }} options
  */
 export function scoreNewsFactCheck(draft = {}, options = {}) {
-    const reasons = [];
     const holds = [];
     const rejects = [];
     const reviews = [];
@@ -194,20 +193,18 @@ export function scoreNewsFactCheck(draft = {}, options = {}) {
         holds.push("Editorial notes mention contradiction/conflict");
     }
 
-    const publishCandidate = status === "READY" || status === "REVIEW";
     // HOLD/REJECT never publish candidates.
     const finalPublish = status === "READY" || (status === "REVIEW" && !holds.length && !rejects.length);
-
-    reasons.push(...rejects, ...holds, ...reviews);
+    const publishCandidate = status === "READY" ? true : finalPublish && status === "REVIEW";
 
     return {
         status,
         score: Math.max(0, Math.min(100, score)),
-        reasons,
+        reasons: [...rejects, ...holds, ...reviews],
         rejects,
         holds,
         reviews,
-        publishCandidate: status === "READY" ? true : finalPublish && status === "REVIEW",
+        publishCandidate,
         // Explicit rule: HOLD never enters publish candidates
         blockedFromPublish: status === "HOLD" || status === "REJECT",
     };
@@ -217,7 +214,6 @@ export function scoreNewsFactCheck(draft = {}, options = {}) {
  * Blog fact-check is lighter: sources + non-empty body + SEO fields.
  */
 export function scoreBlogFactCheck(draft = {}) {
-    const reasons = [];
     const reviews = [];
     const rejects = [];
     let score = 100;
