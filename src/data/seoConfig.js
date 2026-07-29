@@ -23,6 +23,7 @@ export const EXCLUDED_PAGE_KEYS = new Set([
     "newsletter-admin",
     "newsletter-success",
     "news-preview",
+    "blog-preview",
 ]);
 
 /**
@@ -39,6 +40,7 @@ export const ROBOTS_DISALLOW_PATHS = [
     "/?page=newsletter-admin",
     "/?page=blog-manager",
     "/?page=news-preview",
+    "/?page=blog-preview",
 ];
 
 function toAbsoluteImageUrl(path = "") {

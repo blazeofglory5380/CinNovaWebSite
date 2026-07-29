@@ -21,8 +21,12 @@
     "setup:product-hero-posters": "node scripts/setup-product-hero-posters.mjs",
     "capture:realestate-hero-poster": "node scripts/capture-realestate-hero-poster.mjs",
     "validate:news": "node scripts/validate-news.mjs",
+    "validate:blog": "node scripts/validate-blog.mjs",
     "news:new": "node scripts/news-new.mjs",
     "news:publish": "node scripts/news-publish.mjs",
+    "blog:new": "node scripts/blog-new.mjs",
+    "blog:publish": "node scripts/blog-publish.mjs",
+    "editorial:daily": "node scripts/editorial-daily.mjs",
     "build": "npm run audit:seo && npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build && npm run generate:route-metadata && npm run audit:seo:dist",
     "lint": "eslint .",
     "preview": "vite preview"

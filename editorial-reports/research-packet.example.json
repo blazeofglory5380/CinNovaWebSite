@@ -1,0 +1,48 @@
+{
+  "news": {
+    "local": {
+      "slug": "example-local-story-slug",
+      "title": "",
+      "category": "",
+      "location": "",
+      "sources": []
+    },
+    "state": {
+      "slug": "example-state-story-slug",
+      "title": "",
+      "category": "",
+      "location": "",
+      "sources": []
+    },
+    "national": {
+      "slug": "example-national-story-slug",
+      "title": "",
+      "category": "",
+      "location": "",
+      "sources": []
+    },
+    "international": {
+      "slug": "example-international-story-slug",
+      "title": "",
+      "category": "",
+      "location": "",
+      "sources": []
+    }
+  },
+  "blog": {
+    "slug": "example-blog-post-slug",
+    "title": "",
+    "category": "Artificial Intelligence",
+    "seoTitle": "",
+    "seoDescription": "",
+    "relatedReading": [],
+    "relatedNewsIds": [],
+    "sources": [],
+    "researchBrief": {
+      "primaryKeyword": "",
+      "secondaryKeywords": [],
+      "audience": "",
+      "searchIntent": ""
+    }
+  }
+}

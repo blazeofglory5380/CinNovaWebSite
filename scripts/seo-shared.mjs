@@ -22,9 +22,17 @@ export function toAbsoluteUrl(siteUrl, value = "") {
 
 export function getArticleMetadata(post, { siteUrl, defaultOgImage }) {
     const canonical = `${siteUrl}/blog/${post.slug}`;
+    const title =
+        (post.seoTitle && String(post.seoTitle).trim()) ||
+        `${post.title} | CinNova Blog`;
+    const description =
+        (post.seoDescription && String(post.seoDescription).trim()) ||
+        (post.metaDescription && String(post.metaDescription).trim()) ||
+        post.excerpt ||
+        "";
     return {
-        title: `${post.title} | CinNova Blog`,
-        description: post.seoDescription || post.excerpt,
+        title,
+        description,
         canonical,
         type: "article",
         image: toAbsoluteUrl(siteUrl, post.ogImage || post.heroImage || defaultOgImage),
@@ -92,6 +100,8 @@ export function buildArticleSchema(post, relatedPosts, { siteUrl, defaultOgImage
                     "@type": "ImageObject",
                     url: imageUrl,
                     name: imageAlt,
+                    ...(post.heroImageWidth ? { width: post.heroImageWidth } : {}),
+                    ...(post.heroImageHeight ? { height: post.heroImageHeight } : {}),
                     ...(post.heroImageCaption ? { caption: post.heroImageCaption } : {}),
                 },
                 author: {
