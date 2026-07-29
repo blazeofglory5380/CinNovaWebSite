@@ -1,48 +1,98 @@
 {
+  "schemaVersion": "10A",
+  "date": "YYYY-MM-DD",
+  "safety": "Provide only verified candidates. Empty desks become NO QUALIFIED STORY. Never invent events or sources.",
   "news": {
     "local": {
-      "slug": "example-local-story-slug",
+      "slug": "",
       "title": "",
+      "dek": "",
       "category": "",
       "location": "",
-      "sources": []
+      "publishedAt": "",
+      "summary": "",
+      "whyItMatters": "",
+      "sources": [],
+      "verifiedClaims": [],
+      "attributedClaims": [],
+      "uncertainties": [],
+      "editorialNotes": "",
+      "forceDraft": false,
+      "factCheckStatus": ""
     },
     "state": {
-      "slug": "example-state-story-slug",
+      "slug": "",
       "title": "",
+      "dek": "",
       "category": "",
       "location": "",
-      "sources": []
+      "publishedAt": "",
+      "summary": "",
+      "whyItMatters": "",
+      "sources": [],
+      "verifiedClaims": [],
+      "attributedClaims": [],
+      "uncertainties": [],
+      "editorialNotes": "",
+      "forceDraft": false,
+      "factCheckStatus": ""
     },
     "national": {
-      "slug": "example-national-story-slug",
+      "slug": "",
       "title": "",
+      "dek": "",
       "category": "",
       "location": "",
-      "sources": []
+      "publishedAt": "",
+      "summary": "",
+      "whyItMatters": "",
+      "sources": [],
+      "verifiedClaims": [],
+      "attributedClaims": [],
+      "uncertainties": [],
+      "editorialNotes": "",
+      "forceDraft": false,
+      "factCheckStatus": ""
     },
     "international": {
-      "slug": "example-international-story-slug",
+      "slug": "",
       "title": "",
+      "dek": "",
       "category": "",
       "location": "",
-      "sources": []
+      "publishedAt": "",
+      "summary": "",
+      "whyItMatters": "",
+      "sources": [],
+      "verifiedClaims": [],
+      "attributedClaims": [],
+      "uncertainties": [],
+      "editorialNotes": "",
+      "forceDraft": false,
+      "factCheckStatus": ""
     }
   },
   "blog": {
-    "slug": "example-blog-post-slug",
+    "slug": "",
     "title": "",
     "category": "Artificial Intelligence",
+    "excerpt": "",
     "seoTitle": "",
     "seoDescription": "",
     "relatedReading": [],
     "relatedNewsIds": [],
     "sources": [],
+    "forceDraft": false,
     "researchBrief": {
       "primaryKeyword": "",
       "secondaryKeywords": [],
       "audience": "",
       "searchIntent": ""
+    },
+    "heroImageBrief": {
+      "concept": "",
+      "mood": "",
+      "avoid": ["fabricated logos", "readable fake UI text"]
     }
   }
 }

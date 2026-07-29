@@ -1,0 +1,487 @@
+{
+  "batch": "Phase 8 Daily Batch 01",
+  "date": "2026-07-28",
+  "safety": "Preparation only. No publish, commit, push, PR, or deploy.",
+  "news": {
+    "local": {
+      "id": "news-local-2026-07-montgomery-moratorium",
+      "slug": "montgomery-county-data-center-18-month-moratorium",
+      "title": "Montgomery County pauses new data centers for 18 months",
+      "dek": "The County Council voted unanimously for an 18-month legislative moratorium and a zoning definition for large-load data centers, extending a shorter executive pause already under challenge.",
+      "coverageLevel": "local",
+      "category": "Government",
+      "location": "Montgomery County, Maryland",
+      "author": "Cin Nova News Desk",
+      "publishedAt": "2026-07-28T21:30:00Z",
+      "updatedAt": null,
+      "status": "standard",
+      "isPublished": false,
+      "isDemo": false,
+      "isDraft": true,
+      "heroImage": "/images/news/local/montgomery-county-data-center-18-month-moratorium.jpg",
+      "heroAlt": "A cooling aisle lined with server racks inside a data center.",
+      "heroCaption": "Library image used for illustration. It is not a photograph of the Montgomery County Council meeting, Dickerson, or any facility named in this story.",
+      "summary": "On July 28, 2026, the Montgomery County Council voted unanimously to approve an 18-month moratorium on new data center development and a zoning text amendment that defines large-load data centers. The legislative pause is intended to replace a six-month executive order pause that a Dickerson project developer has challenged.",
+      "whyItMatters": "County land-use rules decide where high-power computing campuses can be built. An 18-month legislative freeze changes the calendar for proposed projects, including a contested Dickerson campus, while Maryland and county studies continue.",
+      "sections": [
+        {
+          "id": "what-the-council-did",
+          "heading": "What the council approved",
+          "claimType": "verified",
+          "body": [
+            "The Montgomery County Council voted unanimously on Tuesday, July 28, 2026, to pass an 18-month moratorium on data center development. Coverage from The Banner and Montgomery Community Media places the moratorium vote at 11-0.",
+            "Council members also unanimously passed a zoning measure that defines a data center in county code. The Banner quotes the bill text as covering a building or group of buildings projected to have aggregate monthly electricity demand of at least 25 megawatts used to house computer or network systems, storage equipment, or servers.",
+            "Reporting states the legislative moratorium takes effect when County Executive Marc Elrich signs it, and that it is meant to replace a shorter six-month permitting pause Elrich ordered previously."
+          ]
+        },
+        {
+          "id": "why-the-pause-lengthened",
+          "heading": "Why the pause moved from executive order to legislation",
+          "claimType": "verified",
+          "body": [
+            "According to The Banner, Atmosphere Data Centers, described as the California-based developer behind a proposed Dickerson data center project, challenged the earlier six-month executive pause. Council President Natali Fani-González told The Banner the legislative moratorium would be harder to appeal.",
+            "Councilmember Evan Glass sponsored the 18-month bill, with support from Councilmember Will Jawando and Council Vice President Marilyn Balcombe, after committee debate between longer and shorter pause proposals.",
+            "Councilmember Dawn Luedtke said existing data centers are not being shut down by the measure, according to Montgomery Community Media."
+          ]
+        },
+        {
+          "id": "developer-response",
+          "heading": "What the Dickerson developer said",
+          "claimType": "claim",
+          "body": [
+            "Atmosphere CEO Chuck McBride told The Banner he was disappointed by the council decision and said the company had worked with stakeholders on what it described as a unique redevelopment opportunity.",
+            "Those statements are company positions reported by The Banner. Cin Nova has not independently verified Atmosphere's project claims about sustainability, substations, or ratepayer impact.",
+            "A July letter cited by The Banner from Atmosphere and Terra Energy argued the project would fund a new on-site electrical substation and that electricity costs would be borne by the campus user rather than county taxpayers. That letter is an interested-party claim, not a county finding."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "label": "Montgomery County Council passes 18-month data center moratorium",
+          "publisher": "The Banner",
+          "url": "https://www.thebanner.com/politics-power/local-government/montgomery-county-data-center-moratorium-passes-JGFIVPQ3UZDYFMBU2WV2DD5CMQ/",
+          "type": "verified",
+          "note": "Independent local reporting on the July 28 votes, bill text definition, and Atmosphere challenge context."
+        },
+        {
+          "label": "Montgomery County pauses new data centers for 18 months",
+          "publisher": "Montgomery Community Media",
+          "url": "https://www.mymcmedia.org/montgomery-county-pauses-new-data-centers-for-18-months/",
+          "type": "verified",
+          "note": "Independent local report confirming the unanimous votes and community concerns about water and power."
+        },
+        {
+          "label": "Final vote expected on proposed 18-month data center moratorium, zoning bill",
+          "publisher": "Bethesda Magazine",
+          "url": "https://bethesdamagazine.com/2026/07/28/final-vote-expected-data-center-moratorium/",
+          "type": "verified",
+          "note": "Pre-vote briefing on the committee path and the Dickerson appeal context."
+        }
+      ],
+      "relatedNewsIds": [
+        "news-local-2026-07-loudoun-data-center-pause",
+        "news-local-2026-07-sarasota-data-center",
+        "news-national-2026-06-ferc-large-load"
+      ],
+      "relatedBlogSlugs": [
+        "why-data-centers-are-becoming-the-new-gold-rush",
+        "can-americas-power-grid-handle-ai"
+      ],
+      "seoTitle": "Montgomery County pauses new data centers for 18 months | Cin Nova News",
+      "seoDescription": "Montgomery County Council voted unanimously for an 18-month data center moratorium and a 25 MW zoning definition, extending a shorter executive pause."
+    },
+    "state": {
+      "id": "news-state-2026-07-meta-blackrock-el-paso",
+      "slug": "meta-blackrock-el-paso-data-center-venture",
+      "title": "Meta and BlackRock form El Paso AI data center venture",
+      "dek": "The companies announced an 80/20 venture for a 1-gigawatt El Paso campus already under construction, with about $14 billion in planned development costs and capacity targeted for 2028.",
+      "coverageLevel": "state",
+      "category": "Business",
+      "location": "El Paso, Texas",
+      "author": "Cin Nova News Desk",
+      "publishedAt": "2026-07-28T18:00:00Z",
+      "updatedAt": null,
+      "status": "standard",
+      "isPublished": false,
+      "isDemo": false,
+      "isDraft": true,
+      "heroImage": "/images/news/state/texas-puct-ercot-seek-data-center-authority.jpg",
+      "heroAlt": "Power transmission infrastructure near a large industrial computing facility.",
+      "heroCaption": "Library image used for illustration. It is not a photograph of the El Paso campus or either company's leadership.",
+      "summary": "On July 28, 2026, Meta Platforms and BlackRock announced a venture to develop and own a data center campus in El Paso, Texas. Company materials describe a 1-gigawatt compute campus already under construction, roughly $14 billion in total development costs, an 80/20 BlackRock-managed-funds / Meta ownership split, and an expected online window in 2028.",
+      "whyItMatters": "Texas remains a major landing zone for AI compute. This deal shows how hyperscalers are pairing with infrastructure capital to fund gigawatt campuses while locking in long-term lease and residual-value structures.",
+      "sections": [
+        {
+          "id": "what-was-announced",
+          "heading": "What Meta and BlackRock announced",
+          "claimType": "official",
+          "body": [
+            "In a July 28, 2026 announcement, Meta and BlackRock said they are forming a venture to develop and own a data center campus in El Paso, Texas. Meta's newsroom post says the campus is already under construction and is designed for 1 gigawatt of compute capacity.",
+            "According to Meta, funds managed by BlackRock will own an 80 percent interest and Meta will retain 20 percent. The parties say they have committed to fund their respective shares of about $14 billion in total development costs for buildings and long-lived power, cooling, and connectivity infrastructure.",
+            "Meta says it will contribute land and construction-in-progress assets valued at about $2.3 billion, BlackRock will make a cash contribution of about $4.9 billion, Meta will receive a one-time distribution of about $1 billion to align ownership, and a portion of BlackRock's investment will be funded with proceeds from a $12.5 billion debt financing."
+          ]
+        },
+        {
+          "id": "leases-and-timing",
+          "heading": "Leases, timing, and local claims",
+          "claimType": "official",
+          "body": [
+            "Meta says it will be the initial sole occupant, will provide construction management and property management services, and will enter leases for the entire campus with a four-year initial term plus four extension options covering a potential 20-year term.",
+            "The venture expects to begin bringing capacity online in 2028, and Meta says the transaction is expected to close in the coming days. Meta also describes residual value guarantees with an aggregate threshold of about $13 billion that decreases over time.",
+            "Meta's local-impact claims include more than 4,000 construction jobs at peak, about 300 operational jobs once complete, more than 2,300 workers already onsite, a $500,000 grant to El Paso public schools, and BlackRock Foundation workforce programming in Texas. Those figures are company statements, not independently audited findings by Cin Nova."
+          ]
+        },
+        {
+          "id": "independent-context",
+          "heading": "How independent reporting frames the deal",
+          "claimType": "verified",
+          "body": [
+            "Reuters reporting summarized the same ownership split, development-cost figure, debt financing detail, and 2028 online target, and noted that Meta will lease capacity from the venture rather than solely owning the finished campus.",
+            "That structure matters for readers tracking AI infrastructure: the compute demand is still Texas-based, but ownership, debt, and lease risk are shared with infrastructure capital.",
+            "Cin Nova has not independently audited the debt documents, residual-value mechanics, or job counts, and those details should be read as disclosed deal terms and company claims."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "label": "Meta Announces New Strategic Venture With BlackRock to Develop Data Center in El Paso",
+          "publisher": "Meta Newsroom",
+          "url": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
+          "type": "official",
+          "note": "Primary company announcement with ownership, financing, lease, and local-impact statements."
+        },
+        {
+          "label": "Meta Announces New Strategic Venture with BlackRock to Develop Data Center in El Paso",
+          "publisher": "PR Newswire / Meta & BlackRock",
+          "url": "https://www.prnewswire.com/news-releases/meta-announces-new-strategic-venture-with-blackrock-to-develop-data-center-in-el-paso-302836040.html",
+          "type": "official",
+          "note": "Wire distribution of the joint announcement with financing mechanics."
+        },
+        {
+          "label": "Meta, BlackRock partner on $14 billion El Paso data center venture",
+          "publisher": "Reuters (via Yahoo Finance)",
+          "url": "https://finance.yahoo.com/technology/ai/articles/meta-blackrock-partner-14-billion-093946704.html",
+          "type": "verified",
+          "note": "Independent wire report confirming the venture structure and 2028 target."
+        }
+      ],
+      "relatedNewsIds": [
+        "news-state-2026-07-texas-puct-ercot-seek-data-center-authority",
+        "news-state-2026-06-texas-abbott-data-centers",
+        "news-local-2026-07-openai-project-camellia-effingham-county"
+      ],
+      "relatedBlogSlugs": [
+        "can-americas-power-grid-handle-ai",
+        "why-data-centers-are-becoming-the-new-gold-rush",
+        "the-companies-building-the-ai-economy"
+      ],
+      "seoTitle": "Meta and BlackRock form El Paso AI data center venture | Cin Nova News",
+      "seoDescription": "Meta and BlackRock announced an 80/20 El Paso venture for a 1 GW AI campus with about $14 billion in development costs and a 2028 online target."
+    },
+    "national": {
+      "id": "news-national-2026-07-core-scientific-amd",
+      "slug": "core-scientific-amd-ai-infrastructure-partnership",
+      "title": "Core Scientific and AMD announce multi-year AI infrastructure partnership",
+      "dek": "The companies say AMD will secure more than 500 megawatts of U.S. capacity beginning in 2027, with room to scale toward 2.5 gigawatts, as Core Scientific deepens its pivot from bitcoin mining to AI colocation.",
+      "coverageLevel": "national",
+      "category": "Technology",
+      "location": "United States",
+      "author": "Cin Nova News Desk",
+      "publishedAt": "2026-07-28T16:00:00Z",
+      "updatedAt": null,
+      "status": "standard",
+      "isPublished": false,
+      "isDemo": false,
+      "isDraft": true,
+      "heroImage": "/images/datacenters/data-center-gold-rush-facility.jpg",
+      "heroAlt": "Exterior view of a large data center facility on an industrial site.",
+      "heroCaption": "Library image used for illustration. It is not a photograph of a Core Scientific or AMD facility named in this story.",
+      "summary": "On July 28, 2026, Core Scientific and AMD announced an infrastructure partnership under which AMD is to secure more than 500 megawatts of U.S. data center capacity for end-customer AI deployments beginning in 2027, with the ability to expand up to 2.5 gigawatts. Separate company and trade reporting describe 15-year lease economics and Core Scientific's continuing shift from bitcoin mining toward high-density AI colocation.",
+      "whyItMatters": "Chipmakers increasingly compete on deployment paths, not only accelerators. Long-term leases for energized capacity show how power, cooling, and campus delivery now shape the AI supply chain.",
+      "sections": [
+        {
+          "id": "what-the-companies-said",
+          "heading": "What the companies announced",
+          "claimType": "official",
+          "body": [
+            "In a July 28, 2026 press release, Core Scientific and AMD said they are partnering so AMD can secure up to 2.5 gigawatts of data center capacity for end-customer deployments of AMD AI solutions.",
+            "The release says the agreement expands capacity for the AMD ecosystem with more than 500 megawatts of U.S. infrastructure beginning in 2027, and that the companies will collaborate on physical infrastructure design and deployment of AMD Instinct GPUs, EPYC CPUs, and ROCm software.",
+            "The release also states that AMD will receive market-priced warrants to purchase Core Scientific common stock, subject to certain commercial conditions."
+          ]
+        },
+        {
+          "id": "lease-economics-reported",
+          "heading": "Lease scale and revenue claims in follow-on reporting",
+          "claimType": "claim",
+          "body": [
+            "Data Center Knowledge and CoinDesk reporting, drawing on Core Scientific materials and earnings context, describe a roughly 529 to 530 megawatt, 15-year infrastructure agreement and more than $14 billion in potential base contracted revenue for the initial AMD package.",
+            "Those dollar and megawatt figures are company-linked commercial claims reported by trade and business outlets. Cin Nova has not independently audited the lease contracts.",
+            "Data Center Knowledge also cautioned that headline revenue figures represent contracted revenue over many years rather than a single immediate booking, and that additional gigawatts can reflect reservation rights rather than fully firm commitments."
+          ]
+        },
+        {
+          "id": "business-context",
+          "heading": "Business context: from mining to AI colocation",
+          "claimType": "verified",
+          "body": [
+            "Independent reporting notes Core Scientific is shifting capacity and revenue toward AI colocation as self-mining shrinks. CoinDesk reported second-quarter colocation revenue of $136.7 million against lower self-mining revenue, based on company results.",
+            "Reuters reported that AMD is securing access to more than 500 megawatts starting in 2027 with expansion potential to 2.5 gigawatts, and that AMD will receive warrants subject to commercial conditions.",
+            "Campus delivery timing cited in trade coverage includes Pecos, Texas, deliveries beginning in the first half of 2027, with additional sites progressing through 2028. Those schedules are operator projections."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "label": "Core Scientific and AMD Announce Infrastructure Partnership",
+          "publisher": "Core Scientific Investor Relations",
+          "url": "https://investors.corescientific.com/news-events/press-releases/detail/138/core-scientific-and-amd-announce-infrastructure-partnership",
+          "type": "official",
+          "note": "Primary joint press release with capacity ranges, product stack, and warrant disclosure."
+        },
+        {
+          "label": "Core Scientific Doubles AI Capacity to 1.1 GW in $14B AMD Deal",
+          "publisher": "Data Center Knowledge",
+          "url": "https://www.datacenterknowledge.com/deals/core-scientific-doubles-ai-capacity-to-1-1-gw-in-14b-amd-deal",
+          "type": "verified",
+          "note": "Independent trade reporting with lease-scale context and caution on headline revenue framing."
+        },
+        {
+          "label": "AMD signs AI data center deal with Core Scientific",
+          "publisher": "Reuters (via Yahoo Finance)",
+          "url": "https://finance.yahoo.com/technology/ai/articles/core-scientific-signs-ai-infrastructure-110814795.html",
+          "type": "verified",
+          "note": "Independent wire confirmation of the capacity ranges and warrant structure."
+        }
+      ],
+      "relatedNewsIds": [
+        "news-national-2026-07-meta-iris-chip",
+        "news-national-2026-06-ferc-large-load",
+        "news-state-2026-07-texas-puct-ercot-seek-data-center-authority"
+      ],
+      "relatedBlogSlugs": [
+        "the-companies-building-the-ai-economy",
+        "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        "why-data-centers-are-becoming-the-new-gold-rush"
+      ],
+      "seoTitle": "Core Scientific and AMD announce AI infrastructure partnership | Cin Nova News",
+      "seoDescription": "Core Scientific and AMD say AMD will secure 500+ MW of U.S. AI capacity from 2027, with room to scale toward 2.5 GW, as Core Scientific pivots further into AI colocation."
+    },
+    "international": {
+      "id": "news-international-2026-07-meta-eu-transparency-code",
+      "slug": "meta-signs-eu-ai-act-transparency-code-of-practice",
+      "title": "Meta says it will sign the EU AI Act transparency code of practice",
+      "dek": "With Article 50 transparency duties approaching on August 2, Meta says it will endorse the EU's voluntary Code of Practice on marking and labelling AI-generated content.",
+      "coverageLevel": "international",
+      "category": "Technology policy",
+      "location": "European Union",
+      "author": "Cin Nova News Desk",
+      "publishedAt": "2026-07-28T15:00:00Z",
+      "updatedAt": null,
+      "status": "standard",
+      "isPublished": false,
+      "isDemo": false,
+      "isDraft": true,
+      "heroImage": "/images/news/international/eu-ai-omnibus-enters-into-force.jpg",
+      "heroAlt": "Abstract illustration suggesting European digital regulation and networked systems.",
+      "heroCaption": "Library image used for illustration. It is not an official European Commission photograph of the AI Office or Meta.",
+      "summary": "Meta confirmed this week that it intends to sign the EU AI Act Code of Practice on Transparency of AI-Generated Content. The European Commission describes the code as a voluntary framework that helps providers and deployers demonstrate compliance with AI Act Article 50 marking and labelling duties that become applicable on August 2, 2026.",
+      "whyItMatters": "August 2 is the practical start date for many AI-content transparency obligations in the EU. Large platforms signing the code signals how labelling, detection, and provenance tooling may standardize across markets.",
+      "sections": [
+        {
+          "id": "what-meta-said",
+          "heading": "What Meta said",
+          "claimType": "official",
+          "body": [
+            "Meta published a newsroom post stating that it is signing the EU AI Act Code of Practice on Transparency of AI-Generated Content.",
+            "Secondary reporting summarizing Meta's position says the company frames the move as continuity with earlier AI-content labelling work and participation in industry groups such as the Partnership on AI and C2PA.",
+            "Meta's own statements about product labelling history and research demos are company claims. Cin Nova treats the core verified fact as Meta's public commitment to sign the code."
+          ]
+        },
+        {
+          "id": "what-the-code-is",
+          "heading": "What the European Commission says the code does",
+          "claimType": "official",
+          "body": [
+            "The European Commission's digital-strategy pages describe the Code of Practice on Transparency of AI-Generated Content as a voluntary tool to help providers and deployers comply with AI Act Article 50(2), (4), and (5) obligations on marking, detection, and labelling of AI-generated or manipulated content.",
+            "Commission materials state that Article 50 transparency obligations apply from 2 August 2026, and that signing the code does not replace the legal obligations or Commission guidelines.",
+            "The Commission and AI Board have assessed the code as an adequate voluntary tool for demonstrating compliance, according to the Commission's policy page updated 20 July 2026."
+          ]
+        },
+        {
+          "id": "timing-and-limits",
+          "heading": "Timing, sign-up mechanics, and limits",
+          "claimType": "verified",
+          "body": [
+            "Commission FAQ guidance encouraged providers and deployers to submit signature forms by 27 July 2026, 18:00 CEST, to be included among initial signatories published before 2 August 2026, while also noting parties can sign later.",
+            "That deadline is an administrative target for the initial signatory list, not a rewrite of the statutory August 2 application date.",
+            "Readers should separate three layers: Meta's voluntary endorsement, the Commission's code framework, and the binding Article 50 duties that apply whether or not a company signs."
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "label": "Meta is Signing the EU AI Act Code of Practice on Transparency of AI-Generated Content",
+          "publisher": "Meta Newsroom",
+          "url": "https://about.fb.com/news/2026/07/meta-is-signing-the-eu-ai-act-code-of-practice-on-transparency-of-ai-generated-content/",
+          "type": "official",
+          "note": "Primary Meta announcement of the code endorsement."
+        },
+        {
+          "label": "Code of Practice on Transparency of AI-Generated Content",
+          "publisher": "European Commission (Shaping Europe's digital future)",
+          "url": "https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content",
+          "type": "official",
+          "note": "Primary EU policy page explaining the code's purpose, Article 50 link, and adequacy assessment."
+        },
+        {
+          "label": "Signing the Code of Practice on Transparency of AI-generated Content",
+          "publisher": "European Commission FAQ",
+          "url": "https://digital-strategy.ec.europa.eu/en/faqs/signing-code-practice-transparency-ai-generated-content",
+          "type": "official",
+          "note": "Primary FAQ on signatory timing relative to the 2 August 2026 application date."
+        }
+      ],
+      "relatedNewsIds": [
+        "news-international-2026-07-eu-ai-omnibus-enters-into-force",
+        "news-international-2026-08-eu-ai-act-transparency",
+        "news-national-2026-07-meta-iris-chip"
+      ],
+      "relatedBlogSlugs": [
+        "ai-news-meta-iris-chip-agent-standards",
+        "the-companies-building-the-ai-economy",
+        "what-small-businesses-should-know-about-ai-assistants"
+      ],
+      "seoTitle": "Meta to sign EU AI Act transparency code of practice | Cin Nova News",
+      "seoDescription": "Meta says it will sign the EU Code of Practice on AI-generated content transparency as Article 50 labelling duties approach on August 2, 2026."
+    }
+  },
+  "blog": {
+    "id": 205,
+    "slug": "how-ai-data-centers-get-financed-joint-ventures",
+    "title": "How AI Data Centers Get Financed: Joint Ventures, Leases, and What Communities Should Watch",
+    "category": "Data Centers & Databases",
+    "excerpt": "Hyperscalers are no longer only building campuses on their own balance sheets. Joint ventures, long-term leases, and reservation rights now decide who owns the risk when gigawatt AI facilities land in a region.",
+    "date": "July 28, 2026",
+    "readTime": "11 min read",
+    "author": "CinNova Editorial Team",
+    "tags": ["Data Centers", "AI Infrastructure", "Financing", "Energy", "Policy"],
+    "seoKeywords": [
+      "AI data center financing",
+      "data center joint venture",
+      "hyperscale lease",
+      "AI infrastructure investment"
+    ],
+    "seoTitle": "How AI Data Centers Get Financed in 2026 | CinNova",
+    "seoDescription": "A practical guide to AI data center joint ventures, long-term leases, and reservation rights—and what communities, investors, and product builders should watch.",
+    "heroImage": "/images/blog/datacenters/fiber-optic-network-cables.jpg",
+    "heroImageAlt": "Close-up of illuminated fiber-optic network cables in a data infrastructure setting.",
+    "heroImageCaption": "Library image used for illustration of digital infrastructure financing themes.",
+    "ogImage": "/images/blog/datacenters/fiber-optic-network-cables.jpg",
+    "relatedReading": [
+      "why-data-centers-are-becoming-the-new-gold-rush",
+      "can-americas-power-grid-handle-ai",
+      "the-companies-building-the-ai-economy",
+      "the-hidden-infrastructure-behind-chatgpt-and-ai",
+      "why-data-centers-matter-to-everyday-apps"
+    ],
+    "relatedNewsIds": [
+      "news-state-2026-07-texas-puct-ercot-seek-data-center-authority",
+      "news-national-2026-06-ferc-large-load",
+      "news-local-2026-07-sarasota-data-center",
+      "news-international-2026-07-eu-ai-omnibus-enters-into-force"
+    ],
+    "featured": false,
+    "trending": false,
+    "popular": false,
+    "status": "draft",
+    "content": [
+      {
+        "heading": "Why financing suddenly sits at the center of AI infrastructure",
+        "body": "For most of the cloud era, the public story about data centers was about square footage, latency, and which cloud region went live first. In 2026, the more important story is often financial structure. Gigawatt AI campuses require power interconnects, cooling, land, and multi-year construction programs that can run into the tens of billions of dollars. That is why recent announcements increasingly lead with joint ventures, long-term leases, residual-value guarantees, and reservation rights rather than with a simple claim that a company is building another warehouse of servers.\n\nThis shift matters outside Wall Street. The financing model influences who bears stranded-asset risk if demand softens, how quickly a project can clear local opposition, and whether a community is negotiating with an operating tenant, an infrastructure fund, a utility customer, or all three at once. It also shapes product reality for anyone building AI software: model quality still depends on chips, but chips only ship at scale when energized capacity exists on a calendar someone is willing to finance."
+      },
+      {
+        "heading": "Three structures showing up again and again",
+        "body": "The first common structure is the hyperscaler-led joint venture. In that model, an AI company contributes land, construction-in-progress, or operating know-how, while an infrastructure investor contributes cash and often debt capacity. Ownership may be split unevenly even when the AI company remains the primary or sole tenant. The practical effect is that compute demand stays with the platform company, while a large share of campus ownership and financing risk moves to capital partners.\n\nThe second structure is the long-term colocation lease. Here a specialist operator develops AI-ready campuses and leases energized megawatts to chipmakers, cloud providers, or enterprises. Headline dollar figures in these deals often represent contracted revenue over many years, not a one-day cash transfer. Reservation rights can make the story even larger on paper by describing optional future megawatts that are not yet firm commitments.\n\nThe third structure is the policy-constrained pause. Local and state governments are increasingly using moratoriums, special rate classes, and interconnection reviews to slow or reshape projects while water, power, and tax questions are studied. Financing does not disappear in those cases; it waits. A project that looks bankable in a press release can still be delayed by a county freeze or a utility process that has not yet priced the load."
+      },
+      {
+        "heading": "How to read the numbers without getting spun",
+        "body": "When a release cites tens of billions of dollars, separate four questions. First: is the figure total development cost, equity contributed at close, debt raised, contracted lease revenue over time, or a residual-value guarantee ceiling? Those are different claims. Second: what capacity is firm for a dated delivery window, and what capacity is only a reservation right? Third: who is the offtaker—the company that will actually consume the power and pay the lease—and who is the owner of record? Fourth: which job, tax, and water claims are company projections rather than independently verified outcomes?\n\nA useful habit is to translate every megawatt announcement into a timeline. Capacity that begins in 2027 or 2028 is not the same as capacity that is billing customers today. Likewise, an 80/20 ownership split can leave the AI company in operating control while most construction capital sits with funds. None of that is automatically good or bad. It is simply the difference between marketing language and underwriting language."
+      },
+      {
+        "heading": "What communities and local officials should ask",
+        "body": "Local governments negotiating AI campuses should ask for the offtaker, the owner, the financing parties, and the interconnection customer to be named in plain language. They should also ask whether temporary construction employment figures are peak headcount or multi-year averages, whether water and wastewater plans are conditioned on specific cooling designs, and whether any ratepayer protections exist if the project needs new transmission or substations.\n\nMoratoriums are one response when those answers are incomplete. They buy time for zoning definitions, fire and safety rules, and utility studies. They also change financing calendars: debt and equity providers price delay. Communities that want leverage should treat transparency about ownership and offtake as a precondition, not a courtesy."
+      },
+      {
+        "heading": "What builders and operators should take from the financing wave",
+        "body": "If you build AI products, infrastructure financing is now part of your supply-chain literacy. Model releases still matter, but deployment velocity depends on whether your cloud or hardware partner can actually energize clusters on schedule. If you work in real estate, construction, or energy-adjacent services, the opportunity is less about guessing which chip wins and more about understanding which campuses have firm offtake, which ones have only reserved megawatts, and which local jurisdictions are still rewriting the rules.\n\nCinNova's own product work sits downstream of this stack. Education, family-safety, real-estate, and support tools all assume reliable cloud capacity. Understanding how that capacity is financed helps explain why some AI features ship quickly while others wait on power, policy, or counterparty risk."
+      },
+      {
+        "heading": "Practical takeaway",
+        "body": "Read AI data center announcements as financing documents first and technology documents second. Separate ownership, offtake, debt, contracted revenue, and reservation rights. Ask what is firm on a dated delivery calendar. For communities, demand plain-language answers about who pays for power, water, and stranded assets. For builders, treat energized megawatts as a scarce input with a financing clock attached. That framing will age better than any single headline number."
+      }
+    ],
+    "sources": [
+      {
+        "label": "Meta Announces New Strategic Venture With BlackRock to Develop Data Center in El Paso",
+        "publisher": "Meta Newsroom",
+        "url": "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
+        "note": "Primary example of hyperscaler-infrastructure joint venture mechanics."
+      },
+      {
+        "label": "Core Scientific and AMD Announce Infrastructure Partnership",
+        "publisher": "Core Scientific Investor Relations",
+        "url": "https://investors.corescientific.com/news-events/press-releases/detail/138/core-scientific-and-amd-announce-infrastructure-partnership",
+        "note": "Primary example of chipmaker access to leased AI-ready capacity."
+      },
+      {
+        "label": "Core Scientific Doubles AI Capacity to 1.1 GW in $14B AMD Deal",
+        "publisher": "Data Center Knowledge",
+        "url": "https://www.datacenterknowledge.com/deals/core-scientific-doubles-ai-capacity-to-1-1-gw-in-14b-amd-deal",
+        "note": "Independent caution on contracted-revenue framing versus firm bookings."
+      },
+      {
+        "label": "Montgomery County Council passes 18-month data center moratorium",
+        "publisher": "The Banner",
+        "url": "https://www.thebanner.com/politics-power/local-government/montgomery-county-data-center-moratorium-passes-JGFIVPQ3UZDYFMBU2WV2DD5CMQ/",
+        "note": "Local policy pause illustrating how land-use rules can interrupt financing calendars."
+      }
+    ],
+    "heroImageBrief": {
+      "concept": "Abstract infrastructure finance visual: fiber, power, and campus silhouette without readable logos",
+      "mood": "editorial, cool, precise",
+      "mustInclude": ["infrastructure motif", "no fake UI"],
+      "avoid": ["fabricated logos", "readable fake UI text", "celebrity likenesses"],
+      "aspectRatio": "16:9",
+      "outputPath": "/images/blog/hero/how-ai-data-centers-get-financed-joint-ventures.jpg"
+    },
+    "researchBrief": {
+      "primaryKeyword": "AI data center financing",
+      "secondaryKeywords": [
+        "data center joint venture",
+        "hyperscale lease",
+        "AI infrastructure investment",
+        "data center moratorium"
+      ],
+      "audience": "Operators, investors, local officials, and AI product builders",
+      "searchIntent": "informational / commercial investigation"
+    },
+    "productLinks": [
+      {
+        "label": "CinNova Real Estate",
+        "href": "/?page=real-estate",
+        "note": "Deal diligence lens for land, utilities, and investment underwriting."
+      },
+      {
+        "label": "TechMate AI",
+        "href": "/?page=techmate",
+        "note": "Downstream product example that depends on reliable cloud capacity."
+      }
+    ],
+    "resourceLinks": [
+      {
+        "label": "Real Estate Deal Analysis Template",
+        "slug": "real-estate-deal-analysis-template"
+      }
+    ]
+  }
+}

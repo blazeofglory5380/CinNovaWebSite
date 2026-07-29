@@ -318,3 +318,50 @@ export function trackProductExploreClick({ productName = "", sourcePage = "", de
         destination_page: destinationPage,
     });
 }
+
+/* ── Organic social (Phase 9A helpers) ───────────────────────────────────────
+   Fire only when real UI or UTM landings exist. Do not invent conversion data.
+   Preserves existing News/Blog events; these are additive. */
+
+function socialParams({
+    platform = "",
+    contentType = "",
+    slug = "",
+    campaign = "",
+    cta = "",
+    destination = "",
+} = {}) {
+    return {
+        platform,
+        content_type: contentType,
+        slug,
+        campaign,
+        cta,
+        destination,
+    };
+}
+
+/** On-site share button (Blog/News share intents). */
+export function trackSocialShareClick(params = {}) {
+    trackEvent("social_share_click", socialParams(params));
+}
+
+/** Click from site to a CinNova social profile (footer/follow). */
+export function trackSocialOutboundClick(params = {}) {
+    trackEvent("social_outbound_click", socialParams(params));
+}
+
+/** Landing page view attributed to organic social UTM. */
+export function trackSocialCampaignLanding(params = {}) {
+    trackEvent("social_campaign_landing", socialParams(params));
+}
+
+/** Product CTA attributed to a social campaign. */
+export function trackSocialProductClick(params = {}) {
+    trackEvent("social_product_click", socialParams(params));
+}
+
+/** Newsletter signup attributed to a social campaign (after successful signup). */
+export function trackSocialNewsletterConversion(params = {}) {
+    trackEvent("social_newsletter_conversion", socialParams(params));
+}
