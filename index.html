@@ -5,20 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google tag (gtag.js) — the one canonical GA4 install for this site.
+    <!-- Google tag (gtag.js) loader — the one canonical GA4 install for this site.
          Static so Google Tag Diagnostics can detect it in the served HTML. ID comes
-         from VITE_GA_MEASUREMENT_ID via Vite's HTML env replacement. Automatic page
-         views are off; src/utils/analytics.js reports them for the SPA (see that
-         file for the full rationale). Never add a second loader or config. -->
+         from VITE_GA_MEASUREMENT_ID via Vite's HTML env replacement.
+
+         The `js`/`config` commands deliberately do NOT live here. vercel.json sets
+         script-src to 'self' https://www.googletagmanager.com with no
+         'unsafe-inline' and no nonce, so an inline script element is blocked
+         outright and gtag.js would never receive a config — it then sends nothing
+         at all. src/utils/analytics.js issues them from bundled JS, which 'self'
+         permits. Do not add an inline snippet here, and never add a second loader. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "%VITE_GA_MEASUREMENT_ID%", { send_page_view: false });
-    </script>
 
     <title>CinNova | Practical AI Products for Learning, Safety & Smarter Decisions</title>
     <link rel="canonical" href="https://getcinnova.com/" />
