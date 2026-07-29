@@ -529,6 +529,12 @@ function toBlogPostsLiteral(post, indent = 1) {
         ...(post.relatedNewsIds?.length
             ? [`${inner}relatedNewsIds: ${JSON.stringify(post.relatedNewsIds)},`]
             : []),
+        ...(post.sources?.length
+            ? [`${inner}sources: ${JSON.stringify(post.sources)},`]
+            : []),
+        ...(post.citations?.length
+            ? [`${inner}citations: ${JSON.stringify(post.citations)},`]
+            : []),
         `${inner}featured: ${Boolean(post.featured)},`,
         `${inner}trending: ${Boolean(post.trending)},`,
         `${inner}popular: ${Boolean(post.popular)},`,

@@ -2225,6 +2225,102 @@ const fullArticles = [
             },
         ],
     },
+    {
+        id: 205,
+        title: `How AI Data Centers Get Financed: Joint Ventures, Leases, and What Communities Should Watch`,
+        slug: "how-ai-data-centers-get-financed-joint-ventures",
+        category: `Data Centers & Databases`,
+        excerpt:
+            `Hyperscalers are no longer only building campuses on their own balance sheets. Joint ventures, long-term leases, and reservation rights now decide who owns the risk when gigawatt AI facilities land in a region.`,
+        date: "July 28, 2026",
+        readTime: "11 min read",
+        author,
+        tags: ["Data Centers","AI Infrastructure","Financing","Energy","Policy"],
+        seoKeywords: ["AI data center financing","data center joint venture","hyperscale lease","AI infrastructure investment"],
+        seoTitle: `How AI Data Centers Get Financed in 2026 | CinNova`,
+        seoDescription:
+            `A practical guide to AI data center joint ventures, long-term leases, and reservation rights—and what communities, investors, and product builders should watch.`,
+        heroImage: "/images/blog/datacenters/fiber-optic-network-cables.jpg",
+        heroImageAlt: `Professional reviewing notes and a laptop at a desk, representing diligence on infrastructure financing deals.`,
+        heroImageCaption: `Library image used for illustration of deal review and infrastructure financing themes. Filename retained from the image pool; the photo depicts an analyst at work, not fiber cabling.`,
+        ogImage: "/images/blog/datacenters/fiber-optic-network-cables.jpg",
+        relatedReading: ["why-data-centers-are-becoming-the-new-gold-rush","can-americas-power-grid-handle-ai","the-companies-building-the-ai-economy","the-hidden-infrastructure-behind-chatgpt-and-ai","why-data-centers-matter-to-everyday-apps"],
+        relatedNewsIds: ["news-state-2026-07-texas-puct-ercot-seek-data-center-authority","news-national-2026-06-ferc-large-load","news-local-2026-07-sarasota-data-center","news-international-2026-07-eu-ai-omnibus-enters-into-force"],
+        sources: [
+            {
+                label: "Meta Announces New Strategic Venture With BlackRock to Develop Data Center in El Paso",
+                publisher: "Meta Newsroom",
+                url: "https://about.fb.com/news/2026/07/meta-announces-new-venture-with-blackrock-to-develop-data-center-in-el-paso/",
+            },
+            {
+                label: "Core Scientific and AMD Announce Infrastructure Partnership",
+                publisher: "Core Scientific Investor Relations",
+                url: "https://investors.corescientific.com/news-events/press-releases/detail/138/core-scientific-and-amd-announce-infrastructure-partnership",
+            },
+            {
+                label: "Core Scientific Doubles AI Capacity to 1.1 GW in $14B AMD Deal",
+                publisher: "Data Center Knowledge",
+                url: "https://www.datacenterknowledge.com/deals/core-scientific-doubles-ai-capacity-to-1-1-gw-in-14b-amd-deal",
+            },
+            {
+                label: "Montgomery County Council passes 18-month data center moratorium",
+                publisher: "The Banner",
+                url: "https://www.thebanner.com/politics-power/local-government/montgomery-county-data-center-moratorium-passes-JGFIVPQ3UZDYFMBU2WV2DD5CMQ/",
+            },
+        ],
+        featured: false,
+        trending: false,
+        popular: false,
+        status: "published",
+        content: [
+        {
+            heading: `Why financing suddenly sits at the center of AI infrastructure`,
+            body:
+                `For most of the cloud era, the public story about data centers was about square footage, latency, and which cloud region went live first. In 2026, the more important story is often financial structure. Gigawatt AI campuses require power interconnects, cooling, land, and multi-year construction programs that can run into the tens of billions of dollars. That is why recent announcements increasingly lead with joint ventures, long-term leases, residual-value guarantees, and reservation rights rather than with a simple claim that a company is building another warehouse of servers.
+
+This shift matters outside Wall Street. The financing model influences who bears stranded-asset risk if demand softens, how quickly a project can clear local opposition, and whether a community is negotiating with an operating tenant, an infrastructure fund, a utility customer, or all three at once. It also shapes product reality for anyone building AI software: model quality still depends on chips, but chips only ship at scale when energized capacity exists on a calendar someone is willing to finance.`,
+        },
+        {
+            heading: `Three structures showing up again and again`,
+            body:
+                `Recent announcements illustrate at least three different structures. They are examples, not a claim that every AI campus uses the same template.
+
+One example is the hyperscaler-led joint venture. In the Meta–BlackRock El Paso announcement, funds managed by BlackRock are to own an 80 percent interest and Meta 20 percent; the parties describe about $14 billion as total development cost for buildings and long-lived infrastructure; Meta contributes land and construction-in-progress, BlackRock contributes cash (partly debt-funded), and Meta leases the campus back with residual-value guarantees. That package is specific to that deal: ownership split, development-cost framing, lease term, and residual-value mechanics should not be assumed for other hyperscale projects.
+
+A second example is the long-term colocation lease. In the Core Scientific–AMD announcement, the official framing is that AMD is securing U.S. capacity to support end-customer deployments of AMD AI solutions, beginning above 500 megawatts in 2027 with room to scale toward 2.5 gigawatts. Trade reporting adds 15-year lease economics and large contracted-revenue figures for an initial package, plus reservation rights for additional megawatts. Those lease-duration and dollar figures are company-linked commercial claims, and the expansion layer should be read as reserved capacity rather than fully firm bookings unless confirmed in contracts.
+
+A third structure is the policy-constrained pause. Local and state governments are increasingly using permit moratoriums, special rate classes, and interconnection reviews to slow or reshape projects while water, power, and tax questions are studied. Financing does not disappear in those cases; it waits. A project that looks bankable in a press release can still be delayed by a county freeze or a utility process that has not yet priced the load. Treat each jurisdiction's measure by its official text and effective date rather than by headline shorthand.`,
+        },
+        {
+            heading: `How to read the numbers without getting spun`,
+            body:
+                `When a release cites tens of billions of dollars, separate four questions. First: is the figure total development cost, equity contributed at close, debt raised, contracted lease revenue over time, or a residual-value guarantee ceiling? In the Meta–BlackRock materials, about $14 billion is development cost; the residual-value guarantee threshold is a separate roughly $13 billion figure; Meta's "over $10 billion" investment language is yet another company claim. In Core Scientific–AMD trade coverage, more than $14 billion is framed as potential base contracted revenue over a multi-year lease package, not an overnight cash transfer.
+
+Second: what capacity is firm for a dated delivery window, and what capacity is only a reservation right? Third: who is the offtaker—the company that will actually consume the power and pay the lease—and who is the owner of record? Meta is described as initial sole occupant leasing from the venture it partly owns; AMD's official release emphasizes capacity for end-customer deployments of AMD solutions. Fourth: which job, tax, and water claims are company projections rather than independently verified outcomes?
+
+A useful habit is to translate every megawatt announcement into a timeline. Capacity that begins in 2027 or 2028 is not the same as capacity that is billing customers today. Likewise, an 80/20 ownership split can leave the AI company in operating control while most construction capital sits with funds. None of that is automatically good or bad. It is simply the difference between marketing language and underwriting language—and between one deal's term sheet and the next.`,
+        },
+        {
+            heading: `What communities and local officials should ask`,
+            body:
+                `Local governments negotiating AI campuses should ask for the offtaker, the owner, the financing parties, and the interconnection customer to be named in plain language. They should also ask whether temporary construction employment figures are peak headcount or multi-year averages, whether water and wastewater plans are conditioned on specific cooling designs, and whether any ratepayer protections exist if the project needs new transmission or substations.
+
+Moratoriums are one response when those answers are incomplete. They buy time for zoning definitions, fire and safety rules, and utility studies. They also change financing calendars: debt and equity providers price delay. Communities that want leverage should treat transparency about ownership and offtake as a precondition, not a courtesy.`,
+        },
+        {
+            heading: `What builders and operators should take from the financing wave`,
+            body:
+                `If you build AI products, infrastructure financing is now part of your supply-chain literacy. Model releases still matter, but deployment velocity depends on whether your cloud or hardware partner can actually energize clusters on schedule. If you work in real estate, construction, or energy-adjacent services, the opportunity is less about guessing which chip wins and more about understanding which campuses have firm offtake, which ones have only reserved megawatts, and which local jurisdictions are still rewriting the rules.
+
+CinNova's own product work sits downstream of this stack. Education, family-safety, real-estate, and support tools all assume reliable cloud capacity. Understanding how that capacity is financed helps explain why some AI features ship quickly while others wait on power, policy, or counterparty risk.`,
+        },
+        {
+            heading: `Practical takeaway`,
+            body:
+                `Read AI data center announcements as financing documents first and technology documents second. Separate ownership, offtake, debt, contracted revenue, and reservation rights. Ask what is firm on a dated delivery calendar. For communities, demand plain-language answers about who pays for power, water, and stranded assets. For builders, treat energized megawatts as a scarce input with a financing clock attached. That framing will age better than any single headline number.`,
+        }
+        ],
+    },
 ];
 
 const cornerstoneRelated = {
