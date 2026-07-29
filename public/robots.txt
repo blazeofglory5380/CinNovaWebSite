@@ -3,6 +3,8 @@ Allow: /
 Disallow: /blog-admin
 Disallow: /?page=newsletter-admin
 Disallow: /?page=blog-manager
+Disallow: /?page=news-preview
+Disallow: /?page=blog-preview
 
 Sitemap: https://getcinnova.com/sitemap.xml
 Sitemap: https://getcinnova.com/sitemap-video.xml

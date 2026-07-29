@@ -29,6 +29,7 @@ import {
     getBlogUrl,
     slugifyCategory,
 } from "../data/blogPosts.js";
+import { getNewsStoryById } from "../data/newsPosts.js";
 import { defaultOgImage, siteUrl } from "../data/seoConfig.js";
 import {
     buildBreadcrumbSchema,
@@ -216,16 +217,27 @@ function ArticlePage({
     onOpenResource,
     onSubscribe,
     onNavigate,
+    previewMode = false,
 }) {
+    const isPreview = Boolean(previewMode || post?.isDraft || post?.status === "draft");
     const author = getAuthorProfile(post.author);
     const affiliateLinks = getAffiliateLinksForIds(post.affiliateIds || []);
     const readingTime = estimateArticleReadingTime(post);
     const engagement = useMemo(() => getArticleEngagement(post), [post.category]);
     const sections = Array.isArray(post.content) ? post.content : [];
 
+    const seoTitle =
+        (post.seoTitle && String(post.seoTitle).trim()) || `${post.title} | CinNova Blog`;
+    const seoDescription =
+        (post.seoDescription && String(post.seoDescription).trim()) ||
+        (post.metaDescription && String(post.metaDescription).trim()) ||
+        post.excerpt ||
+        "";
+
     useEffect(() => {
+        if (isPreview) return;
         trackArticleView(post);
-    }, [post.slug]);
+    }, [post.slug, isPreview]);
 
     const articlesToShow = useMemo(() => {
         const relatedBySlug = (post.relatedReading || [])
@@ -247,6 +259,15 @@ function ArticlePage({
             readTime: item.readTime || estimateArticleReadingTime(item),
         }));
     }, [post.id, post.relatedReading, post.category, posts]);
+
+    const relatedNewsStories = useMemo(
+        () =>
+            (post.relatedNewsIds || [])
+                .map((id) => getNewsStoryById(id))
+                .filter(Boolean)
+                .slice(0, 3),
+        [post.relatedNewsIds],
+    );
 
     const moreFromAuthor = posts
         .filter((item) => item.id !== post.id && item.author === post.author)
@@ -271,17 +292,19 @@ function ArticlePage({
         const blogPosting = {
             "@type": "BlogPosting",
             headline: post.title || "",
-            description: post.excerpt || "",
+            description: seoDescription || post.excerpt || "",
             url: articleUrl,
             mainEntityOfPage: articleUrl,
             datePublished: safeDate(post.date),
-            dateModified: safeDate(post.date),
+            dateModified: safeDate(post.updatedDate || post.date),
             articleSection: post.category || "",
             articleBody: sections.map((s) => `${s.heading || ""}: ${s.body || ""}`).join("\n\n"),
             image: buildImageObject({
                 src: heroImage,
                 alt: post.heroImageAlt || post.title,
                 caption: post.heroImageCaption,
+                width: post.heroImageWidth,
+                height: post.heroImageHeight,
             }),
             author: buildPersonAuthor(author),
             publisher: {
@@ -301,21 +324,28 @@ function ArticlePage({
                 { name: post.title, url: articleUrl },
             ]),
         );
-    }, [post.id, articleUrl, author.name, sections]);
+    }, [post.id, articleUrl, author.name, sections, seoDescription]);
 
     return (
         <main className="product-page article-page">
             <ArticleProgressBar key={post.slug} articleSlug={post.slug} />
+            {isPreview && (
+                <div className="article-draft-preview-banner" role="status">
+                    <strong>Draft preview</strong> — DEV only. This article is not in the public
+                    feed, not in the sitemap, and is marked <code>noindex</code>.
+                </div>
+            )}
             {post.sponsored && post.sponsor && (
                 <SponsoredDisclosure sponsor={post.sponsor} />
             )}
             <SEO
-                title={`${post.title} | CinNova Blog`}
-                description={post.excerpt}
-                url={articleUrl}
+                title={isPreview ? `[DRAFT] ${seoTitle}` : seoTitle}
+                description={seoDescription}
+                url={isPreview ? `${articleUrl}?preview=1` : articleUrl}
                 type="article"
                 image={post.ogImage || toAbsoluteUrl(post.heroImage) || defaultOgImage}
-                schema={articleSchema}
+                schema={isPreview ? undefined : articleSchema}
+                noindex={isPreview}
             />
 
             <section className="section article-hero">
@@ -324,6 +354,11 @@ function ArticlePage({
                 <h1>{post.title}</h1>
                 <p className="article-excerpt">{post.excerpt}</p>
                 <ArticlePublicationMeta post={post} author={author} readingTime={readingTime} />
+                {post.currentThrough && (
+                    <p className="article-current-through" role="note">
+                        {post.currentThrough}
+                    </p>
+                )}
                 {post.heroImage ? (
                     <ArticleImage
                         src={post.heroImage}
@@ -533,6 +568,7 @@ function ArticlePage({
                 post={post}
                 articles={articlesToShow}
                 resources={engagement.relatedResources}
+                newsStories={relatedNewsStories}
                 onOpenArticle={onOpenArticle}
                 onOpenResource={onOpenResource}
                 onSubscribe={onSubscribe}

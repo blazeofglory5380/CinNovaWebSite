@@ -424,6 +424,36 @@ export const blogImagePool = [
         tags: ["library", "studying", "pool"],
     },
     {
+        id: "re-future-of-ai",
+        category: "Real Estate Technology",
+        localPath: "/images/blog/real-estate/future-of-real-estate-ai.jpg",
+        alt: "Modern property skyline with digital analysis overlays suggesting AI-assisted real estate tools",
+        caption: "Real estate AI is moving from listing search toward deal analysis and market intelligence.",
+        unsplashId: "cinnova-re-future-ai",
+        creatorName: "CinNova",
+        tags: ["real estate AI", "property tech", "future"],
+    },
+    {
+        id: "re-beginner-deal-analysis",
+        category: "Real Estate Technology",
+        localPath: "/images/blog/real-estate/commercial-real-estate-ai.webp",
+        alt: "Commercial property facade representing beginner deal analysis and return metrics",
+        caption: "Beginners start deal analysis with income, expenses, financing, and return metrics.",
+        unsplashId: "cinnova-re-deal-analysis",
+        creatorName: "CinNova",
+        tags: ["deal analysis", "commercial", "investing"],
+    },
+    {
+        id: "re-rental-10-minute-screen",
+        category: "Real Estate Technology",
+        localPath: "/images/blog/real-estate/staged-home-interior.jpg",
+        alt: "Staged rental-ready home interior used to illustrate a fast first-pass deal screen",
+        caption: "A ten-minute rental screen starts with rent, expenses, financing, and cash-flow sanity checks.",
+        unsplashId: "1560472354-b33ff0c44a43",
+        creatorName: "Unsplash Contributor",
+        tags: ["rental", "cash flow", "screening"],
+    },
+    {
         id: "pool-re-skyline-investment",
         category: "Real Estate Technology",
         localPath: "/images/blog/real-estate/city-skyline-property-investment.jpg",
@@ -436,12 +466,12 @@ export const blogImagePool = [
     {
         id: "pool-re-interior-staging",
         category: "Real Estate Technology",
-        localPath: "/images/blog/real-estate/staged-home-interior.jpg",
-        alt: "Analytics dashboard on screen representing property performance review",
-        caption: "Reserve: residential property and staging topics.",
-        unsplashId: "1560472354-b33ff0c44a43",
-        creatorName: "Unsplash Contributor",
-        tags: ["interior", "staging", "pool"],
+        localPath: "/images/marketing/realestate-cash-flow.jpg",
+        alt: "Cash-flow style worksheet representing rental income and expense review",
+        caption: "Reserve: cash-flow worksheets and rental expense topics.",
+        unsplashId: "cinnova-re-cash-flow-marketing",
+        creatorName: "CinNova",
+        tags: ["cash flow", "rental", "pool"],
     },
     {
         id: "pool-health-pet-safety",
@@ -549,6 +579,9 @@ export const articleHeroAssignments = {
     30: "robotics-industrial-arm-factory",
     31: "ai-complete-guide-2026",
     32: "edu-ai-education-guide-2026",
+    108: "re-future-of-ai",
+    109: "re-beginner-deal-analysis",
+    110: "re-rental-10-minute-screen",
     204: "dc-georgia-qts-campus",
 };
 
@@ -698,7 +731,6 @@ export function getPoolImagesForCategory(category) {
 }
 
 export function getUnassignedPoolImages() {
-    const assignedIds = new Set(Object.values(articleHeroAssignments));
     return blogImagePool.filter((asset) => asset.id.startsWith("pool-"));
 }
 

@@ -1,6 +1,12 @@
 import { resolveArticleHero, applyCornerstoneInlineImages } from "./blogImageInventory.js";
+import { aiNewsArticleContent } from "./aiNewsArticleContent.js";
+import {
+    applyBlogSeoOverlay,
+    relatedReadingBoosts,
+} from "./blogSeoRemediation.js";
 
 export const blogCategories = [
+    "AI News",
     "Artificial Intelligence",
     "Real Estate Technology",
     "Education Technology",
@@ -41,6 +47,18 @@ export function getCategoryUrl(category) {
 }
 
 export const blogAuthors = {
+    "CinNova News Desk": {
+        name: "CinNova News Desk",
+        role: "AI Newsroom",
+        avatarInitials: "CN",
+        bio:
+            "The CinNova News Desk tracks consequential developments in artificial intelligence, infrastructure, standards, and technology policy.",
+        socials: [
+            { label: "Website", url: "https://getcinnova.com" },
+            { label: "Blog", url: "https://getcinnova.com/blog" },
+            { label: "Newsletter", url: "#newsletter" },
+        ],
+    },
     "CinNova Team": {
         name: "CinNova Team",
         role: "Editorial Team",
@@ -61,7 +79,103 @@ export function getAuthorProfile(authorName = "CinNova Team") {
 
 const author = "CinNova Team";
 
+const aiNewsSource = aiNewsArticleContent;
+
+const aiNewsContent = [
+    {
+        heading: "The story in one minute",
+        body: aiNewsSource.dek,
+        list: aiNewsSource.metrics.map((metric) => `${metric.value} — ${metric.label}`),
+    },
+    {
+        heading: "How the story developed",
+        body: "The key milestones connecting Meta's custom-chip program with the emerging push for trustworthy autonomous AI agents.",
+        list: aiNewsSource.timeline.map(
+            (event) => `${event.date} — ${event.title}: ${event.text}`
+        ),
+    },
+    ...aiNewsSource.sections.map((section) => ({
+        heading: section.heading,
+        body: section.paragraphs.join("\n\n"),
+    })),
+    {
+        heading: "The potential advantages",
+        body: "Three reasons this shift could strengthen the AI ecosystem, with a practical example for each.",
+        list: aiNewsSource.pros.map(
+            (item) => `${item.title}: ${item.text} Example: ${item.example}`
+        ),
+    },
+    {
+        heading: "The risks and trade-offs",
+        body: "Three issues businesses, policymakers, and communities should evaluate as the infrastructure race accelerates.",
+        list: aiNewsSource.cons.map(
+            (item) => `${item.title}: ${item.text} Example: ${item.example}`
+        ),
+    },
+    {
+        heading: "Conclusion",
+        body: aiNewsSource.conclusion,
+    },
+    {
+        heading: "Sources and further reading",
+        body: "Reporting and primary context used for this developing AI News briefing.",
+        list: aiNewsSource.sources.map(
+            (source) => `${source.outlet} — ${source.title} (${source.url})`
+        ),
+    },
+];
+
 const fullArticles = [
+    {
+        id: 203,
+        title: "AI News This Week: Meta's Iris Chip and the Race to Control AI Infrastructure",
+        slug: "ai-news-meta-iris-chip-agent-standards",
+        category: "AI News",
+        excerpt:
+            "Meta is preparing a custom AI chip for production as global standards groups turn their attention to autonomous agents. Together, the stories show where the AI race is heading next: infrastructure, control, and trust.",
+        date: "July 13, 2026",
+        readTime: "11 min read",
+        author: "CinNova News Desk",
+        tags: ["AI news", "Meta Iris", "AI chips", "AI infrastructure", "AI agents", "ITU"],
+        seoKeywords: [
+            "AI news July 2026",
+            "Meta Iris AI chip",
+            "AI infrastructure",
+            "autonomous AI agent standards",
+        ],
+        featured: false,
+        trending: true,
+        popular: true,
+        news: true,
+        status: "published",
+        heroImage: "/images/blog/ai/meta-iris-ai-chip-news.png",
+        heroImageAlt:
+            "Editorial illustration of Meta's Iris AI chip connected to a network of autonomous AI agents",
+        heroImageCaption:
+            "Custom silicon, data-center scale, and agent trust are converging into one infrastructure race.",
+        ogImage: "https://getcinnova.com/images/blog/ai/meta-iris-ai-chip-news.png",
+        publishedLabel: "Published: July 13, 2026",
+        updatedLabel: aiNewsSource.updatedLabel,
+        currentThrough: aiNewsSource.currentThrough,
+        newsBriefs: [
+            {
+                label: "Infrastructure",
+                title: "Meta targets September production for Iris",
+                text: "The custom accelerator is designed to supplement—not immediately replace—the Nvidia and AMD GPUs Meta already uses.",
+            },
+            {
+                label: "Scale",
+                title: "The compute target rises to 14 gigawatts",
+                text: "The reported 2027 goal shows how quickly AI competition is becoming an energy, supply-chain, and data-center race.",
+            },
+            {
+                label: "Trust",
+                title: "The ITU turns to autonomous AI agents",
+                text: "A new international focus group will work on identity, accountability, and meaningful human control for agents that act on users' behalf.",
+            },
+        ],
+        content: aiNewsContent,
+    },
     {
         id: 201,
         title: "Anthropic vs. the Federal Government: Who Gets the Final Say Over Military AI?",
@@ -1327,17 +1441,27 @@ const fullArticles = [
             {
                 heading: "Store risky items clearly",
                 body:
-                    "Medications, cleaners, batteries, and chemicals should be stored in consistent places away from children and pets. The goal is not fear; it is reducing the chance of confusion when life gets busy.",
+                    "Medications, cleaners, batteries, pesticides, and automotive chemicals should live in consistent places away from children and pets. A busy household makes mistakes when storage is improvised—under a sink one week, on a garage shelf the next. Pick locked or elevated locations for the highest-risk items, and keep everyday cleaners where adults can reach them without leaving bottles on counters. The goal is not fear; it is reducing confusion when someone is tired, rushed, or watching multiple people at once.",
             },
             {
-                heading: "Keep labels visible",
+                heading: "Keep labels and originals",
                 body:
-                    "Original packaging and visible labels make it easier to identify an item quickly if there is a question or possible exposure. A scanner like PoisonGuard can support that habit by recording what was checked and when.",
+                    "Original packaging and readable labels make identification faster if there is a question or possible exposure. Decanting into unmarked bottles creates avoidable risk. If you must transfer a product, label the new container with the product name and any hazard warnings. A scanner like PoisonGuard can support that habit by recording what was checked and when, which is especially useful for shared households, babysitters, or pet sitters who did not stock the cabinet themselves.",
             },
             {
-                heading: "Prepare before stress hits",
+                heading: "Build a simple emergency kit of information",
                 body:
-                    "Emergency numbers, pet information, and recent scan history can save time when a family needs help quickly. The practical takeaway is to build a simple safety routine before an urgent moment arrives.",
+                    "Before an urgent moment, write down poison-control contact information (in the U.S., Poison Help at 1-800-222-1222), pet details, allergies, and where medications are stored. Save a short household inventory of common chemicals if that helps your family. In a real event, follow professional guidance—do not invent home remedies. Digital triage tools can organize what you already know; they do not replace emergency services or poison-control specialists.",
+            },
+            {
+                heading: "Practical takeaway",
+                body:
+                    "Home safety improves with boring routines: consistent storage, visible labels, and prepared contact information. Technology can make those routines easier to maintain, but the foundation is still clear habits. Review one cabinet this week, fix one unlabeled bottle, and confirm everyone in the household knows who to call if something goes wrong. If you use PoisonGuard or a similar tool, treat scan history as a memory aid—not as a substitute for calling Poison Help when someone may have been exposed.",
+            },
+            {
+                heading: "What to do this weekend",
+                body:
+                    "Pick one room. Move medications and cleaners out of reach. Relabel anything that lost its packaging. Save Poison Help in your phone contacts. Share the new locations with anyone who watches children or pets. Small, boring steps compound into a safer home faster than buying another gadget.",
             },
         ],
     },
@@ -1395,17 +1519,27 @@ const fullArticles = [
             {
                 heading: "Start with repeatable work",
                 body:
-                    "Small businesses should begin with tasks that happen often: drafting replies, summarizing notes, writing checklists, and organizing support requests. AI performs best when the goal is clear and the input is specific.",
+                    "Small businesses should begin with tasks that happen often: drafting replies, summarizing notes, writing checklists, organizing support requests, and turning messy voice memos into action items. AI performs best when the goal is clear and the input is specific. A vague prompt like “help my business” wastes time; a prompt like “turn these three customer emails into a polite status update under 120 words” creates usable output.",
             },
             {
                 heading: "Keep humans in the loop",
                 body:
-                    "AI can speed up decisions, but sensitive work still needs review. A good rule is to let AI prepare a first draft or shortlist, then let a person confirm accuracy, tone, and business context.",
+                    "AI can speed first drafts, but sensitive work still needs review—pricing, legal language, medical claims, financial advice, and anything customer-facing that could damage trust. A practical rule: let AI prepare a draft or shortlist, then have a person confirm accuracy, tone, and context. Save the prompts that work so the team does not reinvent them every week.",
             },
             {
-                heading: "Connect to CinNova products",
+                heading: "Measure usefulness, not novelty",
                 body:
-                    "The same idea powers TechMate AI and StudyNest: AI should guide people through practical work, not bury them in complexity. The takeaway is to choose assistants that improve workflows you already understand.",
+                    "Track whether an assistant actually reduces cycle time: fewer minutes to answer support mail, faster proposal drafts, cleaner handoffs. If a tool creates more editing work than it saves, narrow the use case. TechMate AI follows the same philosophy—guided troubleshooting beats open-ended chat when the goal is to fix a device problem.",
+            },
+            {
+                heading: "Practical takeaway",
+                body:
+                    "Pick one repeatable workflow, write a reusable prompt checklist, require human review for consequential outputs, and expand only after the first workflow clearly saves time. Assistants should improve work you already understand—not invent a second job called “prompt babysitting.” If a tool cannot show its draft sources or assumptions, keep it away from customer-facing legal, medical, or financial claims.",
+            },
+            {
+                heading: "A one-week starter plan",
+                body:
+                    "Day 1: list five tasks you repeat weekly. Day 2: pick the lowest-risk one. Day 3: write a prompt template with inputs and a length limit. Day 4–5: run it on real work and edit heavily. Day 6: decide keep, revise, or drop. Day 7: only then try a second workflow. That cadence prevents “AI tourism” from becoming a permanent distraction.",
             },
         ],
     },
@@ -1429,17 +1563,27 @@ const fullArticles = [
             {
                 heading: "Filters are only the first layer",
                 body:
-                    "Bedrooms, price, and location are useful filters, but they do not explain whether a property fits an investor's goal. AI search can add context like rent assumptions, repairs, financing, and neighborhood risk.",
+                    "Bedrooms, price, and location are useful filters, but they do not explain whether a property fits an investor’s goal. AI-assisted search can add context such as rent assumptions, estimated expenses, financing scenarios, and neighborhood risk signals. The value is faster shortlisting—not a guarantee that the first ranked listing is a good deal.",
             },
             {
                 heading: "Comparison creates clarity",
                 body:
-                    "Investors often need to compare three decent options, not find one perfect listing. CinNova Real Estate AI is being designed to rank opportunities by cash flow, return profile, and market context.",
+                    "Investors often need to compare three decent options, not find one perfect listing. Side-by-side cash flow, cap rate, and cash-on-cash views reveal weak assumptions quickly. CinNova Real Estate AI is being designed to rank opportunities by return profile and market context while keeping the underlying numbers visible so users can challenge them.",
+            },
+            {
+                heading: "Verify before you commit",
+                body:
+                    "AI can miss local vacancies, HOA rules, insurance spikes, tax changes, or renovation surprises. Use software to narrow the field, then verify rent comps, expense line items, and financing with primary sources. A strong workflow is fast screening followed by careful diligence—never blind trust in a single score.",
             },
             {
                 heading: "Practical takeaway",
                 body:
-                    "Use AI search to narrow the field, then verify the numbers. The best workflow is fast screening followed by careful diligence, not blind trust in a single score.",
+                    "Treat AI property search as a first-pass analyst. Ask it to explain why a listing ranked high, then stress-test the rent and expense assumptions yourself before scheduling a showing or writing an offer. Pair search with a written deal checklist so every property is judged the same way—especially when the photos look better than the numbers.",
+            },
+            {
+                heading: "Connect search to deal analysis",
+                body:
+                    "Search without analysis creates a longer tour list, not better decisions. Once AI narrows candidates, run the same income, expense, and financing checks on each survivor. CinNova’s beginner deal-analysis and ten-minute rental guides exist for that second step—so search ranking never becomes a substitute for cash-flow math.",
             },
         ],
     },
@@ -1497,17 +1641,27 @@ const fullArticles = [
             {
                 heading: "Triage starts with clear information",
                 body:
-                    "When a possible exposure happens, families need to identify the item, the amount, who was affected, and what symptoms exist. Digital triage can help organize those facts quickly.",
+                    "When a possible exposure or safety question happens, families need facts fast: what item was involved, how much, who was affected, approximate time, and any symptoms. Digital triage helps organize those details so a call to poison control or emergency services is clearer and calmer. Panic often comes from incomplete information—not from asking for help.",
             },
             {
                 heading: "Technology should point to the right help",
                 body:
-                    "Apps should not pretend to replace professionals. PoisonGuard is being built to make safety information easier to access and to encourage emergency contact when risk is serious.",
+                    "Apps should not pretend to replace professionals. In the United States, Poison Help (1-800-222-1222) remains the primary entry point for poison questions. PoisonGuard is being built to make product identification and scan history easier to access and to encourage emergency contact when risk is serious. Clear escalation is a feature, not a failure.",
+            },
+            {
+                heading: "Preparation beats improvisation",
+                body:
+                    "Keep product labels, pet details, allergy notes, and emergency contacts easy to find before an urgent moment. A short household inventory of common chemicals helps babysitters and family members who did not stock the cabinets. Digital tools are most useful when they support that preparation instead of inventing advice after the fact.",
             },
             {
                 heading: "Practical takeaway",
                 body:
-                    "Families can prepare by keeping product labels, emergency contacts, and pet details easy to find. Digital tools are most useful when they support that preparation.",
+                    "Build a one-page family safety card this week: contacts, pets, medication locations, and where cleaners are stored. Use technology to keep that information current—then practice using it once so the first real event is not also the first rehearsal. When in doubt, call Poison Help (1-800-222-1222 in the U.S.) rather than waiting for an app to finish loading.",
+            },
+            {
+                heading: "Where PoisonGuard fits",
+                body:
+                    "PoisonGuard is being designed to support identification, history, and clearer next steps—not to diagnose or replace professionals. Pair it with the storage and labeling habits in our home-safety guide so digital triage has accurate product context when you need it.",
             },
         ],
     },
@@ -1565,17 +1719,27 @@ const fullArticles = [
             {
                 heading: "Apps need invisible reliability",
                 body:
-                    "Users notice when an app is slow, but they rarely see the infrastructure behind it. Data centers and databases handle storage, compute, backups, and availability so products can feel simple on the surface.",
+                    "Users notice when an app is slow or offline, but they rarely see the buildings, power systems, and networks behind it. Data centers provide compute, storage, cooling, and connectivity so products can feel simple on a phone. When AI features arrive—tutors, scanners, deal analyzers—they usually increase that infrastructure footprint.",
+            },
+            {
+                heading: "Latency, regions, and trust",
+                body:
+                    "Where data lives affects speed and compliance. A study session that feels instant may depend on a nearby region; a property analyzer that stores financial assumptions needs clear backup and access controls. Everyday apps inherit those trade-offs even when the interface never mentions “data center.”",
             },
             {
                 heading: "Good products respect data",
                 body:
-                    "Whether an app stores study progress, scan history, or property analysis, the database model matters. CinNova products are being planned around useful data structures that can support future dashboards and recommendations.",
+                    "Whether an app stores study progress, scan history, or deal models, the database design shapes what dashboards and recommendations can do later. CinNova products are planned around useful structures first—learners, notes, scans, diagnostics, properties—so features can grow without rebuilding the foundation.",
             },
             {
                 heading: "Practical takeaway",
                 body:
-                    "Infrastructure is not just a technical detail. It affects speed, trust, cost, and product quality. Founders should think about data early, even before the product feels large.",
+                    "Infrastructure is product quality: speed, trust, cost, and availability. Founders should ask early where data lives, how it is backed up, and which features create the heaviest compute demand—especially as AI features expand. Readers following CinNova’s data-center coverage can connect those community and grid stories to the same physical layer that powers everyday apps.",
+            },
+            {
+                heading: "What to watch in the news",
+                body:
+                    "Local pauses, state rate classes, and federal large-load rulings are not abstract policy trivia. They shape how quickly new capacity can come online and what electricity costs downstream products may eventually reflect. Pair this explainer with CinNova News coverage when you want the latest verified developments.",
             },
         ],
     },
@@ -1633,17 +1797,27 @@ const fullArticles = [
             {
                 heading: "The future is practical",
                 body:
-                    "The most valuable technology trends are not always the loudest. Tools that save time, reduce risk, improve decisions, or support learning are more likely to become durable parts of daily life.",
+                    "The most valuable technology trends are not always the loudest. Tools that save time, reduce risk, improve decisions, or support learning are more likely to become durable parts of daily life. Novelty fades; workflow fit compounds. When evaluating a trend, ask who uses it weekly, what measurable outcome improves, and what breaks if the vendor disappears.",
             },
             {
                 heading: "AI will become part of workflows",
                 body:
-                    "AI will matter most when it becomes embedded inside useful products. StudyNest, PoisonGuard, TechMate AI, Kiddo, and CinNova Real Estate AI each represent a focused workflow where AI can help without becoming the whole story.",
+                    "AI will matter most when it is embedded inside useful products—not when it is a generic chatbot bolted onto a homepage. StudyNest, PoisonGuard, TechMate AI, Kiddo, and CinNova Real Estate AI each represent a focused workflow where AI can help without becoming the whole story. The same pattern appears across industries: narrow the task, show the reasoning, keep a human review path.",
+            },
+            {
+                heading: "Infrastructure and automation still decide scale",
+                body:
+                    "Chips, data centers, power, and robotics determine how far software features can scale. Watching only model releases misses the physical constraints that shape cost and availability. Trends worth tracking include energy-aware compute, safer agent controls, and automation that starts with one repetitive step instead of a full factory redesign.",
             },
             {
                 heading: "Practical takeaway",
                 body:
-                    "Watch for technology that solves a specific problem, has a clear user, and produces a measurable improvement. Future technology becomes real when it becomes useful.",
+                    "Watch for technology that solves a specific problem, has a clear user, and produces a measurable improvement. Future technology becomes real when it becomes useful—and when the infrastructure behind it can keep up. Prefer products that show constraints and review paths over demos that only show magic.",
+            },
+            {
+                heading: "A simple trend filter",
+                body:
+                    "Ask four questions: Who uses this weekly? What metric improves? What fails if the vendor disappears? Does the product escalate to a human when stakes are high? Trends that cannot answer those questions are usually noise—even when they look impressive in a keynote.",
             },
         ],
     },
@@ -1701,17 +1875,27 @@ const fullArticles = [
             {
                 heading: "Five focused product lanes",
                 body:
-                    "CinNova is building across education, safety, tech support, early learning, and real estate. Each product has its own user problem, but the portfolio shares one brand and one practical AI philosophy.",
+                    "CinNova is building across education (StudyNest), household safety (PoisonGuard), tech support (TechMate AI), early learning (Kiddo), and real estate investing (CinNova Real Estate AI). Each product has its own user problem and workflow, but the portfolio shares one brand standard: practical AI that clarifies next steps instead of drowning people in features.",
             },
             {
-                heading: "Content supports product learning",
+                heading: "How the lanes reinforce each other",
                 body:
-                    "The blog and newsletter help explain each product category before the apps are fully mature. Readers can learn the problem space, join the audience, and follow launch progress.",
+                    "Content, resources, and news coverage help explain each category before every app is fully mature. Education articles support StudyNest; infrastructure and AI explainers support TechMate and the broader stack; safety guidance supports PoisonGuard; deal-analysis guides support Real Estate AI. Readers can learn the problem space, join waitlists, and follow launch progress without waiting for a single “big bang” release.",
+            },
+            {
+                heading: "What “roadmap” means here",
+                body:
+                    "A public roadmap clarifies direction without pretending every date is fixed. Shipping order can change as we learn from validation, partnerships, and user feedback. What stays stable is the problem set: study systems that drive recall, safety tools that escalate correctly, support that diagnoses clearly, early-learning that stays playful, and real-estate tools that make deal math understandable.",
             },
             {
                 heading: "Practical takeaway",
                 body:
-                    "A roadmap is useful when it clarifies direction without pretending every date is fixed. CinNova will keep using product pages, articles, resources, and newsletter updates to make progress visible.",
+                    "Follow product pages, articles, resources, and newsletter updates for progress. If you care about one lane most, join that waitlist and tell us the workflow that wastes your time today—that signal shapes what we build next. Roadmaps should create clarity, not false certainty about exact ship dates.",
+            },
+            {
+                heading: "How to follow along",
+                body:
+                    "Use the product pages for each lane, read the related cornerstone guides when you want depth, and subscribe if you want launch notes without hunting the blog. Feedback from real workflows—study sessions, safety checks, support tickets, or deal screens—matters more than generic feature requests.",
             },
         ],
     },
@@ -1904,17 +2088,32 @@ const fullArticles = [
             {
                 heading: "Investors need faster clarity",
                 body:
-                    "Real estate decisions involve price, rent, expenses, financing, location, and risk. AI can organize those factors into a clearer picture before an investor spends hours on manual analysis. The practical takeaway is to use software for first-pass clarity, then verify assumptions before making decisions.",
+                    "Real estate decisions involve price, rent, expenses, financing, location, and risk—often under time pressure. AI can organize those factors into a clearer first-pass picture before an investor spends hours on manual spreadsheets. The durable pattern is not automation for its own sake; it is software that surfaces assumptions so people can challenge them. Use AI for first-pass clarity, then verify rent comps, insurance, taxes, and repair scope before making a commitment.",
             },
             {
                 heading: "Deal analysis is becoming more accessible",
                 body:
-                    "Cap rate, cash flow, mortgage payments, and repair assumptions can be confusing for beginners. A strong AI real estate product can explain the numbers and show what changes the deal. CinNova Real Estate AI is being designed to make those calculations easier to understand.",
+                    "Cap rate, cash flow, mortgage payments, vacancy, and repair reserves can confuse beginners. A strong AI real-estate product explains the numbers in plain language and shows what changes the deal when rent drops or expenses rise. CinNova Real Estate AI is being designed around that workflow: connect mortgage math to deal analysis, keep the inputs editable, and highlight weak assumptions instead of hiding them behind a single “score.”",
             },
             {
-                heading: "Market intelligence matters",
+                heading: "Market intelligence still needs verification",
                 body:
-                    "The next wave of real estate tools will combine property data with local market signals so users can compare opportunities with better context. A practical workflow is to screen quickly, compare honestly, and only spend deeper time on deals that survive the numbers.",
+                    "The next wave of tools will combine listing data with local market signals so users can compare opportunities with better context. That is useful for screening—and dangerous if treated as ground truth. Neighborhood trends, new supply, and employment shifts change. A practical workflow is to screen quickly, compare honestly across two or three options, and only spend deeper diligence time on deals that survive the numbers.",
+            },
+            {
+                heading: "Where CinNova is headed",
+                body:
+                    "CinNova Real Estate AI aims to unify property search, deal analysis, and market context for investors who want speed without giving up judgment. Product pages and deal-analysis guides on this site explain the direction while the product is in development. Join the waitlist if you want early access; bring the deals you already struggle to compare—that is the best product feedback.",
+            },
+            {
+                heading: "Practical takeaway",
+                body:
+                    "Real estate AI should make diligence faster and clearer, not replace it. Demand transparent inputs, comparable metrics, and an easy path to verify sources before you trust a recommendation. If a tool cannot show the rent, expense, and financing assumptions behind a ranking, treat that ranking as marketing—not analysis.",
+            },
+            {
+                heading: "Next reading",
+                body:
+                    "If you are new to the numbers, start with the beginner deal-analysis guide. If you already know the basics, use the ten-minute rental screen to practice fast first passes. Both articles connect directly to the product direction described here.",
             },
         ],
     },
@@ -1938,17 +2137,32 @@ const fullArticles = [
             {
                 heading: "Start with income and expenses",
                 body:
-                    "A deal begins with expected rent, vacancy, taxes, insurance, maintenance, management, and other costs. These numbers shape the real cash flow. Beginners should write assumptions down instead of trusting the first attractive listing photo.",
+                    "A deal begins with expected rent, vacancy, taxes, insurance, maintenance, management, utilities (if landlord-paid), and other recurring costs. These numbers shape real cash flow. Write assumptions down instead of trusting an attractive listing photo. If rent feels optimistic, stress-test a lower number before you fall in love with the property.",
             },
             {
                 heading: "Understand financing",
                 body:
-                    "Mortgage payments can turn a strong-looking property into a weak deal. A mortgage calculator helps users test different loan terms and down payments. CinNova Real Estate AI connects mortgage math to deal analysis so investors can see the effect quickly.",
+                    "Mortgage payments can turn a strong-looking property into a weak deal. Test different loan terms, interest rates, and down payments. Include closing costs and reserves when you compare cash required at purchase. CinNova Real Estate AI connects mortgage math to deal analysis so investors can see the effect of financing choices quickly—without losing the underlying inputs.",
             },
             {
                 heading: "Compare return metrics",
                 body:
-                    "Cap rate, cash-on-cash return, and monthly cash flow each answer a different question. A good analyzer explains all three and highlights weak assumptions. The practical takeaway is to screen deals with consistent rules before getting emotionally attached.",
+                    "Cap rate, cash-on-cash return, and monthly cash flow each answer a different question. Cap rate ignores financing; cash-on-cash includes it; monthly cash flow shows whether the property pays you or drains you after debt service. A good analyzer explains all three and highlights weak assumptions. Screen deals with consistent rules before getting emotionally attached.",
+            },
+            {
+                heading: "A simple beginner checklist",
+                body:
+                    "1) Confirm rent with comps. 2) List every expense you can name. 3) Model financing honestly. 4) Check cash flow at base, downside, and upside rent. 5) Only then schedule deeper diligence (inspection, insurance quotes, HOA docs). Software can speed steps 1–4; people still own step 5.",
+            },
+            {
+                heading: "Practical takeaway",
+                body:
+                    "Deal analysis is a decision filter, not a prediction of the future. Keep your assumptions visible, compare properties the same way every time, and walk away from deals that only work in the best-case spreadsheet. When you are ready for a faster first pass, use the ten-minute rental screen alongside this beginner framework—not instead of verifying the inputs.",
+            },
+            {
+                heading: "Common beginner mistakes",
+                body:
+                    "Using listing rent without comps, forgetting vacancy, ignoring insurance changes, and treating cap rate as the only score. Fix those four habits and your screening quality jumps even before you adopt AI tools. Write the assumptions once, reuse the template, and force every property through the same filter. If a deal only works when every assumption is optimistic, it is not a beginner-friendly deal—it is a warning sign.",
             },
         ],
     },
@@ -3506,6 +3720,7 @@ const PILLAR_GUIDES = {
 };
 
 const PILLAR_AI_CATEGORIES = new Set([
+    "AI News",
     "Artificial Intelligence",
     "Real Estate Technology",
     "Healthcare Technology",
@@ -3518,6 +3733,7 @@ const PILLAR_AI_CATEGORIES = new Set([
 ]);
 
 const TOPIC_CLUSTERS = {
+    "AI News": "ai-platforms",
     "Artificial Intelligence": "ai-platforms",
     "Data Centers & Databases": "ai-platforms",
     "Robotics & Automation": "ai-platforms",
@@ -3540,7 +3756,8 @@ function getTopicTokens(post) {
 
 function buildRelatedReading(post) {
     const effectivePost = { ...post, ...(cornerstoneOverrides[post.id] || {}) };
-    const base = cornerstoneRelated[post.id] || post.relatedReading || [];
+    const boost = relatedReadingBoosts[post.id] || [];
+    const base = [...boost, ...(cornerstoneRelated[post.id] || post.relatedReading || [])];
     const pillar = [];
     if (effectivePost.category === "Education Technology") {
         pillar.push(PILLAR_GUIDES.education);
@@ -3572,13 +3789,13 @@ function buildRelatedReading(post) {
 
     return [...new Set([...pillar, ...base, ...ranked])]
         .filter((slug) => slug !== effectivePost.slug && publishedSlugs.has(slug))
-        .slice(0, 4);
+        .slice(0, 6);
 }
 
 const enrichedFullArticles = fullArticles.map((post) => {
     const cornerstone = post.id <= 15 || post.id === 31 || post.id === 32;
     const override = cornerstoneOverrides[post.id] || {};
-    const mergedPost = {
+    const mergedPost = applyBlogSeoOverlay({
         ...post,
         ...override,
         cornerstone,
@@ -3593,7 +3810,7 @@ const enrichedFullArticles = fullArticles.map((post) => {
             title: post.category,
         },
         relatedReading: buildRelatedReading(post),
-    };
+    });
     const rawContent = cornerstone ? buildCornerstoneContent(mergedPost) : mergedPost.content;
     const heroFields = resolveArticleHero(mergedPost.id) || {};
     const content = cornerstone
@@ -3604,8 +3821,8 @@ const enrichedFullArticles = fullArticles.map((post) => {
         content,
         coverImage: getCoverImage(mergedPost),
         editorialByline: cornerstone ? "CinNova Editorial Team" : mergedPost.author,
-        publishedLabel: cornerstone ? "Published: June 2026" : `Published: ${mergedPost.date}`,
-        updatedLabel: cornerstone ? "Updated: June 2026" : `Updated: ${mergedPost.date}`,
+        publishedLabel: mergedPost.publishedLabel || (cornerstone ? "Published: June 2026" : `Published: ${mergedPost.date}`),
+        updatedLabel: mergedPost.updatedLabel || (cornerstone ? "Updated: June 2026" : `Updated: ${mergedPost.date}`),
         coverageTopics: editorialCoverageTopics,
     };
 

@@ -1,10 +1,12 @@
 import BlogProductCTA from "../BlogProductCTA.jsx";
 import NewsletterSignup from "../NewsletterSignup.jsx";
+import { getNewsStoryUrl } from "../../data/newsPosts.js";
 
 function RelatedContentModule({
     post,
     articles,
     resources,
+    newsStories = [],
     onOpenArticle,
     onOpenResource,
     onSubscribe,
@@ -33,6 +35,25 @@ function RelatedContentModule({
                                 <span>{item.category}</span>
                                 <strong>{item.title}</strong>
                                 <small>{item.readTime}</small>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {newsStories.length > 0 && (
+                <div className="article-related-section">
+                    <p className="sidebar-widget-label">RELATED NEWS</p>
+                    <div className="related-reading-grid">
+                        {newsStories.map((story) => (
+                            <a
+                                href={getNewsStoryUrl(story).replace(/^https?:\/\/[^/]+/, "") || `/news/${story.slug}`}
+                                key={story.id}
+                                className="related-reading-card"
+                            >
+                                <span>{String(story.coverageLevel || "news").toUpperCase()}</span>
+                                <strong>{story.title}</strong>
+                                <small>Cin Nova News</small>
                             </a>
                         ))}
                     </div>

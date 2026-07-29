@@ -84,6 +84,7 @@ import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { getNewsStoryBySlug } from "./data/newsPosts.js";
 import { getNewsDraftBySlug } from "./data/newsDrafts.js";
+import { getBlogDraftBySlug } from "./data/blogDrafts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
 import { PRODUCT_PAGE_KEYS, productDetails, products } from "./data/products.js";
@@ -145,6 +146,23 @@ function getRouteFromUrl(posts = getManagedPosts()) {
                 resource: null,
                 category: null,
                 newsStory: draft,
+            };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    if (routedPage === "blog-preview") {
+        if (!import.meta.env.DEV) {
+            return { page: "not-found", article: null, resource: null, category: null };
+        }
+        const slug = newsPreviewSlug ? decodeURIComponent(newsPreviewSlug) : "";
+        const draft = slug ? getBlogDraftBySlug(slug) : null;
+        if (draft) {
+            return {
+                page: "blog-preview",
+                article: draft,
+                resource: null,
+                category: null,
             };
         }
         return { page: "not-found", article: null, resource: null, category: null };
@@ -745,6 +763,20 @@ function App() {
                     onOpenStory={openNewsStory}
                     onOpenArticle={openArticle}
                 />
+            )}
+            {import.meta.env.DEV && page === "blog-preview" && selectedArticle && (
+                <ArticleErrorBoundary onBack={goBlog}>
+                    <ArticlePage
+                        post={selectedArticle}
+                        posts={publishedPosts}
+                        previewMode
+                        onBack={goBlog}
+                        onOpenArticle={openArticle}
+                        onOpenResource={openResource}
+                        onSubscribe={showNewsletterAlert}
+                        onNavigate={openPage}
+                    />
+                </ArticleErrorBoundary>
             )}
             {page === "free-rental-property-calculator" && <FreeRentalCalculator />}
             {page === "ai-tutorials" && <AiTutorialsPage />}

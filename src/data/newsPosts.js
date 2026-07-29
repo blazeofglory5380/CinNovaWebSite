@@ -1230,7 +1230,11 @@ export const newsPosts = [
             },
         ],
         relatedNewsIds: ["news-national-2026-05-cisa-agentic-ai", "news-national-2026-04-nist-ai-rmf-critical-infrastructure", "news-international-2026-08-eu-ai-act-transparency"],
-        relatedBlogSlugs: ["the-companies-building-the-ai-economy"],
+        relatedBlogSlugs: [
+            "the-companies-building-the-ai-economy",
+            "ai-news-meta-iris-chip-agent-standards",
+            "the-hidden-infrastructure-behind-chatgpt-and-ai",
+        ],
         seoTitle: "Reuters reports Meta Iris AI chip manufacturing plan | Cin Nova News",
         seoDescription:
             "Reuters reported that an internal Meta memo targets September 2026 manufacturing for Iris. The memo's chip, testing, and capacity details remain attributed claims.",
