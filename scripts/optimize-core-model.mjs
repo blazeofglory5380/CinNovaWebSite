@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 // native libraries conflict with sharp's libvips DLLs if loaded first
 // (ERR_DLOPEN_FAILED). So load sharp here, then import the rest dynamically
 // below. Optional — if sharp is unavailable we still ship Draco-geometry-only.
-let sharp = null;
+let sharp;
 try {
     ({ default: sharp } = await import("sharp"));
     // Actually run the native pipeline so a broken install fails here, not mid-run.

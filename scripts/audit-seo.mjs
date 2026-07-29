@@ -43,7 +43,6 @@ import {
     getPublicPageMetadata,
     getResourceMetadata,
     getResourcesIndexMetadata,
-    publicPageH1,
 } from "./seo-shared.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");

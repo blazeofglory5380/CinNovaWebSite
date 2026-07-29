@@ -48,7 +48,7 @@ async function gradientBg(width, height, stops, angle) {
     return sharp(linearGradientSvg(width, height, stops, angle)).png().toBuffer();
 }
 
-async function compositeLayers(width, height, layers) {
+async function _compositeLayers(width, height, layers) {
     let canvas = sharp({
         create: {
             width,

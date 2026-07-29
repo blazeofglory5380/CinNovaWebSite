@@ -71,7 +71,7 @@ export function prepareSocialDraftsForItem({
             continue;
         }
 
-        let destinationUrl = "";
+        let destinationUrl;
         try {
             destinationUrl = destinationFor(kind, slug, platform, dateIso);
         } catch (error) {
