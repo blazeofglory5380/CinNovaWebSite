@@ -410,7 +410,9 @@ function News({ onNavigate, onOpenStory, initialCoverage = "all" }) {
                 <div className="news-shell news-principles-grid">
                     <div>
                         <span className="news-eyebrow">OUR APPROACH</span>
-                        <h2 id="news-principles-title">Useful context. Human impact. No noise.</h2>
+                        <h2 id="news-principles-title" className="news-principles-heading">
+                            Useful context. Human impact. No noise.
+                        </h2>
                     </div>
                     <div className="news-principle-list">
                         <div><strong>Clear</strong><span>Direct reporting and plain-language context.</span></div>

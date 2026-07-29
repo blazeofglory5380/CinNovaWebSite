@@ -117,8 +117,14 @@
     background: rgba(255, 255, 255, 0.12);
     color: #e8f5ef;
 }
-/* Override global h1–h6 { color: var(--color-text) } so the dark-green band stays readable. */
-.news-principles h2 { color: #f7f8f5; }
+/*
+ * Override global `h1–h6 { color: var(--color-text) }` (#1e1e1e).
+ * Prefer an explicit heading class so cascade/order cannot darken this band.
+ */
+.news-principles-heading,
+.news-principles h2 {
+    color: #f7f8f5;
+}
 .news-principles-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(50px, 8vw, 100px); align-items: start; }
 .news-principle-list { display: grid; }
 .news-principle-list div {
