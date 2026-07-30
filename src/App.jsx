@@ -692,9 +692,11 @@ function App() {
                     posts={publishedPosts}
                     onNavigate={openPage}
                     onOpenArticle={openArticle}
+                    onOpenNewsStory={openNewsStory}
                     onOpenResource={openResource}
                     onGoResources={goResources}
                     onGoBlog={goBlog}
+                    onGoNews={goNews}
                     onSubscribe={showNewsletterAlert}
                 />
             )}
@@ -940,3 +942,4 @@ function App() {
 }
 
 export default App;
+
