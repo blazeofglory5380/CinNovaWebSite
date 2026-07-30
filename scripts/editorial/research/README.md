@@ -1,7 +1,8 @@
-# Phase 10B.2 — live research ingestion + scheduled selection
+# Phase 10B.3 — corroboration & editorial readiness
 
-- Fixture-first local defaults (`editorial:discover` without `--live`).
-- Schedule uses live mode; manual dispatch defaults to fixture.
-- Research qualification is not publication approval.
-- Editorial fit + diversity selection caps daily packet desks (≤4 news, ≤1 blog).
+- Post-selection, pre-fact-check enrichment reuses candidates already fetched in the run.
+- Claim evidence map + independence filtering + uncertainty resolution + conflict detection.
+- Readiness score is a helper only; Phase 10A fact-check remains authoritative.
+- Tier 4 discovery-only sources never independently satisfy consequential claims.
 - No auto-publish, merge, deploy, or social posting.
+- Fixture-first tests: `npm run test:editorial-corroboration`.

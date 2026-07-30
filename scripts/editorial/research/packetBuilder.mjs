@@ -28,6 +28,13 @@ function blankNewsStory() {
         editorialNotes: "",
         forceDraft: false,
         factCheckStatus: "",
+        // Phase 10B.3 optional enrichment fields (backward compatible).
+        claimEvidence: [],
+        corroborationSummary: null,
+        resolvedUncertainties: [],
+        remainingUncertainties: [],
+        sourceIndependence: null,
+        readinessScore: null,
     };
 }
 
@@ -45,6 +52,9 @@ function blankBlog() {
         forceDraft: false,
         researchBrief: { primaryKeyword: "", secondaryKeywords: [], audience: "", searchIntent: "" },
         heroImageBrief: { concept: "", mood: "", avoid: ["fabricated logos", "readable fake UI text"] },
+        claimEvidence: [],
+        corroborationSummary: null,
+        readinessScore: null,
     };
 }
 
@@ -60,7 +70,9 @@ function packetSources(cluster) {
         type: sourceType(candidate),
         note: candidate.sourceTier === "TIER_1_PRIMARY"
             ? "Direct official announcement; claims remain attributed until Phase 10A fact-check."
-            : "Independent research source included for corroboration.",
+            : candidate.matchReason
+              ? `Corroboration match (${candidate.matchReason}).`
+              : "Independent research source included for corroboration.",
     }));
 }
 
@@ -70,12 +82,52 @@ function bestScope(cluster) {
         || "national";
 }
 
+function enrichmentFields(cluster) {
+    const enrichment = cluster.enrichment || null;
+    if (!enrichment) {
+        return {
+            claimEvidence: [],
+            corroborationSummary: null,
+            resolvedUncertainties: [],
+            remainingUncertainties: [],
+            sourceIndependence: null,
+            readinessScore: null,
+        };
+    }
+    return {
+        claimEvidence: enrichment.claimEvidence || [],
+        corroborationSummary: enrichment.corroborationSummary || null,
+        resolvedUncertainties: enrichment.resolvedUncertainties || [],
+        remainingUncertainties: enrichment.remainingUncertainties || [],
+        sourceIndependence: enrichment.sourceIndependence || null,
+        readinessScore: enrichment.readinessScore || null,
+    };
+}
+
 function newsStory(cluster) {
     const lead = cluster.sources?.[0] || {};
     const summaries = [...new Set((cluster.sources || []).map((source) => source.summary).filter(Boolean))];
     const fitNote = cluster.editorialFit
         ? ` Editorial fit ${cluster.editorialFit.score}; bucket ${cluster.diversityBucket || "n/a"}.`
         : "";
+    const enrich = enrichmentFields(cluster);
+    const verifiedClaims = (enrich.claimEvidence || [])
+        .filter((claim) => ["VERIFIED_PRIMARY", "VERIFIED_MULTI_SOURCE"].includes(claim.status))
+        .map((claim) => claim.claimText);
+    const attributedClaims = (enrich.claimEvidence || [])
+        .filter((claim) => !["VERIFIED_PRIMARY", "VERIFIED_MULTI_SOURCE"].includes(claim.status))
+        .map((claim) => claim.claimText);
+    const remainingTexts = (enrich.remainingUncertainties || []).map((item) => item.text).filter(Boolean);
+    const uncertainties = remainingTexts.length
+        ? remainingTexts
+        : enrich.corroborationSummary
+          ? []
+          : ["All source-derived claims require Phase 10A fact-check and contextual review before drafting."];
+
+    const conflictNote = (cluster.enrichment?.conflicts || []).length
+        ? ` CONFLICTS: ${cluster.enrichment.conflicts.map((item) => item.notes).join(" | ")}`
+        : "";
+
     return {
         slug: slugify(cluster.canonicalTopic),
         title: cluster.canonicalTopic,
@@ -86,18 +138,26 @@ function newsStory(cluster) {
         summary: lead.summary || cluster.canonicalTopic,
         whyItMatters: `The development intersects with CinNova coverage of ${(cluster.topics || ["technology"]).slice(0, 3).join(", ")}.`,
         sources: packetSources(cluster),
-        verifiedClaims: [],
-        attributedClaims: summaries.length ? summaries : [`${lead.sourceName || "A listed source"} published: ${cluster.canonicalTopic}`],
-        uncertainties: ["All source-derived claims require Phase 10A fact-check and contextual review before drafting."],
-        editorialNotes: `${cluster.corroboration?.rationale || "Corroboration assessment unavailable"} Dedupe: ${cluster.cinovaClassification || "unclassified"}.${fitNote}`,
+        verifiedClaims: verifiedClaims.length ? verifiedClaims : [],
+        attributedClaims: attributedClaims.length
+            ? attributedClaims
+            : (summaries.length ? summaries : [`${lead.sourceName || "A listed source"} published: ${cluster.canonicalTopic}`]),
+        uncertainties,
+        editorialNotes: `${cluster.corroboration?.rationale || "Corroboration assessment unavailable"} Dedupe: ${cluster.cinovaClassification || "unclassified"}.${fitNote}${
+            enrich.corroborationSummary
+                ? ` Enrichment: independent=${enrich.corroborationSummary.independentSourceCount}, readiness=${enrich.corroborationSummary.readinessScore}.`
+                : ""
+        }${conflictNote}`,
         forceDraft: false,
         factCheckStatus: "",
+        ...enrich,
     };
 }
 
 function blogStory(cluster) {
     const lead = cluster.sources?.[0] || {};
     const title = cluster.canonicalTopic;
+    const enrich = enrichmentFields(cluster);
     return {
         slug: slugify(title),
         title,
@@ -120,12 +180,19 @@ function blogStory(cluster) {
             mood: "Cinematic, credible, restrained",
             avoid: ["fabricated logos", "readable fake UI text"],
         },
+        claimEvidence: enrich.claimEvidence,
+        corroborationSummary: enrich.corroborationSummary,
+        readinessScore: enrich.readinessScore,
     };
 }
 
-export function buildResearchPacket({ dateIso, clusters = [], qualified = [] } = {}) {
+/**
+ * @param {{ dateIso: string, clusters?: object[], qualified?: object[], selection?: { news: object[], blog: object[], limits?: object, rejectedWeakFit?: object[] } }} args
+ * When `selection` is provided (Phase 10B.3 enriched selection), it is used as-is.
+ */
+export function buildResearchPacket({ dateIso, clusters = [], qualified = [], selection = null } = {}) {
     const pool = qualified.length ? qualified : clusters.filter((cluster) => cluster.qualified);
-    const selection = selectClustersForPacket(pool);
+    const chosen = selection || selectClustersForPacket(pool);
     const news = {
         local: blankNewsStory(),
         state: blankNewsStory(),
@@ -133,7 +200,7 @@ export function buildResearchPacket({ dateIso, clusters = [], qualified = [] } =
         international: blankNewsStory(),
     };
 
-    for (const cluster of selection.news) {
+    for (const cluster of chosen.news || []) {
         const preferred = bestScope(cluster);
         if (!news[preferred].title) {
             news[preferred] = newsStory(cluster);
@@ -144,17 +211,18 @@ export function buildResearchPacket({ dateIso, clusters = [], qualified = [] } =
         if (alternate) news[alternate] = newsStory({ ...cluster, selectedDesk: alternate });
     }
 
-    const blogCluster = selection.blog[0] || null;
+    const blogCluster = chosen.blog?.[0] || null;
     return {
         schemaVersion: "10A",
         date: dateIso,
         safety: SAFETY,
         selection: {
-            phase: "10B.2",
-            limits: selection.limits,
-            selectedNewsTopics: selection.news.map((cluster) => cluster.canonicalTopic),
-            selectedBlogTopics: selection.blog.map((cluster) => cluster.canonicalTopic),
-            rejectedWeakFit: selection.rejectedWeakFit,
+            phase: selection ? "10B.3" : "10B.2",
+            limits: chosen.limits,
+            selectedNewsTopics: (chosen.news || []).map((cluster) => cluster.canonicalTopic),
+            selectedBlogTopics: (chosen.blog || []).map((cluster) => cluster.canonicalTopic),
+            rejectedWeakFit: chosen.rejectedWeakFit,
+            corroboration: chosen.observability || null,
         },
         news,
         blog: blogCluster ? blogStory(blogCluster) : blankBlog(),

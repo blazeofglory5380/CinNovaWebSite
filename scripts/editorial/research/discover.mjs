@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { classifyAgainstCinova } from "./cinovaDedupe.mjs";
 import { clusterCandidates } from "./clustering.mjs";
 import { assessCorroboration } from "./corroboration.mjs";
+import { enrichSelection } from "./enrichment.mjs";
 import { isFreshEnough } from "./freshness.mjs";
 import { buildResearchPacket } from "./packetBuilder.mjs";
 import { fetchSourceCandidates } from "./providers/index.mjs";
@@ -103,15 +104,31 @@ export async function runDiscovery({
     });
     const qualified = clusters.filter((cluster) => cluster.qualified);
     const selection = selectClustersForPacket(qualified);
-    const selectedCount = selection.news.length + selection.blog.length;
-    const packet = buildResearchPacket({ dateIso, clusters, qualified });
+    const enriched = enrichSelection({
+        selection,
+        candidates,
+        registry: SOURCE_REGISTRY,
+    });
+    const enrichedSelection = {
+        ...selection,
+        news: enriched.news,
+        blog: enriched.blog,
+        observability: enriched.observability,
+    };
+    const selectedCount = enrichedSelection.news.length + enrichedSelection.blog.length;
+    const packet = buildResearchPacket({
+        dateIso,
+        clusters,
+        qualified,
+        selection: enrichedSelection,
+    });
     const runStatus = classifyRunStatus({
         sourceResults,
         qualifiedCount: qualified.length,
         selectedCount,
     });
     const report = {
-        schemaVersion: "10B.2",
+        schemaVersion: "10B.3",
         date: dateIso,
         mode,
         safety: "Research ingestion only; no publishing, merging, deployment, or social posting.",
@@ -122,11 +139,12 @@ export async function runDiscovery({
         qualifiedCount: qualified.length,
         selectedCount,
         selection: {
-            newsTopics: selection.news.map((cluster) => cluster.canonicalTopic),
-            blogTopics: selection.blog.map((cluster) => cluster.canonicalTopic),
-            rejectedWeakFit: selection.rejectedWeakFit,
-            limits: selection.limits,
+            newsTopics: enrichedSelection.news.map((cluster) => cluster.canonicalTopic),
+            blogTopics: enrichedSelection.blog.map((cluster) => cluster.canonicalTopic),
+            rejectedWeakFit: enrichedSelection.rejectedWeakFit,
+            limits: enrichedSelection.limits,
         },
+        corroboration: enriched.observability,
         runStatus,
         packet,
     };

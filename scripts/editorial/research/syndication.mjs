@@ -35,5 +35,21 @@ export function areLikelySyndicated(a, b) {
     const pathA = comparablePath(a.articleUrl);
     const pathB = comparablePath(b.articleUrl);
     if (pathA && pathA === pathB) return true;
+    // Same organization republishing across subdomains.
+    try {
+        const hostA = new URL(a.articleUrl).hostname.toLowerCase().replace(/^www\./, "");
+        const hostB = new URL(b.articleUrl).hostname.toLowerCase().replace(/^www\./, "");
+        const baseA = hostA.split(".").slice(-2).join(".");
+        const baseB = hostB.split(".").slice(-2).join(".");
+        if (baseA && baseA === baseB && jaccard(tokenize(a.headline), tokenize(b.headline)) >= 0.55) {
+            return true;
+        }
+    } catch {
+        // ignore invalid URLs
+    }
+    // Near-copy paragraph rewrite.
+    if (jaccard(tokenize(`${a.headline} ${a.summary || ""}`), tokenize(`${b.headline} ${b.summary || ""}`)) >= 0.82) {
+        return true;
+    }
     return jaccard(tokenize(a.headline), tokenize(b.headline)) >= 0.86;
 }
