@@ -5,6 +5,7 @@ import {
     getBooksIndexUrl,
     getCatalogBooks,
     getFeaturedBook,
+    getBookCoverStyle,
     isPurchasable,
     statusLabel,
 } from "../data/booksCatalog.js";
@@ -49,8 +50,14 @@ function BookCard({ book, onOpenBook }) {
 
     return (
         <article className="books-v2__card" data-status={book.releaseStatus}>
-            <div className="books-v2__card-cover">
-                <img src={book.cover} alt={book.coverAlt} loading="lazy" decoding="async" />
+            <div className={`books-v2__card-cover${book.coverFit === "contain" ? " books-v2__card-cover--contain" : ""}`}>
+                <img
+                    src={book.cover}
+                    alt={book.coverAlt}
+                    loading="lazy"
+                    decoding="async"
+                    style={getBookCoverStyle(book)}
+                />
             </div>
             <div className="books-v2__card-body">
                 <div className="books-v2__card-meta">
@@ -154,8 +161,16 @@ function Books({ onNavigate, onOpenBook }) {
             <section id="books-featured" className="books-v2__section" aria-label="Featured release">
                 <SectionHead eyebrow="Featured Release" title={featured.title} />
                 <div className="books-v2__featured">
-                    <div className="books-v2__featured-cover">
-                        <img src={featured.cover} alt={featured.coverAlt} loading="lazy" decoding="async" />
+                    <div
+                        className={`books-v2__featured-cover${featured.coverFit === "contain" ? " books-v2__featured-cover--contain" : ""}`}
+                    >
+                        <img
+                            src={featured.cover}
+                            alt={featured.coverAlt}
+                            loading="lazy"
+                            decoding="async"
+                            style={getBookCoverStyle(featured)}
+                        />
                     </div>
                     <div className="books-v2__featured-copy">
                         <div className="books-v2__card-meta">

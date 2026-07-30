@@ -42,6 +42,12 @@ assert.equal(featured.slug, "the-southeast-asian-table");
 assert.equal(featured.releaseStatus, BOOK_RELEASE_STATUSES.AVAILABLE);
 assert.equal(isPurchasable(featured), true);
 assert.ok(featured.externalUrl?.includes("amazon.com"), "featured purchasable book needs verified Amazon URL");
+assert.equal(
+    featured.cover,
+    "/images/books/the-southeast-asian-table/phase-6p-kindle-front-cover-final.jpg",
+    "SEAT must use Phase 6P Kindle front cover",
+);
+assert.equal(featured.cover.includes("about-safety-first"), false, "SEAT must not use placeholder safety stock");
 
 const beyond = getBookBySlug("beyond-the-last-light");
 assert.ok(beyond);
@@ -49,16 +55,21 @@ assert.equal(beyond.releaseStatus, BOOK_RELEASE_STATUSES.COMING_SOON);
 assert.equal(isPurchasable(beyond), false);
 assert.equal(beyond.externalUrl, null);
 assert.equal(statusLabel(beyond), "Coming Soon");
+assert.equal(beyond.cover, "/images/hero/cinnova-books-hero-nightmare-beyond-master.png");
+assert.ok(beyond.coverPosition?.includes("82%"), "Beyond crop should favor the sci-fi / city side");
 
 const nightmare = getBookBySlug("nightmare-forest");
 assert.ok(nightmare);
 assert.equal(nightmare.releaseStatus, BOOK_RELEASE_STATUSES.IN_DEVELOPMENT);
 assert.equal(isPurchasable(nightmare), false);
+assert.equal(nightmare.cover, "/images/hero/cinnova-books-hero-nightmare-beyond-master.png");
+assert.ok(nightmare.coverPosition?.includes("16%"), "Nightmare crop should favor the forest side");
 
 const kiddo = getBookBySlug("kiddo-illustrated-collection");
 assert.ok(kiddo);
 assert.equal(kiddo.releaseStatus, BOOK_RELEASE_STATUSES.IN_DEVELOPMENT);
 assert.equal(isPurchasable(kiddo), false);
+assert.equal(kiddo.cover, "/images/Kiddo/worlds/ReadingCastle/kiddo-world-reading-castle-v01.png");
 
 for (const book of catalog) {
     assert.equal(getBookPath(book), `/books/${book.slug}`);
@@ -66,8 +77,18 @@ for (const book of catalog) {
 
 const heroVideo = path.join(root, "public/images/hero/cinnova-books-hero-nightmare-beyond.mp4");
 const heroPoster = path.join(root, "public/images/hero/cinnova-books-hero-nightmare-beyond-master.png");
+const seatCover = path.join(
+    root,
+    "public/images/books/the-southeast-asian-table/phase-6p-kindle-front-cover-final.jpg",
+);
+const kiddoCover = path.join(
+    root,
+    "public/images/Kiddo/worlds/ReadingCastle/kiddo-world-reading-castle-v01.png",
+);
 await access(heroVideo);
 await access(heroPoster);
+await access(seatCover);
+await access(kiddoCover);
 
 const sitemap = collectSitemapEntries();
 const booksIndex = sitemap.filter((entry) => entry.loc === `${siteUrl}/books`);

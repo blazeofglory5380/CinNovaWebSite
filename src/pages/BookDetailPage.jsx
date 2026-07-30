@@ -1,6 +1,7 @@
 import SEO from "../components/SEO.jsx";
 import {
     getBookUrl,
+    getBookCoverStyle,
     isPurchasable,
     statusLabel,
 } from "../data/booksCatalog.js";
@@ -62,8 +63,15 @@ function BookDetailPage({ book, onBackToBooks }) {
                 </button>
 
                 <div className="books-v2__featured" style={{ marginTop: 28 }}>
-                    <div className="books-v2__featured-cover">
-                        <img src={book.cover} alt={book.coverAlt} decoding="async" />
+                    <div
+                        className={`books-v2__featured-cover${book.coverFit === "contain" ? " books-v2__featured-cover--contain" : ""}`}
+                    >
+                        <img
+                            src={book.cover}
+                            alt={book.coverAlt}
+                            decoding="async"
+                            style={getBookCoverStyle(book)}
+                        />
                     </div>
                     <div className="books-v2__featured-copy">
                         <div className="books-v2__card-meta">

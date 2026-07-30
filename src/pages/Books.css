@@ -89,12 +89,25 @@ main.books-v2 {
     aspect-ratio: 3 / 4;
 }
 
+.books-v2__featured-cover--contain,
+.books-v2__card-cover--contain {
+    background: #0b1018;
+    display: grid;
+    place-items: center;
+}
+
 .books-v2__featured-cover img,
 .books-v2__card-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+.books-v2__featured-cover--contain img,
+.books-v2__card-cover--contain img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .books-v2__featured-copy .books-v2__lead {
