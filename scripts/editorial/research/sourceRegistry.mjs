@@ -32,11 +32,11 @@ export const SOURCE_REGISTRY = [
         scope: ["national", "international"],
         topics: ["science", "space", "technology"],
         homepage: "https://www.nasa.gov/news-release/",
-        feedUrl: "https://www.nasa.gov/rss/dyn/press_release.rss",
+        feedUrl: "https://www.nasa.gov/rss/dyn/breaking_news.rss",
         authorityTier: "TIER_1_PRIMARY",
         requiresSecondaryConfirmation: false,
         active: true,
-        notes: "Official NASA press-release feed.",
+        notes: "Official NASA breaking-news RSS (press_release.rss retired/404).",
     },
     {
         id: "sec-press",
