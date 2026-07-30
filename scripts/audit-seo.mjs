@@ -13,12 +13,13 @@ import {
     NEWS_SOURCE_TYPE_KEYS,
     NEWS_STATUSES,
     buildNewsArticleSchema,
+    getNewsIndexUrl,
     getNewsStoryMetadata,
     getPublicNewsStories,
     getPublishedNewsStories,
     getRelatedNewsStories,
 } from "../src/data/newsPosts.js";
-import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
+import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, getStaticPageUrl, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
 import { getResourceHeroImage } from "../src/data/marketingImages.js";
@@ -218,9 +219,17 @@ if (newsH1Count !== 1) {
 }
 
 const publicNews = getPublicNewsStories();
-const sitemapNewsUrls = collectSitemapEntries().filter((entry) => entry.loc.includes("/news/"));
+const sitemapEntries = collectSitemapEntries();
+const sitemapNewsCenter = sitemapEntries.filter((entry) => entry.loc === `${siteUrl}/news`);
+const sitemapNewsUrls = sitemapEntries.filter((entry) => entry.loc.includes("/news/"));
+if (sitemapNewsCenter.length !== 1) {
+    error("news sitemap", `expected exactly one News Center URL (${siteUrl}/news), found ${sitemapNewsCenter.length}`);
+}
+if (sitemapEntries.some((entry) => entry.loc.includes("?page=news"))) {
+    error("news sitemap", "legacy /?page=news must not appear as a separate sitemap entry");
+}
 if (sitemapNewsUrls.length !== publicNews.length) {
-    error("news sitemap", `expected ${publicNews.length} news URLs in the sitemap, found ${sitemapNewsUrls.length}`);
+    error("news sitemap", `expected ${publicNews.length} news story URLs in the sitemap, found ${sitemapNewsUrls.length}`);
 }
 for (const story of newsStories) {
     if (story.isDemo && sitemapNewsUrls.some((entry) => entry.loc === `${siteUrl}/news/${story.slug}`)) {
@@ -390,6 +399,14 @@ for (const { scope, resource, metadata } of resourceMetas) {
     // Phase 2B and are asserted to redirect in the public-pages block below.
     for (const legacy of ["?page=newsletter-admin", "?page=blog-manager", "?page=newsletter-success", "", "?foo=bar", "?page=", "?page=not-a-real-product", "?resource=not-a-real-resource"]) {
         if (resolveLegacyRouteRedirect(legacy) !== null) error("legacy-redirects", `resolver("${legacy}") must be null (unrelated/invalid)`);
+    }
+
+    // News Center clean-route migration (not counted in the 19 product/resource pairs).
+    if (resolveLegacyRouteRedirect("?page=news") !== "/news") {
+        error("legacy-redirects", `resolver("?page=news") must be /news`);
+    }
+    if (resolveLegacyRouteRedirect("?page=news&story=demo-slug") !== "/news/demo-slug") {
+        error("legacy-redirects", `resolver("?page=news&story=demo-slug") must be /news/demo-slug`);
     }
 
     // Root middleware must exist, use the shared resolver, and emit a 308.
@@ -776,19 +793,22 @@ if (validateDist) {
     }
 
     // Checkpoint invariants: all 50 non-home Phase 2B public pages migrated
-    // (16 core + 34 guides). News Center intentionally stays on ?page=news
-    // until its own clean-route checkpoint; it is the only allowed holdout.
+    // (16 core + 34 guides). News Center uses clean `/news` (filesystem HTML),
+    // like /blog — not a PUBLIC_PAGE_ROUTES entry (reserved /news namespace).
     for (const route of PUBLIC_PAGE_ROUTES) {
         try { await stat(path.join(root, "dist", `${route.path.replace(/^\//, "")}.html`)); }
         catch { error("checkpoint", `missing generated HTML for ${route.path}`); }
     }
-    const INTENTIONAL_QUERY_PAGE_KEYS = new Set(["news"]);
     const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter(
-        (k) => k !== "home" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k) && !INTENTIONAL_QUERY_PAGE_KEYS.has(k),
+        (k) => k !== "home" && k !== "news" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k),
     );
     if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
     if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
-    if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "news")) error("checkpoint", "news must remain in STATIC_PUBLIC_PAGES as ?page=news");
+    if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "news")) error("checkpoint", "news must remain in STATIC_PUBLIC_PAGES");
+    if (getStaticPageUrl("news") !== `${siteUrl}/news`) error("checkpoint", "news canonical URL must be /news");
+    if (getNewsIndexUrl() !== `${siteUrl}/news`) error("checkpoint", "getNewsIndexUrl must be https://getcinnova.com/news");
+    try { await stat(path.join(root, "dist", "news.html")); }
+    catch { error("checkpoint", "missing generated HTML for /news (News Center)"); }
     if (unmigrated.length !== 0) error("checkpoint", `expected 0 unmigrated public pages, found ${unmigrated.length}: ${unmigrated.join(", ")}`);
 
     // ── Checkpoint 3: true HTTP 404 architecture ──
@@ -821,7 +841,7 @@ if (validateDist) {
         if (/rel=["']canonical["']/i.test(notFound)) error("404.html", "must not contain a canonical tag");
         const h1Count = (notFound.match(/<h1[ >]/gi) || []).length;
         if (h1Count !== 1) error("404.html", `expected exactly one H1, found ${h1Count}`);
-        for (const link of ["/", "/products", "/resources", "/blog", "/guides"]) {
+        for (const link of ["/", "/products", "/resources", "/blog", "/news", "/guides"]) {
             if (!notFound.includes(`href="${link}"`)) error("404.html", `missing recovery link to ${link}`);
         }
         if (/application\/ld\+json/i.test(notFound)) error("404.html", "must not contain structured-data schema");
@@ -843,7 +863,7 @@ if (validateDist) {
             products: ["/products", ...products.map((p) => `/products/${p.page}`)],
             resources: ["/resources", ...resources.map((r) => `/resources/${r.slug}`)],
             public: PUBLIC_PAGE_ROUTES.map((r) => r.path),
-            news: publicNews.map((story) => `/news/${story.slug}`),
+            news: ["/news", ...publicNews.map((story) => `/news/${story.slug}`)],
         };
         const counts = [];
         let routeTotal = 0;

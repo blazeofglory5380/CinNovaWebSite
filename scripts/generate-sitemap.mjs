@@ -178,7 +178,7 @@ const breakdown = {
     products: entries.filter((e) => e.loc === `${siteUrl}/products` || e.loc.startsWith(`${siteUrl}/products/`)).length,
     blog: entries.filter((e) => e.loc.includes("/blog")).length,
     resources: entries.filter((e) => e.loc === `${siteUrl}/resources` || e.loc.startsWith(`${siteUrl}/resources/`)).length,
-    news: entries.filter((e) => e.loc.includes("/news/")).length,
+    news: entries.filter((e) => e.loc === `${siteUrl}/news` || e.loc.includes("/news/")).length,
 };
 console.log(
     `  Breakdown: ${breakdown.home} home, ${breakdown.cleanPublic} clean public pages, ${breakdown.legacyQuery} legacy ?page= pages, ` +

@@ -83,6 +83,12 @@ export function resolveLegacyRouteRedirect(input) {
     if (page === null) return null;
     if (page === "products") return "/products";
     if (page === "resources") return "/resources";
+    // News Center + legacy story deep-links: /?page=news[&story=<slug>]
+    if (page === "news") {
+        const story = params.get("story");
+        if (story) return `/news/${encodeURIComponent(story)}`;
+        return "/news";
+    }
     if (LEGACY_PRODUCT_KEYS.has(page)) return `/products/${page}`;
 
     // Migrated public marketing/company/tool/hub pages (Phase 2B). Admin keys,

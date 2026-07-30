@@ -285,6 +285,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
  */
 function pathForPage(nextPage) {
     if (nextPage === "blog") return "/blog";
+    if (nextPage === "news") return "/news";
     if (nextPage === "blog-manager") return "/blog-admin";
     if (nextPage === "products") return "/products";
     if (nextPage === "resources") return "/resources";
@@ -330,7 +331,8 @@ function App() {
     // this rarely fires there. It remains for local dev (`vite`) and any non-Vercel
     // host where middleware does not run, and it uses the SAME shared resolver as
     // the middleware so the two can never diverge. Runs once on mount; only the
-    // 19 supported legacy forms resolve — other `?page=` routes are left untouched.
+    // 19 supported product/resource forms resolve, plus News Center and the
+    // Phase 2B migrated public pages — other `?page=` routes are left untouched.
     useEffect(() => {
         const cleanPath = resolveLegacyRouteRedirect(window.location.search);
         if (!cleanPath) return;
@@ -345,7 +347,7 @@ function App() {
 
     // Backup SPA page-view tracking when routed view state changes (covers
     // initial load + popstate). pushRoute also tracks eagerly with the
-    // destination URL so query-only navigations like `/?page=news` cannot miss
+    // destination URL so SPA navigations (including News → /news) cannot miss
     // a hit if the effect timing races the history update.
     useEffect(() => {
         trackPageView(
@@ -518,8 +520,8 @@ function App() {
         scrollTop();
     }
 
-    /* News Center: the landing page keeps its existing `?page=news` route,
-       while individual stories use clean `/news/<slug>` paths. */
+    /* News Center: canonical `/news`; stories use `/news/<slug>`.
+       Legacy `/?page=news` 308s (edge) or replaceStates (client) to `/news`. */
     function goNews(coverageLevel = "all") {
         setSelectedArticle(null);
         setSelectedResource(null);
@@ -527,7 +529,7 @@ function App() {
         setSelectedCategory("All");
         setNewsCoverage(coverageLevel);
         setPage("news");
-        pushRoute("/?page=news");
+        pushRoute("/news");
         scrollTop();
     }
 

@@ -8,7 +8,8 @@
  *
  *   1. dist/index.html carries exactly one canonical Google tag in <head>
  *   2. the first load produces exactly one `page_view` for the correct tid
- *   3. SPA matrix Home → /?page=news → /?page=products → /privacy yields 4 views
+ *   3. SPA matrix Home → /news → /?page=products → /privacy yields 4 views
+ *      (News nav uses canonical /news; legacy /?page=news is covered separately)
  *   4. no duplicate `page_view` is emitted for the same location
  *   5. debug_mode is applied only to opt-in debug sessions
  *
@@ -317,13 +318,13 @@ async function main() {
         );
 
         // ── 2. Query + clean SPA destinations ────────────────────────────────
-        // Home → ?page=news → ?page=products → /privacy  => 4 distinct page_views
+        // Home → /news → ?page=products → /privacy  => 4 distinct page_views
         // News uses the real nav button (pushRoute + eager track). Remaining
         // query/clean hops use popstate so React state stays in sync.
 
         await page.getByRole("button", { name: "News", exact: true }).first().click();
         const gotNews = await waitForHits(hits, (h) => pageViews(h).length >= 2);
-        check("legacy News query route (/?page=news) sends a page_view", gotNews);
+        check("News Center (/news) sends a page_view", gotNews);
         await page.waitForTimeout(800);
 
         const newsProbe = await page.evaluate(() => ({
@@ -334,14 +335,14 @@ async function main() {
             (c) => Array.isArray(c) && c[0] === "event" && c[1] === "page_view"
         );
         check(
-            "News navigation lands on /?page=news",
-            /[?&]page=news\b/.test(newsProbe.href) || newsProbe.href.endsWith("/?page=news"),
+            "News navigation lands on /news",
+            newsProbe.href === `${ORIGIN}/news` || newsProbe.href.endsWith("/news"),
             newsProbe.href
         );
         check("dataLayer contains at least one page_view event command", newsPageViewQueued);
         check(
-            "News page_view reports /?page=news",
-            pageViews(hits)[1]?.dl === `${ORIGIN}/?page=news`,
+            "News page_view reports /news",
+            pageViews(hits)[1]?.dl === `${ORIGIN}/news`,
             String(pageViews(hits)[1]?.dl)
         );
 
