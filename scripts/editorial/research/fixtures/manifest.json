@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "id": "breaking-two-source",
+      "feeds": [
+        { "sourceId": "nist-news", "file": "breaking-primary.xml" },
+        { "sourceId": "mit-ai", "file": "breaking-secondary.xml" }
+      ]
+    },
+    {
+      "id": "syndicated-duplicate",
+      "feeds": [
+        { "sourceId": "ap-wire", "file": "syndicated-ap.xml" },
+        { "sourceId": "reuters-wire", "file": "syndicated-reuters.xml" }
+      ]
+    },
+    {
+      "id": "old-story",
+      "feeds": [
+        { "sourceId": "nasa-press", "file": "old-story.xml" }
+      ]
+    },
+    {
+      "id": "cinova-duplicate",
+      "feeds": [
+        { "sourceId": "sec-press", "file": "cinova-duplicate.xml" }
+      ]
+    },
+    {
+      "id": "meaningful-update",
+      "feeds": [
+        { "sourceId": "nist-news", "file": "meaningful-update.xml" }
+      ]
+    },
+    {
+      "id": "malformed-item",
+      "feeds": [
+        { "sourceId": "cisa-advisories", "file": "malformed-item.xml" }
+      ]
+    },
+    {
+      "id": "discovery-only-tier4",
+      "feeds": [
+        { "sourceId": "hacker-news-discovery", "file": "discovery-only.xml" }
+      ]
+    },
+    {
+      "id": "empty-run",
+      "feeds": []
+    }
+  ]
+}
