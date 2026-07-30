@@ -5,7 +5,7 @@ import { parseRssXml } from "./editorial/research/providers/rss.mjs";
 import { SOURCE_REGISTRY, getActiveSources, getSourceById } from "./editorial/research/sourceRegistry.mjs";
 import { assertHttpsUrl, isSafePublicUrl } from "./editorial/research/urlSafety.mjs";
 import { classifyFreshness, isFreshEnough } from "./editorial/research/freshness.mjs";
-import { clusterCandidates } from "./editorial/research/clustering.mjs";
+import { clusterCandidates, isCountVariantTemplate } from "./editorial/research/clustering.mjs";
 import { assessCorroboration } from "./editorial/research/corroboration.mjs";
 import { areLikelySyndicated, detectSyndicationGroup } from "./editorial/research/syndication.mjs";
 import { classifyAgainstCinova } from "./editorial/research/cinovaDedupe.mjs";
@@ -85,6 +85,76 @@ async function run() {
     const corroboration = assessCorroboration(clusters[0], SOURCE_REGISTRY);
     assert.equal(corroboration.corroborated, true);
 
+    assert.equal(
+        isCountVariantTemplate(
+            "CISA Adds One Known Exploited Vulnerability to Catalog",
+            "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
+        ),
+        true,
+    );
+    const kevA = candidate({
+        sourceId: "cisa-advisories",
+        sourceName: "CISA Cybersecurity Advisories",
+        sourceUrl: "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        articleUrl: "https://www.cisa.gov/news-events/alerts/2026/07/29/one",
+        headline: "CISA Adds One Known Exploited Vulnerability to Catalog",
+        summary: "CISA added one vulnerability.",
+        guid: "kev-one",
+    });
+    const kevB = candidate({
+        sourceId: "cisa-advisories",
+        sourceName: "CISA Cybersecurity Advisories",
+        sourceUrl: "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        articleUrl: "https://www.cisa.gov/news-events/alerts/2026/07/27/two",
+        headline: "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
+        summary: "CISA added two vulnerabilities.",
+        publishedAt: "2026-07-27T16:00:00.000Z",
+        guid: "kev-two",
+    });
+    assert.equal(clusterCandidates([kevA, kevB], { now: NOW }).length, 2);
+
+    const rockwellA = candidate({
+        sourceId: "cisa-advisories",
+        sourceName: "CISA Cybersecurity Advisories",
+        sourceUrl: "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        articleUrl: "https://www.cisa.gov/news-events/ics-advisories/icsa-a",
+        headline: "Rockwell Automation ThinManager",
+        summary: "Advisory for ThinManager.",
+        guid: "rockwell-a",
+    });
+    const rockwellB = candidate({
+        sourceId: "cisa-advisories",
+        sourceName: "CISA Cybersecurity Advisories",
+        sourceUrl: "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        articleUrl: "https://www.cisa.gov/news-events/ics-advisories/icsa-b",
+        headline: "Rockwell Automation FactoryTalk Services Platform",
+        summary: "Advisory for FactoryTalk.",
+        guid: "rockwell-b",
+    });
+    assert.equal(clusterCandidates([rockwellA, rockwellB], { now: NOW }).length, 2);
+
+    const curiosityA = candidate({
+        sourceId: "nasa-press",
+        sourceName: "NASA Press Releases",
+        sourceTier: "TIER_1_PRIMARY",
+        sourceUrl: "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+        articleUrl: "https://science.nasa.gov/photojournal/polygons/",
+        headline: "NASA’s Curiosity Discovers a Field of Martian Polygons",
+        summary: "Curiosity finds Martian polygons across Valle Grande.",
+        guid: "curiosity-a",
+    });
+    const curiosityB = candidate({
+        sourceId: "nasa-press",
+        sourceName: "NASA Press Releases",
+        sourceTier: "TIER_1_PRIMARY",
+        sourceUrl: "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+        articleUrl: "https://www.nasa.gov/missions/curiosity-honeycomb/",
+        headline: "NASA’s Curiosity Mars Rover Discovers Field of Honeycomb Textures",
+        summary: "Curiosity Mars rover discovers honeycomb textures near Martian Valle Grande.",
+        guid: "curiosity-b",
+    });
+    assert.equal(clusterCandidates([curiosityA, curiosityB], { now: NOW }).length, 1);
+
     const soloTier3 = clusterCandidates([secondary], { now: NOW })[0];
     assert.equal(assessCorroboration(soloTier3, SOURCE_REGISTRY).corroborated, false);
     const soloPrimary = clusterCandidates([primary], { now: NOW })[0];
@@ -127,9 +197,30 @@ async function run() {
     assert.equal(routeCluster({ canonicalTopic: "Study analyzes AI software reliability", sources: [secondary] }).route, "BLOG");
     assert.equal(routeCluster({ canonicalTopic: "NIST announces AI security rule", sources: [primary] }).route, "NEWS");
     assert.equal(routeCluster({
+        canonicalTopic: "Siemens Mendix Runtime",
+        sources: [{
+            ...primary,
+            sourceId: "cisa-advisories",
+            headline: "Siemens Mendix Runtime",
+            articleUrl: "https://www.cisa.gov/news-events/ics-advisories/icsa-26-209-02",
+            summary: "CISA republished this advisory. Perform proper impact analysis before deploying fixes for the vulnerability.",
+        }],
+    }).route, "NEWS");
+    assert.equal(routeCluster({
         canonicalTopic: "Unverified AI claim",
         sources: [{ ...secondary, sourceTier: "TIER_4_DISCOVERY_ONLY" }],
     }).route, "SKIP");
+
+    const droppedBadUrl = parseRssXml(
+        `<rss><channel>
+          <item><title>Bad</title><link>javascript:alert(1)</link><pubDate>Wed, 29 Jul 2026 16:00:00 GMT</pubDate></item>
+          <item><title>Ok</title><link>https://www.nist.gov/ok</link><pubDate>Wed, 29 Jul 2026 16:00:00 GMT</pubDate></item>
+        </channel></rss>`,
+        getSourceById("nist-news"),
+        { retrievedAt: NOW },
+    );
+    assert.equal(droppedBadUrl.length, 1);
+    assert.equal(droppedBadUrl[0].articleUrl, "https://www.nist.gov/ok");
 
     const qualifiedCluster = {
         ...clusters[0],

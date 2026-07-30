@@ -1,3 +1,4 @@
+import { isSafePublicUrl } from "../urlSafety.mjs";
 import { normalizeCandidate } from "./normalize.mjs";
 
 function decodeXml(value = "") {
@@ -39,7 +40,7 @@ export function parseRssXml(xml, source, { retrievedAt = new Date() } = {}) {
             const headline = tag(block, ["title"]);
             const guid = tag(block, ["guid", "id"]);
             const articleUrl = linkFrom(block) || (/^https:\/\//i.test(guid) ? guid : "");
-            if (!headline || !articleUrl) return null;
+            if (!headline || !articleUrl || !isSafePublicUrl(articleUrl)) return null;
             return normalizeCandidate({
                 sourceId: source.id,
                 sourceName: source.name,

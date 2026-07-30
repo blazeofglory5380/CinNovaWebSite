@@ -1,3 +1,4 @@
+import { isSafePublicUrl } from "../urlSafety.mjs";
 import { normalizeCandidate } from "./normalize.mjs";
 
 export function parseJsonFeed(json, source, { retrievedAt = new Date() } = {}) {
@@ -16,7 +17,7 @@ export function parseJsonFeed(json, source, { retrievedAt = new Date() } = {}) {
         .map((item) => {
             const articleUrl = item.url || item.external_url || item.link || item.id;
             const headline = item.title || item.headline || item.name;
-            if (!articleUrl || !headline) return null;
+            if (!articleUrl || !headline || !isSafePublicUrl(articleUrl)) return null;
             const author = typeof item.author === "string"
                 ? item.author
                 : item.author?.name || item.authors?.map((entry) => entry.name || entry).join(", ");

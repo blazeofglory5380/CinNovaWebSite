@@ -20,10 +20,45 @@ function timeNear(a, b) {
     return Number.isFinite(aTime) && Number.isFinite(bTime) && Math.abs(aTime - bTime) <= 48 * 3_600_000;
 }
 
+/** Serial catalog/advisory templates that differ only by a count (One/Two/Four…). */
+export function isCountVariantTemplate(aHeadline = "", bHeadline = "") {
+    const normalize = (headline) => String(headline)
+        .toLowerCase()
+        .replace(/\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\b/g, "#")
+        .replace(/\b(vulnerability|vulnerabilities)\b/g, "vuln")
+        .replace(/[^a-z0-9#]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    const left = normalize(aHeadline);
+    const right = normalize(bHeadline);
+    return Boolean(left) && left === right && String(aHeadline).trim() !== String(bHeadline).trim();
+}
+
+function sharedEntities(a, b, { headlinesOnly = false } = {}) {
+    const leftText = headlinesOnly ? a.headline : `${a.headline} ${a.summary}`;
+    const rightText = headlinesOnly ? b.headline : `${b.headline} ${b.summary}`;
+    const left = new Set(entities(leftText));
+    return entities(rightText).filter((entity) => left.has(entity));
+}
+
 function candidateSimilarity(a, b) {
     const headline = jaccard(tokenize(a.headline), tokenize(b.headline));
-    const entity = jaccard(entities(`${a.headline} ${a.summary}`), entities(`${b.headline} ${b.summary}`));
-    return { headline, entity, match: timeNear(a, b) && (headline >= 0.48 || (headline >= 0.3 && entity >= 0.4)) };
+    const entityList = sharedEntities(a, b);
+    const headlineEntities = sharedEntities(a, b, { headlinesOnly: true });
+    const entity = jaccard(
+        entities(`${a.headline} ${a.summary}`),
+        entities(`${b.headline} ${b.summary}`),
+    );
+    if (!timeNear(a, b) || isCountVariantTemplate(a.headline, b.headline)) {
+        return { headline, entity, sharedEntityCount: entityList.length, match: false };
+    }
+    const sameSource = a.sourceId && a.sourceId === b.sourceId;
+    // Same-source weak matches need 3+ shared headline entities so vendor-prefix
+    // ICS advisories (Rockwell/Siemens product lines) do not collapse into one event.
+    const match = sameSource
+        ? headline >= 0.48 || (headline >= 0.3 && headlineEntities.length >= 3)
+        : headline >= 0.48 || (headline >= 0.3 && entity >= 0.4);
+    return { headline, entity, sharedEntityCount: entityList.length, match };
 }
 
 function buildCluster(members, now) {
