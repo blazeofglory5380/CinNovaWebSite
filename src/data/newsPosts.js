@@ -2570,9 +2570,14 @@ export const newsPosts = [
 
 /* ── URLs ────────────────────────────────────────────────────────────────── */
 
-/** Landing page for the News Center (unchanged existing route). */
+/** Canonical News Center landing URL. */
 export function getNewsIndexUrl() {
-    return `${siteUrl}/?page=news`;
+    return `${siteUrl}/news`;
+}
+
+/** In-app path for the News Center. */
+export function getNewsIndexPath() {
+    return "/news";
 }
 
 /** Canonical URL for a single story. */
@@ -2789,3 +2794,4 @@ export function buildNewsArticleSchema(story, relatedStories = []) {
 
     return { "@context": "https://schema.org", "@graph": [newsArticle, breadcrumb] };
 }
+
