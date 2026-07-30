@@ -552,6 +552,40 @@ function ProductsPage({ onNavigate, onSubscribe }) {
 
             <FeatureIconsSection />
 
+            {/* ── Books & Publishing (distinct from software products) ─ */}
+            <section className="products-v2__section" aria-label="Books and publishing">
+                <SectionHead eyebrow="Publishing" title="Books & Publishing" />
+                <p className="products-v2__lead">
+                    CinNova Books is a separate publishing destination for original fiction, cookbooks,
+                    illustrated worlds, and companion editions — not part of the software product grid.
+                </p>
+                <GlassPanel className="products-v2__books-panel">
+                    <div className="products-v2__books-copy">
+                        <span className="products-v2__cat">CinNova Books</span>
+                        <h3>Stories That Open New Worlds</h3>
+                        <p>
+                            Explore available titles, coming releases, and properties in development on the
+                            CinNova Books storefront.
+                        </p>
+                        <button
+                            type="button"
+                            className="bdna-btn bdna-btn--solid"
+                            onClick={() => onNavigate("books")}
+                        >
+                            Visit CinNova Books →
+                        </button>
+                    </div>
+                    <div className="products-v2__books-visual" aria-hidden="true">
+                        <img
+                            src="/images/hero/cinnova-books-hero-nightmare-beyond-master.png"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </div>
+                </GlassPanel>
+            </section>
+
             {/* ── Roadmap ──────────────────────────────────────────── */}
             <section className="products-v2__section" aria-label="Roadmap">
                 <SectionHead eyebrow="Roadmap" title="The future of the Cin Nova ecosystem" />

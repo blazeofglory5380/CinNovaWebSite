@@ -23,6 +23,7 @@
     "validate:news": "node scripts/validate-news.mjs",
     "validate:blog": "node scripts/validate-blog.mjs",
     "test:news-route": "node scripts/test-news-route.mjs",
+    "test:books-route": "node scripts/test-books-route.mjs",
     "test:analytics": "node scripts/test-analytics.mjs",
     "test:social-utm": "node scripts/test-social-utm.mjs",
     "test:editorial": "node scripts/test-editorial-pipeline.mjs",

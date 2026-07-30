@@ -286,6 +286,51 @@ main.products-v2 {
 /* ── Feature cards ────────────────────────────────────────────────── */
 .products-v2__feature-card .products-v2__cat { color: var(--bdna-emerald-glow); }
 
+/* ── Books & Publishing callout ───────────────────────────────────── */
+.products-v2__books-panel {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(20px, 3vw, 36px);
+    align-items: center;
+    padding: clamp(22px, 3vw, 34px);
+}
+.products-v2__books-copy {
+    display: grid;
+    gap: 12px;
+}
+.products-v2__books-copy h3 {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--bdna-ink);
+}
+.products-v2__books-copy p {
+    margin: 0;
+    color: var(--bdna-dim);
+    line-height: 1.6;
+    max-width: 52ch;
+}
+.products-v2__books-visual {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--bdna-panel-edge);
+    aspect-ratio: 16 / 10;
+    background: rgba(255, 255, 255, 0.03);
+}
+.products-v2__books-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
+}
+@media (max-width: 860px) {
+    .products-v2__books-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ── Capability chips (shown inside the active tab panel) ─────────── */
 .products-v2__showcase-features { display: flex; flex-wrap: wrap; gap: 8px; }
 .products-v2__showcase-features span { padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; background: color-mix(in srgb, var(--bdna-accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--bdna-accent) 30%, transparent); color: var(--bdna-accent); }

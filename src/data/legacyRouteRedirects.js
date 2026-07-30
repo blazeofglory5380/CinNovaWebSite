@@ -89,6 +89,12 @@ export function resolveLegacyRouteRedirect(input) {
         if (story) return `/news/${encodeURIComponent(story)}`;
         return "/news";
     }
+    // CinNova Books + legacy detail deep-links: /?page=books[&book=<slug>]
+    if (page === "books") {
+        const book = params.get("book");
+        if (book) return `/books/${encodeURIComponent(book)}`;
+        return "/books";
+    }
     if (LEGACY_PRODUCT_KEYS.has(page)) return `/products/${page}`;
 
     // Migrated public marketing/company/tool/hub pages (Phase 2B). Admin keys,

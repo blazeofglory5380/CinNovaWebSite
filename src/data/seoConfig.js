@@ -7,6 +7,7 @@ import {
     siteUrl,
 } from "./blogPosts.js";
 import { getNewsStoryUrl, getPublicNewsStories } from "./newsPosts.js";
+import { getBookUrl, getCatalogBooks } from "./booksCatalog.js";
 import { getResourceHeroImage, productMarketing } from "./marketingImages.js";
 import { getProductUrl, getProductsUrl, products } from "./products.js";
 import { getResourceUrl, getResourcesUrl, resources } from "./resources.js";
@@ -62,6 +63,8 @@ export function getStaticPageUrl(pageKey) {
     if (pageKey === "home") return `${siteUrl}/`;
     // News Center uses a clean path (like /blog); legacy /?page=news 308s to it.
     if (pageKey === "news") return `${siteUrl}/news`;
+    // CinNova Books storefront — clean /books; legacy /?page=books 308s to it.
+    if (pageKey === "books") return `${siteUrl}/books`;
     return `${siteUrl}/?page=${encodeURIComponent(pageKey)}`;
 }
 
@@ -112,6 +115,7 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "languages", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "pricing", changefreq: "monthly", priority: "0.8", lastmod: BUILD_LASTMOD },
     { key: "news", changefreq: "daily", priority: "0.9", lastmod: BUILD_LASTMOD },
+    { key: "books", changefreq: "weekly", priority: "0.85", lastmod: BUILD_LASTMOD },
     { key: "about", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "contact", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
     { key: "newsletter", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
@@ -220,6 +224,16 @@ export function collectSitemapEntries() {
         });
     }
 
+    // CinNova Books detail pages (index is emitted via STATIC_PUBLIC_PAGES → getStaticPageUrl).
+    for (const book of getCatalogBooks()) {
+        entries.push({
+            loc: getBookUrl(book),
+            lastmod: BUILD_LASTMOD,
+            changefreq: "monthly",
+            priority: book.featured ? "0.8" : "0.7",
+        });
+    }
+
     for (const resource of resources) {
         entries.push({
             loc: getResourceUrl(resource),
@@ -249,6 +263,7 @@ export function attachSitemapImages(entries) {
     const postsByUrl = new Map(getPublishedBlogPosts().map((post) => [getArticleUrl(post), post]));
     const resourcesByUrl = new Map(resources.map((resource) => [getResourceUrl(resource), resource]));
     const newsByUrl = new Map(getPublicNewsStories().map((story) => [getNewsStoryUrl(story), story]));
+    const booksByUrl = new Map(getCatalogBooks().map((book) => [getBookUrl(book), book]));
     const productsByUrl = new Map(products.map((product) => [getProductUrl(product), product]));
 
     return entries.map((entry) => {
@@ -279,6 +294,15 @@ export function attachSitemapImages(entries) {
         const story = newsByUrl.get(entry.loc);
         if (story) {
             pushImage(story.heroImage, story.heroAlt || story.title);
+        }
+
+        const book = booksByUrl.get(entry.loc);
+        if (book) {
+            pushImage(book.cover, book.coverAlt || book.title);
+        }
+
+        if (entry.loc === `${siteUrl}/books`) {
+            pushImage("/images/hero/cinnova-books-hero-nightmare-beyond-master.png", "CinNova Books");
         }
 
         const product = productsByUrl.get(entry.loc);
