@@ -306,7 +306,7 @@ function clusterFrom(sources) {
     assert.equal(isExactEventMatch(base, stale).match, false);
 }
 
-// ── Backward-compatible packet without enrichment ──────────────────────────
+// ── Unconditional boilerplate removed from auto packets ────────────────────
 {
     const packet = buildResearchPacket({
         dateIso: "2026-07-30",
@@ -317,10 +317,216 @@ function clusterFrom(sources) {
             rejectedWeakFit: [],
         },
     });
-    assert.ok(packet.news.national.uncertainties.length >= 1);
+    assert.equal(
+        packet.news.national.uncertainties.some((item) => /All source-derived claims require Phase 10A/i.test(item)),
+        false,
+        "old unconditional uncertainty must not be auto-injected",
+    );
     assert.ok(Array.isArray(packet.news.national.claimEvidence));
+    // Single source without enrichment → cannot be READY (>=2 sources required)
     const desk = scoreNewsDesk("national", packet.news.national, "2026-07-30");
+    assert.notEqual(desk.disposition, "READY");
+}
+
+// ── Single-source policy (intentional) ─────────────────────────────────────
+{
+    // Single Tier-1, no uncertainties → REVIEW/not READY (needs >=2 sources)
+    const solo = {
+        slug: "solo-tier1",
+        title: "CISA publishes SBOM Minimum Elements guidance",
+        dek: "Official CISA announcement.",
+        category: "cybersecurity",
+        location: "National",
+        publishedAt: now,
+        summary: "CISA published SBOM Minimum Elements guidance for software suppliers.",
+        whyItMatters: "Software security and infrastructure.",
+        sources: [{
+            label: "CISA",
+            publisher: "CISA",
+            url: "https://www.cisa.gov/news-events/news/sbom-minimum-elements",
+            type: "official",
+        }],
+        verifiedClaims: ["CISA published SBOM Minimum Elements guidance for software suppliers."],
+        attributedClaims: [],
+        uncertainties: [],
+        editorialNotes: "solo",
+        forceDraft: false,
+    };
+    const soloDesk = scoreNewsDesk("national", solo, "2026-07-30");
+    assert.notEqual(soloDesk.disposition, "READY");
+    assert.ok(["REVIEW", "HOLD"].includes(soloDesk.disposition), soloDesk.disposition);
+
+    // Tier-1 + same-org secondary → not independent enough for enrichment READY
+    const sameOrg = enrichCluster(clusterFrom([candidate()]), {
+        candidates: [candidate({
+            sourceId: "cisa-advisories",
+            sourceName: "CISA Cybersecurity Advisories",
+            headline: "CISA Publishes SBOM Minimum Elements Update — FAQ",
+            summary: "CISA published updated SBOM Minimum Elements guidance for federal software suppliers.",
+            articleUrl: "https://www.cisa.gov/news-events/news/sbom-minimum-elements-faq",
+            guid: "cisa-sbom-faq",
+        })],
+        registry: SOURCE_REGISTRY,
+    });
+    assert.ok(sameOrg.enrichment.corroborationSummary.independentSourceCount < 2);
+
+    // Tier-1 + syndicated mirror
+    const syndicated = enrichCluster(clusterFrom([candidate()]), {
+        candidates: [candidate({
+            sourceId: "reuters-wire",
+            sourceName: "Reuters",
+            sourceTier: "TIER_2_HIGH_AUTHORITY",
+            headline: candidate().headline,
+            summary: candidate().summary,
+            articleUrl: "https://www.reuters.com/technology/cisa-sbom-minimum-elements",
+            guid: candidate().guid,
+        })],
+        registry: SOURCE_REGISTRY,
+    });
+    assert.ok(syndicated.enrichment.corroborationSummary.independentSourceCount < 2);
+}
+
+// ── Claim evidence: non-independent cannot inflate VERIFIED_MULTI_SOURCE ───
+{
+    const primary = candidate();
+    const unrelatedSecondary = mitCandidate({
+        headline: "Unrelated MIT robotics seminar next week",
+        summary: "Campus seminar about robotics curricula with no SBOM content.",
+        articleUrl: "https://news.mit.edu/2026/robotics-seminar",
+        guid: "mit-unrelated",
+    });
+    // Force both into supportingCandidates list but claim text only matches primary
+    const claims = deriveClaimsFromCluster(clusterFrom([primary]));
+    const mapped = mapClaimEvidence(claims, [primary, unrelatedSecondary], [primary, unrelatedSecondary], []);
+    for (const claim of mapped) {
+        if (claim.consequential || claim.claimType !== "EVENT_IDENTITY") {
+            assert.notEqual(claim.status, "VERIFIED_MULTI_SOURCE");
+        }
+    }
+}
+
+// ── Uncertainty categories: classify + never silently drop ─────────────────
+{
+    const samples = {
+        DATE: "Event date not confirmed for the BOD effective timeline",
+        SCOPE: "Scope of which systems must comply remains unclear",
+        IMPACT: "Impact severity for operators is not confirmed",
+        WHO_IS_AFFECTED: "Who is affected among vendors remains unclear",
+        PRODUCT_VERSION: "Affected firmware version is not confirmed",
+        REGULATORY_STATUS: "Whether the SBOM directive is required is unclear",
+        QUOTE_ATTRIBUTION: "Spokesperson statement attribution is unverified",
+        NUMERIC_CLAIM: "The number of affected agencies is unconfirmed",
+        CAUSAL_CLAIM: "Whether the outage was caused by the flaw is disputed",
+        OTHER: "Additional context still needs human review",
+    };
+    for (const [category, text] of Object.entries(samples)) {
+        assert.equal(classifyUncertainty(text).category, category, text);
+    }
+    const unresolved = resolveUncertainties({
+        uncertainties: Object.values(samples),
+        claimEvidence: [],
+        conflicts: [],
+        independentCount: 0,
+    });
+    assert.equal(unresolved.remainingUncertainties.length, Object.keys(samples).length);
+    assert.equal(unresolved.resolvedUncertainties.length, 0);
+}
+
+// ── Version conflict → not READY ───────────────────────────────────────────
+{
+    const enriched = enrichCluster(clusterFrom([
+        candidate({
+            headline: "CISA advisory for Widget Firmware",
+            summary: "CISA says Widget firmware version 2.1.0 is affected by CVE-2026-99999.",
+            articleUrl: "https://www.cisa.gov/news-events/ics-advisories/icsa-26-210-01",
+        }),
+    ]), {
+        candidates: [mitCandidate({
+            headline: "Widget firmware advisory analysis",
+            summary: "Independent analysis says only Widget firmware version 3.4.0 is affected by CVE-2026-99999.",
+            articleUrl: "https://news.mit.edu/2026/widget-firmware-cve-2026-99999",
+        })],
+        registry: SOURCE_REGISTRY,
+    });
+    assert.ok(enriched.enrichment.conflicts.some((item) => item.type === "PRODUCT_VERSION" || item.type === "NUMERIC_CLAIM" || item.type === "DATE")
+        || enriched.enrichment.conflicts.length >= 1
+        || enriched.enrichment.remainingUncertainties.length > 0);
+    const packet = buildResearchPacket({
+        dateIso: "2026-07-30",
+        selection: {
+            news: [{ ...enriched, selectedDesk: "national" }],
+            blog: [],
+            limits: { news: 4, blog: 1 },
+            rejectedWeakFit: [],
+        },
+    });
+    assert.notEqual(scoreNewsDesk("national", packet.news.national, "2026-07-30").disposition, "READY");
+}
+
+// ── Readiness score cannot override Phase 10A ──────────────────────────────
+{
+    const high = computeReadinessScore({
+        primaryCount: 1,
+        independentCount: 2,
+        claimEvidence: [{ consequential: true, status: "PARTIALLY_VERIFIED" }],
+        remainingUncertainties: [],
+        conflicts: [],
+        freshness: "FRESH",
+        relevance: 5,
+        editorialFitScore: 4,
+    });
+    assert.equal(high.blocksReady, true);
+    const story = {
+        slug: "high-score-unresolved",
+        title: "CISA SBOM requirements for software teams",
+        dek: "Guidance published.",
+        category: "cybersecurity",
+        location: "National",
+        publishedAt: now,
+        summary: "CISA published SBOM requirements for software teams.",
+        whyItMatters: "Software security.",
+        sources: [
+            { label: "CISA", publisher: "CISA", url: "https://www.cisa.gov/a", type: "official" },
+            { label: "MIT", publisher: "MIT News", url: "https://news.mit.edu/a", type: "verified" },
+        ],
+        verifiedClaims: [],
+        attributedClaims: ["CISA published SBOM requirements."],
+        uncertainties: ["Unresolved consequential claim (PARTIALLY_VERIFIED): CISA published SBOM requirements for software teams."],
+        editorialNotes: `readiness=${high.score}`,
+        readinessScore: high,
+        forceDraft: false,
+    };
+    const desk = scoreNewsDesk("national", story, "2026-07-30");
     assert.equal(desk.disposition, "HOLD");
+}
+
+// ── Older Phase 10A packet shape still works ───────────────────────────────
+{
+    const legacy = {
+        slug: "legacy-packet-story",
+        title: "NIST announces artificial intelligence cybersecurity standards",
+        dek: "NIST published AI cybersecurity standards with CISA corroboration.",
+        category: "cybersecurity",
+        location: "National",
+        publishedAt: "2026-07-29T16:00:00.000Z",
+        summary: "NIST announced artificial intelligence cybersecurity software standards for national infrastructure.",
+        whyItMatters: "AI cybersecurity software standards affect CinNova product security.",
+        sources: [
+            { label: "NIST", publisher: "NIST", url: "https://www.nist.gov/news-events/news/2026/07/ai-cyber", type: "official" },
+            { label: "CISA", publisher: "CISA", url: "https://www.cisa.gov/news-events/alerts/2026/07/29/ai-cyber", type: "official" },
+        ],
+        verifiedClaims: [
+            "NIST announced artificial intelligence cybersecurity software standards.",
+            "CISA corroborated the NIST artificial intelligence cybersecurity announcement.",
+        ],
+        attributedClaims: [],
+        uncertainties: [],
+        editorialNotes: "legacy shape",
+        forceDraft: false,
+    };
+    const desk = scoreNewsDesk("national", legacy, "2026-07-30");
+    assert.equal(desk.disposition, "READY");
+    assert.equal(desk.qualified, true);
 }
 
 console.log("test:editorial-corroboration passed");

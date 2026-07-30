@@ -18,14 +18,14 @@ export const UNCERTAINTY_CATEGORIES = Object.freeze([
 
 const CATEGORY_PATTERNS = [
     ["DATE", /\b(date|when|timeline|deadline|effective|publishedAt|as of)\b/i],
-    ["SCOPE", /\b(scope|applies to|coverage|jurisdiction|who must|which systems)\b/i],
-    ["IMPACT", /\b(impact|severity|consequence|disruption|outage)\b/i],
-    ["WHO_IS_AFFECTED", /\b(affected|who is|customers|agencies|vendors|operators)\b/i],
     ["PRODUCT_VERSION", /\b(version|firmware|release|product line|CVE-)\b/i],
     ["REGULATORY_STATUS", /\b(mandate|required|directive|BOD|regulation|enforce|SBOM)\b/i],
-    ["QUOTE_ATTRIBUTION", /\b(said|according to|quoted|statement|spokesperson)\b/i],
     ["NUMERIC_CLAIM", /\b(\d+%|\d{1,3}(?:,\d{3})+|million|billion|count|number of)\b/i],
+    ["QUOTE_ATTRIBUTION", /\b(said|according to|quoted|statement|spokesperson)\b/i],
     ["CAUSAL_CLAIM", /\b(because|caused|led to|due to|resulting in)\b/i],
+    ["IMPACT", /\b(impact|severity|consequence|disruption|outage)\b/i],
+    ["SCOPE", /\b(scope|applies to|coverage|jurisdiction|who must|which systems)\b/i],
+    ["WHO_IS_AFFECTED", /\b(who is affected|affected (?:agencies|vendors|operators|customers|organizations)|customers|agencies|vendors|operators)\b/i],
 ];
 
 export function classifyUncertainty(text = "") {
@@ -134,8 +134,7 @@ export function seedUncertaintiesFromClaims(claimEvidence = []) {
             seeds.push(`Unresolved consequential claim (${claim.status}): ${claim.claimText.slice(0, 140)}`);
         }
     }
-    if (!seeds.length) {
-        seeds.push("All source-derived claims require Phase 10A fact-check and contextual review before drafting.");
-    }
+    // Do not re-insert the old unconditional boilerplate. Empty seeds mean
+    // claimEvidence already covers the event or there is nothing specific to hold on.
     return seeds;
 }

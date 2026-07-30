@@ -17,6 +17,20 @@ function claimIdFor(text = "") {
     return `claim-${createHash("sha1").update(String(text).trim().toLowerCase()).digest("hex").slice(0, 10)}`;
 }
 
+function stripHtml(value = "") {
+    return String(value)
+        .replace(/<script[\s\S]*?<\/script>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">")
+        .replace(/&quot;/gi, '"')
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 function sourceRef(candidate = {}) {
     return {
         sourceId: candidate.sourceId || "",
@@ -34,7 +48,7 @@ export function deriveClaimsFromCluster(cluster = {}) {
     const claims = [];
     const seen = new Set();
     for (const source of cluster.sources || []) {
-        const text = String(source.summary || source.headline || "").trim();
+        const text = stripHtml(source.summary || source.headline || "");
         if (text.length < 24) continue;
         const key = text.toLowerCase().slice(0, 160);
         if (seen.has(key)) continue;
@@ -42,14 +56,14 @@ export function deriveClaimsFromCluster(cluster = {}) {
         const consequential = /require|mandate|must|CVE-|BOD|vulnerability|enact|fine|ban|order|directive|SBOM|KEV/i.test(text);
         claims.push({
             claimId: claimIdFor(text),
-            claimText: text,
+            claimText: text.slice(0, 400),
             claimType: consequential ? "CONSEQUENTIAL_FACT" : "CONTEXT",
             consequential,
             originSourceId: source.sourceId || "",
         });
     }
     if (!claims.length && cluster.canonicalTopic) {
-        const text = `${cluster.canonicalTopic}`;
+        const text = stripHtml(cluster.canonicalTopic);
         claims.push({
             claimId: claimIdFor(text),
             claimText: text,
@@ -67,22 +81,56 @@ export function deriveClaimsFromCluster(cluster = {}) {
  * @param {object[]} supportingCandidates - independence-filtered preferred
  * @param {object[]} allCandidates - full matching set (may include mirrors)
  */
+function sourceKey(ref = {}) {
+    return ref.url || `${ref.sourceId}:${ref.headline || ""}`;
+}
+
+function dedupeSourceRefs(refs = []) {
+    const seen = new Set();
+    const out = [];
+    for (const ref of refs) {
+        const key = sourceKey(ref);
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        out.push(ref);
+    }
+    return out;
+}
+
+function candidateSupportsClaim(candidate = {}, claim = {}) {
+    // Event-identity claims are supported by any corroborating candidate on the cluster.
+    if (claim.claimType === "EVENT_IDENTITY") return true;
+    const blob = `${candidate.headline || ""} ${candidate.summary || ""}`.toLowerCase();
+    const needle = String(claim.claimText || "").toLowerCase();
+    if (!needle) return false;
+    return blob.includes(needle.slice(0, 24)) || jaccardLite(blob, needle) >= 0.22;
+}
+
 export function mapClaimEvidence(claims = [], supportingCandidates = [], allCandidates = [], conflicts = []) {
     return claims.map((claim) => {
-        const supportingSources = (allCandidates || [])
-            .filter((candidate) => {
-                const blob = `${candidate.headline || ""} ${candidate.summary || ""}`.toLowerCase();
-                const needle = claim.claimText.toLowerCase().slice(0, 48);
-                return blob.includes(needle.slice(0, 24)) || jaccardLite(blob, claim.claimText.toLowerCase()) >= 0.22;
-            })
-            .map(sourceRef);
+        const supportingSources = dedupeSourceRefs(
+            (allCandidates || [])
+                .filter((candidate) => candidateSupportsClaim(candidate, claim))
+                .map(sourceRef),
+        );
+        const supportingKeys = new Set(supportingSources.map(sourceKey));
 
-        const primarySupport = (supportingCandidates || [])
-            .filter((candidate) => candidate.sourceTier === "TIER_1_PRIMARY")
-            .map(sourceRef);
-        const independentSupport = (supportingCandidates || [])
-            .filter((candidate) => candidate.sourceTier !== "TIER_1_PRIMARY")
-            .map(sourceRef);
+        // Primary/independent support must both be independence-filtered AND claim-relevant.
+        // Non-independent mirrors may appear in supportingSources but never in independentSupport.
+        const primarySupport = dedupeSourceRefs(
+            (supportingCandidates || [])
+                .filter((candidate) => candidate.sourceTier === "TIER_1_PRIMARY")
+                .filter((candidate) => candidateSupportsClaim(candidate, claim))
+                .map(sourceRef)
+                .filter((ref) => supportingKeys.has(sourceKey(ref))),
+        );
+        const independentSupport = dedupeSourceRefs(
+            (supportingCandidates || [])
+                .filter((candidate) => candidate.sourceTier !== "TIER_1_PRIMARY")
+                .filter((candidate) => candidateSupportsClaim(candidate, claim))
+                .map(sourceRef)
+                .filter((ref) => supportingKeys.has(sourceKey(ref))),
+        );
 
         const conflict = (conflicts || []).find((item) => item.claimId === claim.claimId);
         let status = "UNRESOLVED";

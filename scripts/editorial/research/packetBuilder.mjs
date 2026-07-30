@@ -117,12 +117,11 @@ function newsStory(cluster) {
     const attributedClaims = (enrich.claimEvidence || [])
         .filter((claim) => !["VERIFIED_PRIMARY", "VERIFIED_MULTI_SOURCE"].includes(claim.status))
         .map((claim) => claim.claimText);
-    const remainingTexts = (enrich.remainingUncertainties || []).map((item) => item.text).filter(Boolean);
-    const uncertainties = remainingTexts.length
-        ? remainingTexts
-        : enrich.corroborationSummary
-          ? []
-          : ["All source-derived claims require Phase 10A fact-check and contextual review before drafting."];
+    // Phase 10B.3: never inject the old unconditional boilerplate uncertainty.
+    // Only pass through remainingUncertainties produced by enrichment (real gaps).
+    const uncertainties = (enrich.remainingUncertainties || [])
+        .map((item) => (typeof item === "string" ? item : item?.text))
+        .filter(Boolean);
 
     const conflictNote = (cluster.enrichment?.conflicts || []).length
         ? ` CONFLICTS: ${cluster.enrichment.conflicts.map((item) => item.notes).join(" | ")}`
