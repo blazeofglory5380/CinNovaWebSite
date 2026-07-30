@@ -48,24 +48,30 @@ function Blog({
         setActiveCategory(routedCategory || "All");
     }, [routedCategory]);
 
-    const featuredPosts = useMemo(
-        () => posts.filter((post) => post.featured || post.cornerstone).slice(0, 15),
+    const orderedPosts = useMemo(
+        () =>
+            [...posts].sort((a, b) => {
+                const dateDifference = Date.parse(b.date) - Date.parse(a.date);
+                if (Number.isFinite(dateDifference) && dateDifference !== 0) {
+                    return dateDifference;
+                }
+
+                return Number(b.id || 0) - Number(a.id || 0);
+            }),
         [posts]
     );
+    const featuredPosts = useMemo(
+        () => orderedPosts.filter((post) => post.featured || post.cornerstone).slice(0, 15),
+        [orderedPosts]
+    );
     const cornerstonePost = useMemo(
-        () =>
-            // This week's featured story takes the large lead card. Falls back to the
-            // evergreen AI guide, then any cornerstone, then the first post.
-            posts.find((p) => p.slug === "anthropic-vs-federal-government-military-ai") ||
-            posts.find((p) => p.slug === "the-complete-guide-to-artificial-intelligence-in-2026") ||
-            posts.find((p) => p.cornerstone) ||
-            posts[0],
-        [posts]
+        () => featuredPosts[0] || orderedPosts[0],
+        [featuredPosts, orderedPosts]
     );
     const featuredPost = useMemo(() => {
         const candidates = featuredPosts.filter((post) => post.id !== cornerstonePost?.id);
-        return candidates[0] || featuredPosts[0] || posts[0];
-    }, [featuredPosts, cornerstonePost, posts]);
+        return candidates[0] || featuredPosts[0] || orderedPosts[0];
+    }, [featuredPosts, cornerstonePost, orderedPosts]);
     const secondaryFeaturedPosts = useMemo(
         () =>
             featuredPosts
@@ -79,20 +85,20 @@ function Blog({
 
     const trendingPosts = useMemo(
         () =>
-            posts
+            orderedPosts
                 .filter((post) => post.cornerstone || postMetrics[post.id]?.trending || post.trending)
                 .slice(0, 15),
-        [posts]
+        [orderedPosts]
     );
 
     const popularPosts = useMemo(
-        () => posts.filter((post) => post.popular).slice(0, 5),
-        [posts]
+        () => orderedPosts.filter((post) => post.popular).slice(0, 5),
+        [orderedPosts]
     );
 
     const filteredPosts = useMemo(() => {
         const normalizedSearch = searchTerm.trim().toLowerCase();
-        return posts.filter((post) => {
+        return orderedPosts.filter((post) => {
             const matchesCategory =
                 activeCategory === "All" || post.category === activeCategory;
             const matchesSearch =
@@ -102,7 +108,7 @@ function Blog({
                 post.category.toLowerCase().includes(normalizedSearch);
             return matchesCategory && matchesSearch;
         });
-    }, [activeCategory, searchTerm, posts]);
+    }, [activeCategory, searchTerm, orderedPosts]);
 
     const seoTitle =
         activeCategory === "All"
@@ -124,7 +130,7 @@ function Blog({
             name: "CinNova",
             url: siteUrl,
         },
-        blogPost: posts.map((post) => ({
+        blogPost: orderedPosts.map((post) => ({
             "@type": "BlogPosting",
             headline: post.title,
             description: post.excerpt,
