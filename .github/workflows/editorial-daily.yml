@@ -22,6 +22,11 @@ on:
         description: "If true, run pipeline without writing drafts"
         required: false
         default: "false"
+      use_live_research:
+        description: "Use live verified feeds (research ingestion only)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -34,6 +39,7 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,12 +67,30 @@ jobs:
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
           echo "branch=editorial/daily-$DATE" >> "$GITHUB_OUTPUT"
 
+      - name: Discover from offline fixtures
+        if: ${{ github.event.inputs.use_live_research != 'true' }}
+        run: npm run editorial:discover -- --fixture --date="${{ steps.meta.outputs.date }}" --dry-run
+
+      - name: Discover from live feeds
+        if: ${{ github.event.inputs.use_live_research == 'true' }}
+        continue-on-error: true
+        timeout-minutes: 6
+        run: npm run editorial:discover -- --live --date="${{ steps.meta.outputs.date }}" --dry-run
+
+      - name: Build live research packet
+        if: ${{ github.event.inputs.use_live_research == 'true' }}
+        continue-on-error: true
+        timeout-minutes: 6
+        run: npm run editorial:research-live -- --live --date="${{ steps.meta.outputs.date }}"
+
       - name: Research
         shell: bash
         run: |
           EXTRA=()
           if [ -n "${{ github.event.inputs.packet_path }}" ]; then
             EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
+          elif [ "${{ github.event.inputs.use_live_research }}" = "true" ] && [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
+            EXTRA+=(--from-packet="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json")
           fi
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             EXTRA+=(--dry-run)
@@ -79,6 +103,8 @@ jobs:
           EXTRA=()
           if [ -n "${{ github.event.inputs.packet_path }}" ]; then
             EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
+          elif [ "${{ github.event.inputs.use_live_research }}" = "true" ] && [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
+            EXTRA+=(--from-packet="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json")
           fi
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             EXTRA+=(--dry-run)
