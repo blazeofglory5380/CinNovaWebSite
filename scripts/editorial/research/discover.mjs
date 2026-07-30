@@ -9,6 +9,7 @@ import { buildResearchPacket } from "./packetBuilder.mjs";
 import { fetchSourceCandidates } from "./providers/index.mjs";
 import { scoreCinovaRelevance } from "./relevance.mjs";
 import { routeCluster } from "./routing.mjs";
+import { classifyRunStatus, selectClustersForPacket } from "./selection.mjs";
 import { getActiveSources, getSourceById, SOURCE_REGISTRY } from "./sourceRegistry.mjs";
 import { writeDiscoveryReport } from "./report.mjs";
 
@@ -101,16 +102,32 @@ export async function runDiscovery({
         return { ...classified, ...qualification, qualificationRationale: qualification.rationale };
     });
     const qualified = clusters.filter((cluster) => cluster.qualified);
+    const selection = selectClustersForPacket(qualified);
+    const selectedCount = selection.news.length + selection.blog.length;
     const packet = buildResearchPacket({ dateIso, clusters, qualified });
+    const runStatus = classifyRunStatus({
+        sourceResults,
+        qualifiedCount: qualified.length,
+        selectedCount,
+    });
     const report = {
-        schemaVersion: "10B.1",
+        schemaVersion: "10B.2",
         date: dateIso,
         mode,
         safety: "Research ingestion only; no publishing, merging, deployment, or social posting.",
         sourceResults,
         candidateCount: candidates.length,
+        clusterCount: clusters.length,
         clusters,
         qualifiedCount: qualified.length,
+        selectedCount,
+        selection: {
+            newsTopics: selection.news.map((cluster) => cluster.canonicalTopic),
+            blogTopics: selection.blog.map((cluster) => cluster.canonicalTopic),
+            rejectedWeakFit: selection.rejectedWeakFit,
+            limits: selection.limits,
+        },
+        runStatus,
         packet,
     };
     const paths = writeDiscoveryReport(report, { dateIso, dryRun });

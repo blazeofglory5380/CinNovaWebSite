@@ -9,14 +9,21 @@ function markdown(report) {
         "Research ingestion only. No publish, merge, deploy, or social action was performed.",
         "",
         `- Mode: ${report.mode}`,
+        `- Run status: ${report.runStatus?.status || "UNKNOWN"}`,
         `- Sources attempted: ${report.sourceResults.length}`,
         `- Candidates: ${report.candidateCount}`,
-        `- Clusters: ${report.clusters.length}`,
-        `- Qualified: ${report.qualifiedCount}`,
+        `- Clusters: ${report.clusterCount ?? report.clusters.length}`,
+        `- Research-qualified: ${report.qualifiedCount}`,
+        `- Editorial-selected: ${report.selectedCount ?? 0}`,
         "",
         "## Source results",
         ...report.sourceResults.map((source) =>
             `- ${source.sourceId}: ${source.ok ? `${source.count} candidate(s)` : `ERROR — ${source.error}`}`),
+        "",
+        "## Editorial selection",
+        `- News: ${(report.selection?.newsTopics || []).join("; ") || "(none)"}`,
+        `- Blog: ${(report.selection?.blogTopics || []).join("; ") || "(none)"}`,
+        `- Weak-fit rejected: ${(report.selection?.rejectedWeakFit || []).length}`,
         "",
         "## Clusters",
     ];
@@ -37,14 +44,45 @@ function markdown(report) {
     return `${lines.join("\n")}\n`;
 }
 
+export function buildRunSummary(report) {
+    return {
+        schemaVersion: report.schemaVersion || "10B.2",
+        date: report.date,
+        mode: report.mode,
+        runStatus: report.runStatus || null,
+        sourceResults: (report.sourceResults || []).map((source) => ({
+            sourceId: source.sourceId,
+            ok: source.ok,
+            count: source.count,
+            error: source.error,
+        })),
+        candidateCount: report.candidateCount || 0,
+        clusterCount: report.clusterCount ?? report.clusters?.length ?? 0,
+        qualifiedCount: report.qualifiedCount || 0,
+        selectedCount: report.selectedCount || 0,
+        selection: report.selection || null,
+        packetDesks: {
+            local: Boolean(report.packet?.news?.local?.title),
+            state: Boolean(report.packet?.news?.state?.title),
+            national: Boolean(report.packet?.news?.national?.title),
+            international: Boolean(report.packet?.news?.international?.title),
+            blog: Boolean(report.packet?.blog?.title),
+        },
+        safety: report.safety,
+    };
+}
+
 export function writeDiscoveryReport(report, { dateIso = report.date, dryRun = false } = {}) {
     const jsonPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-discovery.json`);
     const mdPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-discovery.md`);
+    const summaryPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-run-summary.json`);
     const rendered = markdown(report);
+    const summary = buildRunSummary(report);
     if (!dryRun) {
         mkdirSync(EDITORIAL_REPORTS_DIR, { recursive: true });
         writeFileSync(jsonPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
         writeFileSync(mdPath, rendered, "utf8");
+        writeFileSync(summaryPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
     }
-    return { jsonPath, mdPath, markdown: rendered };
+    return { jsonPath, mdPath, summaryPath, summary, markdown: rendered };
 }

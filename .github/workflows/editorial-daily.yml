@@ -1,12 +1,16 @@
 name: Editorial Daily
 
-# Phase 10A — preparation only.
+# Phase 10B.2 — scheduled live research → Phase 10A Draft PR preparation.
 # Never merges, never deploys, never publishes to production catalogs.
-# Does not store API keys in the repository.
+# Never posts socially. Does not store API keys in the repository.
+#
+# Schedule (cron 13:00 UTC): live research
+#   ≈ 05:00 PST / 06:00 PDT (UTC-fixed cron; Pacific shifts with DST)
+# Manual workflow_dispatch default: fixture
+# Manual live: requires explicit research_mode=live
 
 on:
   schedule:
-    # 13:00 UTC ≈ morning US editorial window
     - cron: "0 13 * * *"
   workflow_dispatch:
     inputs:
@@ -19,11 +23,20 @@ on:
         required: false
         default: ""
       dry_run:
-        description: "If true, run pipeline without writing drafts"
+        description: "If true, run pipeline without writing drafts or opening a PR"
         required: false
-        default: "false"
+        type: boolean
+        default: false
+      research_mode:
+        description: "Research mode for manual runs (schedule always uses live)"
+        required: false
+        type: choice
+        options:
+          - fixture
+          - live
+        default: fixture
       use_live_research:
-        description: "Use live verified feeds (research ingestion only)"
+        description: "Legacy alias — prefer research_mode=live"
         required: false
         type: boolean
         default: false
@@ -33,13 +46,13 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: editorial-daily
+  group: cinnova-editorial-daily
   cancel-in-progress: false
 
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,7 +68,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Resolve date
+      - name: Resolve date + research mode
         id: meta
         shell: bash
         run: |
@@ -64,84 +77,215 @@ jobs:
           else
             DATE="$(date -u +%F)"
           fi
+
+          EVENT_NAME="${{ github.event_name }}"
+          RESEARCH_MODE_INPUT="${{ github.event.inputs.research_mode }}"
+          LEGACY_LIVE="${{ github.event.inputs.use_live_research }}"
+
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            MODE="live"
+            MODE_REASON="Scheduled run uses live verified feeds."
+          elif [ "$RESEARCH_MODE_INPUT" = "live" ] || [ "$LEGACY_LIVE" = "true" ]; then
+            MODE="live"
+            MODE_REASON="Manual run explicitly selected live research."
+          else
+            MODE="fixture"
+            MODE_REASON="Manual/default run stays fixture-safe."
+          fi
+
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+          if [ "$DRY_RUN" != "true" ]; then DRY_RUN="false"; fi
+
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
           echo "branch=editorial/daily-$DATE" >> "$GITHUB_OUTPUT"
+          echo "run_id=editorial-daily-$DATE" >> "$GITHUB_OUTPUT"
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "mode_reason=$MODE_REASON" >> "$GITHUB_OUTPUT"
+          echo "dry_run=$DRY_RUN" >> "$GITHUB_OUTPUT"
+          echo "Resolved mode=$MODE date=$DATE dry_run=$DRY_RUN ($MODE_REASON)"
+
+      - name: Duplicate daily-run protection
+        id: existing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          BRANCH="${{ steps.meta.outputs.branch }}"
+          EXISTING="$(gh pr list --head "$BRANCH" --state open --json number,url,isDraft --jq '.[0] // empty')"
+          if [ -n "$EXISTING" ]; then
+            NUMBER="$(echo "$EXISTING" | jq -r '.number')"
+            URL="$(echo "$EXISTING" | jq -r '.url')"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "number=$NUMBER" >> "$GITHUB_OUTPUT"
+            echo "url=$URL" >> "$GITHUB_OUTPUT"
+            echo "Draft PR already exists for ${{ steps.meta.outputs.run_id }}: #$NUMBER $URL"
+            echo "Exiting cleanly to avoid duplicate daily editorial PRs."
+            echo "skip_pipeline=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "skip_pipeline=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Discover from offline fixtures
-        if: ${{ github.event.inputs.use_live_research != 'true' }}
-        run: npm run editorial:discover -- --fixture --date="${{ steps.meta.outputs.date }}" --dry-run
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.mode == 'fixture' }}
+        run: npm run editorial:discover -- --fixture --date="${{ steps.meta.outputs.date }}"
+
+      - name: Build fixture research packet
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.mode == 'fixture' }}
+        run: npm run editorial:research-live -- --fixture --date="${{ steps.meta.outputs.date }}"
 
       - name: Discover from live feeds
-        if: ${{ github.event.inputs.use_live_research == 'true' }}
+        id: live_discover
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.mode == 'live' }}
         continue-on-error: true
-        timeout-minutes: 6
-        run: npm run editorial:discover -- --live --date="${{ steps.meta.outputs.date }}" --dry-run
+        timeout-minutes: 8
+        run: npm run editorial:discover -- --live --date="${{ steps.meta.outputs.date }}"
 
       - name: Build live research packet
-        if: ${{ github.event.inputs.use_live_research == 'true' }}
+        id: live_packet
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.mode == 'live' }}
         continue-on-error: true
-        timeout-minutes: 6
+        timeout-minutes: 8
         run: npm run editorial:research-live -- --live --date="${{ steps.meta.outputs.date }}"
 
+      - name: Evaluate research run status
+        id: research_status
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' }}
+        shell: bash
+        run: |
+          SUMMARY="editorial-reports/${{ steps.meta.outputs.date }}-run-summary.json"
+          PACKET="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json"
+          DISCOVERY="editorial-reports/${{ steps.meta.outputs.date }}-discovery.json"
+
+          STATUS="NO_QUALIFIED_STORY"
+          SELECTED=0
+          QUALIFIED=0
+          CANDIDATES=0
+          CLUSTERS=0
+          FAILED_SOURCES=0
+          HEALTHY_SOURCES=0
+
+          if [ -f "$SUMMARY" ]; then
+            STATUS="$(jq -r '.runStatus.status // "NO_QUALIFIED_STORY"' "$SUMMARY")"
+            SELECTED="$(jq -r '.selectedCount // 0' "$SUMMARY")"
+            QUALIFIED="$(jq -r '.qualifiedCount // 0' "$SUMMARY")"
+            CANDIDATES="$(jq -r '.candidateCount // 0' "$SUMMARY")"
+            CLUSTERS="$(jq -r '.clusterCount // 0' "$SUMMARY")"
+            FAILED_SOURCES="$(jq -r '[.sourceResults[] | select(.ok == false)] | length' "$SUMMARY")"
+            HEALTHY_SOURCES="$(jq -r '[.sourceResults[] | select(.ok == true)] | length' "$SUMMARY")"
+          elif [ "${{ steps.meta.outputs.mode }}" = "live" ] && [ "${{ steps.live_discover.outcome }}" = "failure" ] && [ "${{ steps.live_packet.outcome }}" = "failure" ]; then
+            STATUS="FAILED"
+          fi
+
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          echo "selected=$SELECTED" >> "$GITHUB_OUTPUT"
+          echo "qualified=$QUALIFIED" >> "$GITHUB_OUTPUT"
+          echo "candidates=$CANDIDATES" >> "$GITHUB_OUTPUT"
+          echo "clusters=$CLUSTERS" >> "$GITHUB_OUTPUT"
+          echo "failed_sources=$FAILED_SOURCES" >> "$GITHUB_OUTPUT"
+          echo "healthy_sources=$HEALTHY_SOURCES" >> "$GITHUB_OUTPUT"
+          echo "summary_path=$SUMMARY" >> "$GITHUB_OUTPUT"
+          echo "packet_exists=$([ -f "$PACKET" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "discovery_exists=$([ -f "$DISCOVERY" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "Research status=$STATUS selected=$SELECTED qualified=$QUALIFIED healthy=$HEALTHY_SOURCES failed=$FAILED_SOURCES"
+
+          if [ "$STATUS" = "FAILED" ]; then
+            echo "::error::All live sources failed; marking workflow failed."
+            exit 1
+          fi
+
       - name: Research
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.research_status.outputs.status != 'FAILED' }}
         shell: bash
         run: |
           EXTRA=()
           if [ -n "${{ github.event.inputs.packet_path }}" ]; then
             EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
-          elif [ "${{ github.event.inputs.use_live_research }}" = "true" ] && [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
+          elif [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
             EXTRA+=(--from-packet="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json")
           fi
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          if [ "${{ steps.meta.outputs.dry_run }}" = "true" ]; then
             EXTRA+=(--dry-run)
           fi
           npm run editorial:research -- --date="${{ steps.meta.outputs.date }}" "${EXTRA[@]}"
 
       - name: Daily pipeline
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.research_status.outputs.status != 'FAILED' }}
         shell: bash
         run: |
           EXTRA=()
           if [ -n "${{ github.event.inputs.packet_path }}" ]; then
             EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
-          elif [ "${{ github.event.inputs.use_live_research }}" = "true" ] && [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
+          elif [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
             EXTRA+=(--from-packet="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json")
           fi
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          if [ "${{ steps.meta.outputs.dry_run }}" = "true" ]; then
             EXTRA+=(--dry-run)
           fi
-          npm run editorial:daily -- --date="${{ steps.meta.outputs.date }}" --skip-existing "${EXTRA[@]}"
+          npm run editorial:daily -- --date="${{ steps.meta.outputs.date }}" --skip-existing --no-social "${EXTRA[@]}"
 
       - name: Fact-check + review
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.dry_run != 'true' && steps.research_status.outputs.status != 'FAILED' }}
         run: |
           npm run editorial:factcheck -- --date="${{ steps.meta.outputs.date }}"
           npm run editorial:review -- --date="${{ steps.meta.outputs.date }}"
 
       - name: Unit tests
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' }}
         run: |
           npm run test:social-utm
           npm run test:editorial
+          npm run test:editorial-live-research
+          npm run test:editorial-live-schedule
 
       - name: Validate catalogs
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' }}
         continue-on-error: true
         run: |
           npm run validate:news
           npm run validate:blog
 
       - name: Lint and build
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' }}
         run: |
           npm run lint
           npm run build
 
       - name: Detect editorial changes
         id: changes
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.dry_run != 'true' }}
         shell: bash
         run: |
-          git add editorial-reports src/data/news-drafts src/data/blog-drafts src/data/social-drafts || true
+          DATE="${{ steps.meta.outputs.date }}"
+          NEWS_DRAFTS="$(find src/data/news-drafts -type f \( -name '*.js' -o -name '*.mjs' \) 2>/dev/null | wc -l | tr -d ' ')"
+          BLOG_DRAFTS="$(find src/data/blog-drafts -type f \( -name '*.js' -o -name '*.mjs' \) 2>/dev/null | wc -l | tr -d ' ')"
+          NEWS_DRAFTS="${NEWS_DRAFTS:-0}"
+          BLOG_DRAFTS="${BLOG_DRAFTS:-0}"
+          TOTAL=$((NEWS_DRAFTS + BLOG_DRAFTS))
+          echo "news_drafts=$NEWS_DRAFTS" >> "$GITHUB_OUTPUT"
+          echo "blog_drafts=$BLOG_DRAFTS" >> "$GITHUB_OUTPUT"
+
+          # PR gate: only validated draft files open a Draft PR.
+          # Research-qualified / selected / HOLD / report-only days must not create junk PRs.
+          if [ "$TOTAL" -eq 0 ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No editorial draft files survived Phase 10A gates — skipping branch/PR (zero-output)."
+            exit 0
+          fi
+
+          git add \
+            "editorial-reports/${DATE}-run-summary.json" \
+            "editorial-reports/${DATE}-live-packet.json" \
+            "editorial-reports/${DATE}-research.json" \
+            "editorial-reports/${DATE}-research.md" \
+            "editorial-reports/${DATE}-review.md" \
+            "editorial-reports/${DATE}.md" \
+            src/data/news-drafts \
+            src/data/blog-drafts \
+            || true
           if git diff --cached --quiet; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No editorial automation output to commit."
+            echo "Draft files detected but nothing staged."
           else
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             git status --short
@@ -157,7 +301,7 @@ jobs:
           git commit -m "editorial: daily preparation ${{ steps.meta.outputs.date }}"
           git push -u origin "HEAD:${{ steps.meta.outputs.branch }}"
 
-      - name: Open or update Draft PR
+      - name: Open Draft PR
         if: ${{ steps.changes.outputs.has_changes == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -167,18 +311,59 @@ jobs:
           BRANCH="${{ steps.meta.outputs.branch }}"
           TITLE="Editorial Daily — ${DATE}"
           BODY_FILE="$(mktemp)"
+          SUMMARY="editorial-reports/${DATE}-run-summary.json"
+          REVIEW="editorial-reports/${DATE}-review.md"
+          RESEARCH="editorial-reports/${DATE}-research.json"
+          DAILY="editorial-reports/${DATE}.md"
+          TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          NEWS_CREATED="${{ steps.changes.outputs.news_drafts }}"
+          BLOG_CREATED="${{ steps.changes.outputs.blog_drafts }}"
+
+          READY=0; REVIEW=0; HOLD=0; REJECT=0
+          if [ -f "$RESEARCH" ]; then
+            READY="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="READY")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            REVIEW="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="REVIEW")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            HOLD="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="HOLD")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            REJECT="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="REJECT")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+          fi
+
           {
             echo "## Summary"
-            echo "- Automated editorial preparation for **${DATE}**"
-            echo "- Drafts only — no publish, no merge, no deploy"
-            echo "- HOLD items must not be published"
+            echo "- Automated editorial preparation for **${DATE}** (\`${{ steps.meta.outputs.run_id }}\`)"
+            echo "- Research timestamp (UTC): \`${TIMESTAMP}\`"
+            echo "- Research mode: **${{ steps.meta.outputs.mode }}** — ${{ steps.meta.outputs.mode_reason }}"
+            echo "- Drafts only — no publish, no merge, no deploy, no social posting"
+            echo "- HOLD / REJECT must not be published"
+            echo ""
+            echo "## Research"
+            if [ -f "$SUMMARY" ]; then
+              echo "- Run status: \`$(jq -r '.runStatus.status' "$SUMMARY")\`"
+              echo "- Sources attempted: \`$(jq -r '.sourceResults | length' "$SUMMARY")\`"
+              echo "- Healthy sources: \`$(jq -r '[.sourceResults[] | select(.ok==true)] | length' "$SUMMARY")\`"
+              echo "- Failed sources: \`$(jq -r '[.sourceResults[] | select(.ok==false)] | map(.sourceId) | join(", ")' "$SUMMARY")\`"
+              echo "- Candidates: \`$(jq -r '.candidateCount' "$SUMMARY")\`"
+              echo "- Clusters: \`$(jq -r '.clusterCount' "$SUMMARY")\`"
+              echo "- Research-qualified: \`$(jq -r '.qualifiedCount' "$SUMMARY")\`"
+              echo "- Editorial-selected: \`$(jq -r '.selectedCount' "$SUMMARY")\`"
+              echo "- Selected news: \`$(jq -r '.selection.newsTopics // [] | join("; ")' "$SUMMARY")\`"
+              echo "- Selected blog: \`$(jq -r '.selection.blogTopics // [] | join("; ")' "$SUMMARY")\`"
+            else
+              echo "- Run summary unavailable."
+            fi
+            echo ""
+            echo "## Draft inventory"
+            echo "- News drafts: **${NEWS_CREATED}**"
+            echo "- Blog drafts: **${BLOG_CREATED}**"
+            echo "- READY: **${READY}** · REVIEW: **${REVIEW}** · HOLD: **${HOLD}** · REJECT: **${REJECT}**"
+            echo "- Validation: catalogs checked in workflow (continue-on-error); see review report"
             echo ""
             echo "## Readiness"
             echo '```'
-            if [ -f "editorial-reports/${DATE}-review.md" ]; then
-              sed -n '1,120p' "editorial-reports/${DATE}-review.md"
-            elif [ -f "editorial-reports/${DATE}.md" ]; then
-              sed -n '1,120p' "editorial-reports/${DATE}.md"
+            if [ -f "$REVIEW" ]; then
+              sed -n '1,120p' "$REVIEW"
+            elif [ -f "$DAILY" ]; then
+              sed -n '1,120p' "$DAILY"
             else
               echo "Review report unavailable."
             fi
@@ -191,10 +376,23 @@ jobs:
             echo "- [ ] Human publishes selectively; do not merge HOLD content"
           } > "$BODY_FILE"
 
-          EXISTING="$(gh pr list --head "$BRANCH" --json number,url --jq '.[0].number')"
+          EXISTING="$(gh pr list --head "$BRANCH" --state open --json number,url --jq '.[0].number')"
           if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            echo "Unexpected existing open PR after duplicate guard; updating #$EXISTING without marking ready."
             gh pr edit "$EXISTING" --title "$TITLE" --body-file "$BODY_FILE"
-            echo "Updated PR #$EXISTING"
           else
             gh pr create --draft --title "$TITLE" --body-file "$BODY_FILE" --head "$BRANCH"
           fi
+
+      - name: Upload safe run diagnostics
+        if: ${{ always() && steps.existing.outputs.skip_pipeline != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-daily-${{ steps.meta.outputs.date }}
+          retention-days: 14
+          if-no-files-found: ignore
+          path: |
+            editorial-reports/${{ steps.meta.outputs.date }}-run-summary.json
+            editorial-reports/${{ steps.meta.outputs.date }}-research.md
+            editorial-reports/${{ steps.meta.outputs.date }}-review.md
+            editorial-reports/${{ steps.meta.outputs.date }}.md

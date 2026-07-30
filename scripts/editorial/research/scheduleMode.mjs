@@ -1,0 +1,56 @@
+/**
+ * Phase 10B.2 — resolve research mode for GitHub Actions / local helpers.
+ *
+ * Schedule (cron): live
+ * Manual workflow_dispatch default: fixture
+ * Manual live: only when explicitly selected
+ * Local npm defaults: unchanged (fixture unless --live)
+ */
+
+export function resolveResearchMode({
+    eventName = "workflow_dispatch",
+    researchModeInput = "",
+    useLiveResearchInput = "",
+} = {}) {
+    const normalized = String(researchModeInput || "").trim().toLowerCase();
+    const legacyLive = String(useLiveResearchInput || "").trim().toLowerCase() === "true";
+
+    if (eventName === "schedule") {
+        return {
+            mode: "live",
+            rationale: "Scheduled editorial-daily runs use live verified feeds.",
+        };
+    }
+
+    if (normalized === "live" || legacyLive) {
+        return {
+            mode: "live",
+            rationale: "Manual run explicitly selected live research.",
+        };
+    }
+
+    return {
+        mode: "fixture",
+        rationale: "Manual/default runs stay fixture-safe unless live is explicitly selected.",
+    };
+}
+
+export function dailyRunId(dateIso = "") {
+    const date = String(dateIso || new Date().toISOString().slice(0, 10));
+    return `editorial-daily-${date}`;
+}
+
+export function dailyBranchName(dateIso = "") {
+    return `editorial/daily-${String(dateIso || new Date().toISOString().slice(0, 10))}`;
+}
+
+/** Pacific wall-clock note for the fixed 13:00 UTC cron. */
+export function describeScheduleWindow(cronUtc = "0 13 * * *") {
+    return {
+        cronUtc,
+        utc: "13:00 UTC daily",
+        pacificStandard: "05:00 PST (UTC-8)",
+        pacificDaylight: "06:00 PDT (UTC-7)",
+        note: "GitHub cron is UTC-fixed; Pacific local time shifts one hour across DST.",
+    };
+}

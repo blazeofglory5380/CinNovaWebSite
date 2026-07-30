@@ -1,3 +1,5 @@
+import { selectClustersForPacket } from "./selection.mjs";
+
 const SAFETY = "VERIFIED RESEARCH PACKET — research ingestion only. Empty desks become NO QUALIFIED STORY. Never invent events, claims, or sources; Phase 10A fact-check decides readiness.";
 
 export function slugify(value = "") {
@@ -63,12 +65,17 @@ function packetSources(cluster) {
 }
 
 function bestScope(cluster) {
-    return ["local", "state", "national", "international"].find((desk) => cluster.scope?.includes(desk)) || "national";
+    return cluster.selectedDesk
+        || ["local", "state", "national", "international"].find((desk) => cluster.scope?.includes(desk))
+        || "national";
 }
 
 function newsStory(cluster) {
     const lead = cluster.sources?.[0] || {};
     const summaries = [...new Set((cluster.sources || []).map((source) => source.summary).filter(Boolean))];
+    const fitNote = cluster.editorialFit
+        ? ` Editorial fit ${cluster.editorialFit.score}; bucket ${cluster.diversityBucket || "n/a"}.`
+        : "";
     return {
         slug: slugify(cluster.canonicalTopic),
         title: cluster.canonicalTopic,
@@ -82,7 +89,7 @@ function newsStory(cluster) {
         verifiedClaims: [],
         attributedClaims: summaries.length ? summaries : [`${lead.sourceName || "A listed source"} published: ${cluster.canonicalTopic}`],
         uncertainties: ["All source-derived claims require Phase 10A fact-check and contextual review before drafting."],
-        editorialNotes: `${cluster.corroboration?.rationale || "Corroboration assessment unavailable"} Dedupe: ${cluster.cinovaClassification || "unclassified"}.`,
+        editorialNotes: `${cluster.corroboration?.rationale || "Corroboration assessment unavailable"} Dedupe: ${cluster.cinovaClassification || "unclassified"}.${fitNote}`,
         forceDraft: false,
         factCheckStatus: "",
     };
@@ -117,23 +124,38 @@ function blogStory(cluster) {
 }
 
 export function buildResearchPacket({ dateIso, clusters = [], qualified = [] } = {}) {
-    const selected = qualified.length ? qualified : clusters.filter((cluster) => cluster.qualified);
+    const pool = qualified.length ? qualified : clusters.filter((cluster) => cluster.qualified);
+    const selection = selectClustersForPacket(pool);
     const news = {
         local: blankNewsStory(),
         state: blankNewsStory(),
         national: blankNewsStory(),
         international: blankNewsStory(),
     };
-    const ranked = [...selected].sort((a, b) => (b.confidence || 0) - (a.confidence || 0));
-    for (const cluster of ranked.filter((item) => item.route?.route === "NEWS")) {
-        const desk = bestScope(cluster);
-        if (!news[desk].title) news[desk] = newsStory(cluster);
+
+    for (const cluster of selection.news) {
+        const preferred = bestScope(cluster);
+        if (!news[preferred].title) {
+            news[preferred] = newsStory(cluster);
+            continue;
+        }
+        const alternate = ["national", "international", "state", "local"]
+            .find((desk) => !news[desk].title && (cluster.scope || []).includes(desk));
+        if (alternate) news[alternate] = newsStory({ ...cluster, selectedDesk: alternate });
     }
-    const blogCluster = ranked.find((item) => item.route?.route === "BLOG");
+
+    const blogCluster = selection.blog[0] || null;
     return {
         schemaVersion: "10A",
         date: dateIso,
         safety: SAFETY,
+        selection: {
+            phase: "10B.2",
+            limits: selection.limits,
+            selectedNewsTopics: selection.news.map((cluster) => cluster.canonicalTopic),
+            selectedBlogTopics: selection.blog.map((cluster) => cluster.canonicalTopic),
+            rejectedWeakFit: selection.rejectedWeakFit,
+        },
         news,
         blog: blogCluster ? blogStory(blogCluster) : blankBlog(),
     };
