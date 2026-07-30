@@ -28,6 +28,7 @@
     "test:editorial": "node scripts/test-editorial-pipeline.mjs",
     "test:editorial-live-research": "node scripts/test-editorial-live-research.mjs",
     "test:editorial-live-schedule": "node scripts/test-editorial-live-schedule.mjs",
+    "test:editorial-corroboration": "node scripts/test-editorial-corroboration.mjs",
     "news:new": "node scripts/news-new.mjs",
     "news:publish": "node scripts/news-publish.mjs",
     "blog:new": "node scripts/blog-new.mjs",
