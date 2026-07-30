@@ -2,16 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import SEO from "../components/SEO.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import CinNovaCoreHero from "../components/brand-dna/CinNovaCoreHero.jsx";
 import GlassCard from "../components/brand-dna/GlassCard.jsx";
 import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
 import SectionHead from "../components/brand-dna/SectionHead.jsx";
 import Dispatch from "../components/brand-dna/Dispatch.jsx";
 import { featureCapabilityPhotos, productMarketing } from "../data/marketingImages.js";
 import { getProductsUrl, normalizeProductStatus, productDetails, products } from "../data/products.js";
-import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
-import { trackProductExploreClick } from "../utils/analytics.js";
+import { siteUrl } from "../data/seoConfig.js";
+import {
+    trackProductExploreClick,
+    trackProductsHeroDiscoverClick,
+    trackProductsHeroExploreClick,
+} from "../utils/analytics.js";
 import "../styles/brand-dna.css";
 import "./ProductsPage.css";
+
+const PRODUCTS_HERO_VIDEO = "/images/hero/cinnova-products-hero-cinematic.mp4";
+const PRODUCTS_HERO_POSTER = "/images/hero/cinnova-products-hero-cinematic-master.png";
 
 /*
  * Per-product accent (Brand DNA identity — decision #4).
@@ -474,6 +482,21 @@ function ProductsPage({ onNavigate, onSubscribe }) {
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     };
 
+    function scrollToCatalog() {
+        trackProductsHeroExploreClick();
+        const target = document.getElementById("products-catalog");
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
+        window.location.hash = "products-catalog";
+    }
+
+    function discoverCinNova() {
+        trackProductsHeroDiscoverClick();
+        onNavigate("about");
+    }
+
     return (
         <main className="products-v2 brand-dna">
             <SEO
@@ -481,43 +504,24 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                 description="Explore the Cin Nova product catalog: StudyNest, PoisonGuard, Kiddo, TechMate AI, and Cin Nova Real Estate AI. Five platforms solving real-world problems."
                 url={getProductsUrl()}
                 type="website"
-                image={defaultOgImage}
+                image={PRODUCTS_HERO_POSTER}
                 schema={productsSchema}
             />
 
-            {/* ── Hero ─────────────────────────────────────────────── */}
-            <section className="products-v2__hero" aria-label="Product catalog">
-                <div className="products-v2__hero-ambient" aria-hidden="true">
-                    <span className="products-v2__hero-glow" />
-                    <span className="products-v2__hero-grid" />
-                </div>
-                <div className="products-v2__hero-inner">
-                    <p className="bdna-eyebrow">Product Catalog</p>
-                    <h1>Five platforms. One connected AI ecosystem.</h1>
-                    <p className="products-v2__hero-text">
-                        Every Cin Nova product solves a specific real-world problem — and each one is built to
-                        work together as a unified AI platform.
-                    </p>
-                    <div className="products-v2__hero-actions">
-                        <a href="#products-catalog" className="bdna-btn bdna-btn--solid">Browse Products</a>
-                        <button className="bdna-btn bdna-btn--ghost" onClick={() => onNavigate("pricing")}>View Pricing</button>
-                    </div>
-                    <div className="products-v2__pills">
-                        {products.map((p) => (
-                            <button
-                                type="button"
-                                key={p.name}
-                                className="products-v2__pill"
-                                style={{ "--bdna-accent": ACCENT[p.page] || "var(--bdna-emerald)" }}
-                                onClick={() => onNavigate(p.page)}
-                            >
-                                <span className="products-v2__pill-icon">{p.icon}</span>
-                                <span>{p.name}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            {/* ── Hero — cinematic ecosystem video + HTML overlay ── */}
+            <CinNovaCoreHero
+                className="cn-core-hero--products"
+                eyebrow="The CinNova Ecosystem"
+                titleA="Technology Built for"
+                titleB="Real Life"
+                subtitle="AI-powered products for learning, safety, real estate, technology, and everyday life — connected through the CinNova ecosystem."
+                videoSrc={PRODUCTS_HERO_VIDEO}
+                poster={PRODUCTS_HERO_POSTER}
+                objectPosition="center center"
+                preload="metadata"
+                primaryCta={{ label: "Explore Products", onClick: scrollToCatalog }}
+                secondaryCta={{ label: "Discover CinNova", onClick: discoverCinNova }}
+            />
 
             {/* ── Catalog ──────────────────────────────────────────── */}
             <section id="products-catalog" className="products-v2__section" aria-label="All products">

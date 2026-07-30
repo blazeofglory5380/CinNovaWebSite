@@ -409,6 +409,21 @@ export function trackLanguageInternalLinkClick({ language = "", destinationPage 
     });
 }
 
+export function trackProductsHeroExploreClick() {
+    trackEvent("products_hero_explore_click", {
+        source_page: "products",
+        click_location: "products_hero",
+    });
+}
+
+export function trackProductsHeroDiscoverClick() {
+    trackEvent("products_hero_discover_click", {
+        source_page: "products",
+        click_location: "products_hero",
+        destination_page: "about",
+    });
+}
+
 export function trackProductExploreClick({ productName = "", sourcePage = "", destinationPage = "" } = {}) {
     trackEvent("product_explore_click", {
         product_name: productName,

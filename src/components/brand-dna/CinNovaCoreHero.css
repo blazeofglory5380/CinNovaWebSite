@@ -143,6 +143,145 @@
     display: block;
     background: var(--bdna-bg);
 }
+
+/* Still poster (reduced-motion / load failure) — same cover treatment as video */
+.cn-core-hero--video .cn-core-hero__poster {
+    pointer-events: none;
+}
+
+/* ── Products catalog hero ───────────────────────────────────────────
+   Desktop: show the ENTIRE Runway 16:9 frame (object-fit: contain). Never
+   crop sun / moon / core. Letterbox against a dark stage if needed.
+   Mobile: cover + center framing is allowed so CTAs stay usable. */
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products {
+    min-height: 0;
+    /* Keep a true 16:9 stage: when viewport height caps the hero, shrink width too
+       so contain never pillarboxes / letterboxes away from the Runway frame. */
+    width: min(100%, calc(90vh * 16 / 9));
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 90vh;
+    height: auto;
+    margin-inline: auto;
+    align-items: stretch;
+    background: #040a0c;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__video,
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__poster {
+    object-fit: contain;
+    object-position: center center;
+    background: #040a0c;
+}
+
+/* Kill full-frame wash / vignette — keep Runway lighting intact.
+   Higher specificity than .cn-core-hero--video scrim/tint below. */
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__tint {
+    background: none;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__fade {
+    display: none;
+}
+
+/* Faint upper-center support only — no heavy full-frame overlay. */
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__scrim {
+    background: radial-gradient(
+        58% 40% at 50% 16%,
+        rgba(4, 10, 12, 0.38) 0%,
+        rgba(4, 10, 12, 0.14) 48%,
+        transparent 74%
+    );
+}
+
+/* Upper-center copy: elegant / secondary to the cinematic scene. */
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 12%;
+    bottom: auto;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    max-width: none;
+    margin: 0;
+    padding-inline: clamp(20px, 5vw, 72px);
+    padding-bottom: 0;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__copy {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+    text-shadow:
+        0 1px 12px rgba(4, 10, 12, 0.7),
+        0 0 24px rgba(4, 10, 12, 0.28);
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__copy .bdna-eyebrow {
+    margin-inline: auto;
+    letter-spacing: 0.2em;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__title {
+    margin-top: 14px;
+    font-size: clamp(2.5rem, 4.2vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.028em;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__sub {
+    margin: 14px auto 0;
+    max-width: 620px;
+    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+    line-height: 1.55;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__ctas {
+    margin-top: 22px;
+    justify-content: center;
+}
+
+@media (max-width: 760px) {
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products {
+        width: 100%;
+        aspect-ratio: auto;
+        min-height: 72vh;
+        max-height: none;
+        align-items: flex-end;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__video,
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__poster {
+        object-fit: cover;
+        object-position: center 40%;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__wrap {
+        position: relative;
+        top: auto;
+        inset: auto;
+        padding-bottom: 48px;
+        padding-top: 0;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__title {
+        font-size: clamp(2rem, 8vw, 2.6rem);
+        line-height: 1.05;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__scrim {
+        background: linear-gradient(
+            0deg,
+            rgba(4, 10, 12, 0.62) 0%,
+            rgba(4, 10, 12, 0.28) 40%,
+            transparent 68%
+        );
+    }
+}
+
 /* Teal-tinted left scrim: dark enough on the left third to keep the headline
    readable and to mask faint text baked into the source clip, then clears by
    ~68% so the city skyline (right/center) stays bright and dominant. */

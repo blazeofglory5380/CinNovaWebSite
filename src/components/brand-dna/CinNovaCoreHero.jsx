@@ -42,6 +42,14 @@ function CinNovaCoreHero({
     // the 3D bundle is not loaded. Other consumers (blog) omit it and are
     // completely unaffected.
     videoSrc = null,
+    // Still-image poster used before playback, for reduced-motion, and on error.
+    poster = null,
+    // object-fit: cover position (e.g. "center 42%" to keep a central core).
+    objectPosition = "center center",
+    // Prefer metadata so LCP is not blocked by a full video download.
+    preload = "metadata",
+    // Optional extra class (e.g. products-tuned scrim).
+    className = "",
     // Homepage video-only hero: render just the full 16:9 clip (no visible copy
     // overlay) plus a visually-hidden H1 for SEO/screen readers.
     videoOnly = false,
@@ -54,6 +62,8 @@ function CinNovaCoreHero({
     const pulseRef = useRef(null);
     const videoRef = useRef(null);
     const [canRender3D, setCanRender3D] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
+    const [videoFailed, setVideoFailed] = useState(false);
 
     useEffect(() => {
         // Gate the 3D bundle: WebGL2-capable browser + no data-saver.
@@ -64,22 +74,37 @@ function CinNovaCoreHero({
     }, [videoSrc]);
 
     useEffect(() => {
+        if (typeof window === "undefined" || !window.matchMedia) return undefined;
+        const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const onChange = () => setReducedMotion(media.matches);
+        onChange();
+        media.addEventListener?.("change", onChange);
+        return () => media.removeEventListener?.("change", onChange);
+    }, []);
+
+    const showStill = Boolean(videoSrc && poster && (reducedMotion || videoFailed));
+
+    useEffect(() => {
         const video = videoRef.current;
-        if (!video) return;
-        // Honor reduced-motion: hold the first frame instead of looping.
-        if (prefersReducedMotion()) {
+        if (!video || showStill) return;
+        // Honor reduced-motion without a poster: hold the first frame.
+        if (reducedMotion) {
             video.removeAttribute("autoplay");
             video.pause();
             return;
         }
         // Some browsers need an explicit play() after mount for muted autoplay.
         const played = video.play();
-        if (played && typeof played.catch === "function") played.catch(() => {});
-    }, [videoSrc]);
+        if (played && typeof played.catch === "function") {
+            played.catch(() => setVideoFailed(true));
+        }
+    }, [videoSrc, reducedMotion, showStill]);
 
     const onPulse = useCallback((v) => {
         if (pulseRef.current) pulseRef.current.textContent = v.toFixed(2);
     }, []);
+
+    const mediaStyle = objectPosition ? { objectPosition } : undefined;
 
     // Homepage video-only hero: the visual is the full 16:9 clip; the only text
     // is a visually-hidden H1. No copy overlay, scrim, orb, or 3D.
@@ -88,17 +113,30 @@ function CinNovaCoreHero({
             <section className="cn-core-hero cn-core-hero--videoonly">
                 <h1 className="cn-core-hero__sr">{srHeading || `${titleA} ${titleB}`}</h1>
                 <div className="cn-core-hero__videoframe" aria-hidden="true">
-                    <video
-                        ref={videoRef}
-                        className="cn-core-hero__video"
-                        src={videoSrc}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="auto"
-                        tabIndex={-1}
-                    />
+                    {showStill ? (
+                        <img
+                            className="cn-core-hero__video cn-core-hero__poster"
+                            src={poster}
+                            alt=""
+                            decoding="async"
+                            style={mediaStyle}
+                        />
+                    ) : (
+                        <video
+                            ref={videoRef}
+                            className="cn-core-hero__video"
+                            src={videoSrc}
+                            poster={poster || undefined}
+                            autoPlay={!reducedMotion}
+                            muted
+                            loop
+                            playsInline
+                            preload={preload}
+                            tabIndex={-1}
+                            onError={() => setVideoFailed(true)}
+                            style={mediaStyle}
+                        />
+                    )}
                 </div>
             </section>
         );
@@ -106,24 +144,40 @@ function CinNovaCoreHero({
 
     return (
         <section
-            className={`cn-core-hero${videoSrc ? " cn-core-hero--video" : ""}${
-                videoSrc && fullFrameVideo ? " cn-core-hero--video-full" : ""
-            }`}
+            className={[
+                "cn-core-hero",
+                videoSrc ? "cn-core-hero--video" : "",
+                videoSrc && fullFrameVideo ? "cn-core-hero--video-full" : "",
+                className,
+            ].filter(Boolean).join(" ")}
             aria-label={`${titleA} ${titleB}`}
         >
             <div className="cn-core-hero__visual" aria-hidden="true">
                 {videoSrc ? (
-                    <video
-                        ref={videoRef}
-                        className="cn-core-hero__video"
-                        src={videoSrc}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="auto"
-                        tabIndex={-1}
-                    />
+                    showStill ? (
+                        <img
+                            className="cn-core-hero__video cn-core-hero__poster"
+                            src={poster}
+                            alt=""
+                            decoding="async"
+                            style={mediaStyle}
+                        />
+                    ) : (
+                        <video
+                            ref={videoRef}
+                            className="cn-core-hero__video"
+                            src={videoSrc}
+                            poster={poster || undefined}
+                            autoPlay={!reducedMotion}
+                            muted
+                            loop
+                            playsInline
+                            preload={preload}
+                            tabIndex={-1}
+                            onError={() => setVideoFailed(true)}
+                            style={mediaStyle}
+                        />
+                    )
                 ) : (
                     <>
                         <div className="cn-core-hero__orb" />
