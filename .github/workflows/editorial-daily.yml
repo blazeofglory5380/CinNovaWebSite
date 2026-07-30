@@ -257,7 +257,22 @@ jobs:
         shell: bash
         run: |
           DATE="${{ steps.meta.outputs.date }}"
-          # Commit review artifacts + drafts only. Skip huge live discovery dumps.
+          NEWS_DRAFTS="$(find src/data/news-drafts -type f \( -name '*.js' -o -name '*.mjs' \) 2>/dev/null | wc -l | tr -d ' ')"
+          BLOG_DRAFTS="$(find src/data/blog-drafts -type f \( -name '*.js' -o -name '*.mjs' \) 2>/dev/null | wc -l | tr -d ' ')"
+          NEWS_DRAFTS="${NEWS_DRAFTS:-0}"
+          BLOG_DRAFTS="${BLOG_DRAFTS:-0}"
+          TOTAL=$((NEWS_DRAFTS + BLOG_DRAFTS))
+          echo "news_drafts=$NEWS_DRAFTS" >> "$GITHUB_OUTPUT"
+          echo "blog_drafts=$BLOG_DRAFTS" >> "$GITHUB_OUTPUT"
+
+          # PR gate: only validated draft files open a Draft PR.
+          # Research-qualified / selected / HOLD / report-only days must not create junk PRs.
+          if [ "$TOTAL" -eq 0 ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No editorial draft files survived Phase 10A gates — skipping branch/PR (zero-output)."
+            exit 0
+          fi
+
           git add \
             "editorial-reports/${DATE}-run-summary.json" \
             "editorial-reports/${DATE}-live-packet.json" \
@@ -268,10 +283,9 @@ jobs:
             src/data/news-drafts \
             src/data/blog-drafts \
             || true
-          # Social drafts are generated only when intentionally enabled; do not require them.
           if git diff --cached --quiet; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No editorial automation output to commit (zero-output / no surviving drafts)."
+            echo "Draft files detected but nothing staged."
           else
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             git status --short
@@ -299,14 +313,25 @@ jobs:
           BODY_FILE="$(mktemp)"
           SUMMARY="editorial-reports/${DATE}-run-summary.json"
           REVIEW="editorial-reports/${DATE}-review.md"
+          RESEARCH="editorial-reports/${DATE}-research.json"
           DAILY="editorial-reports/${DATE}.md"
+          TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-          NEWS_CREATED="$(find src/data/news-drafts -type f -name '*.js' 2>/dev/null | wc -l | tr -d ' ')"
-          BLOG_CREATED="$(find src/data/blog-drafts -type f -name '*.js' 2>/dev/null | wc -l | tr -d ' ')"
+          NEWS_CREATED="${{ steps.changes.outputs.news_drafts }}"
+          BLOG_CREATED="${{ steps.changes.outputs.blog_drafts }}"
+
+          READY=0; REVIEW=0; HOLD=0; REJECT=0
+          if [ -f "$RESEARCH" ]; then
+            READY="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="READY")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            REVIEW="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="REVIEW")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            HOLD="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="HOLD")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+            REJECT="$(jq -r '[.newsDesks[]?, (.blog // empty)] | map(select(.disposition=="REJECT")) | length' "$RESEARCH" 2>/dev/null || echo 0)"
+          fi
 
           {
             echo "## Summary"
             echo "- Automated editorial preparation for **${DATE}** (\`${{ steps.meta.outputs.run_id }}\`)"
+            echo "- Research timestamp (UTC): \`${TIMESTAMP}\`"
             echo "- Research mode: **${{ steps.meta.outputs.mode }}** — ${{ steps.meta.outputs.mode_reason }}"
             echo "- Drafts only — no publish, no merge, no deploy, no social posting"
             echo "- HOLD / REJECT must not be published"
@@ -314,12 +339,13 @@ jobs:
             echo "## Research"
             if [ -f "$SUMMARY" ]; then
               echo "- Run status: \`$(jq -r '.runStatus.status' "$SUMMARY")\`"
+              echo "- Sources attempted: \`$(jq -r '.sourceResults | length' "$SUMMARY")\`"
+              echo "- Healthy sources: \`$(jq -r '[.sourceResults[] | select(.ok==true)] | length' "$SUMMARY")\`"
+              echo "- Failed sources: \`$(jq -r '[.sourceResults[] | select(.ok==false)] | map(.sourceId) | join(", ")' "$SUMMARY")\`"
               echo "- Candidates: \`$(jq -r '.candidateCount' "$SUMMARY")\`"
               echo "- Clusters: \`$(jq -r '.clusterCount' "$SUMMARY")\`"
               echo "- Research-qualified: \`$(jq -r '.qualifiedCount' "$SUMMARY")\`"
               echo "- Editorial-selected: \`$(jq -r '.selectedCount' "$SUMMARY")\`"
-              echo "- Healthy sources: \`$(jq -r '[.sourceResults[] | select(.ok==true)] | length' "$SUMMARY")\`"
-              echo "- Failed sources: \`$(jq -r '[.sourceResults[] | select(.ok==false)] | map(.sourceId) | join(", ")' "$SUMMARY")\`"
               echo "- Selected news: \`$(jq -r '.selection.newsTopics // [] | join("; ")' "$SUMMARY")\`"
               echo "- Selected blog: \`$(jq -r '.selection.blogTopics // [] | join("; ")' "$SUMMARY")\`"
             else
@@ -327,9 +353,10 @@ jobs:
             fi
             echo ""
             echo "## Draft inventory"
-            echo "- News draft files present in branch tree: **${NEWS_CREATED}**"
-            echo "- Blog draft files present in branch tree: **${BLOG_CREATED}**"
-            echo "- Phase 10A fact-check / review still decide READY vs REVIEW vs HOLD"
+            echo "- News drafts: **${NEWS_CREATED}**"
+            echo "- Blog drafts: **${BLOG_CREATED}**"
+            echo "- READY: **${READY}** · REVIEW: **${REVIEW}** · HOLD: **${HOLD}** · REJECT: **${REJECT}**"
+            echo "- Validation: catalogs checked in workflow (continue-on-error); see review report"
             echo ""
             echo "## Readiness"
             echo '```'
@@ -349,9 +376,9 @@ jobs:
             echo "- [ ] Human publishes selectively; do not merge HOLD content"
           } > "$BODY_FILE"
 
-          EXISTING="$(gh pr list --head "$BRANCH" --json number,url --jq '.[0].number')"
+          EXISTING="$(gh pr list --head "$BRANCH" --state open --json number,url --jq '.[0].number')"
           if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
-            echo "Unexpected existing PR after duplicate guard; updating #$EXISTING without marking ready."
+            echo "Unexpected existing open PR after duplicate guard; updating #$EXISTING without marking ready."
             gh pr edit "$EXISTING" --title "$TITLE" --body-file "$BODY_FILE"
           else
             gh pr create --draft --title "$TITLE" --body-file "$BODY_FILE" --head "$BRANCH"
@@ -366,7 +393,6 @@ jobs:
           if-no-files-found: ignore
           path: |
             editorial-reports/${{ steps.meta.outputs.date }}-run-summary.json
-            editorial-reports/${{ steps.meta.outputs.date }}-discovery.md
             editorial-reports/${{ steps.meta.outputs.date }}-research.md
             editorial-reports/${{ steps.meta.outputs.date }}-review.md
             editorial-reports/${{ steps.meta.outputs.date }}.md

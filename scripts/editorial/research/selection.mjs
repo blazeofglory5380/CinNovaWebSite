@@ -128,7 +128,18 @@ export function selectClustersForPacket(qualified = [], {
     const bucketCounts = new Map();
     const softMaxPerBucket = 2;
 
-    const canTake = (item) => (sourceCounts.get(item.sourceId) || 0) < maxPerSource;
+    const canTake = (item) => {
+        const count = sourceCounts.get(item.sourceId) || 0;
+        if (count < maxPerSource) return true;
+        // Soft-cap must not suppress the best remaining story for an open desk
+        // merely because another selected item already used the same source.
+        if (!deskOpen(item) || count >= maxPerSource + 1) return false;
+        const bestRemainingForDesk = newsPool.find((candidate) =>
+            !selectedNews.includes(candidate)
+            && deskOpen(candidate)
+            && candidate.desk === item.desk);
+        return bestRemainingForDesk === item;
+    };
     const bucketOpen = (item) => (bucketCounts.get(item.bucket) || 0) < softMaxPerBucket;
     const deskOpen = (item) => !usedDesks.has(item.desk);
 
