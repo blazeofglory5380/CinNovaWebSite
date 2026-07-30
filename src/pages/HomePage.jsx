@@ -7,8 +7,10 @@ import GlassPanel from "../components/brand-dna/GlassPanel.jsx";
 import SectionHead from "../components/brand-dna/SectionHead.jsx";
 import Dispatch from "../components/brand-dna/Dispatch.jsx";
 import EcosystemCarousel from "../components/EcosystemCarousel.jsx";
+import { NewsCompactCard } from "../components/news/NewsCards.jsx";
 import { getRecentlyAddedResources } from "../data/resources.js";
 import { normalizeProductStatus } from "../data/products.js";
+import { getLatestNewsStories } from "../data/newsPosts.js";
 import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
 import { trackProductExploreClick } from "../utils/analytics.js";
@@ -91,12 +93,15 @@ function HomePage({
     posts,
     onNavigate,
     onOpenArticle,
+    onOpenNewsStory,
     onOpenResource,
     onGoResources,
     onGoBlog,
+    onGoNews,
     onSubscribe,
 }) {
     const latestResources = useMemo(() => getRecentlyAddedResources(3), []);
+    const latestNews = useMemo(() => getLatestNewsStories({ limit: 5 }), []);
     const latestArticles = useMemo(
         () => [...posts].sort((a, b) => parsePostDate(b.date) - parsePostDate(a.date)).slice(0, 3),
         [posts],
@@ -218,6 +223,29 @@ function HomePage({
                 <div className="home-v2__section-action">
                     <button type="button" className="bdna-btn bdna-btn--ghost" onClick={onGoResources}>
                         Browse all resources →
+                    </button>
+                </div>
+            </MotionSectionWrap>
+
+            {/* ── Latest news ─────────────────────────────────────────── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="Latest news">
+                <SectionHead eyebrow="Latest News" title="Verified reporting from the CinNova News Center." />
+                <p className="home-v2__lead">
+                    New developments across technology, business, infrastructure, and public policy.
+                </p>
+                <div className="home-v2__grid">
+                    {latestNews.map((story) => (
+                        <NewsCompactCard
+                            key={story.id}
+                            story={story}
+                            onOpenStory={onOpenNewsStory}
+                            surface="homepage-latest-news"
+                        />
+                    ))}
+                </div>
+                <div className="home-v2__section-action">
+                    <button type="button" className="bdna-btn bdna-btn--ghost" onClick={() => onGoNews?.("all")}>
+                        Visit the News Center →
                     </button>
                 </div>
             </MotionSectionWrap>
