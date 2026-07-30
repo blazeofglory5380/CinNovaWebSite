@@ -690,26 +690,32 @@ function App() {
                     <span>CinNova</span>
                 </button>
 
-                <div className={`nav-links${mobileMenuOpen ? " nav-mobile-open" : ""}`}>
+                <div id="nav-links" className={`nav-links${mobileMenuOpen ? " nav-mobile-open" : ""}`}>
                     <button
                         className="nav-mobile-close"
                         onClick={() => setMobileMenuOpen(false)}
                         aria-label="Close menu"
                     />
-                    {/* Primary links — always inline on desktop */}
+                    {/* Primary links — always inline on desktop; same set in mobile overlay */}
                     <button onClick={() => { goHome();                       setMobileMenuOpen(false); }}>Home</button>
                     <button onClick={() => { openPage("products");            setMobileMenuOpen(false); }}>Products</button>
                     <button onClick={() => { openPage("news");               setMobileMenuOpen(false); }}>News</button>
                     <button onClick={() => { goResources();                  setMobileMenuOpen(false); }}>Resources</button>
                     <button onClick={() => { goBlog();                       setMobileMenuOpen(false); }}>Blog</button>
-                    <button onClick={() => { openPage("about");              setMobileMenuOpen(false); }}>About</button>
+                    <button
+                        className={page === "books" || page === "book-detail" ? "is-active" : undefined}
+                        aria-current={page === "books" || page === "book-detail" ? "page" : undefined}
+                        onClick={() => { goBooks(); setMobileMenuOpen(false); }}
+                    >
+                        Books
+                    </button>
                     <button className="nav-languages" onClick={() => { trackEvent("language_header_click", { source: "header" }); openPage("languages"); setMobileMenuOpen(false); }} aria-label="Languages">
                         <span aria-hidden="true">🌐</span> Languages
                     </button>
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
-                            { label: "Books", onSelect: () => { goBooks(); setMobileMenuOpen(false); } },
+                            { label: "About", onSelect: () => { openPage("about"); setMobileMenuOpen(false); } },
                             { label: "Pricing", onSelect: () => { openPage("pricing"); setMobileMenuOpen(false); } },
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },

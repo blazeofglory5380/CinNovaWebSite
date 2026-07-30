@@ -113,11 +113,41 @@ assert.ok(productsSrc.includes("Books & Publishing"));
 assert.ok(productsSrc.includes('onNavigate("books")'));
 
 const appSrc = await readFile(path.join(root, "src/App.jsx"), "utf8");
-assert.ok(appSrc.includes('label: "Books"'));
 assert.ok(appSrc.includes("goBooks"));
 assert.ok(appSrc.includes('path === "/books"'));
 
+// Primary nav: Books is a top-level control (not only under More).
+const primaryBooksMatch = appSrc.match(
+    /Primary links[\s\S]*?<button[\s\S]*?>\s*Books\s*<\/button>[\s\S]*?NavMoreMenu/,
+);
+assert.ok(primaryBooksMatch, "Books must appear in the primary nav before NavMoreMenu");
+assert.ok(
+    primaryBooksMatch[0].includes("goBooks()"),
+    "primary Books button must navigate via goBooks → /books",
+);
+assert.ok(
+    primaryBooksMatch[0].includes('page === "book-detail"'),
+    "Books nav active state must cover /books/:slug (book-detail)",
+);
+
+// About moves to More; must not remain a primary sibling beside Blog/Books.
+const moreItemsMatch = appSrc.match(/NavMoreMenu\s*\n?\s*items=\{\[([\s\S]*?)\]\}/);
+assert.ok(moreItemsMatch, "expected NavMoreMenu items array");
+assert.ok(moreItemsMatch[1].includes('label: "About"'), "About must appear under More");
+assert.equal(
+    moreItemsMatch[1].includes('label: "Books"'),
+    false,
+    "Books must not be duplicated in the More menu",
+);
+assert.equal(
+    /Primary links[\s\S]*?>\s*About\s*<\/button>[\s\S]*?NavMoreMenu/.test(appSrc),
+    false,
+    "About must not remain a primary nav button",
+);
+assert.ok(appSrc.includes('openPage("about")'), "/about must remain reachable");
+
 const footerSrc = await readFile(path.join(root, "src/components/SiteFooter.jsx"), "utf8");
 assert.ok(footerSrc.includes('onNavigate("books")'));
+assert.ok(footerSrc.includes('onNavigate("about")'));
 
 console.log("test:books-route passed");
