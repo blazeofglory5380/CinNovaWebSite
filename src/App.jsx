@@ -285,6 +285,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
  */
 function pathForPage(nextPage) {
     if (nextPage === "blog") return "/blog";
+    if (nextPage === "news") return "/news";
     if (nextPage === "blog-manager") return "/blog-admin";
     if (nextPage === "products") return "/products";
     if (nextPage === "resources") return "/resources";
@@ -330,7 +331,8 @@ function App() {
     // this rarely fires there. It remains for local dev (`vite`) and any non-Vercel
     // host where middleware does not run, and it uses the SAME shared resolver as
     // the middleware so the two can never diverge. Runs once on mount; only the
-    // 19 supported legacy forms resolve — other `?page=` routes are left untouched.
+    // 19 supported product/resource forms resolve, plus News Center and the
+    // Phase 2B migrated public pages — other `?page=` routes are left untouched.
     useEffect(() => {
         const cleanPath = resolveLegacyRouteRedirect(window.location.search);
         if (!cleanPath) return;
@@ -343,9 +345,14 @@ function App() {
         }
     }, []);
 
-    // Track SPA page views whenever the routed view changes.
+    // Backup SPA page-view tracking when routed view state changes (covers
+    // initial load + popstate). pushRoute also tracks eagerly with the
+    // destination URL so SPA navigations (including News → /news) cannot miss
+    // a hit if the effect timing races the history update.
     useEffect(() => {
-        trackPageView(window.location.pathname + window.location.search);
+        trackPageView(
+            window.location.pathname + window.location.search + window.location.hash
+        );
     }, [page, selectedArticle?.slug, selectedResource?.slug, selectedNewsStory?.slug]);
 
     // Frosted nav gains a subtle shadow once the page scrolls off the top.
@@ -447,6 +454,10 @@ function App() {
 
     function pushRoute(url) {
         window.history.pushState({}, "", url);
+        // Track immediately with the known destination. Critical for legacy
+        // `?page=` routes where pathname stays `/` and only search changes —
+        // relying solely on a later effect can miss the collect entirely.
+        trackPageView(url);
     }
 
     function goHome() {
@@ -509,8 +520,8 @@ function App() {
         scrollTop();
     }
 
-    /* News Center: the landing page keeps its existing `?page=news` route,
-       while individual stories use clean `/news/<slug>` paths. */
+    /* News Center: canonical `/news`; stories use `/news/<slug>`.
+       Legacy `/?page=news` 308s (edge) or replaceStates (client) to `/news`. */
     function goNews(coverageLevel = "all") {
         setSelectedArticle(null);
         setSelectedResource(null);
@@ -518,7 +529,7 @@ function App() {
         setSelectedCategory("All");
         setNewsCoverage(coverageLevel);
         setPage("news");
-        pushRoute("/?page=news");
+        pushRoute("/news");
         scrollTop();
     }
 
@@ -931,3 +942,4 @@ function App() {
 }
 
 export default App;
+
