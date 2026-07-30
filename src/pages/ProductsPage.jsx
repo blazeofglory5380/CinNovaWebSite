@@ -517,7 +517,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                 subtitle="AI-powered products for learning, safety, real estate, technology, and everyday life — connected through the CinNova ecosystem."
                 videoSrc={PRODUCTS_HERO_VIDEO}
                 poster={PRODUCTS_HERO_POSTER}
-                objectPosition="center 42%"
+                objectPosition="center center"
                 preload="metadata"
                 primaryCta={{ label: "Explore Products", onClick: scrollToCatalog }}
                 secondaryCta={{ label: "Discover CinNova", onClick: discoverCinNova }}

@@ -149,46 +149,88 @@
     pointer-events: none;
 }
 
-/* Products / cover heroes: keep the ecosystem core readable on narrow screens */
+/* ── Products catalog hero ───────────────────────────────────────────
+   Desktop: show the ENTIRE Runway 16:9 frame (object-fit: contain). Never
+   crop sun / moon / core. Letterbox against a dark stage if needed.
+   Mobile: cover + center framing is allowed so CTAs stay usable. */
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products {
+    min-height: 0;
+    /* Keep a true 16:9 stage: when viewport height caps the hero, shrink width too
+       so contain never pillarboxes / letterboxes away from the Runway frame. */
+    width: min(100%, calc(90vh * 16 / 9));
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 90vh;
+    height: auto;
+    margin-inline: auto;
+    align-items: flex-end;
+    background: #040a0c;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__video,
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__poster {
+    object-fit: contain;
+    object-position: center center;
+    background: #040a0c;
+}
+
+/* Kill full-frame wash / vignette — keep Runway lighting intact.
+   Higher specificity than .cn-core-hero--video scrim/tint below. */
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__tint {
+    background: none;
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__fade {
+    display: none;
+}
+
+/* Minimal localized contrast only behind HTML copy (left third). */
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__scrim {
+    background: linear-gradient(
+        105deg,
+        rgba(4, 10, 12, 0.34) 0%,
+        rgba(4, 10, 12, 0.16) 18%,
+        rgba(4, 10, 12, 0.05) 32%,
+        transparent 46%
+    );
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__copy {
+    text-shadow:
+        0 1px 14px rgba(4, 10, 12, 0.72),
+        0 0 28px rgba(4, 10, 12, 0.32);
+}
+
+.cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__wrap {
+    padding-bottom: clamp(20px, 3.6vw, 48px);
+}
+
 @media (max-width: 760px) {
-    .cn-core-hero--video:not(.cn-core-hero--video-full) .cn-core-hero__video {
-        object-position: center 38%;
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products {
+        width: 100%;
+        aspect-ratio: auto;
+        min-height: 72vh;
+        max-height: none;
+        padding-bottom: 56px;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__video,
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__poster {
+        object-fit: cover;
+        object-position: center 40%;
+    }
+
+    .cn-core-hero.cn-core-hero--video.cn-core-hero--products .cn-core-hero__scrim {
+        background: linear-gradient(
+            0deg,
+            rgba(4, 10, 12, 0.62) 0%,
+            rgba(4, 10, 12, 0.28) 40%,
+            transparent 68%
+        );
     }
 }
 
-/* Products catalog: left + soft top scrim so HTML copy stays readable over any
-   baked-in frame text, without crushing the central core / city. */
-.cn-core-hero--products .cn-core-hero__scrim {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(6, 18, 20, 0.9) 0%,
-            rgba(6, 18, 20, 0.68) 28%,
-            rgba(6, 18, 20, 0.28) 48%,
-            rgba(6, 18, 20, 0.08) 60%,
-            transparent 72%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(6, 18, 20, 0.42) 0%,
-            rgba(6, 18, 20, 0.12) 34%,
-            transparent 58%
-        );
-}
-.cn-core-hero--products .cn-core-hero__tint {
-    background: radial-gradient(58% 60% at 24% 48%, rgba(10, 150, 130, 0.12), transparent 72%);
-}
-@media (max-width: 760px) {
-    .cn-core-hero--products .cn-core-hero__scrim {
-        background: linear-gradient(
-            0deg,
-            rgba(7, 19, 22, 0.92) 0%,
-            rgba(7, 19, 22, 0.7) 36%,
-            rgba(7, 19, 22, 0.22) 58%,
-            transparent 74%
-        );
-    }
-}
 /* Teal-tinted left scrim: dark enough on the left third to keep the headline
    readable and to mask faint text baked into the source clip, then clears by
    ~68% so the city skyline (right/center) stays bright and dominant. */
