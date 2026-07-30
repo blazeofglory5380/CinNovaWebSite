@@ -15,6 +15,12 @@ import {
     getPublicNewsStories,
     getRelatedNewsStories,
 } from "../src/data/newsPosts.js";
+import {
+    getBookUrl,
+    getBooksIndexUrl,
+    getCatalogBooks,
+    statusLabel,
+} from "../src/data/booksCatalog.js";
 import { defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
 import { getOtherProducts, getProductUrl, products } from "../src/data/products.js";
 import {
@@ -385,8 +391,66 @@ for (const story of newsStories) {
     await writeRoute(path.join("news", `${story.slug}.html`), metadata, schema, shell);
 }
 
+/* CinNova Books storefront index + detail foundations. */
+const booksCatalog = getCatalogBooks();
+const booksIndexTitle = "Books | CinNova Publishing";
+const booksIndexDescription =
+    "Explore CinNova Books — original fiction, illustrated worlds, cookbooks, and companion editions from CinNova Press.";
+const booksIndexMetadata = {
+    title: booksIndexTitle,
+    description: booksIndexDescription,
+    canonical: getBooksIndexUrl(),
+    image: `${siteUrl}/images/hero/cinnova-books-hero-nightmare-beyond-master.png`,
+    imageAlt: "CinNova Books cinematic hero",
+    type: "website",
+};
+const booksIndexLinks = booksCatalog
+    .map((book) => `<li><a href="/books/${escapeHtml(book.slug)}">${escapeHtml(book.title)}</a></li>`)
+    .join("");
+await writeRoute(
+    "books.html",
+    booksIndexMetadata,
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "CinNova Books",
+        description: booksIndexDescription,
+        url: getBooksIndexUrl(),
+        publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
+        hasPart: booksCatalog.map((book) => ({
+            "@type": "Book",
+            name: book.title,
+            url: getBookUrl(book),
+        })),
+    },
+    `<div id="root"><main class="books-page" data-seo-shell="books"><h1>Stories That Open New Worlds</h1><p>${escapeHtml(booksIndexDescription)}</p><ul>${booksIndexLinks}</ul><nav aria-label="Site"><a href="/">Home</a><a href="/products">Products</a><a href="/blog">Blog</a><a href="/news">News</a></nav></main></div>`
+);
+
+for (const book of booksCatalog) {
+    const metadata = {
+        title: `${book.title} | CinNova Books`,
+        description: book.description,
+        canonical: getBookUrl(book),
+        image: book.cover.startsWith("http") ? book.cover : `${siteUrl}${book.cover}`,
+        imageAlt: book.coverAlt || book.title,
+        type: "website",
+    };
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        name: book.title,
+        description: book.description,
+        url: getBookUrl(book),
+        genre: book.category,
+        publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
+    };
+    const shell = `<div id="root"><main class="books-page books-detail-page" data-seo-shell="book-detail"><article><p>${escapeHtml(statusLabel(book))} · ${escapeHtml(book.category)}</p><h1>${escapeHtml(book.title)}</h1><p>${escapeHtml(book.description)}</p><img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.coverAlt || book.title)}" /><nav aria-label="Books"><a href="/books">All CinNova Books</a></nav></article></main></div>`;
+    await writeRoute(path.join("books", `${book.slug}.html`), metadata, schema, shell);
+}
+
 console.log(
     `Generated crawlable metadata for ${posts.length} articles, ${blogCategories.length} categories, the blog index, ` +
         `${products.length} products + product index, ${resources.length} resources + resource index, ` +
-        `${PUBLIC_PAGE_ROUTES.length} migrated public pages, the news index, ${newsStories.length} news stories, and the branded 404 page.`
+        `${PUBLIC_PAGE_ROUTES.length} migrated public pages, the news index, ${newsStories.length} news stories, ` +
+        `the books index, ${booksCatalog.length} book pages, and the branded 404 page.`
 );

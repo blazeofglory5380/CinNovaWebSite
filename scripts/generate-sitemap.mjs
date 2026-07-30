@@ -179,10 +179,11 @@ const breakdown = {
     blog: entries.filter((e) => e.loc.includes("/blog")).length,
     resources: entries.filter((e) => e.loc === `${siteUrl}/resources` || e.loc.startsWith(`${siteUrl}/resources/`)).length,
     news: entries.filter((e) => e.loc === `${siteUrl}/news` || e.loc.includes("/news/")).length,
+    books: entries.filter((e) => e.loc === `${siteUrl}/books` || e.loc.includes("/books/")).length,
 };
 console.log(
     `  Breakdown: ${breakdown.home} home, ${breakdown.cleanPublic} clean public pages, ${breakdown.legacyQuery} legacy ?page= pages, ` +
-        `${breakdown.products} product URLs, ${breakdown.blog} blog URLs, ${breakdown.resources} resource URLs, ${breakdown.news} news stories`,
+        `${breakdown.products} product URLs, ${breakdown.blog} blog URLs, ${breakdown.resources} resource URLs, ${breakdown.news} news stories, ${breakdown.books} books URLs`,
 );
 if (!breakdown.news) {
     console.log("  Note: no public news stories yet — demo fixtures are excluded by design.");

@@ -19,6 +19,7 @@ import {
     getPublishedNewsStories,
     getRelatedNewsStories,
 } from "../src/data/newsPosts.js";
+import { getCatalogBooks } from "../src/data/booksCatalog.js";
 import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, getStaticPageUrl, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
@@ -231,6 +232,25 @@ if (sitemapEntries.some((entry) => entry.loc.includes("?page=news"))) {
 if (sitemapNewsUrls.length !== publicNews.length) {
     error("news sitemap", `expected ${publicNews.length} news story URLs in the sitemap, found ${sitemapNewsUrls.length}`);
 }
+
+const publicBooks = getCatalogBooks();
+const sitemapBooksCenter = sitemapEntries.filter((entry) => entry.loc === `${siteUrl}/books`);
+const sitemapBookUrls = sitemapEntries.filter((entry) => entry.loc.includes("/books/"));
+if (sitemapBooksCenter.length !== 1) {
+    error("books sitemap", `expected exactly one Books URL (${siteUrl}/books), found ${sitemapBooksCenter.length}`);
+}
+if (sitemapEntries.some((entry) => entry.loc.includes("?page=books"))) {
+    error("books sitemap", "legacy /?page=books must not appear as a separate sitemap entry");
+}
+if (sitemapBookUrls.length !== publicBooks.length) {
+    error("books sitemap", `expected ${publicBooks.length} book detail URLs in the sitemap, found ${sitemapBookUrls.length}`);
+}
+for (const book of publicBooks) {
+    if (!sitemapBookUrls.some((entry) => entry.loc === `${siteUrl}/books/${book.slug}`)) {
+        error("books sitemap", `missing book detail URL for ${book.slug}`);
+    }
+}
+
 for (const story of newsStories) {
     if (story.isDemo && sitemapNewsUrls.some((entry) => entry.loc === `${siteUrl}/news/${story.slug}`)) {
         error(`news:${story.slug}`, "demo fixture must not appear in the sitemap");
@@ -408,6 +428,12 @@ for (const { scope, resource, metadata } of resourceMetas) {
     if (resolveLegacyRouteRedirect("?page=news&story=demo-slug") !== "/news/demo-slug") {
         error("legacy-redirects", `resolver("?page=news&story=demo-slug") must be /news/demo-slug`);
     }
+    if (resolveLegacyRouteRedirect("?page=books") !== "/books") {
+        error("legacy-redirects", `resolver("?page=books") must be /books`);
+    }
+    if (resolveLegacyRouteRedirect("?page=books&book=nightmare-forest") !== "/books/nightmare-forest") {
+        error("legacy-redirects", `resolver("?page=books&book=nightmare-forest") must be /books/nightmare-forest`);
+    }
 
     // Root middleware must exist, use the shared resolver, and emit a 308.
     try {
@@ -422,7 +448,7 @@ for (const { scope, resource, metadata } of resourceMetas) {
 // ─────────────────────────────────────────────────────────────────────────
 // Phase 2B Checkpoint 1 — migrated public pages + resource sitemap images.
 // ─────────────────────────────────────────────────────────────────────────
-const RESERVED_PREFIXES = ["/blog", "/products", "/resources", "/news"];
+const RESERVED_PREFIXES = ["/blog", "/products", "/resources", "/news", "/books"];
 {
     // Registry integrity.
     if (PUBLIC_SITE_URL !== siteUrl) error("public-pages", `PUBLIC_SITE_URL (${PUBLIC_SITE_URL}) must equal siteUrl (${siteUrl})`);
@@ -800,7 +826,7 @@ if (validateDist) {
         catch { error("checkpoint", `missing generated HTML for ${route.path}`); }
     }
     const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter(
-        (k) => k !== "home" && k !== "news" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k),
+        (k) => k !== "home" && k !== "news" && k !== "books" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k),
     );
     if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
     if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
@@ -809,6 +835,10 @@ if (validateDist) {
     if (getNewsIndexUrl() !== `${siteUrl}/news`) error("checkpoint", "getNewsIndexUrl must be https://getcinnova.com/news");
     try { await stat(path.join(root, "dist", "news.html")); }
     catch { error("checkpoint", "missing generated HTML for /news (News Center)"); }
+    if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "books")) error("checkpoint", "books must remain in STATIC_PUBLIC_PAGES");
+    if (getStaticPageUrl("books") !== `${siteUrl}/books`) error("checkpoint", "books canonical URL must be /books");
+    try { await stat(path.join(root, "dist", "books.html")); }
+    catch { error("checkpoint", "missing generated HTML for /books (Books storefront)"); }
     if (unmigrated.length !== 0) error("checkpoint", `expected 0 unmigrated public pages, found ${unmigrated.length}: ${unmigrated.join(", ")}`);
 
     // ── Checkpoint 3: true HTTP 404 architecture ──
@@ -864,6 +894,7 @@ if (validateDist) {
             resources: ["/resources", ...resources.map((r) => `/resources/${r.slug}`)],
             public: PUBLIC_PAGE_ROUTES.map((r) => r.path),
             news: ["/news", ...publicNews.map((story) => `/news/${story.slug}`)],
+            books: ["/books", ...getCatalogBooks().map((book) => `/books/${book.slug}`)],
         };
         const counts = [];
         let routeTotal = 0;

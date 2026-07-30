@@ -1,0 +1,201 @@
+/*
+ * CinNova Books storefront — Brand DNA composition under main.books-v2.
+ */
+
+main.books-v2 {
+    background: var(--bdna-bg);
+    color: var(--bdna-ink);
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.books-v2__section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(36px, 5.5vh, 68px) clamp(20px, 4vw, 48px);
+}
+
+.books-v2__lead {
+    margin: -18px 0 clamp(28px, 4vw, 44px);
+    max-width: 64ch;
+    color: var(--bdna-dim);
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.65;
+}
+
+.books-v2__cat {
+    font-family: var(--bdna-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bdna-emerald-glow);
+}
+
+.books-v2__card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.books-v2__status {
+    font-family: var(--bdna-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim2);
+}
+
+.books-v2__status--available {
+    color: var(--bdna-emerald-glow);
+    border-color: rgba(63, 232, 192, 0.35);
+    background: rgba(10, 191, 140, 0.12);
+}
+
+.books-v2__status--coming-soon {
+    color: var(--bdna-gold);
+    border-color: rgba(201, 169, 98, 0.35);
+    background: var(--bdna-gold-soft);
+}
+
+.books-v2__status--in-development {
+    color: var(--bdna-dim2);
+    border-style: dashed;
+}
+
+.books-v2__formats {
+    margin: 0;
+    font-family: var(--bdna-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--bdna-dim2);
+}
+
+.books-v2__featured {
+    display: grid;
+    grid-template-columns: minmax(220px, 360px) 1fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+}
+
+.books-v2__featured-cover {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--bdna-panel-edge);
+    background: var(--bdna-panel);
+    aspect-ratio: 3 / 4;
+}
+
+.books-v2__featured-cover img,
+.books-v2__card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.books-v2__featured-copy .books-v2__lead {
+    margin: 16px 0 12px;
+}
+
+.books-v2__detail-title {
+    margin: 16px 0 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    color: var(--bdna-ink);
+}
+
+.books-v2__card-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.books-v2__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.books-v2__card {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 18px;
+    padding: 16px;
+    border-radius: 18px;
+    background: var(--bdna-panel);
+    border: 1px solid var(--bdna-panel-edge);
+}
+
+.books-v2__card-cover {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.books-v2__card h3 {
+    margin: 10px 0 8px;
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    color: var(--bdna-ink);
+}
+
+.books-v2__card p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--bdna-dim);
+}
+
+.books-v2__card .books-v2__formats {
+    margin-top: 10px;
+}
+
+.books-v2__note {
+    border-top: 1px solid var(--bdna-panel-edge);
+    color: var(--bdna-dim);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.books-v2__text-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--bdna-emerald-glow);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+}
+
+@media (max-width: 900px) {
+    .books-v2__featured {
+        grid-template-columns: 1fr;
+    }
+
+    .books-v2__featured-cover {
+        max-width: 320px;
+    }
+
+    .books-v2__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .books-v2__card {
+        grid-template-columns: 1fr;
+    }
+
+    .books-v2__card-cover {
+        max-width: 220px;
+    }
+}

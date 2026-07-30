@@ -424,6 +424,38 @@ export function trackProductsHeroDiscoverClick() {
     });
 }
 
+export function trackBooksHeroExploreClick() {
+    trackEvent("books_hero_explore_click", {
+        source_page: "books",
+        click_location: "books_hero",
+    });
+}
+
+export function trackBooksHeroFeaturedClick() {
+    trackEvent("books_hero_featured_click", {
+        source_page: "books",
+        click_location: "books_hero",
+    });
+}
+
+export function trackBookCardClick({ bookSlug = "", bookTitle = "", releaseStatus = "" } = {}) {
+    trackEvent("book_card_click", {
+        book_slug: bookSlug,
+        book_title: bookTitle,
+        release_status: releaseStatus,
+        source_page: "books",
+    });
+}
+
+export function trackBookExternalPurchaseClick({ bookSlug = "", bookTitle = "", releaseStatus = "" } = {}) {
+    trackEvent("book_external_purchase_click", {
+        book_slug: bookSlug,
+        book_title: bookTitle,
+        release_status: releaseStatus,
+        source_page: "books",
+    });
+}
+
 export function trackProductExploreClick({ productName = "", sourcePage = "", destinationPage = "" } = {}) {
     trackEvent("product_explore_click", {
         product_name: productName,

@@ -10,6 +10,8 @@ import Kiddo from "./pages/Kiddo.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import News from "./pages/News.jsx";
 import NewsStoryPage from "./pages/NewsStoryPage.jsx";
+import Books from "./pages/Books.jsx";
+import BookDetailPage from "./pages/BookDetailPage.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import FreeRentalCalculator from "./pages/FreeRentalCalculator.jsx";
@@ -84,6 +86,7 @@ import { safeGetSessionFlag, safeSetSessionFlag } from "./utils/security.js";
 import { getCategoryBySlug, slugifyCategory } from "./data/blogPosts.js";
 import { getNewsStoryBySlug } from "./data/newsPosts.js";
 import { getNewsDraftBySlug } from "./data/newsDrafts.js";
+import { getBookBySlug } from "./data/booksCatalog.js";
 import { getBlogDraftBySlug } from "./data/blogDrafts.js";
 import { ADMIN_PAGE_KEYS, VALID_PAGE_KEYS } from "./data/seoConfig.js";
 import { trackPageView, trackEvent } from "./utils/analytics.js";
@@ -185,6 +188,21 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         return { page: "news", article: null, resource: null, category: null };
     }
 
+    // CinNova Books: /books index + /books/:slug detail foundation.
+    const bookMatch = path.match(/^\/books\/([^/]+)$/);
+    if (bookMatch || (routedPage === "books" && params.get("book"))) {
+        const slug = decodeURIComponent(bookMatch ? bookMatch[1] : params.get("book"));
+        const book = getBookBySlug(slug);
+        if (book) {
+            return { page: "book-detail", article: null, resource: null, category: null, book };
+        }
+        return { page: "not-found", article: null, resource: null, category: null };
+    }
+
+    if (path === "/books") {
+        return { page: "books", article: null, resource: null, category: null };
+    }
+
     if (path === "/blog") {
         return { page: "blog", article: null, resource: null, category: "All" };
     }
@@ -268,6 +286,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         path === "/blog" ||
         path === "/blog-admin" ||
         path === "/news" ||
+        path === "/books" ||
         path.startsWith("/blog/");
 
     if (!isKnownPath) {
@@ -286,6 +305,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
 function pathForPage(nextPage) {
     if (nextPage === "blog") return "/blog";
     if (nextPage === "news") return "/news";
+    if (nextPage === "books") return "/books";
     if (nextPage === "blog-manager") return "/blog-admin";
     if (nextPage === "products") return "/products";
     if (nextPage === "resources") return "/resources";
@@ -310,6 +330,7 @@ function App() {
     const [selectedResource, setSelectedResource] = useState(initialRoute.resource);
     const [selectedCategory, setSelectedCategory] = useState(initialRoute.category || "All");
     const [selectedNewsStory, setSelectedNewsStory] = useState(initialRoute.newsStory || null);
+    const [selectedBook, setSelectedBook] = useState(initialRoute.book || null);
     // Coverage level the News Center should open on (set by story breadcrumbs).
     const [newsCoverage, setNewsCoverage] = useState("all");
 
@@ -353,7 +374,7 @@ function App() {
         trackPageView(
             window.location.pathname + window.location.search + window.location.hash
         );
-    }, [page, selectedArticle?.slug, selectedResource?.slug, selectedNewsStory?.slug]);
+    }, [page, selectedArticle?.slug, selectedResource?.slug, selectedNewsStory?.slug, selectedBook?.slug]);
 
     // Frosted nav gains a subtle shadow once the page scrolls off the top.
     const navScrolled = useStickyNav();
@@ -369,6 +390,7 @@ function App() {
         selectedArticle?.slug,
         selectedResource?.slug,
         selectedNewsStory?.slug,
+        selectedBook?.slug,
         selectedCategory,
     ]);
 
@@ -440,6 +462,7 @@ function App() {
             setSelectedArticle(route.article);
             setSelectedResource(route.resource);
             setSelectedNewsStory(route.newsStory || null);
+            setSelectedBook(route.book || null);
             setSelectedCategory(route.category || "All");
             scrollTop();
         }
@@ -464,6 +487,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setPage("home");
         pushRoute("/");
@@ -474,6 +498,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setPage("blog");
         pushRoute("/blog");
@@ -484,6 +509,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory(category);
         setPage("blog");
         pushRoute(category === "All" ? "/blog" : `/blog/category/${slugifyCategory(category)}`);
@@ -494,6 +520,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setPage("resources");
         pushRoute("/resources");
@@ -504,6 +531,7 @@ function App() {
         setSelectedArticle(post);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setPage("article");
         pushRoute(`/blog/${post.slug}`);
@@ -514,6 +542,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(resource);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setPage("resource");
         pushRoute(`/resources/${resource.slug}`);
@@ -526,6 +555,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         setNewsCoverage(coverageLevel);
         setPage("news");
@@ -538,8 +568,33 @@ function App() {
         setSelectedResource(null);
         setSelectedCategory("All");
         setSelectedNewsStory(story);
+        setSelectedBook(null);
         setPage("news-story");
         pushRoute(`/news/${story.slug}`);
+        scrollTop();
+    }
+
+    function goBooks() {
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setSelectedNewsStory(null);
+        setSelectedBook(null);
+        setSelectedCategory("All");
+        setPage("books");
+        pushRoute("/books");
+        scrollTop();
+    }
+
+    function openBook(slugOrBook) {
+        const book = typeof slugOrBook === "string" ? getBookBySlug(slugOrBook) : slugOrBook;
+        if (!book) return;
+        setSelectedArticle(null);
+        setSelectedResource(null);
+        setSelectedNewsStory(null);
+        setSelectedBook(book);
+        setSelectedCategory("All");
+        setPage("book-detail");
+        pushRoute(`/books/${book.slug}`);
         scrollTop();
     }
 
@@ -547,6 +602,7 @@ function App() {
         setSelectedArticle(null);
         setSelectedResource(null);
         setSelectedNewsStory(null);
+        setSelectedBook(null);
         setSelectedCategory("All");
         // Nav/menu entries to News always open the unfiltered feed.
         if (nextPage === "news") setNewsCoverage("all");
@@ -653,6 +709,7 @@ function App() {
                     {/* Secondary links — "More" dropdown on desktop, flat on mobile */}
                     <NavMoreMenu
                         items={[
+                            { label: "Books", onSelect: () => { goBooks(); setMobileMenuOpen(false); } },
                             { label: "Pricing", onSelect: () => { openPage("pricing"); setMobileMenuOpen(false); } },
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
@@ -762,6 +819,18 @@ function App() {
                     onGoNews={goNews}
                     onOpenStory={openNewsStory}
                     onOpenArticle={openArticle}
+                />
+            )}
+            {page === "books" && (
+                <Books
+                    onNavigate={openPage}
+                    onOpenBook={openBook}
+                />
+            )}
+            {page === "book-detail" && selectedBook && (
+                <BookDetailPage
+                    book={selectedBook}
+                    onBackToBooks={goBooks}
                 />
             )}
             {import.meta.env.DEV && page === "news-preview" && selectedNewsStory && (
