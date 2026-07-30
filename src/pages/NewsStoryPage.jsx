@@ -156,7 +156,7 @@ function NewsStoryPage({
                                 </li>
                                 <li>
                                     <a
-                                        href="/?page=news"
+                                        href="/news"
                                         onClick={(event) => {
                                             event.preventDefault();
                                             onGoNews?.();
@@ -167,7 +167,7 @@ function NewsStoryPage({
                                 </li>
                                 <li>
                                     <a
-                                        href="/?page=news"
+                                        href="/news"
                                         onClick={(event) => {
                                             event.preventDefault();
                                             onGoNews?.(story.coverageLevel);

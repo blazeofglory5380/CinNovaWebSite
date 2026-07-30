@@ -10,6 +10,7 @@ import {
 import {
     buildNewsArticleSchema,
     getCoverageLabel,
+    getNewsIndexUrl,
     getNewsStoryMetadata,
     getPublicNewsStories,
     getRelatedNewsStories,
@@ -311,6 +312,7 @@ function notFoundShell() {
         ["/products", "Products"],
         ["/resources", "Resources"],
         ["/blog", "Blog"],
+        ["/news", "News"],
         ["/guides", "AI Guides"],
     ]
         .map(([href, label]) => `<li><a href="${href}">${escapeHtml(label)}</a></li>`)
@@ -337,9 +339,41 @@ function notFoundShell() {
     await writeFile(path.join(distDir, "404.html"), html, "utf8");
 }
 
-/* News stories. Demo fixtures are excluded, so this loop is a no-op until real
-   reporting ships — at which point each story gets a prerendered /news/<slug>. */
+/* News Center index + stories. Demo fixtures are excluded from story prerender. */
 const newsStories = getPublicNewsStories();
+const newsIndexTitle = "News: Local, State, National & International | Cin Nova";
+const newsIndexDescription =
+    "Follow Cin Nova News for clear local, state, national, and international coverage, organized so you can quickly find the stories that matter to you.";
+const newsIndexMetadata = {
+    title: newsIndexTitle,
+    description: newsIndexDescription,
+    canonical: getNewsIndexUrl(),
+    image: defaultOgImage,
+    imageAlt: "Cin Nova News",
+    type: "website",
+};
+const newsIndexLinks = newsStories
+    .map((story) => `<li><a href="/news/${escapeHtml(story.slug)}">${escapeHtml(story.title)}</a></li>`)
+    .join("");
+await writeRoute(
+    "news.html",
+    newsIndexMetadata,
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Cin Nova News",
+        description: newsIndexDescription,
+        url: getNewsIndexUrl(),
+        publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+        hasPart: newsStories.map((story) => ({
+            "@type": "NewsArticle",
+            headline: story.title,
+            url: `${siteUrl}/news/${story.slug}`,
+        })),
+    },
+    `<div id="root"><main class="news-page" data-seo-shell="news"><h1>Your world, from the block to the globe.</h1><p>${escapeHtml(newsIndexDescription)}</p><ul>${newsIndexLinks}</ul><nav aria-label="Site"><a href="/">Home</a><a href="/blog">Blog</a><a href="/products">Products</a></nav></main></div>`
+);
+
 for (const story of newsStories) {
     const related = getRelatedNewsStories(story);
     const metadata = getNewsStoryMetadata(story);
@@ -347,12 +381,12 @@ for (const story of newsStories) {
     const relatedLinks = related
         .map((item) => `<li><a href="/news/${escapeHtml(item.slug)}">${escapeHtml(item.title)}</a></li>`)
         .join("");
-    const shell = `<div id="root"><main class="news-page news-story-page" data-seo-shell="news-story"><article><p>${escapeHtml(getCoverageLabel(story.coverageLevel))} · ${escapeHtml(story.category)}</p><h1>${escapeHtml(story.title)}</h1><p>${escapeHtml(story.dek)}</p><img src="${escapeHtml(story.heroImage)}" alt="${escapeHtml(story.heroAlt || story.title)}" /><p>${escapeHtml(story.summary)}</p><nav aria-label="Related news"><a href="/?page=news">More Cin Nova News</a><ul>${relatedLinks}</ul></nav></article></main></div>`;
+    const shell = `<div id="root"><main class="news-page news-story-page" data-seo-shell="news-story"><article><p>${escapeHtml(getCoverageLabel(story.coverageLevel))} · ${escapeHtml(story.category)}</p><h1>${escapeHtml(story.title)}</h1><p>${escapeHtml(story.dek)}</p><img src="${escapeHtml(story.heroImage)}" alt="${escapeHtml(story.heroAlt || story.title)}" /><p>${escapeHtml(story.summary)}</p><nav aria-label="Related news"><a href="/news">More Cin Nova News</a><ul>${relatedLinks}</ul></nav></article></main></div>`;
     await writeRoute(path.join("news", `${story.slug}.html`), metadata, schema, shell);
 }
 
 console.log(
     `Generated crawlable metadata for ${posts.length} articles, ${blogCategories.length} categories, the blog index, ` +
         `${products.length} products + product index, ${resources.length} resources + resource index, ` +
-        `${PUBLIC_PAGE_ROUTES.length} migrated public pages, ${newsStories.length} news stories, and the branded 404 page.`
+        `${PUBLIC_PAGE_ROUTES.length} migrated public pages, the news index, ${newsStories.length} news stories, and the branded 404 page.`
 );

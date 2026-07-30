@@ -60,6 +60,8 @@ function toIsoDate(value) {
 
 export function getStaticPageUrl(pageKey) {
     if (pageKey === "home") return `${siteUrl}/`;
+    // News Center uses a clean path (like /blog); legacy /?page=news 308s to it.
+    if (pageKey === "news") return `${siteUrl}/news`;
     return `${siteUrl}/?page=${encodeURIComponent(pageKey)}`;
 }
 
