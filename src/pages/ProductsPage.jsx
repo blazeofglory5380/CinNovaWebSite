@@ -471,7 +471,7 @@ function FeatureIconsSection() {
     );
 }
 
-function ProductsPage({ onNavigate, onSubscribe }) {
+function ProductsPage({ onNavigate, onSubscribe, onOpenBook }) {
     const showcaseItems = buildShowcaseItems();
     const productsSchema = {
         "@context": "https://schema.org",
@@ -565,15 +565,24 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                         <h3>Stories That Open New Worlds</h3>
                         <p>
                             Explore available titles, coming releases, and properties in development on the
-                            CinNova Books storefront.
+                            CinNova Books storefront. The Southeast Asian Table is available now on Amazon Kindle.
                         </p>
-                        <button
-                            type="button"
-                            className="bdna-btn bdna-btn--solid"
-                            onClick={() => onNavigate("books")}
-                        >
-                            Visit CinNova Books →
-                        </button>
+                        <div className="products-v2__books-actions">
+                            <button
+                                type="button"
+                                className="bdna-btn bdna-btn--solid"
+                                onClick={() => onNavigate("books")}
+                            >
+                                Visit CinNova Books →
+                            </button>
+                            <button
+                                type="button"
+                                className="bdna-btn bdna-btn--ghost"
+                                onClick={() => onOpenBook?.("the-southeast-asian-table")}
+                            >
+                                The Southeast Asian Table
+                            </button>
+                        </div>
                     </div>
                     <div className="products-v2__books-visual" aria-hidden="true">
                         <img

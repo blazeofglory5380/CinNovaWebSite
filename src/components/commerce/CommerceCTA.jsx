@@ -109,6 +109,8 @@ function CommerceCTA({
                 onClick={handleClick}
                 data-commerce-cta={resolvedCtaType}
                 data-entity-slug={entity.slug}
+                data-commerce-placement={placement}
+                aria-label={`${resolvedLabel} (opens in a new tab)`}
             >
                 {resolvedLabel}
             </a>
@@ -124,6 +126,7 @@ function CommerceCTA({
             aria-disabled={isDisabled || undefined}
             data-commerce-cta={resolvedCtaType}
             data-entity-slug={entity.slug}
+            data-commerce-placement={placement}
         >
             {resolvedLabel}
         </button>

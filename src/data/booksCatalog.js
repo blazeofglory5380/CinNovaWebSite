@@ -67,6 +67,13 @@ export const booksCatalog = [
             "A CinNova Press cookbook celebrating Southeast Asian home cooking — flavors, rituals, and tables meant to be shared.",
         synopsis:
             "Recipes and stories for everyday cooks who want fragrant, approachable Southeast Asian dishes without losing the spirit of the table.",
+        // Verified highlights only — drawn from existing catalog copy / formats. No invented reviews or stats.
+        highlights: [
+            "Recipes and stories for everyday home cooks",
+            "Southeast Asian flavors, rituals, and tables meant to be shared",
+            "Approachable dishes without losing the spirit of the table",
+            "Kindle and ebook edition available now via Amazon",
+        ],
         formats: ["Kindle", "Ebook"],
         ctaLabel: "View on Amazon",
         featured: true,
@@ -167,7 +174,14 @@ export function getFeaturedBook() {
 }
 
 export function getCatalogBooks() {
-    return booksCatalog.slice();
+    const rank = {
+        [BOOK_RELEASE_STATUSES.AVAILABLE]: 0,
+        [BOOK_RELEASE_STATUSES.COMING_SOON]: 1,
+        [BOOK_RELEASE_STATUSES.IN_DEVELOPMENT]: 2,
+    };
+    return booksCatalog
+        .slice()
+        .sort((a, b) => (rank[a.releaseStatus] ?? 9) - (rank[b.releaseStatus] ?? 9));
 }
 
 export function isPurchasable(book) {

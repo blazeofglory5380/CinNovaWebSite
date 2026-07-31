@@ -755,6 +755,8 @@ const fullArticles = [
         trending: true,
         popular: true,
         status: "published",
+        // Note: ids 1–15 are merged with cornerstoneOverrides at enrich time.
+        // Do not attach commercialModule here — it would leak onto the override slug.
         content: [
             {
                 heading: "A company can be an ecosystem",
@@ -1837,6 +1839,14 @@ const fullArticles = [
         trending: false,
         popular: true,
         status: "published",
+        // Contextual: article discusses newsletter signups as a demand signal.
+        commercialModule: {
+            enabled: true,
+            type: "newsletter",
+            title: "Build your audience the CinNova way",
+            copy: "Join the CinNova newsletter for launches, publishing updates, and practical product notes.",
+            campaignId: "blog-newsletter-growth-article",
+        },
         content: [
             {
                 heading: "Compare problems, not just ideas",

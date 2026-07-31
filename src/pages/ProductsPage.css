@@ -311,6 +311,18 @@ main.products-v2 {
     line-height: 1.6;
     max-width: 52ch;
 }
+
+.products-v2__books-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.products-v2__books-actions .bdna-btn {
+    min-height: 44px;
+}
+
 .products-v2__books-visual {
     border-radius: 14px;
     overflow: hidden;

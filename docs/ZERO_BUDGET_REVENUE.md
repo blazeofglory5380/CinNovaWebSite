@@ -1,4 +1,4 @@
-# Zero-Budget Revenue Priority (Phase 11.1)
+# Zero-Budget Revenue Priority (Phase 11.2)
 
 Paths that can start with little or no upfront paid infrastructure.
 
@@ -6,46 +6,57 @@ Paths that can start with little or no upfront paid infrastructure.
 
 ### A. Amazon book sales (The Southeast Asian Table)
 
+```
+Organic / direct / social traffic
+→ Books / Products / Homepage / Blog (manual module)
+→ SEAT detail
+→ Amazon outbound
+```
+
 - Traffic → `/books` → detail → Amazon Kindle
+- CTA placements on detail: `hero`, `footer` (trust-first; no repetitive mid-page Amazon CTA)
 - $0 CinNova checkout infrastructure (retailer handles payment)
-- Track outbound/CTA clicks only — do not infer purchase completion
+- Track outbound/CTA clicks only — **do not infer purchase completion**
+- Amazon completed purchases are not yet visible to CinNova unless external reporting is added
 
 ### B. Newsletter audience growth
+
+```
+traffic → newsletter → future launches
+```
 
 - Content / products / books → newsletter signup → future commercial conversion
 - Uses existing subscriber system
 - Attribution via `newsletter_source`, `newsletter_placement`, `entity_slug`, `campaign_id` (no email in GA4)
+- Coming Soon / In Development titles use Join Updates on book detail pages
 
 ### C. Organic search
 
 - News, Blog, Books, Products → commercial destinations
-- Already live editorial + SEO surfaces
+- News remains editorial-first (newsletter only; no broad cookbook CTAs)
 
 ## READY TO ACTIVATE
 
 ### D. Affiliate program applications
 
-- Architecture ready (`affiliateEnabled`, partner/campaign fields, disclosure component)
-- Activation blocked until verified partner relationships and IDs exist
-- Do not invent Amazon Associates tags
+- See `docs/AFFILIATE_ACTIVATION.md`
+- Architecture ready; no invented Amazon Associates tags
 
 ### E. Sponsorship conversations
 
-- Architecture ready (sponsor metadata + disclosure)
-- Requires audience growth + sales process; no fake sponsors
+- See `docs/SPONSORSHIP_READINESS.md`
+- Architecture ready; no fake sponsors or rates
 
 ## FUTURE
 
 ### F. Advertising networks
 
 - Placement map prepared; network status `NOT_INSTALLED`
-- Activate only after traffic thresholds and policy review
-- Never on PoisonGuard emergency/safety guidance or purchase CTAs
 
 ### G. Premium app subscriptions
 
 - Plan objects exist with `price: null`
-- Requires Stripe/checkout phase later — not Phase 11.1
+- Requires Stripe/checkout later
 
 ## Status legend
 

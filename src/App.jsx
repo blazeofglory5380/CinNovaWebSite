@@ -757,6 +757,7 @@ function App() {
                     onOpenArticle={openArticle}
                     onOpenNewsStory={openNewsStory}
                     onOpenResource={openResource}
+                    onOpenBook={openBook}
                     onGoResources={goResources}
                     onGoBlog={goBlog}
                     onGoNews={goNews}
@@ -767,6 +768,7 @@ function App() {
                 <ProductsPage
                     onNavigate={openPage}
                     onSubscribe={showNewsletterAlert}
+                    onOpenBook={openBook}
                 />
             )}
             {page === "blog" && (
@@ -796,6 +798,7 @@ function App() {
                         onOpenResource={openResource}
                         onSubscribe={showNewsletterAlert}
                         onNavigate={openPage}
+                        onOpenBook={openBook}
                     />
                 </ArticleErrorBoundary>
             )}
@@ -863,6 +866,7 @@ function App() {
                         onOpenResource={openResource}
                         onSubscribe={showNewsletterAlert}
                         onNavigate={openPage}
+                        onOpenBook={openBook}
                     />
                 </ArticleErrorBoundary>
             )}
