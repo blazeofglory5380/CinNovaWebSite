@@ -23,6 +23,9 @@ const { getCommerceEntityForBook } = await import(
 const { resolveCommercialModule, isCommercialModuleEnabled } = await import(
     pathToFileURL(join(root, "src/data/commercialModules.js")).href
 );
+const { getPublishedBlogPosts } = await import(
+    pathToFileURL(join(root, "src/data/blogPosts.js")).href
+);
 const { canShowPurchaseCta, COMMERCE_AVAILABILITY, isSafeExternalCommerceUrl } = await import(
     pathToFileURL(join(root, "src/data/commerceModels.js")).href
 );
@@ -77,12 +80,19 @@ try {
     });
     assert.equal(bookMod.type, "book");
     assert.equal(bookMod.bookSlug, "the-southeast-asian-table");
-    // SEAT cookbook module must not be attached to unrelated software-company article.
-    assert.doesNotMatch(
-        blogPostsSource,
-        /building-a-software-company-with-multiple-products[\s\S]{0,800}bookSlug:\s*"the-southeast-asian-table"/,
+    // Live published article with contextual newsletter module (not a shadowed id 1–15 stub).
+    const founders = getPublishedBlogPosts().find(
+        (p) => p.slug === "how-founders-can-validate-multiple-app-ideas",
     );
-    assert.match(blogPostsSource, /type:\s*"newsletter"/);
+    assert.ok(founders?.commercialModule?.enabled);
+    assert.equal(founders.commercialModule.type, "newsletter");
+    // Cornerstone override must not inherit a leaked commercialModule from shadowed stubs.
+    const construction = getPublishedBlogPosts().find(
+        (p) => p.slug === "ai-in-construction-and-engineering",
+    );
+    assert.equal(construction?.commercialModule, undefined);
+    // No SEAT cookbook promo attached via blog post metadata.
+    assert.doesNotMatch(blogPostsSource, /bookSlug:\s*"the-southeast-asian-table"/);
     pass("Blog commercial module gating (manual metadata only)");
 } catch (error) {
     fail(`blog commercial module: ${error.message}`);
