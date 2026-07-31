@@ -96,7 +96,7 @@ function CommerceCTA({
     const rel = entity.affiliateEnabled ? AFFILIATE_COMMERCE_REL : EXTERNAL_COMMERCE_REL;
 
     // External commercial destinations always use a real <a> for accessibility,
-    // middle-click, and safe rel attributes — never window.open buttons.
+    // middle-click, and safe rel attributes — never synthetic popup navigation.
     if (external) {
         return (
             <a

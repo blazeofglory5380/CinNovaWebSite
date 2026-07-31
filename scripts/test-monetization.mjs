@@ -190,7 +190,7 @@ try {
     assert.match(AFFILIATE_COMMERCE_REL, /sponsored/);
     assert.match(ctaSource, /EXTERNAL_COMMERCE_REL|AFFILIATE_COMMERCE_REL/);
     assert.match(ctaSource, /target="_blank"/);
-    assert.doesNotMatch(ctaSource, /window\.open/);
+    assert.doesNotMatch(ctaSource, /window\.open\s*\(/);
     pass("safe external-link rel attributes");
 } catch (error) {
     fail(`rel attributes: ${error.message}`);
