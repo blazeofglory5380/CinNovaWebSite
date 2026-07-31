@@ -168,7 +168,6 @@ function Books({ onNavigate, onOpenBook }) {
                             <CommerceCTA
                                 entity={featuredCommerce}
                                 placement="books_featured"
-                                asLink={Boolean(featuredCommerce?.destinationUrl)}
                                 onInternalNavigate={() => onOpenBook(featured.slug)}
                             />
                             <button

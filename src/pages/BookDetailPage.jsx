@@ -88,7 +88,6 @@ function BookDetailPage({ book, onBackToBooks }) {
                                 <CommerceCTA
                                     entity={commerce}
                                     placement="book_detail_primary"
-                                    asLink
                                 />
                             ) : (
                                 <button type="button" className="bdna-btn bdna-btn--solid" disabled>

@@ -26,7 +26,6 @@ function CommerceCTA({
     disabled = false,
     onInternalNavigate,
     className = "",
-    asLink = false,
 }) {
     if (!entity) return null;
 
@@ -86,9 +85,6 @@ function CommerceCTA({
         }
         if (external) {
             fireAnalytics({ outbound: true });
-            if (!asLink) {
-                window.open(destinationUrl, "_blank", "noopener,noreferrer");
-            }
             return;
         }
         fireAnalytics({ outbound: false });
@@ -99,7 +95,9 @@ function CommerceCTA({
 
     const rel = entity.affiliateEnabled ? AFFILIATE_COMMERCE_REL : EXTERNAL_COMMERCE_REL;
 
-    if (asLink && external) {
+    // External commercial destinations always use a real <a> for accessibility,
+    // middle-click, and safe rel attributes — never window.open buttons.
+    if (external) {
         return (
             <a
                 className={classes}
