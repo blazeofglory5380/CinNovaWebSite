@@ -131,9 +131,9 @@ try {
     assert.equal(counts.Books, 1);
     assert.equal(counts["Book details"], 4);
     assert.equal(counts.News, 1);
-    assert.equal(counts["News stories"], 32);
+    assert.equal(counts["News stories"], 36);
     assert.equal(counts.Blog, 1);
-    assert.equal(counts["Blog posts"], 45);
+    assert.equal(counts["Blog posts"], 50);
     assert.equal(counts["Blog categories"], 11);
     assert.equal(counts.Resources, 13); // index + 12
     assert.equal(counts.Guides, 35); // hub + 34
@@ -141,7 +141,7 @@ try {
     assert.equal(counts.Tools, 1);
     assert.equal(counts["Migrated pages"], 6); // about, contact, newsletter, languages, privacy, terms (pricing excluded)
     assert.equal(counts.Other || 0, 0);
-    assert.equal(locs.length, 164);
+    assert.equal(locs.length, 173);
 
     pass(`sitemap unique + family counts (${locs.length} URLs; pricing excluded)`);
 } catch (error) {
@@ -221,8 +221,8 @@ try {
         if (book.slug === "the-southeast-asian-table") continue;
         assert.equal(isPurchasable(book), false);
     }
-    assert.equal(getPublishedBlogPosts().length, 45);
-    assert.equal(getPublicNewsStories().length, 32);
+    assert.equal(getPublishedBlogPosts().length, 50);
+    assert.equal(getPublicNewsStories().length, 36);
     assert.equal(getCatalogBooks().length, 4);
     assert.equal(products.length, 5);
     assert.equal(resources.length, 12);
