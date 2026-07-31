@@ -22,6 +22,7 @@ export const defaultOgImage = `${siteUrl}/images/home/homepage-hero-innovation.j
 export const EXCLUDED_PAGE_KEYS = new Set([
     "blog-manager",
     "newsletter-admin",
+    "monetization-admin",
     "newsletter-success",
     "news-preview",
     "blog-preview",
@@ -33,13 +34,14 @@ export const EXCLUDED_PAGE_KEYS = new Set([
  * Intentionally NOT reusing EXCLUDED_PAGE_KEYS (which includes the public
  * newsletter-success page).
  */
-export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin"]);
+export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin", "monetization-admin"]);
 
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
 export const ROBOTS_DISALLOW_PATHS = [
     "/blog-admin",
     "/?page=newsletter-admin",
     "/?page=blog-manager",
+    "/?page=monetization-admin",
     "/?page=news-preview",
     "/?page=blog-preview",
 ];
@@ -141,6 +143,7 @@ export const VALID_PAGE_KEYS = new Set([
     "resources",
     "blog-manager",
     "newsletter-admin",
+    "monetization-admin",
     "newsletter-success",
     "not-found",
 ]);

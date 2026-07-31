@@ -1,0 +1,12 @@
+.commerce-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.commerce-cta[disabled],
+.commerce-cta[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

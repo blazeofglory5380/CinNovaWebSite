@@ -9,6 +9,12 @@
  * GA_ID is read here solely to decide whether analytics is switched on for this
  * build. It is never used to load a script or to configure a measurement ID.
  */
+import {
+    sanitizeCommerceAnalyticsParams,
+    destinationHostFromUrl,
+} from "../data/commerceModels.js";
+import { buildCommerceAnalyticsContext } from "../data/commerceCatalog.js";
+
 const GA_ID = import.meta.env?.VITE_GA_MEASUREMENT_ID?.trim();
 
 /**
@@ -236,12 +242,25 @@ export function trackEvent(eventName, params = {}) {
     log("event sent", eventName, params);
 }
 
-export function trackNewsletterSignup({ source = "Website", tags = [], status = "unknown" } = {}) {
-    trackEvent("newsletter_signup", {
-        signup_source: source,
-        signup_status: status,
-        signup_tags: Array.isArray(tags) ? tags.join(",") : "",
-    });
+export function trackNewsletterSignup({
+    source = "Website",
+    tags = [],
+    status = "unknown",
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
+} = {}) {
+    trackEvent(
+        "newsletter_signup",
+        sanitizeCommerceAnalyticsParams({
+            signup_source: source,
+            signup_status: status,
+            signup_tags: Array.isArray(tags) ? tags.join(",") : "",
+            newsletter_placement: placement,
+            entity_slug: entitySlug,
+            campaign_id: campaignId,
+        }),
+    );
 }
 
 export function trackResourceDownload(resource = {}) {
@@ -454,6 +473,123 @@ export function trackBookExternalPurchaseClick({ bookSlug = "", bookTitle = "", 
         release_status: releaseStatus,
         source_page: "books",
     });
+}
+
+/* ── Phase 11.1 commerce helpers ─────────────────────────────────────────────
+   Measurable today: item view, CTA click, outbound retailer click, lead start/
+   complete. An Amazon outbound click is INTENT/OUTBOUND — never a purchase.
+   Reserved (do not fire): begin_checkout, purchase, subscribe. */
+
+export const RESERVED_COMMERCE_EVENTS = Object.freeze({
+    BEGIN_CHECKOUT: "begin_checkout",
+    PURCHASE: "purchase",
+    SUBSCRIBE: "subscribe",
+});
+
+let lastCommerceEventKey = null;
+let lastCommerceEventAt = 0;
+
+function shouldSkipDuplicateCommerce(key, windowMs = 400) {
+    const now = Date.now();
+    if (key && key === lastCommerceEventKey && now - lastCommerceEventAt < windowMs) {
+        return true;
+    }
+    lastCommerceEventKey = key;
+    lastCommerceEventAt = now;
+    return false;
+}
+
+function commerceParams(entity, extra = {}) {
+    return sanitizeCommerceAnalyticsParams({
+        ...buildCommerceAnalyticsContext(entity, {
+            placement: extra.placement || "",
+            ctaType: extra.cta_type || extra.ctaType || "",
+        }),
+        ...extra,
+    });
+}
+
+export function trackCommerceItemView({ entity = null, placement = "" } = {}) {
+    if (!entity) return;
+    const key = `view:${entity.entityId}:${placement}`;
+    if (shouldSkipDuplicateCommerce(key)) return;
+    trackEvent("commerce_item_view", commerceParams(entity, { placement }));
+}
+
+export function trackCommerceCtaClick({
+    entity = null,
+    placement = "",
+    ctaType = "",
+    label = "",
+} = {}) {
+    if (!entity) return;
+    const key = `cta:${entity.entityId}:${placement}:${ctaType}:${label}`;
+    if (shouldSkipDuplicateCommerce(key)) return;
+    trackEvent(
+        "commerce_cta_click",
+        commerceParams(entity, {
+            placement,
+            cta_type: ctaType,
+            cta_label: label,
+        }),
+    );
+}
+
+export function trackCommerceOutboundClick({
+    entity = null,
+    placement = "",
+    ctaType = "",
+    url = "",
+} = {}) {
+    if (!entity) return;
+    const destination = url || entity.destinationUrl || "";
+    const key = `out:${entity.entityId}:${destination}`;
+    if (shouldSkipDuplicateCommerce(key)) return;
+    trackEvent(
+        "commerce_outbound_click",
+        commerceParams(entity, {
+            placement,
+            cta_type: ctaType,
+            destination_url_host: destinationHostFromUrl(destination) || "",
+            // Never include full email/PII; host only.
+        }),
+    );
+}
+
+export function trackCommerceLeadStart({
+    source = "",
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
+} = {}) {
+    trackEvent(
+        "commerce_lead_start",
+        sanitizeCommerceAnalyticsParams({
+            newsletter_source: source,
+            newsletter_placement: placement,
+            entity_slug: entitySlug,
+            campaign_id: campaignId,
+        }),
+    );
+}
+
+export function trackCommerceLeadComplete({
+    source = "",
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
+    status = "unknown",
+} = {}) {
+    trackEvent(
+        "commerce_lead_complete",
+        sanitizeCommerceAnalyticsParams({
+            newsletter_source: source,
+            newsletter_placement: placement,
+            entity_slug: entitySlug,
+            campaign_id: campaignId,
+            signup_status: status,
+        }),
+    );
 }
 
 export function trackProductExploreClick({ productName = "", sourcePage = "", destinationPage = "" } = {}) {

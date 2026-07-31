@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import { useToast } from "../ui/index.js";
+import { trackCommerceLeadStart, trackCommerceLeadComplete } from "../utils/analytics.js";
 
 function NewsletterSignup({
     onSubscribe,
     source = "Website",
     tags = [],
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
     placeholder = "Enter your email address",
     buttonLabel = "Subscribe",
 }) {
@@ -21,7 +25,26 @@ function NewsletterSignup({
             showToast("Please enter a valid email address.", { variant: "error" });
             return;
         }
-        const result = onSubscribe({ email: normalizedEmail, source, tags });
+
+        // Analytics attribution only — never send the email value to GA4.
+        trackCommerceLeadStart({ source, placement, entitySlug, campaignId });
+
+        const result = onSubscribe({
+            email: normalizedEmail,
+            source,
+            tags,
+            placement,
+            entitySlug,
+            campaignId,
+        });
+
+        trackCommerceLeadComplete({
+            source,
+            placement,
+            entitySlug,
+            campaignId,
+            status: result?.status || "unknown",
+        });
 
         const nextMessage =
             result?.status === "existing"

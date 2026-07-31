@@ -3,6 +3,7 @@ Allow: /
 Disallow: /blog-admin
 Disallow: /?page=newsletter-admin
 Disallow: /?page=blog-manager
+Disallow: /?page=monetization-admin
 Disallow: /?page=news-preview
 Disallow: /?page=blog-preview
 
