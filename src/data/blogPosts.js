@@ -755,6 +755,13 @@ const fullArticles = [
         trending: true,
         popular: true,
         status: "published",
+        // Phase 11.2 — manually enabled commercial module (not auto-inserted).
+        commercialModule: {
+            enabled: true,
+            type: "book",
+            bookSlug: "the-southeast-asian-table",
+            campaignId: "blog-building-company-seat",
+        },
         content: [
             {
                 heading: "A company can be an ecosystem",
@@ -789,6 +796,13 @@ const fullArticles = [
         trending: false,
         popular: false,
         status: "published",
+        commercialModule: {
+            enabled: true,
+            type: "newsletter",
+            title: "Build your audience the CinNova way",
+            copy: "Join the CinNova newsletter for launches, publishing updates, and practical product notes.",
+            campaignId: "blog-newsletter-growth-article",
+        },
         content: [
             {
                 heading: "Email is a durable channel",

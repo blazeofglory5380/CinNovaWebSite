@@ -22,6 +22,7 @@ import ArticleChecklist from "../components/article/ArticleChecklist.jsx";
 import ArticleStudyTools from "../components/article/ArticleStudyTools.jsx";
 import ArticleResourceDownloads from "../components/article/ArticleResourceDownloads.jsx";
 import RelatedContentModule from "../components/article/RelatedContentModule.jsx";
+import RelatedCommercialModule from "../components/article/RelatedCommercialModule.jsx";
 import {
     estimateArticleReadingTime,
     getArticleUrl,
@@ -217,6 +218,7 @@ function ArticlePage({
     onOpenResource,
     onSubscribe,
     onNavigate,
+    onOpenBook,
     previewMode = false,
 }) {
     const isPreview = Boolean(previewMode || post?.isDraft || post?.status === "draft");
@@ -563,6 +565,13 @@ function ArticlePage({
                     </div>
                 </section>
             )}
+
+            <RelatedCommercialModule
+                post={post}
+                onNavigate={onNavigate}
+                onOpenBook={onOpenBook}
+                onSubscribe={onSubscribe}
+            />
 
             <RelatedContentModule
                 post={post}

@@ -14,6 +14,12 @@
 | Newsletter completions | `commerce_lead_complete` / `newsletter_signup` |
 | Outbound CTR | Derived in GA4 (views → outbound) |
 | Lead conversion rate | Derived in GA4 (views → lead complete) |
+| `book_detail_to_cta_rate` | `commerce_cta_click` ÷ `commerce_item_view` (book detail) |
+| `cta_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_cta_click` |
+| `book_detail_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_item_view` (book detail) |
+| `newsletter_conversion_rate` | `commerce_lead_complete` ÷ `commerce_lead_start` |
+
+Placement dimensions for SEAT CTAs: `hero`, `mid_page`, `footer`.
 
 ### Future (not fired / not claimed)
 

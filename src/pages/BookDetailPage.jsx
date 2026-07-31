@@ -23,6 +23,7 @@ function BookDetailPage({ book, onBackToBooks }) {
     const showJoinUpdates =
         book.releaseStatus === BOOK_RELEASE_STATUSES.COMING_SOON ||
         book.releaseStatus === BOOK_RELEASE_STATUSES.IN_DEVELOPMENT;
+    const highlights = Array.isArray(book.highlights) ? book.highlights : [];
 
     // Book schema: omit offers/price/availability inventing. AVAILABLE books
     // still do not include Offer until CinNova has a verified on-site price.
@@ -61,7 +62,7 @@ function BookDetailPage({ book, onBackToBooks }) {
                     ← All Books
                 </button>
 
-                <div className="books-v2__featured" style={{ marginTop: 28 }}>
+                <div className="books-v2__featured books-v2__detail-hero" style={{ marginTop: 28 }}>
                     <div
                         className={`books-v2__featured-cover${book.coverFit === "contain" ? " books-v2__featured-cover--contain" : ""}`}
                     >
@@ -85,10 +86,7 @@ function BookDetailPage({ book, onBackToBooks }) {
                         )}
                         <div className="books-v2__card-actions">
                             {purchasable ? (
-                                <CommerceCTA
-                                    entity={commerce}
-                                    placement="book_detail_primary"
-                                />
+                                <CommerceCTA entity={commerce} placement="hero" />
                             ) : (
                                 <button type="button" className="bdna-btn bdna-btn--solid" disabled>
                                     {book.releaseStatus === BOOK_RELEASE_STATUSES.COMING_SOON
@@ -110,12 +108,48 @@ function BookDetailPage({ book, onBackToBooks }) {
                 </div>
             </section>
 
+            {purchasable && highlights.length > 0 && (
+                <section className="books-v2__section" aria-labelledby="book-overview-heading">
+                    <h2 id="book-overview-heading" className="books-v2__section-title">
+                        What readers get
+                    </h2>
+                    <p className="books-v2__lead books-v2__lead--flush">
+                        {book.description}
+                    </p>
+                    <ul className="books-v2__highlights">
+                        {highlights.map((item) => (
+                            <li key={item}>{item}</li>
+                        ))}
+                    </ul>
+                    <div className="books-v2__card-actions">
+                        <CommerceCTA entity={commerce} placement="mid_page" />
+                    </div>
+                </section>
+            )}
+
+            {purchasable && (
+                <section className="books-v2__section" aria-label="Cookbook updates">
+                    <h2 className="books-v2__section-title">Stay in the loop</h2>
+                    <p className="books-v2__lead books-v2__lead--flush">
+                        Get cookbook updates, companion content, and future CinNova Books releases.
+                    </p>
+                    <NewsletterSignup
+                        onSubscribe={saveSubscriber}
+                        source="Book Detail"
+                        tags={["Books", book.slug, "AVAILABLE"]}
+                        placement="book_detail"
+                        entitySlug={book.slug}
+                        campaignId={`book-updates-${book.slug}`}
+                        buttonLabel="Join Updates"
+                        placeholder="Email for cookbook updates"
+                    />
+                </section>
+            )}
+
             {showJoinUpdates && (
                 <section className="books-v2__section" aria-label="Join updates">
-                    <h2 className="books-v2__detail-title" style={{ fontSize: "1.35rem" }}>
-                        Join updates
-                    </h2>
-                    <p className="books-v2__lead">
+                    <h2 className="books-v2__section-title">Join updates</h2>
+                    <p className="books-v2__lead books-v2__lead--flush">
                         Get CinNova Books news when this title moves forward. No fake waitlist — this uses the
                         existing CinNova newsletter.
                     </p>
@@ -129,6 +163,23 @@ function BookDetailPage({ book, onBackToBooks }) {
                         buttonLabel="Join Updates"
                         placeholder="Email for title updates"
                     />
+                </section>
+            )}
+
+            {purchasable && (
+                <section className="books-v2__section books-v2__detail-footer" aria-label="Get the ebook">
+                    <h2 className="books-v2__section-title">Ready to cook?</h2>
+                    <p className="books-v2__lead books-v2__lead--flush">
+                        Open the verified Amazon Kindle listing for {book.title}. CinNova does not process payment
+                        on this site.
+                    </p>
+                    <div className="books-v2__card-actions">
+                        <CommerceCTA entity={commerce} placement="footer" />
+                        <button type="button" className="bdna-btn bdna-btn--ghost" onClick={onBackToBooks}>
+                            Browse all books
+                        </button>
+                    </div>
+                    <AffiliateDisclosure affiliateEnabled={Boolean(commerce?.affiliateEnabled)} />
                 </section>
             )}
         </main>

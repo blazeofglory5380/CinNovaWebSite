@@ -5,13 +5,16 @@ import SectionHead from "../components/brand-dna/SectionHead.jsx";
 import CommerceCTA from "../components/commerce/CommerceCTA.jsx";
 import AvailabilityBadge from "../components/commerce/AvailabilityBadge.jsx";
 import AffiliateDisclosure from "../components/commerce/AffiliateDisclosure.jsx";
+import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import {
     getBooksIndexUrl,
     getCatalogBooks,
     getFeaturedBook,
     getBookCoverStyle,
+    BOOK_RELEASE_STATUSES,
 } from "../data/booksCatalog.js";
 import { getCommerceEntityForBook } from "../data/commerceCatalog.js";
+import { saveSubscriber } from "../data/newsletterService.js";
 import {
     trackBookCardClick,
     trackBooksHeroExploreClick,
@@ -26,9 +29,13 @@ const BOOKS_HERO_POSTER = "/images/hero/cinnova-books-hero-nightmare-beyond-mast
 
 function BookCard({ book, onOpenBook }) {
     const commerce = getCommerceEntityForBook(book);
+    const isAvailable = book.releaseStatus === BOOK_RELEASE_STATUSES.AVAILABLE;
 
     return (
-        <article className="books-v2__card" data-status={book.releaseStatus}>
+        <article
+            className={`books-v2__card${isAvailable ? " books-v2__card--available" : " books-v2__card--secondary"}`}
+            data-status={book.releaseStatus}
+        >
             <div className={`books-v2__card-cover${book.coverFit === "contain" ? " books-v2__card-cover--contain" : ""}`}>
                 <img
                     src={book.cover}
@@ -46,13 +53,14 @@ function BookCard({ book, onOpenBook }) {
                 <h3>{book.title}</h3>
                 <p>{book.description}</p>
                 <p className="books-v2__formats">{book.formats.join(" · ")}</p>
-                {commerce?.retailer && (
+                {commerce?.retailer && isAvailable && (
                     <p className="books-v2__formats">Retailer: {commerce.retailer}</p>
                 )}
                 <div className="books-v2__card-actions">
                     <CommerceCTA
                         entity={commerce}
                         placement="books_catalog_card"
+                        variant={isAvailable ? "solid" : "ghost"}
                         onInternalNavigate={() => {
                             trackBookCardClick({
                                 bookSlug: book.slug,
@@ -136,12 +144,12 @@ function Books({ onNavigate, onOpenBook }) {
                 poster={BOOKS_HERO_POSTER}
                 objectPosition="center center"
                 preload="metadata"
-                primaryCta={{ label: "Explore Books", onClick: scrollToCatalog }}
-                secondaryCta={{ label: "Featured Release", onClick: scrollToFeatured }}
+                primaryCta={{ label: "Featured Release", onClick: scrollToFeatured }}
+                secondaryCta={{ label: "Explore Books", onClick: scrollToCatalog }}
             />
 
-            <section id="books-featured" className="books-v2__section" aria-label="Featured release">
-                <SectionHead eyebrow="Featured Release" title={featured.title} />
+            <section id="books-featured" className="books-v2__section books-v2__featured-section" aria-label="Featured release">
+                <SectionHead eyebrow="Available now" title={featured.title} />
                 <div className="books-v2__featured">
                     <div
                         className={`books-v2__featured-cover${featured.coverFit === "contain" ? " books-v2__featured-cover--contain" : ""}`}
@@ -186,7 +194,7 @@ function Books({ onNavigate, onOpenBook }) {
             <section id="books-catalog" className="books-v2__section" aria-label="Book catalog">
                 <SectionHead eyebrow="Catalog" title="Titles from CinNova Books" />
                 <p className="books-v2__lead">
-                    Available editions, coming releases, and properties still in development — clearly labeled so
+                    Available editions lead the catalog. Coming Soon and In Development titles stay clearly labeled so
                     nothing looks purchasable before it is ready.
                 </p>
                 <div className="books-v2__grid">
@@ -194,6 +202,22 @@ function Books({ onNavigate, onOpenBook }) {
                         <BookCard key={book.id} book={book} onOpenBook={onOpenBook} />
                     ))}
                 </div>
+            </section>
+
+            <section className="books-v2__section" aria-label="Publishing updates">
+                <SectionHead eyebrow="Newsletter" title="Get new releases and publishing updates" />
+                <p className="books-v2__lead">
+                    Be first to hear when Coming Soon titles move forward — and when new CinNova Press editions launch.
+                </p>
+                <NewsletterSignup
+                    onSubscribe={saveSubscriber}
+                    source="Books"
+                    tags={["Books", "Publishing Updates"]}
+                    placement="books"
+                    campaignId="books-publishing-updates"
+                    buttonLabel="Join Updates"
+                    placeholder="Email for publishing updates"
+                />
             </section>
 
             <section className="books-v2__section books-v2__note" aria-label="Publishing note">

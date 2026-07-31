@@ -99,6 +99,9 @@ function RelatedContentModule({
                         onSubscribe={onSubscribe}
                         source={`Article: ${post.title}`}
                         tags={[post.category, "Article Reader"]}
+                        placement="blog_article_related"
+                        entitySlug={post.slug || ""}
+                        campaignId="blog-article-related-newsletter"
                     />
                 </div>
             </div>

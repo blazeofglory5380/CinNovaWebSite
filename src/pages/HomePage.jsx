@@ -95,6 +95,7 @@ function HomePage({
     onOpenArticle,
     onOpenNewsStory,
     onOpenResource,
+    onOpenBook,
     onGoResources,
     onGoBlog,
     onGoNews,
@@ -281,6 +282,41 @@ function HomePage({
                         Visit the blog →
                     </button>
                 </div>
+            </MotionSectionWrap>
+
+            {/* ── Books discovery (single tasteful path — not a store) ── */}
+            <MotionSectionWrap as="section" className="home-v2__section" aria-label="CinNova Books">
+                <SectionHead eyebrow="CinNova Books" title="Stories that open new worlds." />
+                <p className="home-v2__lead">
+                    Explore CinNova Press titles and companion editions — including The Southeast Asian Table,
+                    available now on Amazon Kindle.
+                </p>
+                <GlassPanel className="home-v2__books-panel">
+                    <div className="home-v2__books-copy">
+                        <span className="home-v2__cat">Available now</span>
+                        <h3>The Southeast Asian Table</h3>
+                        <p>
+                            A CinNova Press cookbook celebrating Southeast Asian home cooking — flavors, rituals,
+                            and tables meant to be shared.
+                        </p>
+                        <div className="home-v2__books-actions">
+                            <button
+                                type="button"
+                                className="bdna-btn bdna-btn--solid"
+                                onClick={() => onNavigate?.("books")}
+                            >
+                                Explore CinNova Books →
+                            </button>
+                            <button
+                                type="button"
+                                className="bdna-btn bdna-btn--ghost"
+                                onClick={() => onOpenBook?.("the-southeast-asian-table")}
+                            >
+                                Cookbook details
+                            </button>
+                        </div>
+                    </div>
+                </GlassPanel>
             </MotionSectionWrap>
 
             {/* ── Newsletter (Dispatch) ───────────────────────────────── */}
