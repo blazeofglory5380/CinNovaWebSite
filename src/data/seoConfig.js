@@ -28,6 +28,16 @@ export const EXCLUDED_PAGE_KEYS = new Set([
 ]);
 
 /**
+ * Public pages that remain routable for humans but must NOT be indexed.
+ * Reason (Phase 11.3 indexability review): `/pricing` currently displays
+ * specific subscription dollar amounts that are not verified live commerce
+ * offers (monetization foundation keeps subscription plan prices null).
+ * Keep the page for waitlist UX; exclude from sitemap + emit noindex until
+ * pricing claims are rewritten to match real availability.
+ */
+export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing"]);
+
+/**
  * Admin/internal route keys. Gated behind VITE_ENABLE_ADMIN_ROUTES so they
  * resolve to NotFound in production unless explicitly enabled for local dev.
  * Intentionally NOT reusing EXCLUDED_PAGE_KEYS (which includes the public
@@ -156,6 +166,9 @@ export function collectSitemapEntries() {
     const entries = [];
 
     for (const page of STATIC_PUBLIC_PAGES) {
+        if (EXCLUDED_PAGE_KEYS.has(page.key) || NOINDEX_PUBLIC_PAGE_KEYS.has(page.key)) {
+            continue;
+        }
         // Migrated public pages (Phase 2B) emit their clean route; unmigrated
         // pages keep the legacy ?page= form until their own checkpoint.
         entries.push({

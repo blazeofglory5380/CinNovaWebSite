@@ -21,7 +21,7 @@ import {
     getCatalogBooks,
     statusLabel,
 } from "../src/data/booksCatalog.js";
-import { defaultOgImage, siteUrl } from "../src/data/seoConfig.js";
+import { defaultOgImage, NOINDEX_PUBLIC_PAGE_KEYS, siteUrl } from "../src/data/seoConfig.js";
 import { getOtherProducts, getProductUrl, products } from "../src/data/products.js";
 import {
     formatResourceReadTime,
@@ -284,6 +284,9 @@ function guideShell(route, alternates) {
 
 for (const route of PUBLIC_PAGE_ROUTES) {
     const metadata = getPublicPageMetadata(route, { siteUrl, defaultOgImage });
+    if (NOINDEX_PUBLIC_PAGE_KEYS.has(route.key)) {
+        metadata.robots = "noindex, follow";
+    }
     const outputFile = `${route.path.replace(/^\//, "")}.html`;
     if (route.group === "guide") {
         const alternates = getGuideAlternates(route.key);

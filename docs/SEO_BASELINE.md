@@ -18,7 +18,7 @@ This baseline records **factual inventory and configuration state only**. It doe
 | Products | 5 | StudyNest, PoisonGuard, Kiddo, TechMate AI, Real Estate AI |
 | Resources | 12 | Clean `/resources/:slug` routes |
 | Migrated public pages | 50 | Phase 2B clean paths (guides, company, tools, core pages) |
-| Sitemap URLs | ~165 | Built via `collectSitemapEntries()`; drifts as content publishes |
+| Sitemap URLs | **164** | Pricing excluded (`NOINDEX_PUBLIC_PAGE_KEYS`); drifts as content publishes |
 
 ### Book release statuses
 
@@ -77,13 +77,15 @@ Setup steps only are documented in `SEARCH_ENGINE_SETUP.md`.
   - `/?page=news-preview`
   - `/?page=blog-preview`
 - Declares both XML sitemaps above
+- Also Disallows `/?page=newsletter-success`
 
 ### NOINDEX / exclusion policy (documented)
 
 | Surface | Policy |
 |---|---|
 | `/newsletter` | **INDEX** — meaningful landing with content |
-| `/newsletter-success` | **NOINDEX**; excluded from sitemap (`EXCLUDED_PAGE_KEYS`) |
+| `/newsletter-success` | **NOINDEX** (+ `noCanonical`); excluded from sitemap (`EXCLUDED_PAGE_KEYS`); robots Disallow |
+| `/pricing` | **NOINDEX** + sitemap exclude (`NOINDEX_PUBLIC_PAGE_KEYS`) — unverified subscription dollar amounts vs monetization `price: null`; page kept for waitlist UX |
 | Admin / preview pages | noindex + robots Disallow |
 | Draft/demo news & blog preview | noindex; out of sitemap |
 | Not Found | noindex,follow; no `/404` canonical |
@@ -102,8 +104,9 @@ Implemented via Vercel middleware on `/` + shared `resolveLegacyRouteRedirect()`
 | `/?resource={slug}` | `/resources/{slug}` | Done |
 | `/?page=news[&story=]` | `/news` / `/news/{slug}` | Done |
 | `/?page=books[&book=]` | `/books` / `/books/{slug}` | Done |
+| `/?page=blog` | `/blog` | Done |
 | Migrated `/?page={publicKey}` | Clean `PUBLIC_PAGE_ROUTES` path | Done (50 pages) |
-| `?article=` → `/blog/:slug` | `/blog/{slug}` | **Missing — Phase 11.3** |
+| `?article=` → `/blog/:slug` | `/blog/{slug}` | Done |
 
 Client `replaceState` fallback exists for local/non-Vercel hosting for supported legacy queries.
 

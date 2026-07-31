@@ -13,6 +13,7 @@ function NewsletterSuccess({ onGoHome, onGoBlog }) {
                 url={`${siteUrl}/?page=newsletter-success`}
                 type="website"
                 noindex
+                noCanonical
             />
             <section className="section newsletter-success-section">
                 <div className="success-checkmark-wrap">

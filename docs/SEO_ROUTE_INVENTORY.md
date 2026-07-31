@@ -13,8 +13,8 @@ Counts used below are factual inventory figures (not traffic or ranking claims):
 | Catalog books | 4 |
 | Products | 5 |
 | Resources | 12 |
-| Migrated public pages | 50 |
-| Sitemap URLs | ~165 |
+| Migrated public pages | 50 (49 sitemap-indexable; `/pricing` NOINDEX) |
+| Sitemap URLs | **164** (pricing removed in final indexability review) |
 
 **Column legend**
 
@@ -403,11 +403,11 @@ Counts used below are factual inventory figures (not traffic or ranking claims):
 
 | Route family | Examples | Indexable | Sitemap | Notes |
 |---|---|---|---|---|
-| Pricing | `/pricing` | Yes | Yes | Plans/tiers information |
+| Pricing | `/pricing` | **NOINDEX** | **No** | Displays unverified subscription dollar amounts; waitlist UX retained; `NOINDEX_PUBLIC_PAGE_KEYS` |
 | Contact | `/contact` | Yes | Yes | ContactPage schema |
-| Languages | `/languages` | Yes | Yes | Language chooser hub |
+| Languages | `/languages` | Yes | Yes | Multilingual starter hub (substantive) |
 | Privacy / Terms | `/privacy`, `/terms` | Yes | Yes | Legal; yearly changefreq |
-| Migrated total | 50 non-home public pages | Yes (except excluded) | Yes | Clean paths via Phase 2B |
+| Migrated total | 50 non-home public pages | Yes except pricing + admin exclusions | 49 in sitemap | Clean paths via Phase 2B |
 
 ---
 
@@ -466,7 +466,7 @@ Disallow: /?page=blog-preview
 | Field | Value |
 |---|---|
 | Route | `/sitemap.xml` (+ `/sitemap-video.xml` referenced in robots) |
-| Purpose | URL discovery for search engines (~165 locs) |
+| Purpose | URL discovery for search engines (**164** locs after pricing exclusion) |
 | Indexable | N/A (feed) |
 | Contents | Home, migrated static pages, blog index + categories + posts, news stories, products index + landings, books index + details, resources index + details; image extensions where attached |
 | Excluded | Admin, previews, `newsletter-success`, demos/drafts |
