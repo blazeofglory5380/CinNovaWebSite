@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
 import { useToast } from "../ui/index.js";
+import { trackCommerceLeadStart, trackCommerceLeadComplete } from "../utils/analytics.js";
 
 function NewsletterSignup({
     onSubscribe,
     source = "Website",
     tags = [],
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
     placeholder = "Enter your email address",
     buttonLabel = "Subscribe",
 }) {
@@ -21,10 +25,44 @@ function NewsletterSignup({
             showToast("Please enter a valid email address.", { variant: "error" });
             return;
         }
-        const result = onSubscribe({ email: normalizedEmail, source, tags });
+
+        // Analytics attribution only — never send the email value to GA4.
+        trackCommerceLeadStart({ source, placement, entitySlug, campaignId });
+
+        let result;
+        try {
+            result = onSubscribe({
+                email: normalizedEmail,
+                source,
+                tags,
+                placement,
+                entitySlug,
+                campaignId,
+            });
+        } catch {
+            setMessage("Something went wrong. Please try again.");
+            showToast("Something went wrong. Please try again.", { variant: "error" });
+            return;
+        }
+
+        // lead_complete only after a real successful signup (created or already subscribed).
+        // Never fire for invalid / failed / unknown outcomes.
+        if (result?.status !== "created" && result?.status !== "existing") {
+            setMessage("Please enter a valid email address.");
+            showToast("Please enter a valid email address.", { variant: "error" });
+            return;
+        }
+
+        trackCommerceLeadComplete({
+            source,
+            placement,
+            entitySlug,
+            campaignId,
+            status: result.status,
+        });
 
         const nextMessage =
-            result?.status === "existing"
+            result.status === "existing"
                 ? "You're already on the Cin Nova newsletter list."
                 : "Success. You're subscribed to the Cin Nova newsletter.";
         setMessage(nextMessage);

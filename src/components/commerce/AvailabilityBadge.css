@@ -1,0 +1,32 @@
+.availability-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-sans, "Segoe UI", system-ui, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+
+.availability-badge--available {
+    color: #0f3d2e;
+    background: rgba(46, 160, 110, 0.16);
+    border-color: rgba(46, 160, 110, 0.35);
+}
+
+.availability-badge--coming-soon {
+    color: #5c4a12;
+    background: rgba(212, 175, 55, 0.16);
+    border-color: rgba(212, 175, 55, 0.35);
+}
+
+.availability-badge--in-development,
+.availability-badge--beta,
+.availability-badge--unavailable {
+    color: #3d4654;
+    background: rgba(90, 100, 120, 0.12);
+    border-color: rgba(90, 100, 120, 0.28);
+}

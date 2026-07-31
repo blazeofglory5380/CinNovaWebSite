@@ -115,13 +115,23 @@ function postLeadToServer({ email, source, tags, status }) {
     }
 }
 
-export function saveSubscriber({ email, source = "Website", tags = [] }) {
+export function saveSubscriber({
+    email,
+    source = "Website",
+    tags = [],
+    placement = "",
+    entitySlug = "",
+    campaignId = "",
+} = {}) {
     const normalizedEmail = normalizeEmail(email);
     if (!isValidEmail(normalizedEmail)) {
         return { status: "invalid", subscriber: null };
     }
     const safeSource = sanitizeText(source, 100) || "Website";
     const safeTags = sanitizeTags(tags);
+    const safePlacement = sanitizeText(placement, 80);
+    const safeEntitySlug = sanitizeText(entitySlug, 120);
+    const safeCampaignId = sanitizeText(campaignId, 80);
     const subscribers = readSubscribers();
     const existing = subscribers.find((subscriber) => subscriber.email === normalizedEmail);
     const now = new Date().toISOString();
@@ -134,12 +144,25 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
                       lastSeenAt: now,
                       sources: Array.from(new Set([...(subscriber.sources || []), safeSource])).slice(0, 20),
                       tags: Array.from(new Set([...(subscriber.tags || []), ...safeTags])).slice(0, 20),
+                      placements: Array.from(
+                          new Set([...(subscriber.placements || []), safePlacement].filter(Boolean)),
+                      ).slice(0, 20),
+                      entitySlugs: Array.from(
+                          new Set([...(subscriber.entitySlugs || []), safeEntitySlug].filter(Boolean)),
+                      ).slice(0, 20),
                   }
                 : subscriber,
         );
 
         writeSubscribers(updatedSubscribers);
-        trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "existing" });
+        trackNewsletterSignup({
+            source: safeSource,
+            tags: safeTags,
+            status: "existing",
+            placement: safePlacement,
+            entitySlug: safeEntitySlug,
+            campaignId: safeCampaignId,
+        });
         postLeadToServer({ email: normalizedEmail, source: safeSource, tags: safeTags, status: "existing" });
         return { status: "existing", subscriber: updatedSubscribers.find((item) => item.email === normalizedEmail) };
     }
@@ -151,13 +174,23 @@ export function saveSubscriber({ email, source = "Website", tags = [] }) {
         source: safeSource,
         sources: [safeSource],
         tags: safeTags,
+        placements: safePlacement ? [safePlacement] : [],
+        entitySlugs: safeEntitySlug ? [safeEntitySlug] : [],
+        campaignId: safeCampaignId || null,
         providerStatus: "ready-to-sync",
         createdAt: now,
         lastSeenAt: now,
     };
 
     writeSubscribers([subscriber, ...subscribers]);
-    trackNewsletterSignup({ source: safeSource, tags: safeTags, status: "created" });
+    trackNewsletterSignup({
+        source: safeSource,
+        tags: safeTags,
+        status: "created",
+        placement: safePlacement,
+        entitySlug: safeEntitySlug,
+        campaignId: safeCampaignId,
+    });
     postLeadToServer({ email: normalizedEmail, source: safeSource, tags: safeTags, status: "created" });
     return { status: "created", subscriber };
 }

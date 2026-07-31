@@ -1,19 +1,22 @@
+import { useEffect } from "react";
 import SEO from "../components/SEO.jsx";
 import CinNovaCoreHero from "../components/brand-dna/CinNovaCoreHero.jsx";
 import SectionHead from "../components/brand-dna/SectionHead.jsx";
+import CommerceCTA from "../components/commerce/CommerceCTA.jsx";
+import AvailabilityBadge from "../components/commerce/AvailabilityBadge.jsx";
+import AffiliateDisclosure from "../components/commerce/AffiliateDisclosure.jsx";
 import {
     getBooksIndexUrl,
     getCatalogBooks,
     getFeaturedBook,
     getBookCoverStyle,
-    isPurchasable,
-    statusLabel,
 } from "../data/booksCatalog.js";
+import { getCommerceEntityForBook } from "../data/commerceCatalog.js";
 import {
     trackBookCardClick,
-    trackBookExternalPurchaseClick,
     trackBooksHeroExploreClick,
     trackBooksHeroFeaturedClick,
+    trackCommerceItemView,
 } from "../utils/analytics.js";
 import "../styles/brand-dna.css";
 import "./Books.css";
@@ -21,32 +24,8 @@ import "./Books.css";
 const BOOKS_HERO_VIDEO = "/images/hero/cinnova-books-hero-nightmare-beyond.mp4";
 const BOOKS_HERO_POSTER = "/images/hero/cinnova-books-hero-nightmare-beyond-master.png";
 
-function statusClass(status) {
-    if (status === "AVAILABLE") return "books-v2__status--available";
-    if (status === "COMING_SOON") return "books-v2__status--coming-soon";
-    return "books-v2__status--in-development";
-}
-
 function BookCard({ book, onOpenBook }) {
-    const purchasable = isPurchasable(book);
-
-    function handlePrimary() {
-        trackBookCardClick({
-            bookSlug: book.slug,
-            bookTitle: book.title,
-            releaseStatus: book.releaseStatus,
-        });
-        if (purchasable) {
-            trackBookExternalPurchaseClick({
-                bookSlug: book.slug,
-                bookTitle: book.title,
-                releaseStatus: book.releaseStatus,
-            });
-            window.open(book.externalUrl, "_blank", "noopener,noreferrer");
-            return;
-        }
-        onOpenBook(book.slug);
-    }
+    const commerce = getCommerceEntityForBook(book);
 
     return (
         <article className="books-v2__card" data-status={book.releaseStatus}>
@@ -61,18 +40,28 @@ function BookCard({ book, onOpenBook }) {
             </div>
             <div className="books-v2__card-body">
                 <div className="books-v2__card-meta">
-                    <span className={`books-v2__status ${statusClass(book.releaseStatus)}`}>
-                        {statusLabel(book)}
-                    </span>
+                    <AvailabilityBadge status={book.releaseStatus} className="books-v2__status" />
                     <span className="books-v2__cat">{book.category}</span>
                 </div>
                 <h3>{book.title}</h3>
                 <p>{book.description}</p>
                 <p className="books-v2__formats">{book.formats.join(" · ")}</p>
+                {commerce?.retailer && (
+                    <p className="books-v2__formats">Retailer: {commerce.retailer}</p>
+                )}
                 <div className="books-v2__card-actions">
-                    <button type="button" className="bdna-btn bdna-btn--solid" onClick={handlePrimary}>
-                        {purchasable ? "View on Amazon" : book.ctaLabel}
-                    </button>
+                    <CommerceCTA
+                        entity={commerce}
+                        placement="books_catalog_card"
+                        onInternalNavigate={() => {
+                            trackBookCardClick({
+                                bookSlug: book.slug,
+                                bookTitle: book.title,
+                                releaseStatus: book.releaseStatus,
+                            });
+                            onOpenBook(book.slug);
+                        }}
+                    />
                     <button
                         type="button"
                         className="bdna-btn bdna-btn--ghost"
@@ -88,6 +77,7 @@ function BookCard({ book, onOpenBook }) {
                         Details
                     </button>
                 </div>
+                <AffiliateDisclosure affiliateEnabled={Boolean(commerce?.affiliateEnabled)} />
             </div>
         </article>
     );
@@ -95,6 +85,7 @@ function BookCard({ book, onOpenBook }) {
 
 function Books({ onNavigate, onOpenBook }) {
     const featured = getFeaturedBook();
+    const featuredCommerce = getCommerceEntityForBook(featured);
     const catalog = getCatalogBooks();
     const schema = {
         "@context": "https://schema.org",
@@ -105,6 +96,15 @@ function Books({ onNavigate, onOpenBook }) {
         publisher: { "@type": "Organization", name: "CinNova", url: "https://getcinnova.com" },
     };
 
+    useEffect(() => {
+        const entity = getCommerceEntityForBook(featured);
+        if (entity) {
+            trackCommerceItemView({ entity, placement: "books_index" });
+        }
+        // Intentionally keyed on slug — entity object is rebuilt each render.
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- featured.slug
+    }, [featured.slug]);
+
     function scrollToCatalog() {
         trackBooksHeroExploreClick();
         document.getElementById("books-catalog")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -113,24 +113,6 @@ function Books({ onNavigate, onOpenBook }) {
     function scrollToFeatured() {
         trackBooksHeroFeaturedClick();
         document.getElementById("books-featured")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function featuredCta() {
-        trackBookCardClick({
-            bookSlug: featured.slug,
-            bookTitle: featured.title,
-            releaseStatus: featured.releaseStatus,
-        });
-        if (isPurchasable(featured)) {
-            trackBookExternalPurchaseClick({
-                bookSlug: featured.slug,
-                bookTitle: featured.title,
-                releaseStatus: featured.releaseStatus,
-            });
-            window.open(featured.externalUrl, "_blank", "noopener,noreferrer");
-            return;
-        }
-        onOpenBook(featured.slug);
     }
 
     return (
@@ -174,17 +156,20 @@ function Books({ onNavigate, onOpenBook }) {
                     </div>
                     <div className="books-v2__featured-copy">
                         <div className="books-v2__card-meta">
-                            <span className={`books-v2__status ${statusClass(featured.releaseStatus)}`}>
-                                {statusLabel(featured)}
-                            </span>
+                            <AvailabilityBadge status={featured.releaseStatus} className="books-v2__status" />
                             <span className="books-v2__cat">{featured.category}</span>
                         </div>
                         <p className="books-v2__lead">{featured.description}</p>
                         <p className="books-v2__formats">{featured.formats.join(" · ")}</p>
+                        {featuredCommerce?.retailer && (
+                            <p className="books-v2__formats">Available via {featuredCommerce.retailer}</p>
+                        )}
                         <div className="books-v2__card-actions">
-                            <button type="button" className="bdna-btn bdna-btn--solid" onClick={featuredCta}>
-                                {isPurchasable(featured) ? "View on Amazon" : featured.ctaLabel}
-                            </button>
+                            <CommerceCTA
+                                entity={featuredCommerce}
+                                placement="books_featured"
+                                onInternalNavigate={() => onOpenBook(featured.slug)}
+                            />
                             <button
                                 type="button"
                                 className="bdna-btn bdna-btn--ghost"
@@ -193,6 +178,7 @@ function Books({ onNavigate, onOpenBook }) {
                                 Book details
                             </button>
                         </div>
+                        <AffiliateDisclosure affiliateEnabled={Boolean(featuredCommerce?.affiliateEnabled)} />
                     </div>
                 </div>
             </section>

@@ -611,7 +611,7 @@ function ProductsPage({ onNavigate, onSubscribe }) {
                     eyebrow="Stay in the loop"
                     title="Get product updates, launch announcements, and early access."
                 >
-                    <NewsletterSignup onSubscribe={onSubscribe} source="Products Page" tags={["Products", "Launch Updates"]} />
+                    <NewsletterSignup onSubscribe={onSubscribe} source="Products Page" tags={["Products", "Launch Updates"]} placement="products_page" campaignId="products-launch-updates" />
                 </Dispatch>
             </section>
         </main>

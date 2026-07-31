@@ -528,6 +528,8 @@ function Blog({
                         onSubscribe={onSubscribe}
                         source="Blog"
                         tags={["Blog Reader"]}
+                        placement="blog"
+                        campaignId="blog-dispatch"
                     />
                 </MotionSectionWrap>
             </section>
