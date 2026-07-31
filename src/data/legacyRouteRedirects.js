@@ -90,6 +90,8 @@ export function resolveLegacyRouteRedirect(input) {
     if (page === null) return null;
     if (page === "products") return "/products";
     if (page === "resources") return "/resources";
+    // Blog index legacy: /?page=blog → /blog (article deep-links use ?article= above)
+    if (page === "blog") return "/blog";
     // News Center + legacy story deep-links: /?page=news[&story=<slug>]
     if (page === "news") {
         const story = params.get("story");

@@ -431,6 +431,9 @@ for (const { scope, resource, metadata } of resourceMetas) {
     if (resolveLegacyRouteRedirect("?page=books") !== "/books") {
         error("legacy-redirects", `resolver("?page=books") must be /books`);
     }
+    if (resolveLegacyRouteRedirect("?page=blog") !== "/blog") {
+        error("legacy-redirects", `resolver("?page=blog") must be /blog`);
+    }
     if (resolveLegacyRouteRedirect("?page=books&book=nightmare-forest") !== "/books/nightmare-forest") {
         error("legacy-redirects", `resolver("?page=books&book=nightmare-forest") must be /books/nightmare-forest`);
     }

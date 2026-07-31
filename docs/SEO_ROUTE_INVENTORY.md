@@ -190,9 +190,9 @@ Counts used below are factual inventory figures (not traffic or ranking claims):
 | Schema | `Blog` (+ `BlogPosting` listing items) |
 | Sitemap | Yes |
 | Internal links | Home, category hubs, article cards, Resources, Products |
-| Legacy | Clean `/blog` primary; legacy query article deep-links incomplete (see below) |
-| Issues | Missing `?article=` → `/blog/:slug` middleware redirect (Phase 11.3) |
-| Action (Phase 11.3) | Add legacy `?article=` → `/blog/{slug}` 308 redirect |
+| Legacy | Clean `/blog` primary; `/?page=blog` → `/blog`; `/?article=` → `/blog/{slug}` |
+| Issues | Category query filters should remain non-indexable duplicates |
+| Action (Phase 11.3) | Added `?page=blog` + `?article=` 308 redirects |
 
 ---
 
@@ -210,8 +210,9 @@ Counts used below are factual inventory figures (not traffic or ranking claims):
 | Schema | `BlogPosting`, Organization, ImageObject as applicable |
 | Sitemap | Published posts only |
 | Internal links | Category hub, related posts, cluster destinations (Books/Products/Newsletter) |
-| Legacy | **Gap:** `?article=` not yet redirected via middleware (being added in Phase 11.3) |
-| Issues | Legacy article URLs may still resolve client-side without edge 308 |
+| Legacy | `/?article={slug}` → 308 `/blog/{slug}` |
+| Issues | None outstanding for legacy article deep-links |
+| Action (Phase 11.3) | Implemented `?article=` → `/blog/:slug` in `legacyRouteRedirects` + middleware path |
 | Action (Phase 11.3) | Implement `?article=` → `/blog/:slug` in `legacyRouteRedirects` + middleware path |
 
 ---
@@ -500,8 +501,10 @@ Disallow: /?page=blog-preview
 | `/?resource={slug}` | 308 → `/resources/{slug}` |
 | `/?page=news[&story=]` | 308 → `/news` or `/news/{slug}` |
 | `/?page=books[&book=]` | 308 → `/books` or `/books/{slug}` |
+| `/?page=blog` | 308 → `/blog` |
+| `/?article={slug}` | 308 → `/blog/{slug}` |
 | Migrated public `/?page={key}` | 308 → clean path from `PUBLIC_PAGE_ROUTES` |
-| `?article=` → `/blog/:slug` | **Missing — Phase 11.3 action** |
+| `/?page=newsletter-success` | No 308 (thin utility); **NOINDEX** + robots Disallow + sitemap exclusion |
 
 Middleware matcher is `/` only (edge 308). Clean routes never enter the redirect loop.
 

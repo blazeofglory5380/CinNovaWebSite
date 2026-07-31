@@ -68,11 +68,13 @@ try {
         "/blog/how-founders-can-validate-multiple-app-ideas",
     );
     assert.equal(resolveLegacyRouteRedirect("?page=news"), "/news");
+    assert.equal(resolveLegacyRouteRedirect("?page=blog"), "/blog");
     assert.equal(resolveLegacyRouteRedirect("?page=books&book=the-southeast-asian-table"), "/books/the-southeast-asian-table");
     assert.equal(resolveLegacyRouteRedirect("?page=products"), "/products");
     assert.equal(resolveLegacyRouteRedirect("?resource=ai-product-launch-checklist"), "/resources/ai-product-launch-checklist");
     assert.equal(resolveLegacyRouteRedirect("?page=newsletter-admin"), null);
-    pass("legacy redirects (including ?article=)");
+    assert.equal(resolveLegacyRouteRedirect("?page=newsletter-success"), null);
+    pass("legacy redirects (including ?article= and ?page=blog)");
 } catch (error) {
     fail(`legacy redirects: ${error.message}`);
 }
