@@ -124,7 +124,7 @@ const techmateSchema = {
         "An AI-powered tech support companion in development by Cin Nova. It helps people understand device, computer, smart-home, and software problems and follow clearer step-by-step troubleshooting.",
     operatingSystem: "Web",
     url: getProductUrl("techmate"),
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    // No Offer — products are not sold on-site; do not invent price 0.
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 

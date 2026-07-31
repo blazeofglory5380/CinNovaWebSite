@@ -11,12 +11,19 @@ import { saveSubscriber } from "../data/newsletterService.js";
 
 const aboutSchema = {
   "@context": "https://schema.org",
-  "@type": "WebPage",
+  "@type": "AboutPage",
   name: "About Cin Nova",
   description:
     "Learn about Cin Nova — the company building practical AI software products for education, safety, real estate, tech support, and early childhood learning.",
   url: getPublicPageUrl("about"),
   publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
+  about: {
+    "@type": "Organization",
+    name: "Cin Nova",
+    url: siteUrl,
+    description:
+      "Cin Nova builds practical AI products, publishes CinNova Books, and publishes editorial News and Blog coverage.",
+  },
 };
 
 const PRODUCTS = [

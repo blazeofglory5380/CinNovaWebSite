@@ -336,6 +336,7 @@ function Pricing() {
                 url={getPublicPageUrl("pricing")}
                 type="website"
                 schema={pricingSchema}
+                noindex
             />
 
             {/* ── Hero ───────────────────────────────────────────── */}

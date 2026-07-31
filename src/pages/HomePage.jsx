@@ -29,7 +29,13 @@ const homeSchema = {
             logo: buildImageObject({ src: defaultOgImage, alt: "Cin Nova" }),
             description:
                 "Cin Nova builds practical AI software products for education, safety, real estate, and everyday decision-making.",
-            sameAs: [`${siteUrl}/blog`, `${siteUrl}/newsletter`],
+            sameAs: [
+                `${siteUrl}/products`,
+                `${siteUrl}/books`,
+                `${siteUrl}/news`,
+                `${siteUrl}/blog`,
+                `${siteUrl}/newsletter`,
+            ],
         },
         {
             "@type": "WebSite",
@@ -118,8 +124,8 @@ function HomePage({
     return (
         <main className="homepage-v2 brand-dna">
             <SEO
-                title="Cin Nova | Practical AI for Learning, Safety, and Smarter Decisions"
-                description="Cin Nova is the central hub for practical AI products, free resources, and editorial insights — built for students, families, professionals, and businesses."
+                title="CinNova | Practical AI for Learning, Safety, and Smarter Decisions"
+                description="CinNova builds practical AI products, publishes CinNova Books, and shares verified News and Blog coverage — for students, families, professionals, and businesses."
                 url={siteUrl}
                 type="website"
                 image={defaultOgImage}

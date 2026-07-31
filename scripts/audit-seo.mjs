@@ -20,7 +20,7 @@ import {
     getRelatedNewsStories,
 } from "../src/data/newsPosts.js";
 import { getCatalogBooks } from "../src/data/booksCatalog.js";
-import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, getStaticPageUrl, siteUrl } from "../src/data/seoConfig.js";
+import { STATIC_PUBLIC_PAGES, collectSitemapEntries, defaultOgImage, getStaticPageUrl, NOINDEX_PUBLIC_PAGE_KEYS, siteUrl } from "../src/data/seoConfig.js";
 import { getProductUrl, getProductsUrl, products } from "../src/data/products.js";
 import { getRelatedResources, getResourceUrl, getResourcesUrl, resources, withLibraryMeta } from "../src/data/resources.js";
 import { getResourceHeroImage } from "../src/data/marketingImages.js";
@@ -431,8 +431,20 @@ for (const { scope, resource, metadata } of resourceMetas) {
     if (resolveLegacyRouteRedirect("?page=books") !== "/books") {
         error("legacy-redirects", `resolver("?page=books") must be /books`);
     }
+    if (resolveLegacyRouteRedirect("?page=blog") !== "/blog") {
+        error("legacy-redirects", `resolver("?page=blog") must be /blog`);
+    }
     if (resolveLegacyRouteRedirect("?page=books&book=nightmare-forest") !== "/books/nightmare-forest") {
         error("legacy-redirects", `resolver("?page=books&book=nightmare-forest") must be /books/nightmare-forest`);
+    }
+    if (
+        resolveLegacyRouteRedirect("?article=how-founders-can-validate-multiple-app-ideas") !==
+        "/blog/how-founders-can-validate-multiple-app-ideas"
+    ) {
+        error("legacy-redirects", `resolver("?article=…") must map to /blog/<slug>`);
+    }
+    if (resolveLegacyRouteRedirect("?article=") !== null) {
+        error("legacy-redirects", `resolver("?article=") empty slug must be null`);
     }
 
     // Root middleware must exist, use the shared resolver, and emit a 308.
@@ -668,7 +680,8 @@ if (validateDist) {
     }
 
     // ── Product & resource generated-route validation (Phase 2A) ──
-    async function validateGeneratedRoute(scope, relativeFile, metadata, requiredTypes, minLinks) {
+    async function validateGeneratedRoute(scope, relativeFile, metadata, requiredTypes, minLinks, options = {}) {
+        const expectedRobots = options.expectedRobots || "index, follow";
         let html;
         try {
             html = await readFile(path.join(root, "dist", relativeFile), "utf8");
@@ -700,7 +713,7 @@ if (validateDist) {
         if (!canonical.startsWith("https://getcinnova.com/")) error(scope, "canonical is not on the production domain");
         if (canonical !== expectedFromPath) error(scope, `canonical (${canonical}) does not match generated file path (${relativeFile})`);
         if (h1Matches.length !== 1) error(scope, `generated route must contain exactly one H1, found ${h1Matches.length}`);
-        if (robots !== "index, follow") error(scope, `unexpected robots directive: "${robots}"`);
+        if (robots !== expectedRobots) error(scope, `unexpected robots directive: "${robots}"`);
         if (!ogTitle || !ogDesc || !ogUrl || !ogImage) error(scope, "missing Open Graph metadata");
         if (!twCard || !twTitle || !twImage) error(scope, "missing Twitter metadata");
         if (new Set(internalLinks).size < minLinks) error(scope, `generated route has fewer than ${minLinks} crawlable internal links`);
@@ -766,7 +779,12 @@ if (validateDist) {
             relativeFile,
             metadata,
             [route.schemaType, "BreadcrumbList"],
-            3
+            3,
+            {
+                expectedRobots: NOINDEX_PUBLIC_PAGE_KEYS.has(route.key)
+                    ? "noindex, follow"
+                    : "index, follow",
+            },
         );
         if (route.group !== "guide") continue;
         // Guide-specific raw-HTML checks: document language + hreflang family.
@@ -801,6 +819,12 @@ if (validateDist) {
         const sitemap = await readFile(path.join(root, "public", "sitemap.xml"), "utf8");
         const locSet = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
         for (const route of PUBLIC_PAGE_ROUTES) {
+            if (NOINDEX_PUBLIC_PAGE_KEYS.has(route.key)) {
+                if (locSet.has(`${siteUrl}${route.path}`)) {
+                    error("sitemap.xml", `noindex public page must not appear in sitemap: ${route.path}`);
+                }
+                continue;
+            }
             if (!locSet.has(`${siteUrl}${route.path}`)) error("sitemap.xml", `missing migrated clean URL ${siteUrl}${route.path}`);
             if (locSet.has(`${siteUrl}/?page=${route.key}`)) error("sitemap.xml", `migrated page still present as legacy ?page=${route.key}`);
         }

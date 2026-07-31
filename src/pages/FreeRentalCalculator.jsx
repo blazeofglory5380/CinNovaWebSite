@@ -24,7 +24,7 @@ const calcSchema = {
     description:
         "Free rental property calculator for cash flow, cap rate, cash-on-cash return, and a deal score. Estimate a rental's numbers before you buy.",
     url: PAGE_URL,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, // Verified free tool — not an invented paid product price.
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 

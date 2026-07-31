@@ -336,7 +336,7 @@ const kiddoSchema = withSchemaGraph(
         operatingSystem: "Web",
         url: getProductUrl("kiddo"),
         screenshot: buildImageObject({ src: kiddoHero.posterSrc, alt: kiddoHero.alt }),
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        // No Offer — products are not sold on-site; do not invent price 0.
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(faqItems),

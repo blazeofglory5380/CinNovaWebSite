@@ -369,11 +369,16 @@ export function buildCollectionSchema(metadata, items) {
 }
 
 export function renderHeadTags(metadata, schema, alternates) {
+    const robots = metadata.robots || "index, follow";
     const tags = [
         `<title>${escapeHtml(metadata.title)}</title>`,
         `<meta name="description" content="${escapeHtml(metadata.description)}" />`,
-        '<meta name="robots" content="index, follow" />',
-        `<link rel="canonical" href="${escapeHtml(metadata.canonical)}" />`,
+        `<meta name="robots" content="${escapeHtml(robots)}" />`,
+    ];
+    if (!metadata.noCanonical && metadata.canonical) {
+        tags.push(`<link rel="canonical" href="${escapeHtml(metadata.canonical)}" />`);
+    }
+    tags.push(
         `<meta property="og:title" content="${escapeHtml(metadata.title)}" />`,
         `<meta property="og:description" content="${escapeHtml(metadata.description)}" />`,
         `<meta property="og:type" content="${escapeHtml(metadata.type)}" />`,
@@ -385,7 +390,7 @@ export function renderHeadTags(metadata, schema, alternates) {
         `<meta name="twitter:description" content="${escapeHtml(metadata.description)}" />`,
         '<meta name="twitter:site" content="@CinNova" />',
         `<meta name="twitter:image" content="${escapeHtml(metadata.image)}" />`,
-    ];
+    );
     for (const alt of alternates || []) {
         tags.push(`<link rel="alternate" hreflang="${escapeHtml(alt.hreflang)}" href="${escapeHtml(alt.href)}" />`);
     }
