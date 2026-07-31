@@ -51,6 +51,7 @@ import {
     publicPageH1,
     renderHeadTags,
 } from "./seo-shared.mjs";
+import { buildBreadcrumbSchema, withSchemaGraph } from "../src/data/schemaHelpers.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
@@ -435,16 +436,22 @@ for (const book of booksCatalog) {
         imageAlt: book.coverAlt || book.title,
         type: "website",
     };
-    const schema = {
-        "@context": "https://schema.org",
-        "@type": "Book",
-        name: book.title,
-        description: book.description,
-        url: getBookUrl(book),
-        genre: book.category,
-        publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
-    };
-    const shell = `<div id="root"><main class="books-page books-detail-page" data-seo-shell="book-detail"><article><p>${escapeHtml(statusLabel(book))} · ${escapeHtml(book.category)}</p><h1>${escapeHtml(book.title)}</h1><p>${escapeHtml(book.description)}</p><img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.coverAlt || book.title)}" /><nav aria-label="Books"><a href="/books">All CinNova Books</a></nav></article></main></div>`;
+    const schema = withSchemaGraph(
+        {
+            "@type": "Book",
+            name: book.title,
+            description: book.description,
+            url: getBookUrl(book),
+            genre: book.category,
+            publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
+        },
+        buildBreadcrumbSchema([
+            { name: "Home", url: `${siteUrl}/` },
+            { name: "Books", url: getBooksIndexUrl() },
+            { name: book.title, url: getBookUrl(book) },
+        ]),
+    );
+    const shell = `<div id="root"><main class="books-page books-detail-page" data-seo-shell="book-detail"><article><nav aria-label="Breadcrumb"><a href="/books">Books</a> / ${escapeHtml(book.title)}</nav><p>${escapeHtml(statusLabel(book))} · ${escapeHtml(book.category)}</p><h1>${escapeHtml(book.title)}</h1><p>${escapeHtml(book.description)}</p><img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.coverAlt || book.title)}" /><nav aria-label="Books"><a href="/books">All CinNova Books</a></nav></article></main></div>`;
     await writeRoute(path.join("books", `${book.slug}.html`), metadata, schema, shell);
 }
 
