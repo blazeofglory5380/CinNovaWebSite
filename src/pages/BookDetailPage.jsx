@@ -4,16 +4,12 @@ import CommerceCTA from "../components/commerce/CommerceCTA.jsx";
 import AvailabilityBadge from "../components/commerce/AvailabilityBadge.jsx";
 import AffiliateDisclosure from "../components/commerce/AffiliateDisclosure.jsx";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
-import {
-    getBookUrl,
-    getBookCoverStyle,
-    isPurchasable,
-    statusLabel,
-    BOOK_RELEASE_STATUSES,
-} from "../data/booksCatalog.js";
+import { getBookUrl, getBooksIndexUrl, getBookCoverStyle, isPurchasable, statusLabel, BOOK_RELEASE_STATUSES } from "../data/booksCatalog.js";
 import { getCommerceEntityForBook } from "../data/commerceCatalog.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { trackCommerceItemView } from "../utils/analytics.js";
+import { buildBreadcrumbSchema, withSchemaGraph, buildImageObject } from "../data/schemaHelpers.js";
+import { siteUrl } from "../data/seoConfig.js";
 import "../styles/brand-dna.css";
 import "./Books.css";
 
@@ -27,15 +23,23 @@ function BookDetailPage({ book, onBackToBooks }) {
 
     // Book schema: omit offers/price/availability inventing. AVAILABLE books
     // still do not include Offer until CinNova has a verified on-site price.
-    const schema = {
-        "@context": "https://schema.org",
+    const bookEntity = {
         "@type": "Book",
         name: book.title,
         description: book.description,
         url: getBookUrl(book),
         genre: book.category,
-        publisher: { "@type": "Organization", name: "CinNova" },
+        image: buildImageObject({ src: book.cover, alt: book.coverAlt || book.title }),
+        publisher: { "@type": "Organization", name: "CinNova", url: siteUrl },
     };
+    const schema = withSchemaGraph(
+        bookEntity,
+        buildBreadcrumbSchema([
+            { name: "Home", url: `${siteUrl}/` },
+            { name: "Books", url: getBooksIndexUrl() },
+            { name: book.title, url: getBookUrl(book) },
+        ]),
+    );
 
     useEffect(() => {
         const entity = getCommerceEntityForBook(book);
@@ -58,9 +62,16 @@ function BookDetailPage({ book, onBackToBooks }) {
             />
 
             <section className="books-v2__section" aria-label={book.title}>
-                <button type="button" className="bdna-btn bdna-btn--ghost" onClick={onBackToBooks}>
-                    ← All Books
-                </button>
+                <nav className="books-v2__breadcrumb" aria-label="Breadcrumb">
+                    <ol>
+                        <li>
+                            <button type="button" className="books-v2__text-link" onClick={onBackToBooks}>
+                                Books
+                            </button>
+                        </li>
+                        <li aria-current="page">{book.title}</li>
+                    </ol>
+                </nav>
 
                 <div className="books-v2__featured books-v2__detail-hero" style={{ marginTop: 28 }}>
                     <div

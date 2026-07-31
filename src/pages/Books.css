@@ -9,6 +9,39 @@ main.books-v2 {
     overflow-x: hidden;
 }
 
+.books-v2__breadcrumb {
+    margin: 0 0 8px;
+}
+
+.books-v2__breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--bdna-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bdna-dim);
+}
+
+.books-v2__breadcrumb li + li::before {
+    content: "/";
+    margin-right: 8px;
+    opacity: 0.55;
+}
+
+.books-v2__breadcrumb li[aria-current] {
+    color: var(--bdna-ink);
+    max-width: 48ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .books-v2__section {
     max-width: 1200px;
     margin: 0 auto;

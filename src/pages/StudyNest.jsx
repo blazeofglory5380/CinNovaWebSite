@@ -187,7 +187,7 @@ const studynestSchema = withSchemaGraph(
         operatingSystem: "Web",
         url: getProductUrl("studynest"),
         screenshot: buildImageObject({ src: studyNestHero.posterSrc, alt: studyNestHero.alt }),
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        // No Offer — products are not sold on-site; do not invent price 0.
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(faqItems),

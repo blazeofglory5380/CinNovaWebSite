@@ -44,6 +44,7 @@ export const ROBOTS_DISALLOW_PATHS = [
     "/?page=blog-manager",
     "/?page=news-preview",
     "/?page=blog-preview",
+    "/?page=newsletter-success",
 ];
 
 function toAbsoluteImageUrl(path = "") {

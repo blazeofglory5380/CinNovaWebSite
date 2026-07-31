@@ -39,7 +39,7 @@ const realestateSchema = {
     description: "AI-powered real estate investment tools for deal analysis, cash flow modeling, mortgage calculators, and market intelligence. Live beta available in the browser.",
     operatingSystem: "Web",
     url: getProductUrl("real-estate"),
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    // No Offer — do not invent on-site price; beta access is not a paid Product Offer.
     publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
 };
 

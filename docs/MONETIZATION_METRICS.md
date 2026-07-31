@@ -18,6 +18,10 @@
 | `cta_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_cta_click` (same placement filter when comparing SEAT detail) |
 | `book_detail_to_outbound_rate` | `commerce_outbound_click` (SEAT detail placements) ÷ `commerce_item_view` (`placement=book_detail`) |
 | `newsletter_conversion_rate` | `commerce_lead_complete` ÷ `commerce_lead_start` (same `newsletter_placement` / `campaign_id` scope) |
+| `organic_to_book_rate` | Book detail / Books index engagement from organic landing sessions ÷ organic sessions (GA4 channel grouping; definition only) |
+| `organic_to_product_rate` | Product page views from organic sessions ÷ organic sessions |
+| `organic_to_newsletter_rate` | `commerce_lead_complete` attributed to organic sessions ÷ organic sessions |
+| `organic_to_outbound_rate` | `commerce_outbound_click` from organic sessions ÷ organic sessions |
 
 These are definition-only. Do **not** invent measured production values.
 

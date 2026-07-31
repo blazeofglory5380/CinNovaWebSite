@@ -171,7 +171,7 @@ const poisonguardSchema = withSchemaGraph(
         operatingSystem: "Web",
         url: getProductUrl("poisonguard"),
         screenshot: buildImageObject({ src: poisonGuardHero.posterSrc, alt: poisonGuardHero.alt }),
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        // No Offer — products are not sold on-site; do not invent price 0.
         publisher: { "@type": "Organization", name: "Cin Nova", url: siteUrl },
     },
     buildFaqSchema(faqItems),

@@ -78,6 +78,13 @@ export function resolveLegacyRouteRedirect(input) {
         return LEGACY_RESOURCE_SLUGS.has(resource) ? `/resources/${resource}` : null;
     }
 
+    // Legacy blog deep-link: /?article=<slug> → /blog/<slug>
+    // Do not validate slug here (keeps edge bundle light); invalid slugs 404 on the clean route.
+    const article = params.get("article");
+    if (article !== null && article !== "") {
+        return `/blog/${encodeURIComponent(article)}`;
+    }
+
     // Product/index legacy form: /?page=<key>
     const page = params.get("page");
     if (page === null) return null;

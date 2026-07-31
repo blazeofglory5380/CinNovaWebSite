@@ -5,6 +5,7 @@ Disallow: /?page=newsletter-admin
 Disallow: /?page=blog-manager
 Disallow: /?page=news-preview
 Disallow: /?page=blog-preview
+Disallow: /?page=newsletter-success
 
 Sitemap: https://getcinnova.com/sitemap.xml
 Sitemap: https://getcinnova.com/sitemap-video.xml

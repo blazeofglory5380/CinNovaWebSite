@@ -24,6 +24,7 @@
     "validate:blog": "node scripts/validate-blog.mjs",
     "test:news-route": "node scripts/test-news-route.mjs",
     "test:books-route": "node scripts/test-books-route.mjs",
+    "test:seo": "node scripts/test-seo.mjs",
     "test:monetization": "node scripts/test-monetization.mjs",
     "test:revenue-activation": "node scripts/test-revenue-activation.mjs",
     "test:analytics": "node scripts/test-analytics.mjs",

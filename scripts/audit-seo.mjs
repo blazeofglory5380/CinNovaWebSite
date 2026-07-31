@@ -434,6 +434,15 @@ for (const { scope, resource, metadata } of resourceMetas) {
     if (resolveLegacyRouteRedirect("?page=books&book=nightmare-forest") !== "/books/nightmare-forest") {
         error("legacy-redirects", `resolver("?page=books&book=nightmare-forest") must be /books/nightmare-forest`);
     }
+    if (
+        resolveLegacyRouteRedirect("?article=how-founders-can-validate-multiple-app-ideas") !==
+        "/blog/how-founders-can-validate-multiple-app-ideas"
+    ) {
+        error("legacy-redirects", `resolver("?article=…") must map to /blog/<slug>`);
+    }
+    if (resolveLegacyRouteRedirect("?article=") !== null) {
+        error("legacy-redirects", `resolver("?article=") empty slug must be null`);
+    }
 
     // Root middleware must exist, use the shared resolver, and emit a 308.
     try {
