@@ -29,25 +29,40 @@ function NewsletterSignup({
         // Analytics attribution only — never send the email value to GA4.
         trackCommerceLeadStart({ source, placement, entitySlug, campaignId });
 
-        const result = onSubscribe({
-            email: normalizedEmail,
-            source,
-            tags,
-            placement,
-            entitySlug,
-            campaignId,
-        });
+        let result;
+        try {
+            result = onSubscribe({
+                email: normalizedEmail,
+                source,
+                tags,
+                placement,
+                entitySlug,
+                campaignId,
+            });
+        } catch {
+            setMessage("Something went wrong. Please try again.");
+            showToast("Something went wrong. Please try again.", { variant: "error" });
+            return;
+        }
+
+        // lead_complete only after a real successful signup (created or already subscribed).
+        // Never fire for invalid / failed / unknown outcomes.
+        if (result?.status !== "created" && result?.status !== "existing") {
+            setMessage("Please enter a valid email address.");
+            showToast("Please enter a valid email address.", { variant: "error" });
+            return;
+        }
 
         trackCommerceLeadComplete({
             source,
             placement,
             entitySlug,
             campaignId,
-            status: result?.status || "unknown",
+            status: result.status,
         });
 
         const nextMessage =
-            result?.status === "existing"
+            result.status === "existing"
                 ? "You're already on the Cin Nova newsletter list."
                 : "Success. You're subscribed to the Cin Nova newsletter.";
         setMessage(nextMessage);

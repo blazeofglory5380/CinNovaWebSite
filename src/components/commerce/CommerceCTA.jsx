@@ -4,6 +4,7 @@ import {
     DESTINATION_TYPES,
     canShowPurchaseCta,
     isExternalDestination,
+    isSafeExternalCommerceUrl,
 } from "../../data/commerceModels.js";
 import {
     trackCommerceCtaClick,
@@ -37,7 +38,8 @@ function CommerceCTA({
         canShowPurchaseCta({
             availability: entity.availability,
             destinationUrl,
-        });
+        }) &&
+        isSafeExternalCommerceUrl(destinationUrl);
     const isDisabled =
         disabled ||
         (!external &&

@@ -299,6 +299,8 @@ function HomePage({
                         onSubscribe={onSubscribe}
                         source="Homepage"
                         tags={["Homepage", "Product Updates", "Resource Reader"]}
+                        placement="homepage"
+                        campaignId="homepage-dispatch"
                     />
                 </Dispatch>
             </section>

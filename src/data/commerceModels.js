@@ -94,14 +94,27 @@ export function availabilityLabel(status) {
 }
 
 /**
+ * External commercial destinations must be https only.
+ * Rejects javascript:, data:, http:, and malformed URLs.
+ */
+export function isSafeExternalCommerceUrl(url) {
+    if (typeof url !== "string" || !url.trim()) return false;
+    try {
+        const parsed = new URL(url);
+        return parsed.protocol === "https:";
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Purchase CTAs are only allowed when availability is AVAILABLE and a real
- * destination URL exists. Never invent Buy for COMING_SOON / IN_DEVELOPMENT.
+ * https destination URL exists. Never invent Buy for COMING_SOON / IN_DEVELOPMENT.
  */
 export function canShowPurchaseCta({ availability, destinationUrl } = {}) {
     return (
         availability === COMMERCE_AVAILABILITY.AVAILABLE &&
-        typeof destinationUrl === "string" &&
-        /^https?:\/\//i.test(destinationUrl)
+        isSafeExternalCommerceUrl(destinationUrl)
     );
 }
 

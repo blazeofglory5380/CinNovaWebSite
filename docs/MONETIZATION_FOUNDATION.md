@@ -26,7 +26,11 @@ An Amazon outbound click is **not** a completed purchase.
 | `AvailabilityBadge` | `src/components/commerce/AvailabilityBadge.jsx` |
 | `AffiliateDisclosure` (gated) | `src/components/commerce/AffiliateDisclosure.jsx` |
 | `SponsoredContentDisclosure` (gated) | `src/components/commerce/SponsoredContentDisclosure.jsx` |
-| Internal admin foundation | `src/pages/MonetizationAdmin.jsx` (admin-gated) |
+| Channel summary helpers | `getMonetizationChannelSummary()` in `commerceCatalog.js` |
+
+Internal monetization dashboard UI is **not** publicly routed in Phase 11.1
+(robots.txt is not access control; no authentication system was added).
+Reporting architecture remains in data modules + docs only.
 
 ## Availability behavior
 

@@ -19,6 +19,7 @@ const {
     REVENUE_MODELS,
     COMMERCE_AVAILABILITY,
     canShowPurchaseCta,
+    isSafeExternalCommerceUrl,
     sanitizeCommerceAnalyticsParams,
     EXTERNAL_COMMERCE_REL,
     AFFILIATE_COMMERCE_REL,
@@ -53,6 +54,10 @@ const affiliateDisclosureSource = readFileSync(
     "utf8",
 );
 const bookDetailSource = readFileSync(join(root, "src/pages/BookDetailPage.jsx"), "utf8");
+const newsletterSignupSource = readFileSync(join(root, "src/components/NewsletterSignup.jsx"), "utf8");
+const appSource = readFileSync(join(root, "src/App.jsx"), "utf8");
+const robotsSource = readFileSync(join(root, "public/robots.txt"), "utf8");
+const seoConfigSource = readFileSync(join(root, "src/data/seoConfig.js"), "utf8");
 
 // --- revenue model mapping ---
 try {
@@ -90,6 +95,16 @@ try {
         canShowPurchaseCta({
             availability: COMMERCE_AVAILABILITY.IN_DEVELOPMENT,
             destinationUrl: "https://example.com",
+        }),
+        false,
+    );
+    assert.equal(isSafeExternalCommerceUrl("https://www.amazon.com/dp/B0H8YL3L5L"), true);
+    assert.equal(isSafeExternalCommerceUrl("javascript:alert(1)"), false);
+    assert.equal(isSafeExternalCommerceUrl("http://www.amazon.com/dp/B0H8YL3L5L"), false);
+    assert.equal(
+        canShowPurchaseCta({
+            availability: COMMERCE_AVAILABILITY.AVAILABLE,
+            destinationUrl: "javascript:alert(1)",
         }),
         false,
     );
@@ -168,9 +183,22 @@ try {
     assert.match(analyticsSource, /commerce_lead_complete/);
     assert.match(bookDetailSource, /placement="book_detail"/);
     assert.match(bookDetailSource, /Join Updates/);
+    assert.match(newsletterSignupSource, /result\?\.status !== "created"/);
+    assert.match(newsletterSignupSource, /trackCommerceLeadComplete/);
     pass("newsletter attribution + PII sanitization");
 } catch (error) {
     fail(`newsletter/PII: ${error.message}`);
+}
+
+// --- no unauthenticated monetization-admin surface ---
+try {
+    assert.doesNotMatch(appSource, /MonetizationAdmin/);
+    assert.doesNotMatch(appSource, /monetization-admin/);
+    assert.doesNotMatch(seoConfigSource, /monetization-admin/);
+    assert.doesNotMatch(robotsSource, /monetization-admin/);
+    pass("monetization-admin public route removed (Option A)");
+} catch (error) {
+    fail(`admin surface: ${error.message}`);
 }
 
 // --- subscriptions / ads remain inert ---

@@ -6,6 +6,7 @@ import { buildFaqSchema, withSchemaGraph } from "../data/schemaHelpers.js";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
 import { newsletterBenefits, newsletterTopics } from "../data/marketingImages.js";
 import { isValidEmail, normalizeEmailInput } from "../utils/security.js";
+import { trackCommerceLeadStart, trackCommerceLeadComplete } from "../utils/analytics.js";
 
 const testimonials = [
     {
@@ -63,7 +64,36 @@ function NewsletterPage({ onSubscribe }) {
             return;
         }
         setStatus("loading");
-        onSubscribe?.({ email: normalizedEmail, source: "Newsletter Landing Page", tags: ["Newsletter Landing Page"] });
+        // Analytics attribution only — never send the email value to GA4.
+        // News Center CTAs route here; placement marks the shared newsletter landing.
+        trackCommerceLeadStart({
+            source: "Newsletter Landing Page",
+            placement: "newsletter_page",
+            campaignId: "newsletter-landing",
+        });
+        let result;
+        try {
+            result = onSubscribe?.({
+                email: normalizedEmail,
+                source: "Newsletter Landing Page",
+                tags: ["Newsletter Landing Page"],
+                placement: "newsletter_page",
+                campaignId: "newsletter-landing",
+            });
+        } catch {
+            setStatus("error");
+            return;
+        }
+        if (result?.status !== "created" && result?.status !== "existing") {
+            setStatus("error");
+            return;
+        }
+        trackCommerceLeadComplete({
+            source: "Newsletter Landing Page",
+            placement: "newsletter_page",
+            campaignId: "newsletter-landing",
+            status: result.status,
+        });
         setStatus("success");
     }
 

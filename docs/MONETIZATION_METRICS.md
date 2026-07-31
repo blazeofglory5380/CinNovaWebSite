@@ -30,6 +30,8 @@
 
 ## Dashboard policy
 
-`MonetizationAdmin` (admin-gated) shows configuration and event definitions.
-Live GA4 numbers are labeled **Unavailable / not connected**.
+Phase 11.1 does **not** expose a public monetization-admin UI (no auth system;
+robots.txt is not access control). Configuration summaries live in
+`getMonetizationChannelSummary()` and these docs.
+Live GA4 numbers are labeled **Unavailable / not connected** when discussed.
 Do not display `0` as if it were a measured revenue result.

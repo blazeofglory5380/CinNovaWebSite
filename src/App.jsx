@@ -58,7 +58,6 @@ import ArticlePage from "./pages/ArticlePage.jsx";
 import Resources from "./pages/Resources.jsx";
 import ResourcePage from "./pages/ResourcePage.jsx";
 import NewsletterAdmin from "./pages/NewsletterAdmin.jsx";
-import MonetizationAdmin from "./pages/MonetizationAdmin.jsx";
 import NewsletterSuccess from "./pages/NewsletterSuccess.jsx";
 import BlogManager from "./pages/BlogManager.jsx";
 import Partners from "./pages/Partners.jsx";
@@ -921,7 +920,6 @@ function App() {
                 />
             )}
             {ADMIN_ROUTES_ENABLED && page === "newsletter-admin" && <NewsletterAdmin />}
-            {ADMIN_ROUTES_ENABLED && page === "monetization-admin" && <MonetizationAdmin />}
             {page === "newsletter-success" && (
                 <NewsletterSuccess onGoHome={goHome} onGoBlog={goBlog} />
             )}
