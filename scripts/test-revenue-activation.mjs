@@ -43,8 +43,8 @@ try {
     assert.equal(commerce.affiliateEnabled, false);
     assert.ok(Array.isArray(seat.highlights) && seat.highlights.length >= 3);
     assert.match(bookDetailSource, /placement="hero"/);
-    assert.match(bookDetailSource, /placement="mid_page"/);
     assert.match(bookDetailSource, /placement="footer"/);
+    assert.doesNotMatch(bookDetailSource, /placement="mid_page"/);
     assert.equal((bookDetailSource.match(/https:\/\/www\.amazon\.com\/dp\/B0H8YL3L5L/g) || []).length, 0);
     // URL comes from catalog entity — not hard-coded repeatedly in JSX
     pass("SEAT CTA placements + Amazon URL consistency via catalog");
@@ -77,7 +77,11 @@ try {
     });
     assert.equal(bookMod.type, "book");
     assert.equal(bookMod.bookSlug, "the-southeast-asian-table");
-    assert.match(blogPostsSource, /commercialModule:\s*\{[\s\S]*bookSlug:\s*"the-southeast-asian-table"/);
+    // SEAT cookbook module must not be attached to unrelated software-company article.
+    assert.doesNotMatch(
+        blogPostsSource,
+        /building-a-software-company-with-multiple-products[\s\S]{0,800}bookSlug:\s*"the-southeast-asian-table"/,
+    );
     assert.match(blogPostsSource, /type:\s*"newsletter"/);
     pass("Blog commercial module gating (manual metadata only)");
 } catch (error) {

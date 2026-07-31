@@ -14,7 +14,7 @@ Organic / direct / social traffic
 ```
 
 - Traffic → `/books` → detail → Amazon Kindle
-- CTA placements on detail: `hero`, `mid_page`, `footer`
+- CTA placements on detail: `hero`, `footer` (trust-first; no repetitive mid-page Amazon CTA)
 - $0 CinNova checkout infrastructure (retailer handles payment)
 - Track outbound/CTA clicks only — **do not infer purchase completion**
 - Amazon completed purchases are not yet visible to CinNova unless external reporting is added

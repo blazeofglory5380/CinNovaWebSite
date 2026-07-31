@@ -16,6 +16,7 @@ function NewsletterSignup({
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const { showToast } = useToast();
+    const inputId = `newsletter-email-${placement || "default"}`.replace(/[^a-zA-Z0-9_-]/g, "-");
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -73,13 +74,20 @@ function NewsletterSignup({
     return (
         <>
             <form className="signup-form" onSubmit={handleSubmit}>
+                <label className="sr-only" htmlFor={inputId}>
+                    {placeholder}
+                </label>
                 <input
+                    id={inputId}
                     type="email"
+                    name="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value.slice(0, 254))}
                     placeholder={placeholder}
                     maxLength={254}
                     required
+                    autoComplete="email"
+                    aria-label={placeholder}
                 />
                 <button type="submit" className="hover-lift glow-button">{buttonLabel}</button>
             </form>

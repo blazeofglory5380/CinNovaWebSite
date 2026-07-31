@@ -11,7 +11,7 @@ Organic / direct / social / Products / Blog (manual module)
         ↓
   /books/the-southeast-asian-table
         ↓
-  View on Amazon (hero | mid_page | footer)
+  View on Amazon (hero | footer)
         ↓
   Amazon Kindle outbound  (measurable; purchase completion not known to CinNova)
 ```
@@ -42,8 +42,9 @@ Books / SEAT / Beyond / Products / Blog / News
 SEAT detail Amazon CTAs use:
 
 - `placement=hero`
-- `placement=mid_page`
 - `placement=footer`
+
+(Mid-page Amazon CTA was intentionally omitted for trust-first conversion UX.)
 
 All share the same verified URL: `https://www.amazon.com/dp/B0H8YL3L5L`
 

@@ -755,13 +755,7 @@ const fullArticles = [
         trending: true,
         popular: true,
         status: "published",
-        // Phase 11.2 — manually enabled commercial module (not auto-inserted).
-        commercialModule: {
-            enabled: true,
-            type: "book",
-            bookSlug: "the-southeast-asian-table",
-            campaignId: "blog-building-company-seat",
-        },
+        // No cookbook commercialModule — software-company article is not contextual for SEAT.
         content: [
             {
                 heading: "A company can be an ecosystem",

@@ -121,9 +121,7 @@ function BookDetailPage({ book, onBackToBooks }) {
                             <li key={item}>{item}</li>
                         ))}
                     </ul>
-                    <div className="books-v2__card-actions">
-                        <CommerceCTA entity={commerce} placement="mid_page" />
-                    </div>
+                    {/* Trust-first: no third solid Amazon CTA here — hero + footer are enough. */}
                 </section>
             )}
 

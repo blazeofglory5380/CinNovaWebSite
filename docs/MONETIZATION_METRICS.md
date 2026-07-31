@@ -14,12 +14,14 @@
 | Newsletter completions | `commerce_lead_complete` / `newsletter_signup` |
 | Outbound CTR | Derived in GA4 (views → outbound) |
 | Lead conversion rate | Derived in GA4 (views → lead complete) |
-| `book_detail_to_cta_rate` | `commerce_cta_click` ÷ `commerce_item_view` (book detail) |
-| `cta_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_cta_click` |
-| `book_detail_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_item_view` (book detail) |
-| `newsletter_conversion_rate` | `commerce_lead_complete` ÷ `commerce_lead_start` |
+| `book_detail_to_cta_rate` | `commerce_cta_click` where `placement` ∈ {`hero`,`footer`} ÷ `commerce_item_view` where `placement=book_detail` |
+| `cta_to_outbound_rate` | `commerce_outbound_click` ÷ `commerce_cta_click` (same placement filter when comparing SEAT detail) |
+| `book_detail_to_outbound_rate` | `commerce_outbound_click` (SEAT detail placements) ÷ `commerce_item_view` (`placement=book_detail`) |
+| `newsletter_conversion_rate` | `commerce_lead_complete` ÷ `commerce_lead_start` (same `newsletter_placement` / `campaign_id` scope) |
 
-Placement dimensions for SEAT CTAs: `hero`, `mid_page`, `footer`.
+These are definition-only. Do **not** invent measured production values.
+
+SEAT detail commercial CTAs (trust-first): `hero` + `footer` only. Mid-page Amazon CTA was removed to avoid repetitive purchase pressure.
 
 ### Future (not fired / not claimed)
 
