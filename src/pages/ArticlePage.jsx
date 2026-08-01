@@ -22,6 +22,7 @@ import ArticleChecklist from "../components/article/ArticleChecklist.jsx";
 import ArticleStudyTools from "../components/article/ArticleStudyTools.jsx";
 import ArticleResourceDownloads from "../components/article/ArticleResourceDownloads.jsx";
 import RelatedContentModule from "../components/article/RelatedContentModule.jsx";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import RelatedCommercialModule from "../components/article/RelatedCommercialModule.jsx";
 import {
     estimateArticleReadingTime,
@@ -582,6 +583,22 @@ function ArticlePage({
                 onOpenResource={onOpenResource}
                 onSubscribe={onSubscribe}
                 onNavigate={onNavigate}
+            />
+
+            <RecommendationRail
+                pageType="article"
+                route={`/blog/${post.slug}`}
+                title={post.title}
+                category={post.category}
+                tags={post.tags || []}
+                seoKeywords={post.seoKeywords || []}
+                excerpt={post.excerpt || ""}
+                relatedNewsIds={post.relatedNewsIds || []}
+                relatedBlogSlugs={(post.relatedReading || []).map((item) =>
+                    typeof item === "string" ? item : item?.slug,
+                ).filter(Boolean)}
+                blogSlug={post.slug}
+                heading="More to explore"
             />
         </main>
     );

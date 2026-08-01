@@ -15,6 +15,7 @@ import { siteUrl, defaultOgImage } from "../data/seoConfig.js";
 import { buildImageObject } from "../data/schemaHelpers.js";
 import { trackProductExploreClick } from "../utils/analytics.js";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import "../styles/brand-dna.css";
 import "./HomePage.css";
 
@@ -325,7 +326,17 @@ function HomePage({
                 </GlassPanel>
             </MotionSectionWrap>
 
-            {/* ── Newsletter (Dispatch) ───────────────────────────────── */}
+            {/* ── Recommendations + Newsletter ───────────────────────── */}
+            <section className="home-v2__section" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="home"
+                    route="/"
+                    title="Cin Nova"
+                    topics={["education_ai", "openai", "anthropic"]}
+                    heading="Continue exploring CinNova"
+                />
+            </section>
+
             <section className="home-v2__section" id="newsletter" aria-label="Newsletter">
                 <Dispatch
                     eyebrow="Stay in the loop"

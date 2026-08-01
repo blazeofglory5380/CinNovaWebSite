@@ -17,6 +17,7 @@ import {
     siteUrl,
 } from "../data/blogPosts.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import { MotionSectionWrap } from "../motion/MotionSectionWrap.jsx";
 
 const categoryConfig = {
@@ -508,6 +509,18 @@ function Blog({
                         </p>
                     </div>
                 </GlassPanel>
+            </section>
+
+            {/* ── Recommendations ──────────────────────────────────── */}
+            <section className="blog-v2__section" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="blog"
+                    route="/blog"
+                    title="CinNova Blog"
+                    category={activeCategory && activeCategory !== "All" ? activeCategory : ""}
+                    topics={["education_ai", "openai"]}
+                    heading="Editor picks and related reading"
+                />
             </section>
 
             {/* ── Ad slot (preserved, restyled wrapper) ────────────── */}

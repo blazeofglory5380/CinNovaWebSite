@@ -599,6 +599,59 @@ export function trackAffiliateOutboundClick({
     );
 }
 
+/* ── Phase 11.4C recommendation engine ───────────────────────────────────────
+   Impression + click only. No revenue, purchase, checkout, or PII. */
+
+function sanitizeRecommendationParams(params = {}) {
+    return {
+        recommendation_type: String(params.recommendationType || "").slice(0, 40),
+        recommendation_position: Number(params.recommendationPosition) || 0,
+        recommendation_category: String(params.recommendationCategory || "").slice(0, 64),
+        page_type: String(params.pageType || "").slice(0, 40),
+        item_id: String(params.itemId || "").slice(0, 80),
+    };
+}
+
+export function trackRecommendationImpression({
+    recommendationType = "",
+    recommendationPosition = 0,
+    recommendationCategory = "",
+    pageType = "",
+    itemId = "",
+} = {}) {
+    if (!recommendationType) return;
+    trackEvent(
+        "recommendation_impression",
+        sanitizeRecommendationParams({
+            recommendationType,
+            recommendationPosition,
+            recommendationCategory,
+            pageType,
+            itemId,
+        }),
+    );
+}
+
+export function trackRecommendationClick({
+    recommendationType = "",
+    recommendationPosition = 0,
+    recommendationCategory = "",
+    pageType = "",
+    itemId = "",
+} = {}) {
+    if (!recommendationType) return;
+    trackEvent(
+        "recommendation_click",
+        sanitizeRecommendationParams({
+            recommendationType,
+            recommendationPosition,
+            recommendationCategory,
+            pageType,
+            itemId,
+        }),
+    );
+}
+
 export function trackCommerceLeadStart({
     source = "",
     placement = "",

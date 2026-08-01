@@ -30,6 +30,7 @@ import {
   youtubePaths,
   ctaButtons,
 } from './aiTutorialsData';
+import RecommendationRail from '../components/recommendations/RecommendationRail.jsx';
 
 const GUIDES_VISIBLE_LIMIT = 6;
 
@@ -543,6 +544,19 @@ export default function AiTutorialsPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="ai-tutorials-section" aria-label="Recommended reading">
+        <div className="ai-tutorials-container">
+          <RecommendationRail
+            pageType="guides"
+            route="/guides"
+            guideKey="ai-tutorials"
+            title="AI Tutorials"
+            topics={["education_ai", "openai", "anthropic"]}
+            heading="Recommended guides and related reading"
+          />
         </div>
       </section>
 

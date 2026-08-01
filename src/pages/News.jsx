@@ -21,6 +21,7 @@ import {
     trackNewsPageView,
     trackNewsStoryClick,
 } from "../utils/analytics.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import "./News.css";
 
 const newsDesks = [
@@ -420,6 +421,17 @@ function News({ onNavigate, onOpenStory, initialCoverage = "all" }) {
                         <div><strong>Connected</strong><span>Local consequences and global forces in one view.</span></div>
                     </div>
                 </div>
+            </section>
+
+            <section className="news-shell" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="news"
+                    route="/news"
+                    title="CinNova News"
+                    topics={["openai", "anthropic", "data_center"]}
+                    heading="Recommended coverage"
+                    className="recommendation-rail--on-dark"
+                />
             </section>
 
             <section className="news-cta" aria-labelledby="news-cta-title">

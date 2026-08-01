@@ -21,6 +21,7 @@ import {
     trackBooksHeroFeaturedClick,
     trackCommerceItemView,
 } from "../utils/analytics.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import "../styles/brand-dna.css";
 import "./Books.css";
 
@@ -217,6 +218,16 @@ function Books({ onNavigate, onOpenBook }) {
                     campaignId="books-publishing-updates"
                     buttonLabel="Join Updates"
                     placeholder="Email for publishing updates"
+                />
+            </section>
+
+            <section className="books-v2__section" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="books"
+                    route="/books"
+                    title="CinNova Books"
+                    topics={["cookbook", "fiction_series"]}
+                    heading="More from CinNova Books"
                 />
             </section>
 

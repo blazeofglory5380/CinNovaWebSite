@@ -4,6 +4,7 @@ import SEO from "../components/SEO.jsx";
 import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import NewsletterSignup from "../components/NewsletterSignup.jsx";
 import MarketingPhoto from "../components/MarketingPhoto.jsx";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import { partnerTypeImages } from "../data/marketingImages.js";
 import {
     isValidEmail,
@@ -297,6 +298,14 @@ function Partners({ onSubscribe }) {
                     </form>
                 )}
             </section>
+
+            <RecommendationRail
+                pageType="company"
+                route="/company/partners"
+                title="Partners"
+                topics={["education_ai"]}
+                heading="Related CinNova content"
+            />
 
             <section className="section" id="newsletter">
                 <div className="newsletter-card">

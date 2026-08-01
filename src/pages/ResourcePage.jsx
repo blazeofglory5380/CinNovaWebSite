@@ -15,6 +15,7 @@ import {
     withLibraryMeta,
 } from "../data/resources.js";
 import { siteUrl } from "../data/blogPosts.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 
 function ResourcePage({ resource, onBack, onOpenResource, onSubscribe, onNavigate, onOpenArticle }) {
     const [gatedResource, setGatedResource] = useState(null);
@@ -271,6 +272,16 @@ function ResourcePage({ resource, onBack, onOpenResource, onSubscribe, onNavigat
                     onClose={() => setGatedResource(null)}
                 />
             )}
+
+            <RecommendationRail
+                pageType="resource"
+                route={`/resources/${resource.slug}`}
+                title={resource.title}
+                category={resource.category}
+                excerpt={resource.description}
+                resourceSlug={resource.slug}
+                heading="Related learning paths"
+            />
 
             <section className="section" id="newsletter">
                 <div className="newsletter-card">

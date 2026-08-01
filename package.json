@@ -29,6 +29,7 @@
     "test:monetization": "node scripts/test-monetization.mjs",
     "test:affiliate-foundation": "node scripts/test-affiliate-foundation.mjs",
     "test:partner-catalog": "node scripts/test-partner-catalog.mjs",
+    "test:recommendations": "node scripts/test-recommendations.mjs",
     "test:revenue-activation": "node scripts/test-revenue-activation.mjs",
     "test:analytics": "node scripts/test-analytics.mjs",
     "test:social-utm": "node scripts/test-social-utm.mjs",
