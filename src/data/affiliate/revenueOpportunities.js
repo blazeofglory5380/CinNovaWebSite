@@ -1,9 +1,9 @@
 /**
- * Phase 11.4B — Revenue Opportunities metrics.
+ * Phase 11.4B/D — Revenue Opportunities metrics.
  *
- * All KPI values are placeholders (0) until real affiliate click / revenue
- * telemetry is wired. Catalog inventory counts live in applicationTracker —
- * do not treat these zeros as “no companies exist.”
+ * All revenue / click / conversion / pipeline KPIs remain placeholders (0).
+ * Classification inventory is separate — see getEnrollmentInventoryMetrics().
+ * The public revenue-opportunities UI was removed in Phase 11.4D.
  */
 
 export const REVENUE_METRICS_PLACEHOLDER = Object.freeze({
@@ -14,29 +14,21 @@ export const REVENUE_METRICS_PLACEHOLDER = Object.freeze({
     affiliateClicks: 0,
     revenue: 0,
     conversionRate: 0,
+    programsAvailable: 0,
+    programsVerified: 0,
+    applicationsSubmitted: 0,
+    pendingReview: 0,
+    rejected: 0,
+    inactive: 0,
 });
 
-/**
- * @returns {{
- *   totalPartners: number,
- *   applications: number,
- *   approved: number,
- *   active: number,
- *   affiliateClicks: number,
- *   revenue: number,
- *   conversionRate: number,
- *   placeholder: true,
- *   currency: 'USD',
- *   notes: string,
- * }}
- */
 export function getRevenueOpportunityMetrics() {
     return Object.freeze({
         ...REVENUE_METRICS_PLACEHOLDER,
         placeholder: true,
         currency: "USD",
         notes:
-            "Placeholder metrics only. No affiliate clicks, revenue, or conversion data until partners are approved, activated, and telemetry is connected.",
+            "Placeholder revenue metrics only (all zeros). No commercial programs are active. Classification inventory lives in getEnrollmentInventoryMetrics() / docs — not a public admin UI.",
     });
 }
 

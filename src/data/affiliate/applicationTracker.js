@@ -1,5 +1,5 @@
 /**
- * Phase 11.4B — Partner Application Tracker.
+ * Phase 11.4B/D — Partner Application Tracker.
  * Derived views over the Partner Catalog. Does not mutate catalog records.
  */
 
@@ -9,29 +9,12 @@ import {
     ACTIVATION_STATUSES,
 } from "./catalogStatuses.js";
 import { getCatalogCategoryLabel } from "./catalogCategories.js";
+import {
+    getDirectRevenuePotentialLabel,
+    getEnrollmentProgramTypeLabel,
+} from "./enrollmentProgramTypes.js";
 import { listPartnerCatalog } from "./partnerCatalog.js";
 
-/**
- * @typedef {object} ApplicationTrackerRow
- * @property {string} catalogId
- * @property {string} companyName
- * @property {string} category
- * @property {string} categoryLabel
- * @property {string} partnerType
- * @property {string} programStatus
- * @property {string} applicationStatus
- * @property {string} approvalStatus
- * @property {string} activationStatus
- * @property {string} officialWebsite
- * @property {boolean} ftcDisclosureRequired
- * @property {string} lastReviewed
- * @property {string} notes
- */
-
-/**
- * @param {import('./partnerCatalog.js').PartnerCatalogRecord} entry
- * @returns {ApplicationTrackerRow}
- */
 export function toApplicationTrackerRow(entry) {
     return {
         catalogId: entry.id,
@@ -39,13 +22,28 @@ export function toApplicationTrackerRow(entry) {
         category: entry.category,
         categoryLabel: getCatalogCategoryLabel(entry.category),
         partnerType: entry.partnerType,
+        enrollmentProgramType: entry.enrollmentProgramType,
+        enrollmentProgramTypeLabel: getEnrollmentProgramTypeLabel(entry.enrollmentProgramType),
+        programTypes: entry.programTypes,
+        directRevenuePotential: entry.directRevenuePotential,
+        directRevenuePotentialLabel: getDirectRevenuePotentialLabel(entry.directRevenuePotential),
+        applicationReady: entry.applicationReady,
+        revenueReady: entry.revenueReady,
+        classificationBucket: entry.classificationBucket,
         programStatus: entry.programStatus,
         applicationStatus: entry.applicationStatus,
         approvalStatus: entry.approvalStatus,
         activationStatus: entry.activationStatus,
         officialWebsite: entry.officialWebsite,
+        officialProgramUrl: entry.officialProgramUrl,
+        sourceTitle: entry.sourceTitle,
+        verificationSource: entry.verificationSource,
         ftcDisclosureRequired: entry.ftcDisclosureRequired,
         lastReviewed: entry.lastReviewed,
+        lastVerifiedDate: entry.lastVerifiedDate,
+        applicationDate: entry.applicationDate,
+        approvalDate: entry.approvalDate,
+        renewalDate: entry.renewalDate,
         notes: entry.notes,
     };
 }
@@ -56,15 +54,19 @@ export function listApplicationTrackerRows() {
 
 export function listPendingApplications() {
     return listApplicationTrackerRows().filter((row) =>
-        [APPLICATION_STATUSES.APPLIED, APPLICATION_STATUSES.IN_REVIEW].includes(
-            row.applicationStatus,
-        ),
+        [
+            APPLICATION_STATUSES.APPLIED,
+            APPLICATION_STATUSES.PENDING,
+            APPLICATION_STATUSES.PREPARING,
+        ].includes(row.applicationStatus),
     );
 }
 
 export function listApprovedApplications() {
     return listApplicationTrackerRows().filter(
-        (row) => row.approvalStatus === APPROVAL_STATUSES.APPROVED,
+        (row) =>
+            row.applicationStatus === APPLICATION_STATUSES.APPROVED ||
+            row.approvalStatus === APPROVAL_STATUSES.APPROVED,
     );
 }
 
@@ -74,30 +76,30 @@ export function listActivePartners() {
     );
 }
 
-/**
- * Application pipeline summary derived from catalog statuses.
- * Distinct from Revenue Opportunities placeholder KPIs (which stay at 0
- * until real click/revenue telemetry exists).
- */
 export function getApplicationTrackerSummary() {
     const rows = listApplicationTrackerRows();
     return Object.freeze({
         catalogCount: rows.length,
-        notApplied: rows.filter(
-            (r) => r.applicationStatus === APPLICATION_STATUSES.NOT_APPLIED,
+        notStarted: rows.filter(
+            (r) => r.applicationStatus === APPLICATION_STATUSES.NOT_STARTED,
         ).length,
+        preparing: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.PREPARING)
+            .length,
         applied: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.APPLIED)
             .length,
-        inReview: rows.filter(
-            (r) => r.applicationStatus === APPLICATION_STATUSES.IN_REVIEW,
-        ).length,
-        accepted: rows.filter(
-            (r) => r.applicationStatus === APPLICATION_STATUSES.ACCEPTED,
-        ).length,
-        rejected: rows.filter(
-            (r) => r.applicationStatus === APPLICATION_STATUSES.REJECTED,
-        ).length,
+        pending: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.PENDING)
+            .length,
         approved: listApprovedApplications().length,
+        rejected: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.REJECTED)
+            .length,
+        paused: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.PAUSED)
+            .length,
+        inactive: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.INACTIVE)
+            .length,
+        archived: rows.filter((r) => r.applicationStatus === APPLICATION_STATUSES.ARCHIVED)
+            .length,
+        applicationReady: rows.filter((r) => r.applicationReady).length,
+        revenueReady: rows.filter((r) => r.revenueReady).length,
         active: listActivePartners().length,
         disabled: rows.filter(
             (r) => r.activationStatus === ACTIVATION_STATUSES.DISABLED,

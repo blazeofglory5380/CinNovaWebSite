@@ -67,11 +67,41 @@ export {
 } from "./catalogStatuses.js";
 
 export {
+    ENROLLMENT_PROGRAM_TYPES,
+    ENROLLMENT_PROGRAM_TYPE_LIST,
+    ENROLLMENT_PROGRAM_TYPE_LABELS,
+    DIRECT_REVENUE_POTENTIAL,
+    DIRECT_REVENUE_POTENTIAL_LIST,
+    DIRECT_REVENUE_POTENTIAL_LABELS,
+    PUBLIC_OR_PRIVATE,
+    PUBLIC_OR_PRIVATE_LIST,
+    REVIEW_TIME_TOKENS,
+    CLASSIFICATION_BUCKETS,
+    CLASSIFICATION_BUCKET_LIST,
+    CLASSIFICATION_BUCKET_LABELS,
+    UNKNOWN_VERIFICATION_NOTE,
+    isEnrollmentProgramType,
+    isDirectRevenuePotential,
+    isPublicOrPrivate,
+    isClassificationBucket,
+    getEnrollmentProgramTypeLabel,
+    getDirectRevenuePotentialLabel,
+    classificationBucketForEntry,
+    computeRevenueReady,
+} from "./enrollmentProgramTypes.js";
+
+export { DEFAULT_COMPLIANCE } from "./complianceDefaults.js";
+
+export {
     PARTNER_CATALOG,
     listPartnerCatalog,
     getPartnerCatalogEntry,
     listPartnerCatalogByCategory,
     listPartnerCatalogByApplicationStatus,
+    listPartnerCatalogByClassificationBucket,
+    listApplicationReadyPartners,
+    listRevenueReadyPartners,
+    listCreatorAffiliatePrograms,
     validatePartnerCatalogEntry,
     validatePartnerCatalog,
 } from "./partnerCatalog.js";
@@ -84,6 +114,12 @@ export {
     listActivePartners,
     getApplicationTrackerSummary,
 } from "./applicationTracker.js";
+
+export {
+    getPartnerVerificationReport,
+    getEnrollmentInventoryMetrics,
+    listHighPriorityZeroCostPrograms,
+} from "./verificationReport.js";
 
 export {
     REVENUE_METRICS_PLACEHOLDER,
