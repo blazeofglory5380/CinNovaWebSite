@@ -69,12 +69,20 @@ try {
         "no commercial items",
     );
     assert.ok(
-        anthropic.items.some((item) => item.type === "OFFICIAL_RESOURCE"),
-        "expected official anthropic/openai-style resource",
+        anthropic.items.some((item) => item.type === "OFFICIAL_RESOURCE" && item.id === "anthropic"),
+        "expected official Anthropic resource",
+    );
+    assert.ok(
+        !anthropic.topics.includes("data_center"),
+        "Anthropic security context must not map to data_center via bare infrastructure",
     );
     assert.ok(
         anthropic.items.every((item) => !/[?&](ref|tag|aff)=/i.test(item.href || "")),
         "no affiliate query params",
+    );
+    assert.ok(
+        anthropic.items.every((item) => (item.score || 0) >= engine.MIN_RECOMMENDATION_SCORE),
+        "all items meet minimum relevance score",
     );
     pass("anthropic context yields editorial + official recommendations only");
 } catch (error) {
@@ -149,6 +157,19 @@ try {
             .every((i) => i.meta?.releaseStatus),
         "book recommendations expose availability status",
     );
+    const seatDetail = engine.getRecommendationsForPage(
+        engine.buildRecommendationContext({
+            pageType: "book",
+            bookSlug: "the-southeast-asian-table",
+            title: "The Southeast Asian Table",
+            category: "Cookbook",
+        }),
+    );
+    assert.ok(seatDetail.items.some((i) => i.type === "BOOK"), "SEAT detail should recommend sibling books");
+    assert.ok(
+        seatDetail.items.every((i) => i.id !== "the-southeast-asian-table"),
+        "SEAT must not self-recommend",
+    );
     pass("cookbook + fiction book scenarios respect series and availability");
 } catch (error) {
     fail(`book scenarios: ${error.message}`);
@@ -174,6 +195,10 @@ try {
     assert.match(analyticsSource, /recommendation_type/);
     assert.match(analyticsSource, /recommendation_position/);
     assert.match(analyticsSource, /recommendation_category/);
+    assert.match(analyticsSource, /recommendationImpressionKeys/);
+    assert.match(analyticsSource, /is_external/);
+    assert.match(analyticsSource, /destination_host/);
+    assert.match(analyticsSource, /FUTURE_COMMERCIAL/);
     const recBlock = analyticsSource.slice(
         analyticsSource.indexOf("Phase 11.4C recommendation engine"),
     );
@@ -242,6 +267,49 @@ try {
     pass("recommendation rail wired across supported surfaces");
 } catch (error) {
     fail(`surface wiring: ${error.message}`);
+}
+
+try {
+    const unpublished = engine.getRecommendationsForPage(
+        engine.buildRecommendationContext({
+            pageType: "news-story",
+            title: "data center campus",
+            relatedNewsIds: ["news-state-2026-07-meta-blackrock-el-paso"],
+        }),
+    );
+    assert.ok(
+        unpublished.items.every(
+            (i) =>
+                i.id !== "news-state-2026-07-meta-blackrock-el-paso" &&
+                !String(i.href).includes("meta-blackrock-el-paso-data-center-venture"),
+        ),
+        "unpublished Meta/BlackRock duplicate must not be recommended",
+    );
+    pass("unpublished duplicate news is excluded");
+} catch (error) {
+    fail(`unpublished exclusion: ${error.message}`);
+}
+
+try {
+    const seat = engine.getRecommendationsForPage(
+        engine.buildRecommendationContext({
+            pageType: "book",
+            bookSlug: "the-southeast-asian-table",
+            title: "The Southeast Asian Table",
+            category: "Cookbook",
+        }),
+    );
+    assert.ok(
+        seat.items.every((i) => i.type !== "RESOURCE" || (i.score || 0) >= 16),
+        "cookbook must not pull weak unrelated resources",
+    );
+    assert.ok(
+        !seat.items.some((i) => /real estate/i.test(i.title)),
+        "cookbook recommendations must not include real-estate fillers",
+    );
+    pass("cookbook recommendations stay on-topic");
+} catch (error) {
+    fail(`cookbook relevance: ${error.message}`);
 }
 
 if (process.exitCode) {

@@ -332,7 +332,7 @@ function HomePage({
                     pageType="home"
                     route="/"
                     title="Cin Nova"
-                    topics={["education_ai", "openai", "anthropic"]}
+                    topics={["education_ai"]}
                     heading="Continue exploring CinNova"
                 />
             </section>

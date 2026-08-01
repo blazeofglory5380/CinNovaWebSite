@@ -40,11 +40,12 @@ function RecommendationRail({
     productPage = null,
     bookSlug = null,
     onNavigate = null,
-    heading = "Recommended for you",
+    heading = "Related reading",
     className = "",
 }) {
     const headingId = useId();
-    const impressedRef = useRef(false);
+    const noteId = useId();
+    const impressedKeyRef = useRef("");
 
     const context = useMemo(
         () =>
@@ -98,18 +99,23 @@ function RecommendationRail({
     const items = useMemo(() => result.items || [], [result.items]);
 
     useEffect(() => {
-        if (!result.enabled || !items.length || impressedRef.current) return;
-        impressedRef.current = true;
+        if (!result.enabled || items.length === 0) return;
+        const batchKey = `${pageType}|${route}|${items.map((i) => `${i.type}:${i.id}`).join(",")}`;
+        if (impressedKeyRef.current === batchKey) return;
+        impressedKeyRef.current = batchKey;
+
         items.forEach((item) => {
+            if (item.type === "FUTURE_COMMERCIAL") return;
             trackRecommendationImpression({
                 recommendationType: item.type,
                 recommendationPosition: item.position,
                 recommendationCategory: item.category,
                 pageType,
                 itemId: item.id,
+                route,
             });
         });
-    }, [items, pageType, result.enabled]);
+    }, [items, pageType, route, result.enabled]);
 
     if (!result.enabled || items.length === 0) return null;
 
@@ -120,6 +126,8 @@ function RecommendationRail({
             recommendationCategory: item.category,
             pageType,
             itemId: item.id,
+            isExternal: Boolean(item.external),
+            destinationUrl: item.external ? item.href : "",
         });
 
         if (item.external) {
@@ -145,24 +153,24 @@ function RecommendationRail({
         <section
             className={`recommendation-rail ${className}`.trim()}
             aria-labelledby={headingId}
+            aria-describedby={noteId}
             data-recommendation-engine="11.4c"
             data-commercial-slot="off"
         >
             <div className="recommendation-rail-header">
                 <p className="recommendation-rail-eyebrow">Explore next</p>
                 <h2 id={headingId}>{heading}</h2>
-                <p className="recommendation-rail-note">
-                    Editorial recommendations only. No ads, affiliate links, or commercial offers
-                    in this module.
+                <p id={noteId} className="recommendation-rail-note">
+                    Editorial recommendations only. Official company links are ordinary public
+                    websites for context — not sponsorships, partnerships, or affiliate offers.
                 </p>
             </div>
 
             <ul className="recommendation-rail-list" role="list">
                 {items.map((item) => {
-                    const label = `${typeLabel(item.type)}: ${item.title}`;
-                    const rel = item.external
-                        ? "noopener noreferrer"
-                        : undefined;
+                    const externalSuffix = item.external ? " (opens in a new tab)" : "";
+                    const label = `${typeLabel(item.type)}: ${item.title}${externalSuffix}`;
+                    const rel = item.external ? "noopener noreferrer" : undefined;
                     const target = item.external ? "_blank" : undefined;
                     return (
                         <li key={`${item.type}:${item.id}`} className="recommendation-rail-item">
@@ -174,10 +182,12 @@ function RecommendationRail({
                                 aria-label={label}
                                 data-recommendation-type={item.type}
                                 data-recommendation-position={item.position}
+                                data-recommendation-external={item.external ? "true" : "false"}
                                 onClick={(event) => handleActivate(event, item)}
                             >
                                 <span className="recommendation-rail-type">
                                     {typeLabel(item.type)}
+                                    {item.external ? " · Official site" : ""}
                                 </span>
                                 <strong className="recommendation-rail-title">{item.title}</strong>
                                 {item.meta?.statusLabel ? (

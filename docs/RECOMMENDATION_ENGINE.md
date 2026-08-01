@@ -76,6 +76,17 @@ RECOMMENDATION_CONFIG = {
 Hard fail-closed: when `commercialSlotEnabled` is false, `FUTURE_COMMERCIAL`
 is stripped from enabled types and never emitted.
 
+Impression analytics use stable per-route/item dedupe keys so React remounts
+do not double-fire. Click analytics include `is_external` and host-only
+`destination_host` for official external destinations.
+
+## Analytics flake note
+
+`npm run test:analytics` asserts SPA `page_view` behavior primarily through the
+app `dataLayer` abstraction. `/g/collect` network interception is retained as a
+probe because sendBeacon timing can be unreliable in some local Playwright
+environments even when dataLayer correctly queues events.
+
 ## Category mapping examples
 
 - **Anthropic news** → official Anthropic site, related AI news/blog, AI safety resources, Claude guide

@@ -428,7 +428,7 @@ function News({ onNavigate, onOpenStory, initialCoverage = "all" }) {
                     pageType="news"
                     route="/news"
                     title="CinNova News"
-                    topics={["openai", "anthropic", "data_center"]}
+                    topics={[]}
                     heading="Recommended coverage"
                     className="recommendation-rail--on-dark"
                 />

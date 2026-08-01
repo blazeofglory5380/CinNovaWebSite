@@ -24,6 +24,7 @@ export {
     PRODUCT_TOPIC_MAP,
     BOOK_TOPIC_MAP,
     FUTURE_COMMERCIAL_PLACEHOLDER,
+    MIN_RECOMMENDATION_SCORE,
     detectTopicKeys,
     getMappingForTopic,
     listCategoryMappingKeys,

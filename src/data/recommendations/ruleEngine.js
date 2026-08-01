@@ -27,6 +27,7 @@ import {
 import { getRecommendationConfig, isRecommendationEngineEnabled } from "./recommendationConfig.js";
 import {
     BOOK_TOPIC_MAP,
+    MIN_RECOMMENDATION_SCORE,
     PAGE_TYPE_DEFAULT_TOPICS,
     PRODUCT_TOPIC_MAP,
     detectTopicKeys,
@@ -127,7 +128,7 @@ function collectNewsCandidates(context, topics, excludeIds) {
     const stories = getPublicNewsStories();
     const byExplicit = (context.relatedNewsIds || [])
         .map((id) => getNewsStoryById(id))
-        .filter(Boolean);
+        .filter((story) => story && story.isPublished !== false && !story.isDemo);
 
     const scored = stories.map((story) => {
         if (excludeIds.has(`news:${story.id}`) || excludeIds.has(`news:${story.slug}`)) {
@@ -142,8 +143,16 @@ function collectNewsCandidates(context, topics, excludeIds) {
             score += scoreHintMatch(hay, mapping.newsHints, 12);
             score += scoreHintMatch(hay, mapping.labels, 6);
         }
+        // Index surfaces without topic hints: modest recency signal only.
+        if (
+            topics.length === 0 &&
+            (context.pageType === "news" || context.pageType === "home")
+        ) {
+            const idx = stories.findIndex((s) => s.id === story.id);
+            if (idx >= 0 && idx < 6) score += 20 - idx;
+        }
         if (byExplicit.some((s) => s.id === story.id)) score += 40;
-        if (score <= 0) return null;
+        if (score < MIN_RECOMMENDATION_SCORE) return null;
         return makeItem({
             type: RECOMMENDATION_TYPES.NEWS,
             id: story.id,
@@ -190,7 +199,7 @@ function collectBlogCandidates(context, topics, excludeIds) {
             score += scoreHintMatch(hay, mapping.labels, 6);
         }
         if (explicit.some((p) => p.slug === post.slug)) score += 40;
-        if (score <= 0) return null;
+        if (score < MIN_RECOMMENDATION_SCORE) return null;
         return makeItem({
             type: RECOMMENDATION_TYPES.BLOG,
             id: post.slug,
@@ -238,7 +247,7 @@ function collectResourceCandidates(context, topics, excludeIds) {
                 score += scoreHintMatch(hay, mapping.resourceHints, 10);
                 score += scoreHintMatch(hay, mapping.labels, 4);
             }
-            if (score <= 0) return null;
+            if (score < MIN_RECOMMENDATION_SCORE) return null;
             return makeItem({
                 type: RECOMMENDATION_TYPES.RESOURCE,
                 id: resource.slug,
@@ -268,7 +277,7 @@ function collectGuideCandidates(topics, excludeIds) {
                 score += scoreHintMatch(hay, mapping.labels, 8);
                 score += scoreHintMatch(hay, mapping.blogHints, 4);
             }
-            if (score <= 0) return null;
+            if (score < MIN_RECOMMENDATION_SCORE) return null;
             const path = getPublicPagePath(guide.key) || guide.path;
             return makeItem({
                 type: RECOMMENDATION_TYPES.GUIDE,
@@ -301,7 +310,7 @@ function collectProductCandidates(topics, excludeIds, context) {
                 if ((mapping.productPages || []).includes(product.page)) score += 28;
             }
             if (context.pageType === "home" || context.pageType === "products") score += 4;
-            if (score <= 0) return null;
+            if (score < MIN_RECOMMENDATION_SCORE) return null;
             return makeItem({
                 type: RECOMMENDATION_TYPES.PRODUCT,
                 id: product.page,
@@ -349,13 +358,18 @@ function collectBookCandidates(topics, excludeIds, context, config) {
             ) {
                 score += 40;
             }
-            if (context.pageType === "books" || context.pageType === "book") score += 6;
+            if (context.pageType === "book") {
+                // Sibling catalog titles are always relevant from a book detail page.
+                score += 20;
+            } else if (context.pageType === "books") {
+                score += 6;
+            }
 
             const orderIndex = preferredOrder.indexOf(book.slug);
-            if (orderIndex >= 0) score += Math.max(0, 5 - orderIndex);
+            if (orderIndex >= 0 && score > 0) score += Math.max(0, 5 - orderIndex);
 
             // Never invent preorder — surface availability honestly via meta only.
-            if (score <= 0) return null;
+            if (score < MIN_RECOMMENDATION_SCORE) return null;
             return makeItem({
                 type: RECOMMENDATION_TYPES.BOOK,
                 id: book.slug,
@@ -497,13 +511,14 @@ export function rankRecommendations(candidates, config) {
 }
 
 /**
- * Diversify: first secure one item per type (priority order preserved in
- * `ranked`), then fill remaining slots with a soft per-type cap.
+ * Diversify among already-relevant candidates only.
+ * Do not pull weak items merely to fill a type slot.
  */
 export function diversifyRecommendations(ranked, maximum) {
+    const relevant = ranked.filter((item) => (item.score || 0) >= MIN_RECOMMENDATION_SCORE);
     const selected = [];
     const typeCounts = new Map();
-    const pool = [...ranked];
+    const pool = [...relevant];
 
     // Pass 1 — one of each type already present in ranked priority order.
     for (let i = 0; i < pool.length && selected.length < maximum; i += 1) {
@@ -515,7 +530,7 @@ export function diversifyRecommendations(ranked, maximum) {
         i -= 1;
     }
 
-    // Pass 2 — fill remaining slots; soft-cap additional copies per type.
+    // Pass 2 — fill remaining slots by remaining priority/score order.
     while (selected.length < maximum && pool.length) {
         let pickedIndex = -1;
         for (let i = 0; i < pool.length; i += 1) {
@@ -598,6 +613,7 @@ export function runRecommendationEngine(context = {}, overrides = {}) {
     }
 
     candidates = uniqueByKey(candidates, (item) => `${item.type}:${item.id}`);
+    candidates = uniqueByKey(candidates, (item) => String(item.href || "").toLowerCase());
 
     // Absolute guard: strip any commercial types and any affiliate-looking hrefs.
     candidates = candidates.filter((item) => {
@@ -605,8 +621,12 @@ export function runRecommendationEngine(context = {}, overrides = {}) {
         if (!config.commercialSlotEnabled && item.type === RECOMMENDATION_TYPES.FUTURE_COMMERCIAL) {
             return false;
         }
+        if ((item.score || 0) < MIN_RECOMMENDATION_SCORE) return false;
         const href = String(item.href || "");
         if (/[?&](ref|tag|aff|affiliate)=/i.test(href)) return false;
+        if (!href || href.startsWith("/?") || href.includes("page=blog-manager")) return false;
+        if (href.includes("newsletter-admin") || href.includes("partner-admin")) return false;
+        if (href.includes("revenue-opportunities") || href.includes("blog-admin")) return false;
         return true;
     });
 
