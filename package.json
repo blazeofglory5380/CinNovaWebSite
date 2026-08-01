@@ -27,6 +27,8 @@
     "test:seo": "node scripts/test-seo.mjs",
     "audit:sitemap-indexability": "node scripts/audit-sitemap-indexability.mjs",
     "test:monetization": "node scripts/test-monetization.mjs",
+    "test:commerce": "node scripts/test-commerce.mjs",
+    "test:subscriptions": "node scripts/test-subscriptions.mjs",
     "test:affiliate-foundation": "node scripts/test-affiliate-foundation.mjs",
     "test:partner-catalog": "node scripts/test-partner-catalog.mjs",
     "test:recommendations": "node scripts/test-recommendations.mjs",
