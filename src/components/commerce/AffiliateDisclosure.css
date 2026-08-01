@@ -1,7 +1,22 @@
 .affiliate-disclosure {
     margin: 0.75rem 0 0;
+    max-width: 42rem;
+    padding: 0.65rem 0.85rem;
+    border-left: 3px solid rgba(30, 36, 48, 0.28);
+    background: rgba(30, 36, 48, 0.04);
+}
+
+.affiliate-disclosure-label {
+    margin: 0 0 0.2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(30, 36, 48, 0.62);
+}
+
+.affiliate-disclosure-copy {
+    margin: 0;
     font-size: 0.85rem;
     line-height: 1.45;
-    color: rgba(30, 36, 48, 0.72);
-    max-width: 42rem;
+    color: rgba(30, 36, 48, 0.78);
 }

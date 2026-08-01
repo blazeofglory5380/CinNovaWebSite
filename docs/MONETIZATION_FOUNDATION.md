@@ -25,6 +25,7 @@ An Amazon outbound click is **not** a completed purchase.
 | `CommerceCTA` | `src/components/commerce/CommerceCTA.jsx` |
 | `AvailabilityBadge` | `src/components/commerce/AvailabilityBadge.jsx` |
 | `AffiliateDisclosure` (gated) | `src/components/commerce/AffiliateDisclosure.jsx` |
+| Partner registry (Phase 11.4A) | `src/data/affiliate/` + `docs/AFFILIATE_MANAGEMENT.md` |
 | `SponsoredContentDisclosure` (gated) | `src/components/commerce/SponsoredContentDisclosure.jsx` |
 | Channel summary helpers | `getMonetizationChannelSummary()` in `commerceCatalog.js` |
 

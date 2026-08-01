@@ -13,6 +13,10 @@ behavior.
 These pages are internal tools and are **not** protected by authentication.
 Access is controlled entirely by a build-time environment flag.
 
+Phase 11.4A does **not** ship a Partner Admin UI. Affiliate configuration is
+registry + environment + docs only (`docs/AFFILIATE_MANAGEMENT.md`). `/partner-admin`
+is not a live page and remains robots-disallowed for defense in depth.
+
 ## How the gate works
 
 A single flag decides whether admin routes are reachable:

@@ -41,6 +41,8 @@ import {
 } from "../data/schemaHelpers.js";
 import { getArticleEngagement } from "../data/articleEngagement.js";
 import { getAffiliateLinksForIds } from "../data/affiliateLinks.js";
+import AffiliateDisclosure from "../components/commerce/AffiliateDisclosure.jsx";
+import PartnerOutboundLink from "../components/commerce/PartnerOutboundLink.jsx";
 import { trackArticleView } from "../utils/analytics.js";
 
 function extractPullQuote(body = "") {
@@ -488,18 +490,16 @@ function ArticlePage({
                     <div className="affiliate-block">
                         <p className="affiliate-block-eyebrow">RECOMMENDED TOOLS</p>
                         <h2>Tools mentioned or related to this article.</h2>
-                        <p className="affiliate-disclosure-note">
-                            Some links below are affiliate links — CinNova earns a small
-                            commission at no extra cost to you when you use them.
-                        </p>
+                        <AffiliateDisclosure
+                            affiliateEnabled={affiliateLinks.some((link) => link.disclosureRequired)}
+                        />
                         <div className="affiliate-links-grid">
                             {affiliateLinks.map((link) => (
-                                <a
-                                    key={link.id}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer sponsored"
+                                <PartnerOutboundLink
+                                    key={link.partnerId || link.id}
+                                    partnerId={link.partnerId || link.id}
                                     className="affiliate-link-card"
+                                    placement="article_recommended_tools"
                                 >
                                     <div className="affiliate-link-body">
                                         <strong>{link.name}</strong>
@@ -507,7 +507,7 @@ function ArticlePage({
                                         <p>{link.tagline}</p>
                                     </div>
                                     <span className="affiliate-arrow">→</span>
-                                </a>
+                                </PartnerOutboundLink>
                             ))}
                         </div>
                     </div>

@@ -50,8 +50,11 @@ export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin"]);
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
 export const ROBOTS_DISALLOW_PATHS = [
     "/blog-admin",
+    // Defense-in-depth: Phase 11.4A removed PartnerAdmin UI; keep disallow if old links linger.
+    "/partner-admin",
     "/?page=newsletter-admin",
     "/?page=blog-manager",
+    "/?page=partner-admin",
     "/?page=news-preview",
     "/?page=blog-preview",
     "/?page=newsletter-success",

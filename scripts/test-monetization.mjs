@@ -147,7 +147,8 @@ try {
 
 // --- affiliate / sponsored disclosure gating ---
 try {
-    assert.match(affiliateDisclosureSource, /if \(!affiliateEnabled\) return null/);
+    assert.match(affiliateDisclosureSource, /if \(!visible\) return null/);
+    assert.match(affiliateDisclosureSource, /data-ftc-disclosure/);
     assert.equal(shouldShowSponsoredDisclosure(null), false);
     assert.equal(shouldShowSponsoredDisclosure({ sponsored: true, sponsorName: "X" }), false);
     assert.equal(
