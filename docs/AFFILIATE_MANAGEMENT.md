@@ -159,4 +159,8 @@ GA4 Measurement ID remains unchanged (`VITE_GA_MEASUREMENT_ID` / `G-CD944CHBK6`)
 - No checkout UI / payment processing
 - No authenticated admin console
 - No auto-insertion of affiliate modules into News editorial automation
-- No Phase 11.4B activation work in this PR
+
+## Related: Phase 11.4B
+
+Partner Catalog, Application Tracker, and Revenue Opportunities dashboard:
+see `docs/PARTNER_CATALOG.md`.
