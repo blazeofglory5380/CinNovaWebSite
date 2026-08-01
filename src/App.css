@@ -1981,6 +1981,101 @@ a {
     gap: 18px;
 }
 
+.revenue-metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.revenue-opportunities-banner,
+.revenue-opportunities-footnote {
+    margin: 0 0 1.25rem;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.revenue-opportunities-banner {
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(250, 204, 21, 0.35);
+    background: rgba(250, 204, 21, 0.08);
+    color: #fef3c7;
+}
+
+.revenue-category-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.revenue-category-chip {
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(15, 23, 42, 0.55);
+    color: #e2e8f0;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.revenue-category-chip.is-active {
+    border-color: rgba(56, 189, 248, 0.55);
+    background: rgba(14, 165, 233, 0.18);
+    color: #e0f2fe;
+}
+
+.revenue-catalog-table-wrap {
+    margin-top: 1.25rem;
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.revenue-catalog-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 960px;
+}
+
+.revenue-catalog-table caption {
+    text-align: left;
+    padding: 16px 18px 8px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.revenue-catalog-table th,
+.revenue-catalog-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: top;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+}
+
+.revenue-catalog-table th {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-top: 0;
+}
+
+.revenue-company-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.revenue-company-cell a {
+    color: #7dd3fc;
+    font-size: 0.8rem;
+    word-break: break-all;
+}
+
 .newsletter-stat-card,
 .newsletter-panel {
     padding: 24px;

@@ -59,6 +59,7 @@ import Resources from "./pages/Resources.jsx";
 import ResourcePage from "./pages/ResourcePage.jsx";
 import NewsletterAdmin from "./pages/NewsletterAdmin.jsx";
 import NewsletterSuccess from "./pages/NewsletterSuccess.jsx";
+import RevenueOpportunities from "./pages/RevenueOpportunities.jsx";
 import BlogManager from "./pages/BlogManager.jsx";
 import Partners from "./pages/Partners.jsx";
 import MediaKit from "./pages/MediaKit.jsx";
@@ -97,9 +98,10 @@ import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
 import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
 
-// Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
-// Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
-// in production unless the pages are protected by real authentication.
+// Admin/internal routes (BlogManager, NewsletterAdmin, RevenueOpportunities)
+// are disabled by default. Enable only for local dev via
+// VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false in production unless the
+// pages are protected by real authentication.
 const ADMIN_ROUTES_ENABLED = import.meta.env.VITE_ENABLE_ADMIN_ROUTES === "true";
 
 class ArticleErrorBoundary extends Component {
@@ -924,6 +926,9 @@ function App() {
                 />
             )}
             {ADMIN_ROUTES_ENABLED && page === "newsletter-admin" && <NewsletterAdmin />}
+            {ADMIN_ROUTES_ENABLED && page === "revenue-opportunities" && (
+                <RevenueOpportunities />
+            )}
             {page === "newsletter-success" && (
                 <NewsletterSuccess onGoHome={goHome} onGoBlog={goBlog} />
             )}

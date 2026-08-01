@@ -1,5 +1,5 @@
 /**
- * Phase 11.4A — public affiliate management API.
+ * Phase 11.4 — public affiliate / partner catalog API.
  */
 
 export {
@@ -41,3 +41,53 @@ export {
     resolvePartnerLink,
     resolveRenderablePartnerLinks,
 } from "./resolvePartnerLink.js";
+
+export {
+    CATALOG_CATEGORIES,
+    CATALOG_CATEGORY_LABELS,
+    CATALOG_CATEGORY_LIST,
+    isCatalogCategory,
+    getCatalogCategoryLabel,
+} from "./catalogCategories.js";
+
+export {
+    PROGRAM_STATUSES,
+    APPLICATION_STATUSES,
+    APPROVAL_STATUSES,
+    ACTIVATION_STATUSES,
+    PROGRAM_STATUS_LIST,
+    APPLICATION_STATUS_LIST,
+    APPROVAL_STATUS_LIST,
+    ACTIVATION_STATUS_LIST,
+    CATALOG_DEFAULT_STATUSES,
+    isProgramStatus,
+    isApplicationStatus,
+    isApprovalStatus,
+    isActivationStatus,
+} from "./catalogStatuses.js";
+
+export {
+    PARTNER_CATALOG,
+    listPartnerCatalog,
+    getPartnerCatalogEntry,
+    listPartnerCatalogByCategory,
+    listPartnerCatalogByApplicationStatus,
+    validatePartnerCatalogEntry,
+    validatePartnerCatalog,
+} from "./partnerCatalog.js";
+
+export {
+    toApplicationTrackerRow,
+    listApplicationTrackerRows,
+    listPendingApplications,
+    listApprovedApplications,
+    listActivePartners,
+    getApplicationTrackerSummary,
+} from "./applicationTracker.js";
+
+export {
+    REVENUE_METRICS_PLACEHOLDER,
+    getRevenueOpportunityMetrics,
+    formatRevenueMetric,
+    formatConversionRate,
+} from "./revenueOpportunities.js";

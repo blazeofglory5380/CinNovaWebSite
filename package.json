@@ -28,6 +28,7 @@
     "audit:sitemap-indexability": "node scripts/audit-sitemap-indexability.mjs",
     "test:monetization": "node scripts/test-monetization.mjs",
     "test:affiliate-foundation": "node scripts/test-affiliate-foundation.mjs",
+    "test:partner-catalog": "node scripts/test-partner-catalog.mjs",
     "test:revenue-activation": "node scripts/test-revenue-activation.mjs",
     "test:analytics": "node scripts/test-analytics.mjs",
     "test:social-utm": "node scripts/test-social-utm.mjs",
