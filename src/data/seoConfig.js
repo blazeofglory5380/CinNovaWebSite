@@ -49,8 +49,8 @@ export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing"]);
 export const ADMIN_PAGE_KEYS = new Set([
     "blog-manager",
     "newsletter-admin",
-    "revenue-opportunities",
 ]);
+// Phase 11.4D: enrollment inventory is data modules + docs only (no public UI).
 
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
 export const ROBOTS_DISALLOW_PATHS = [
@@ -163,7 +163,6 @@ export const VALID_PAGE_KEYS = new Set([
     "resources",
     "blog-manager",
     "newsletter-admin",
-    "revenue-opportunities",
     "newsletter-success",
     "not-found",
 ]);

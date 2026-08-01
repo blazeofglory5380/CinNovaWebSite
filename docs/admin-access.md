@@ -9,7 +9,6 @@ behavior.
 - `/blog-admin` (path route; resolves to the Blog Manager)
 - `?page=blog-manager`
 - `?page=newsletter-admin`
-- `?page=revenue-opportunities` (Phase 11.4B Partner Catalog / Revenue Opportunities)
 
 These pages are internal tools and are **not** protected by authentication.
 Access is controlled entirely by a build-time environment flag.
@@ -19,10 +18,10 @@ Affiliate link configuration remains registry + environment + docs
 (`docs/AFFILIATE_MANAGEMENT.md`). `/partner-admin` is not a live page and remains
 robots-disallowed for defense in depth.
 
-Phase 11.4B adds an internal **Revenue Opportunities** dashboard (catalog +
-application tracker + placeholder KPIs). It is admin-gated like Newsletter Admin
-and does not activate partners or store affiliate IDs. See
-`docs/PARTNER_CATALOG.md`.
+Phase 11.4D **removed** the public `/?page=revenue-opportunities` UI. Partner
+enrollment inventory remains in data modules + docs
+(`docs/PARTNER_CATALOG.md`, `docs/PARTNER_ENROLLMENT.md`). Robots still
+disallow the old query path for defense in depth.
 
 ## How the gate works
 
@@ -46,7 +45,6 @@ With the flag off, all of the following return NotFound:
 - `/blog-admin`
 - `/?page=blog-manager`
 - `/?page=newsletter-admin`
-- `/?page=revenue-opportunities`
 
 ## 2. Local development behavior
 
@@ -69,7 +67,6 @@ To work on the admin pages locally:
    - http://localhost:5173/blog-admin
    - http://localhost:5173/?page=blog-manager
    - http://localhost:5173/?page=newsletter-admin
-   - http://localhost:5173/?page=revenue-opportunities
 
 Remove the flag (or set it to `false`) to return to production-equivalent
 behavior locally.

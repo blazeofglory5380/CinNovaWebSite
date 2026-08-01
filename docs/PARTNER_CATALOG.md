@@ -40,9 +40,9 @@ processing are introduced in this phase. Every company defaults to:
 | Partner Catalog | `src/data/affiliate/partnerCatalog.js` |
 | Application Tracker | `src/data/affiliate/applicationTracker.js` |
 | Verification report | `src/data/affiliate/verificationReport.js` |
+| Enrollment catalog seed | `src/data/affiliate/enrollmentCatalogData.js` |
 | Revenue Opportunities metrics | `src/data/affiliate/revenueOpportunities.js` |
 | Runtime affiliate registry (11.4A) | `src/data/affiliate/partnerRegistry.js` |
-| Dashboard UI (admin-gated) | `src/pages/RevenueOpportunities.jsx` |
 
 Public API re-exports live in `src/data/affiliate/index.js`.
 
@@ -61,10 +61,19 @@ Each catalog record includes:
 - Official website (HTTPS reference URL)
 - Category
 - Partner type (`affiliate` \| `referral` \| `partner` \| `official`)
-- Enrollment program type (`affiliate` \| `referral` \| `technology_partner` \|
-  `marketplace` \| `reseller` \| `enterprise` \| `none` \| `unknown`)
+- Exact enrollment program type(s) — see `enrollmentProgramTypes.js`
+  (creator affiliate, referral, reseller, agency, consulting/implementation,
+  technology integration, cloud marketplace, startup, education, VC portfolio,
+  invite-only, enterprise, no public program, unknown). Do not collapse these
+  into a generic “Verified.”
+- `directRevenuePotential` (`verified_commission` \|
+  `possible_revenue_not_publicly_specified` \|
+  `non_commission_partner_program` \| `none` \| `unknown`)
+- `applicationReady` / `revenueReady` (separate; commission does not imply
+  application fit, and a partner application can be ready without commission)
 - Official program URL, eligibility, country restrictions, application/approval
-  required flags, estimated review time, public/private, verification source
+  required flags, review time (`NOT_PUBLISHED` / `UNKNOWN` / published vendor
+  text only), public/private, official sources
 - Program status
 - Application status (`not_started` \| `preparing` \| `applied` \| `pending` \|
   `approved` \| `rejected` \| `paused` \| `inactive` \| `archived`)
@@ -77,29 +86,27 @@ Each catalog record includes:
 - Notes
 - Last reviewed / last verified (`YYYY-MM-DD`)
 
-## Revenue Opportunities dashboard
+## Revenue Opportunities inventory (no public UI)
 
-Internal page key: `revenue-opportunities`  
-URL (local only when admin routes enabled): `/?page=revenue-opportunities`
+Phase 11.4D **removed** the `/?page=revenue-opportunities` page. Inventory and
+KPIs live in data modules (`revenueOpportunities.js`,
+`getEnrollmentInventoryMetrics()`, verification report) and docs only.
 
-Shows placeholder KPIs (all **0** until real telemetry / filed applications):
+Placeholder commercial KPIs remain **0** until real telemetry / filed
+applications. Classification counts separate:
 
-- Total partners
-- Applications / Applications submitted
-- Approved / Pending review / Rejected / Inactive
-- Active
-- Affiliate clicks
-- Revenue
-- Conversion rate
-- Programs available / Programs verified (placeholders)
+- Verified commission programs
+- Verified non-commission partner programs
+- Invite-only programs
+- Open / application-ready programs
+- Programs needing verification
+- No public program
+- Applications actually submitted
+- Approved programs
+- Active commercial programs
 
-Also shows research inventory (verification counts), the application tracker
-table (all rows Not Started / Disabled in this phase), and a verification
-report by category.
-
-Gated by `VITE_ENABLE_ADMIN_ROUTES=true` (same gate as Blog Manager /
-Newsletter Admin). Production must leave that flag unset/`false`.
-Robots disallow: `/?page=revenue-opportunities`.
+Robots still disallow `/?page=revenue-opportunities` for defense in depth
+(robots is not access control).
 
 ---
 

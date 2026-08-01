@@ -1,32 +1,31 @@
 /**
- * Phase 11.4D — Partner verification report by catalog category.
+ * Phase 11.4D — Partner verification / classification report.
  */
 
 import { CATALOG_CATEGORY_LIST, getCatalogCategoryLabel } from "./catalogCategories.js";
 import {
-    VERIFICATION_BUCKETS,
-    VERIFICATION_BUCKET_LABELS,
+    CLASSIFICATION_BUCKETS,
+    CLASSIFICATION_BUCKET_LABELS,
+    DIRECT_REVENUE_POTENTIAL,
     ENROLLMENT_PROGRAM_TYPES,
 } from "./enrollmentProgramTypes.js";
-import { listPartnerCatalog } from "./partnerCatalog.js";
-import { PROGRAM_STATUSES } from "./catalogStatuses.js";
+import {
+    listApplicationReadyPartners,
+    listPartnerCatalog,
+    listRevenueReadyPartners,
+} from "./partnerCatalog.js";
+import { APPLICATION_STATUSES, ACTIVATION_STATUSES } from "./catalogStatuses.js";
 
 function emptyBucketCounts() {
     return {
-        [VERIFICATION_BUCKETS.VERIFIED]: 0,
-        [VERIFICATION_BUCKETS.NEEDS_VERIFICATION]: 0,
-        [VERIFICATION_BUCKETS.NO_PUBLIC_PROGRAM]: 0,
+        [CLASSIFICATION_BUCKETS.VERIFIED_COMMISSION]: 0,
+        [CLASSIFICATION_BUCKETS.VERIFIED_NON_COMMISSION]: 0,
+        [CLASSIFICATION_BUCKETS.INVITE_ONLY]: 0,
+        [CLASSIFICATION_BUCKETS.NEEDS_VERIFICATION]: 0,
+        [CLASSIFICATION_BUCKETS.NO_PUBLIC_PROGRAM]: 0,
     };
 }
 
-/**
- * @returns {{
- *   generatedAt: string,
- *   totals: Record<string, number>,
- *   categories: Array<object>,
- *   applicationsReady: Array<object>,
- * }}
- */
 export function getPartnerVerificationReport() {
     const entries = listPartnerCatalog();
     const totals = emptyBucketCounts();
@@ -35,20 +34,26 @@ export function getPartnerVerificationReport() {
         const inCategory = entries.filter((e) => e.category === category);
         const buckets = emptyBucketCounts();
         const companies = inCategory.map((entry) => {
-            buckets[entry.verificationBucket] =
-                (buckets[entry.verificationBucket] || 0) + 1;
-            totals[entry.verificationBucket] = (totals[entry.verificationBucket] || 0) + 1;
+            buckets[entry.classificationBucket] =
+                (buckets[entry.classificationBucket] || 0) + 1;
+            totals[entry.classificationBucket] =
+                (totals[entry.classificationBucket] || 0) + 1;
             return Object.freeze({
                 id: entry.id,
                 companyName: entry.companyName,
                 enrollmentProgramType: entry.enrollmentProgramType,
-                verificationBucket: entry.verificationBucket,
-                verificationBucketLabel:
-                    VERIFICATION_BUCKET_LABELS[entry.verificationBucket],
+                programTypes: entry.programTypes,
+                directRevenuePotential: entry.directRevenuePotential,
+                applicationReady: entry.applicationReady,
+                revenueReady: entry.revenueReady,
+                classificationBucket: entry.classificationBucket,
+                classificationBucketLabel:
+                    CLASSIFICATION_BUCKET_LABELS[entry.classificationBucket],
                 programStatus: entry.programStatus,
                 officialProgramUrl: entry.officialProgramUrl,
-                lastVerifiedDate: entry.lastVerifiedDate,
+                sourceTitle: entry.sourceTitle,
                 verificationSource: entry.verificationSource,
+                lastVerifiedDate: entry.lastVerifiedDate,
             });
         });
 
@@ -57,69 +62,97 @@ export function getPartnerVerificationReport() {
             categoryLabel: getCatalogCategoryLabel(category),
             total: inCategory.length,
             buckets: Object.freeze({ ...buckets }),
-            verified: companies.filter(
-                (c) => c.verificationBucket === VERIFICATION_BUCKETS.VERIFIED,
-            ),
-            needsVerification: companies.filter(
-                (c) => c.verificationBucket === VERIFICATION_BUCKETS.NEEDS_VERIFICATION,
-            ),
-            noPublicProgram: companies.filter(
-                (c) => c.verificationBucket === VERIFICATION_BUCKETS.NO_PUBLIC_PROGRAM,
-            ),
             companies: Object.freeze(companies),
         });
     });
-
-    const applicationsReady = entries
-        .filter(
-            (entry) =>
-                entry.verificationBucket === VERIFICATION_BUCKETS.VERIFIED &&
-                entry.enrollmentProgramType !== ENROLLMENT_PROGRAM_TYPES.NONE &&
-                entry.programStatus === PROGRAM_STATUSES.OPEN &&
-                entry.officialProgramUrl &&
-                entry.applicationRequired === true,
-        )
-        .map((entry) =>
-            Object.freeze({
-                id: entry.id,
-                companyName: entry.companyName,
-                category: entry.category,
-                categoryLabel: getCatalogCategoryLabel(entry.category),
-                enrollmentProgramType: entry.enrollmentProgramType,
-                officialProgramUrl: entry.officialProgramUrl,
-                note: "Research-complete open program with apply URL. Application status remains not_started — not filed.",
-            }),
-        );
 
     return Object.freeze({
         generatedAt: "2026-07-31",
         totals: Object.freeze({
             catalogCount: entries.length,
             ...totals,
-            applicationsReadyCount: applicationsReady.length,
+            creatorAffiliate: entries.filter(
+                (e) =>
+                    e.enrollmentProgramType === ENROLLMENT_PROGRAM_TYPES.CREATOR_AFFILIATE ||
+                    e.programTypes.includes(ENROLLMENT_PROGRAM_TYPES.CREATOR_AFFILIATE),
+            ).length,
+            verifiedCommission: totals[CLASSIFICATION_BUCKETS.VERIFIED_COMMISSION],
+            verifiedNonCommission: totals[CLASSIFICATION_BUCKETS.VERIFIED_NON_COMMISSION],
+            inviteOnly: totals[CLASSIFICATION_BUCKETS.INVITE_ONLY],
+            needsVerification: totals[CLASSIFICATION_BUCKETS.NEEDS_VERIFICATION],
+            noPublicProgram: totals[CLASSIFICATION_BUCKETS.NO_PUBLIC_PROGRAM],
+            applicationReady: listApplicationReadyPartners().length,
+            revenueReady: listRevenueReadyPartners().length,
+            applicationsSubmitted: entries.filter(
+                (e) => e.applicationStatus !== APPLICATION_STATUSES.NOT_STARTED,
+            ).length,
+            approvedPrograms: entries.filter(
+                (e) => e.applicationStatus === APPLICATION_STATUSES.APPROVED,
+            ).length,
+            activeCommercial: entries.filter(
+                (e) => e.activationStatus === ACTIVATION_STATUSES.ACTIVE,
+            ).length,
         }),
         categories: Object.freeze(categories),
-        applicationsReady: Object.freeze(applicationsReady),
+        applicationReady: Object.freeze(
+            listApplicationReadyPartners().map((e) =>
+                Object.freeze({
+                    id: e.id,
+                    companyName: e.companyName,
+                    enrollmentProgramType: e.enrollmentProgramType,
+                    directRevenuePotential: e.directRevenuePotential,
+                    revenueReady: e.revenueReady,
+                    officialProgramUrl: e.officialProgramUrl,
+                }),
+            ),
+        ),
+        revenueReady: Object.freeze(
+            listRevenueReadyPartners().map((e) =>
+                Object.freeze({
+                    id: e.id,
+                    companyName: e.companyName,
+                    officialProgramUrl: e.officialProgramUrl,
+                    note: "Verified commission + application-ready. Not filed. Not activated.",
+                }),
+            ),
+        ),
     });
 }
 
 /**
- * Enrollment inventory KPIs derived from verification (not revenue telemetry).
+ * Research inventory counts (not revenue telemetry).
  */
 export function getEnrollmentInventoryMetrics() {
     const report = getPartnerVerificationReport();
-    const entries = listPartnerCatalog();
-    const programsAvailable = entries.filter(
-        (e) =>
-            e.enrollmentProgramType !== ENROLLMENT_PROGRAM_TYPES.NONE &&
-            e.enrollmentProgramType !== ENROLLMENT_PROGRAM_TYPES.UNKNOWN,
-    ).length;
-
     return Object.freeze({
-        programsAvailable,
-        programsVerified: report.totals[VERIFICATION_BUCKETS.VERIFIED] || 0,
-        needsVerification: report.totals[VERIFICATION_BUCKETS.NEEDS_VERIFICATION] || 0,
-        noPublicProgram: report.totals[VERIFICATION_BUCKETS.NO_PUBLIC_PROGRAM] || 0,
-        applicationsReady: report.totals.applicationsReadyCount || 0,
+        verifiedCommissionPrograms: report.totals.verifiedCommission,
+        verifiedNonCommissionPrograms: report.totals.verifiedNonCommission,
+        inviteOnlyPrograms: report.totals.inviteOnly,
+        needsVerification: report.totals.needsVerification,
+        noPublicProgram: report.totals.noPublicProgram,
+        openApplicationsReady: report.totals.applicationReady,
+        revenueReady: report.totals.revenueReady,
+        applicationsSubmitted: report.totals.applicationsSubmitted,
+        approvedPrograms: report.totals.approvedPrograms,
+        activeCommercialPrograms: report.totals.activeCommercial,
+        creatorAffiliateMentions: report.totals.creatorAffiliate,
     });
+}
+
+export function listHighPriorityZeroCostPrograms() {
+    return listRevenueReadyPartners().map((entry) =>
+        Object.freeze({
+            id: entry.id,
+            companyName: entry.companyName,
+            category: entry.category,
+            categoryLabel: getCatalogCategoryLabel(entry.category),
+            enrollmentProgramType: entry.enrollmentProgramType,
+            directRevenuePotential: DIRECT_REVENUE_POTENTIAL.VERIFIED_COMMISSION,
+            officialProgramUrl: entry.officialProgramUrl,
+            prerequisites: entry.eligibility,
+            commissionVerified: true,
+            applicationFiled: false,
+            activated: false,
+        }),
+    );
 }
