@@ -1,22 +1,32 @@
 import "./AffiliateDisclosure.css";
-
-const DEFAULT_COPY =
-    "CinNova may earn a commission from qualifying purchases made through certain links.";
+import { getDefaultAffiliateDisclosure } from "../../data/affiliate/index.js";
 
 /**
- * Renders ONLY when affiliateEnabled is explicitly true for the destination/item.
- * Do not show on ordinary retailer links (e.g. non-affiliate Amazon).
+ * FTC-style disclosure for commercial partner links.
+ * Renders ONLY when affiliateEnabled / showDisclosure is explicitly true.
  */
 function AffiliateDisclosure({
     affiliateEnabled = false,
+    showDisclosure = undefined,
+    partnerType = "",
     className = "",
     children,
 }) {
-    if (!affiliateEnabled) return null;
+    const visible = showDisclosure === undefined ? Boolean(affiliateEnabled) : Boolean(showDisclosure);
+    if (!visible) return null;
+
+    const copy = children || getDefaultAffiliateDisclosure();
+
     return (
-        <p className={`affiliate-disclosure ${className}`.trim()} role="note">
-            {children || DEFAULT_COPY}
-        </p>
+        <aside
+            className={`affiliate-disclosure ${className}`.trim()}
+            role="note"
+            data-partner-type={partnerType || undefined}
+            data-ftc-disclosure="true"
+        >
+            <p className="affiliate-disclosure-label">Disclosure</p>
+            <p className="affiliate-disclosure-copy">{copy}</p>
+        </aside>
     );
 }
 

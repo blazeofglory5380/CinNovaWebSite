@@ -22,6 +22,7 @@ export const defaultOgImage = `${siteUrl}/images/home/homepage-hero-innovation.j
 export const EXCLUDED_PAGE_KEYS = new Set([
     "blog-manager",
     "newsletter-admin",
+    "partner-admin",
     "newsletter-success",
     "news-preview",
     "blog-preview",
@@ -45,13 +46,15 @@ export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing"]);
  * Monetization reporting stays in data modules + docs — no public admin route
  * (robots.txt is not access control; Phase 11.1 prefers no unauthenticated UI).
  */
-export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin"]);
+export const ADMIN_PAGE_KEYS = new Set(["blog-manager", "newsletter-admin", "partner-admin"]);
 
 /** Admin URL paths blocked in robots.txt (path + query-param route variants). */
 export const ROBOTS_DISALLOW_PATHS = [
     "/blog-admin",
+    "/partner-admin",
     "/?page=newsletter-admin",
     "/?page=blog-manager",
+    "/?page=partner-admin",
     "/?page=news-preview",
     "/?page=blog-preview",
     "/?page=newsletter-success",
@@ -154,6 +157,7 @@ export const VALID_PAGE_KEYS = new Set([
     "resources",
     "blog-manager",
     "newsletter-admin",
+    "partner-admin",
     "newsletter-success",
     "not-found",
 ]);

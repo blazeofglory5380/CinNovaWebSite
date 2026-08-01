@@ -7,8 +7,10 @@ behavior.
 ## Admin routes
 
 - `/blog-admin` (path route; resolves to the Blog Manager)
+- `/partner-admin` (path route; affiliate / partner registry status)
 - `?page=blog-manager`
 - `?page=newsletter-admin`
+- `?page=partner-admin`
 
 These pages are internal tools and are **not** protected by authentication.
 Access is controlled entirely by a build-time environment flag.
@@ -33,8 +35,10 @@ admin route, and the admin components are never rendered.
 With the flag off, all of the following return NotFound:
 
 - `/blog-admin`
+- `/partner-admin`
 - `/?page=blog-manager`
 - `/?page=newsletter-admin`
+- `/?page=partner-admin`
 
 ## 2. Local development behavior
 
@@ -55,8 +59,10 @@ To work on the admin pages locally:
 3. Open the admin routes (default Vite dev port `5173`):
 
    - http://localhost:5173/blog-admin
+   - http://localhost:5173/partner-admin
    - http://localhost:5173/?page=blog-manager
    - http://localhost:5173/?page=newsletter-admin
+   - http://localhost:5173/?page=partner-admin
 
 Remove the flag (or set it to `false`) to return to production-equivalent
 behavior locally.

@@ -100,7 +100,7 @@ function validateSitemapXml(xml, entries) {
         }
     }
 
-    const excludedPatterns = ["/blog-admin", "page=newsletter-admin", "page=newsletter-success"];
+    const excludedPatterns = ["/blog-admin", "/partner-admin", "page=newsletter-admin", "page=newsletter-success"];
     for (const loc of locMatches) {
         if (excludedPatterns.some((pattern) => loc.includes(pattern))) {
             errors.push(`Excluded route present in sitemap: ${loc}`);

@@ -1,58 +1,67 @@
-export const affiliateLinks = {
-    1: {
-        id: 1,
-        name: "Notion",
-        category: "Productivity",
-        url: "https://notion.so/?ref=cinnova",
-        tagline: "All-in-one notes, tasks, and planning workspace",
-        disclosure: "Affiliate link — Cin Nova earns a commission at no cost to you.",
-    },
-    2: {
-        id: 2,
-        name: "Canva",
-        category: "Design",
-        url: "https://canva.com/?ref=cinnova",
-        tagline: "Design graphics, social posts, and presentations in minutes",
-        disclosure: "Affiliate link — Cin Nova earns a commission at no cost to you.",
-    },
-    3: {
-        id: 3,
-        name: "Grammarly",
-        category: "Writing",
-        url: "https://grammarly.com/?ref=cinnova",
-        tagline: "AI writing assistant for clear, professional, error-free writing",
-        disclosure: "Affiliate link — Cin Nova earns a commission at no cost to you.",
-    },
-    4: {
-        id: 4,
-        name: "BiggerPockets Pro",
-        category: "Real Estate",
-        url: "https://biggerpockets.com/?ref=cinnova",
-        tagline: "Real estate investing education, deal analysis tools, and community",
-        disclosure: "Affiliate link — Cin Nova earns a commission at no cost to you.",
-    },
-    5: {
-        id: 5,
-        name: "DealCheck",
-        category: "Real Estate",
-        url: "https://dealcheck.io/?ref=cinnova",
-        tagline: "Rental property and flip analyzer used by 200,000+ investors",
-        disclosure: "Affiliate link — Cin Nova earns a commission at no cost to you.",
-    },
-    6: {
-        id: 6,
-        name: "Khan Academy",
-        category: "Education",
-        url: "https://www.khanacademy.org/",
-        tagline: "Free world-class education for anyone, anywhere — K-12 and beyond",
-        disclosure: "Partner link — no commission. We recommend Khan Academy because it is genuinely excellent.",
-    },
-};
+/**
+ * Compatibility layer for article surfaces that previously imported affiliateLinks.js.
+ *
+ * Phase 11.4A: no hardcoded affiliate URLs. Destinations resolve only when:
+ * - VITE_AFFILIATES_ENABLED=true
+ * - partner.enabled === true
+ * - validated https destination from env (or officialWebsite for official/partner)
+ *
+ * Until activation, getAffiliateLinksForIds always returns [].
+ */
+
+import {
+    listPartners,
+    resolvePartnerLink,
+    resolvePartnerRef,
+} from "./affiliate/index.js";
+
+/**
+ * Catalog view of inactive partner shells (no live affiliate hrefs).
+ * Kept for admin / docs introspection — not for clickable article cards.
+ */
+export const affiliateLinks = Object.freeze(
+    Object.fromEntries(
+        listPartners()
+            .filter((p) => p.legacyNumericId != null)
+            .map((p) => [
+                p.legacyNumericId,
+                Object.freeze({
+                    id: p.legacyNumericId,
+                    partnerId: p.id,
+                    name: p.name,
+                    category: p.category,
+                    tagline: p.tagline,
+                    type: p.type,
+                    enabled: p.enabled,
+                    // Intentionally null — never ship hardcoded affiliate URLs.
+                    url: null,
+                    disclosure: p.disclosureRequired
+                        ? "Affiliate or referral relationship — disclosure required when activated."
+                        : "Official / partner recommendation — no commission disclosure required.",
+                }),
+            ]),
+    ),
+);
 
 export function getAffiliateLink(id) {
-    return affiliateLinks[id] || null;
+    const partner = resolvePartnerRef(id);
+    if (!partner) return null;
+    const resolved = resolvePartnerLink(partner.id);
+    if (!resolved.renderable) return null;
+    return {
+        id: partner.legacyNumericId ?? partner.id,
+        partnerId: partner.id,
+        name: partner.name,
+        category: partner.category,
+        tagline: partner.tagline,
+        type: partner.type,
+        url: resolved.href,
+        rel: resolved.rel,
+        disclosureRequired: resolved.disclosureRequired,
+        campaignId: resolved.campaignId,
+    };
 }
 
 export function getAffiliateLinksForIds(ids = []) {
-    return ids.map((id) => affiliateLinks[id]).filter(Boolean);
+    return ids.map((id) => getAffiliateLink(id)).filter(Boolean);
 }

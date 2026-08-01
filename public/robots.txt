@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /blog-admin
+Disallow: /partner-admin
 Disallow: /?page=newsletter-admin
 Disallow: /?page=blog-manager
+Disallow: /?page=partner-admin
 Disallow: /?page=news-preview
 Disallow: /?page=blog-preview
 Disallow: /?page=newsletter-success

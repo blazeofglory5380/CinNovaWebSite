@@ -556,6 +556,36 @@ export function trackCommerceOutboundClick({
     );
 }
 
+/* ── Phase 11.4A affiliate / partner outbound ────────────────────────────────
+   Fires only from PartnerOutboundLink after resolve+validation succeeds.
+   Never send full affiliate query strings or PII — host + partner metadata only. */
+
+export function trackAffiliateOutboundClick({
+    partnerId = "",
+    partnerName = "",
+    partnerType = "",
+    placement = "",
+    url = "",
+    campaignId = "",
+    disclosureShown = false,
+} = {}) {
+    if (!partnerId || !url) return;
+    const key = `aff:${partnerId}:${destinationHostFromUrl(url) || ""}:${placement}`;
+    if (shouldSkipDuplicateCommerce(key)) return;
+    trackEvent(
+        "affiliate_outbound_click",
+        sanitizeCommerceAnalyticsParams({
+            partner_id: partnerId,
+            partner_name: partnerName,
+            partner_type: partnerType,
+            placement,
+            destination_url_host: destinationHostFromUrl(url) || "",
+            campaign_id: campaignId ? String(campaignId).slice(0, 64) : "",
+            disclosure_shown: Boolean(disclosureShown),
+        }),
+    );
+}
+
 export function trackCommerceLeadStart({
     source = "",
     placement = "",

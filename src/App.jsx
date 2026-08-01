@@ -60,6 +60,7 @@ import ResourcePage from "./pages/ResourcePage.jsx";
 import NewsletterAdmin from "./pages/NewsletterAdmin.jsx";
 import NewsletterSuccess from "./pages/NewsletterSuccess.jsx";
 import BlogManager from "./pages/BlogManager.jsx";
+import PartnerAdmin from "./pages/PartnerAdmin.jsx";
 import Partners from "./pages/Partners.jsx";
 import MediaKit from "./pages/MediaKit.jsx";
 import NewsletterPage from "./pages/NewsletterPage.jsx";
@@ -214,6 +215,13 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         return { page: "blog-manager", article: null, resource: null, category: null };
     }
 
+    if (path === "/partner-admin") {
+        if (!ADMIN_ROUTES_ENABLED) {
+            return { page: "not-found", article: null, resource: null, category: null };
+        }
+        return { page: "partner-admin", article: null, resource: null, category: null };
+    }
+
     // Clean product routes: /products (index) and /products/:key (detail).
     if (path === "/products") {
         return { page: "products", article: null, resource: null, category: null };
@@ -285,6 +293,7 @@ function getRouteFromUrl(posts = getManagedPosts()) {
         path === "/" ||
         path === "/blog" ||
         path === "/blog-admin" ||
+        path === "/partner-admin" ||
         path === "/news" ||
         path === "/books" ||
         path.startsWith("/blog/");
@@ -307,6 +316,7 @@ function pathForPage(nextPage) {
     if (nextPage === "news") return "/news";
     if (nextPage === "books") return "/books";
     if (nextPage === "blog-manager") return "/blog-admin";
+    if (nextPage === "partner-admin") return "/partner-admin";
     if (nextPage === "products") return "/products";
     if (nextPage === "resources") return "/resources";
     if (PRODUCT_PAGE_KEYS.has(nextPage)) return `/products/${nextPage}`;
@@ -785,6 +795,7 @@ function App() {
             {ADMIN_ROUTES_ENABLED && page === "blog-manager" && (
                 <BlogManager posts={managedPosts} onPostsChange={setManagedPosts} />
             )}
+            {ADMIN_ROUTES_ENABLED && page === "partner-admin" && <PartnerAdmin />}
             {page === "resources" && (
                 <Resources onOpenResource={openResource} onSubscribe={showNewsletterAlert} />
             )}
