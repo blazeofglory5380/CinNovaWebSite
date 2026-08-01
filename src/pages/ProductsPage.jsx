@@ -15,6 +15,7 @@ import {
     trackProductsHeroDiscoverClick,
     trackProductsHeroExploreClick,
 } from "../utils/analytics.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import "../styles/brand-dna.css";
 import "./ProductsPage.css";
 
@@ -612,6 +613,16 @@ function ProductsPage({ onNavigate, onSubscribe, onOpenBook }) {
                         </GlassPanel>
                     ))}
                 </div>
+            </section>
+
+            <section className="products-v2__section" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="products"
+                    route="/products"
+                    title="CinNova Products"
+                    topics={["education_ai", "safety", "real_estate"]}
+                    heading="Related CinNova content"
+                />
             </section>
 
             {/* ── Newsletter (Dispatch) ────────────────────────────── */}

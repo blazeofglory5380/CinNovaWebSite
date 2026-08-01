@@ -8,6 +8,7 @@ import { getBookUrl, getBooksIndexUrl, getBookCoverStyle, isPurchasable, statusL
 import { getCommerceEntityForBook } from "../data/commerceCatalog.js";
 import { saveSubscriber } from "../data/newsletterService.js";
 import { trackCommerceItemView } from "../utils/analytics.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import { buildBreadcrumbSchema, withSchemaGraph, buildImageObject } from "../data/schemaHelpers.js";
 import { siteUrl } from "../data/seoConfig.js";
 import "../styles/brand-dna.css";
@@ -191,6 +192,18 @@ function BookDetailPage({ book, onBackToBooks }) {
                     <AffiliateDisclosure affiliateEnabled={Boolean(commerce?.affiliateEnabled)} />
                 </section>
             )}
+
+            <section className="books-v2__section" aria-label="Recommended reading">
+                <RecommendationRail
+                    pageType="book"
+                    route={`/books/${book.slug}`}
+                    title={book.title}
+                    category={book.category}
+                    excerpt={book.description}
+                    bookSlug={book.slug}
+                    heading="Related books and reading"
+                />
+            </section>
         </main>
     );
 }

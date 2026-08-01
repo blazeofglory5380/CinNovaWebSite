@@ -8,6 +8,7 @@ import SEO from "../components/SEO.jsx";
 import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { saveSubscriber } from "../data/newsletterService.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 
 const aboutSchema = {
   "@context": "https://schema.org",
@@ -382,6 +383,18 @@ function About() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section className="about-page-section" aria-label="Recommended reading">
+        <div className="about-page-container">
+          <RecommendationRail
+            pageType="company"
+            route="/about"
+            title="About Cin Nova"
+            topics={["education_ai"]}
+            heading="Explore CinNova next"
+          />
         </div>
       </section>
 

@@ -599,6 +599,93 @@ export function trackAffiliateOutboundClick({
     );
 }
 
+/* ── Phase 11.4C recommendation engine ───────────────────────────────────────
+   Impression + click only. No revenue, purchase, checkout, or PII. */
+
+const recommendationImpressionKeys = new Set();
+const recommendationClickKeys = new Map();
+
+function sanitizeRecommendationParams(params = {}) {
+    const out = {
+        recommendation_type: String(params.recommendationType || "").slice(0, 40),
+        recommendation_position: Number(params.recommendationPosition) || 0,
+        recommendation_category: String(params.recommendationCategory || "").slice(0, 64),
+        page_type: String(params.pageType || "").slice(0, 40),
+        item_id: String(params.itemId || "").slice(0, 80),
+        is_external: Boolean(params.isExternal),
+    };
+    if (params.destinationHost) {
+        out.destination_host = String(params.destinationHost).slice(0, 120);
+    }
+    return out;
+}
+
+function shouldSkipDuplicateRecommendationClick(key, windowMs = 500) {
+    const now = Date.now();
+    const prev = recommendationClickKeys.get(key) || 0;
+    if (now - prev < windowMs) return true;
+    recommendationClickKeys.set(key, now);
+    return false;
+}
+
+export function trackRecommendationImpression({
+    recommendationType = "",
+    recommendationPosition = 0,
+    recommendationCategory = "",
+    pageType = "",
+    itemId = "",
+    route = "",
+} = {}) {
+    if (!recommendationType || recommendationType === "FUTURE_COMMERCIAL") return;
+    if (!itemId) return;
+
+    // Stable per page + item dedupe (survives React Strict Mode remounts).
+    const key = `rec-imp:${pageType}:${route}:${recommendationType}:${itemId}:${recommendationPosition}`;
+    if (recommendationImpressionKeys.has(key)) return;
+    recommendationImpressionKeys.add(key);
+
+    trackEvent(
+        "recommendation_impression",
+        sanitizeRecommendationParams({
+            recommendationType,
+            recommendationPosition,
+            recommendationCategory,
+            pageType,
+            itemId,
+        }),
+    );
+}
+
+export function trackRecommendationClick({
+    recommendationType = "",
+    recommendationPosition = 0,
+    recommendationCategory = "",
+    pageType = "",
+    itemId = "",
+    isExternal = false,
+    destinationUrl = "",
+} = {}) {
+    if (!recommendationType || recommendationType === "FUTURE_COMMERCIAL") return;
+    if (!itemId) return;
+
+    const host = isExternal ? destinationHostFromUrl(destinationUrl) || "" : "";
+    const key = `rec-click:${pageType}:${recommendationType}:${itemId}:${recommendationPosition}`;
+    if (shouldSkipDuplicateRecommendationClick(key)) return;
+
+    trackEvent(
+        "recommendation_click",
+        sanitizeRecommendationParams({
+            recommendationType,
+            recommendationPosition,
+            recommendationCategory,
+            pageType,
+            itemId,
+            isExternal,
+            destinationHost: host,
+        }),
+    );
+}
+
 export function trackCommerceLeadStart({
     source = "",
     placement = "",

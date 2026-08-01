@@ -23,6 +23,7 @@ import {
     resourceTypeFilters,
     resources,
 } from "../data/resources.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import { siteUrl } from "../data/blogPosts.js";
 import "./Resources.css";
 
@@ -413,6 +414,14 @@ function Resources({ onOpenResource, onSubscribe }) {
                     onClose={() => setGatedResource(null)}
                 />
             )}
+
+            <RecommendationRail
+                pageType="resources"
+                route="/resources"
+                title="CinNova Resources"
+                topics={["education_ai", "safety", "real_estate"]}
+                heading="Recommended resources and reading"
+            />
         </main>
     );
 }

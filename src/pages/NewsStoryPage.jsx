@@ -19,6 +19,7 @@ import {
     trackNewsStoryView,
     trackRelatedNewsClick,
 } from "../utils/analytics.js";
+import RecommendationRail from "../components/recommendations/RecommendationRail.jsx";
 import "./News.css";
 
 function SourceList({ sources = [] }) {
@@ -327,6 +328,21 @@ function NewsStoryPage({
                     )}
                 </div>
             </article>
+
+            <RecommendationRail
+                pageType="news-story"
+                route={`/news/${story.slug}`}
+                title={story.title}
+                category={story.category || ""}
+                dek={story.dek || ""}
+                summary={story.summary || ""}
+                relatedNewsIds={story.relatedNewsIds || []}
+                relatedBlogSlugs={story.relatedBlogSlugs || []}
+                newsId={story.id}
+                newsSlug={story.slug}
+                heading="Recommended next"
+                className="recommendation-rail--on-dark news-shell"
+            />
 
             <section className="news-cta" aria-labelledby="news-story-cta-title">
                 <div className="news-shell news-cta-card">
