@@ -1,6 +1,10 @@
 /**
  * Phase 12.1 — Unified Customer Model (architecture only).
- * No passwords, authentication, payment info, or production accounts.
+ *
+ * Phase 12 does NOT provide authentication.
+ * A commerce customer record must not be treated as an authenticated identity.
+ * Do not trust a user-supplied customer ID for ownership or entitlement access.
+ * Production accounts and sensitive credentials are rejected by factory guards.
  */
 
 import { SUPPORT_STATUSES, SUPPORT_STATUS_LIST } from "./constants.js";
@@ -32,11 +36,18 @@ import { SUPPORT_STATUSES, SUPPORT_STATUS_LIST } from "./constants.js";
  * @property {ReadonlyArray<string>} connectedApplicationIds
  * @property {string} supportStatus
  * @property {boolean} isProductionAccount
+ * @property {boolean} isArchitectureFixture
+ * @property {boolean} isAuthenticatedIdentity — always false in Phase 12
  * @property {string} createdAt
  * @property {string|null} updatedAt
- * @property {null} passwordHash — always null (auth out of scope)
- * @property {null} paymentMethods — always null
- * @property {null} billingAddress — always null
+ * @property {null} passwordHash
+ * @property {null} paymentMethods
+ * @property {null} billingAddress
+ * @property {null} cardData
+ * @property {null} bankData
+ * @property {null} taxId
+ * @property {null} authToken
+ * @property {null} sessionToken
  */
 
 const DEFAULT_NEWSLETTER = Object.freeze({
@@ -46,6 +57,23 @@ const DEFAULT_NEWSLETTER = Object.freeze({
     partnerOffers: false,
     systemMessages: true,
 });
+
+const FORBIDDEN_SENSITIVE_KEYS = Object.freeze([
+    "password",
+    "passwordHash",
+    "cardData",
+    "cardNumber",
+    "cvv",
+    "bankData",
+    "bankAccount",
+    "routingNumber",
+    "taxId",
+    "ssn",
+    "authToken",
+    "sessionToken",
+    "accessToken",
+    "refreshToken",
+]);
 
 /**
  * Build a frozen customer record. Production accounts are forbidden in Phase 12.
@@ -63,6 +91,22 @@ export function createCustomerRecord(input) {
         throw new Error(
             "Production customer accounts are not allowed in Phase 12 architecture",
         );
+    }
+    if (input.isAuthenticatedIdentity === true) {
+        throw new Error(
+            "Customer records are not authenticated identities in Phase 12",
+        );
+    }
+
+    for (const key of FORBIDDEN_SENSITIVE_KEYS) {
+        if (input[key] != null && input[key] !== undefined) {
+            throw new Error(`Sensitive field forbidden on customer record: ${key}`);
+        }
+    }
+
+    // Architecture fixtures / Phase 12 samples must not carry real email PII.
+    if (input.isArchitectureFixture === true && input.email != null) {
+        throw new Error("Architecture fixture customers must not include email");
     }
 
     const supportStatus = input.supportStatus ?? SUPPORT_STATUSES.NONE;
@@ -94,11 +138,18 @@ export function createCustomerRecord(input) {
         ]),
         supportStatus,
         isProductionAccount: false,
+        isArchitectureFixture: Boolean(input.isArchitectureFixture),
+        isAuthenticatedIdentity: false,
         createdAt: input.createdAt ?? new Date(0).toISOString(),
         updatedAt: input.updatedAt ?? null,
         passwordHash: null,
         paymentMethods: null,
         billingAddress: null,
+        cardData: null,
+        bankData: null,
+        taxId: null,
+        authToken: null,
+        sessionToken: null,
     });
 }
 
@@ -114,12 +165,23 @@ export function validateCustomerRecord(customer) {
     if (customer?.isProductionAccount) {
         errors.push("production accounts are forbidden");
     }
-    if (customer?.passwordHash != null) errors.push("passwordHash must be null");
-    if (customer?.paymentMethods != null) {
-        errors.push("paymentMethods must be null");
+    if (customer?.isAuthenticatedIdentity) {
+        errors.push("customer must not be marked authenticated");
     }
-    if (customer?.billingAddress != null) {
-        errors.push("billingAddress must be null");
+    for (const key of [
+        "passwordHash",
+        "paymentMethods",
+        "billingAddress",
+        "cardData",
+        "bankData",
+        "taxId",
+        "authToken",
+        "sessionToken",
+    ]) {
+        if (customer?.[key] != null) errors.push(`${key} must be null`);
+    }
+    if (customer?.isArchitectureFixture && customer?.email != null) {
+        errors.push("fixture email must be null");
     }
     if (
         customer?.supportStatus &&
@@ -153,6 +215,7 @@ export function createArchitectureFixtureCustomer() {
         language: "en",
         timeZone: "UTC",
         isProductionAccount: false,
+        isArchitectureFixture: true,
         createdAt: "1970-01-01T00:00:00.000Z",
     });
 }

@@ -218,3 +218,25 @@ export const SUPPORT_STATUSES = Object.freeze({
 });
 
 export const SUPPORT_STATUS_LIST = Object.freeze(Object.values(SUPPORT_STATUSES));
+
+/**
+ * Catalog record lifecycle.
+ * AUTHORITATIVE — adapted from Books / Phase 11 commerce / marketing product sources.
+ * ARCHITECTURE_PLACEHOLDER — future SKU shape only; never public / purchasable / indexed.
+ */
+export const RECORD_KINDS = Object.freeze({
+    AUTHORITATIVE: "authoritative",
+    ARCHITECTURE_PLACEHOLDER: "architecture_placeholder",
+});
+
+export const RECORD_KIND_LIST = Object.freeze(Object.values(RECORD_KINDS));
+
+/** Commercial analytics events that Phase 12 must never emit at runtime. */
+export const FORBIDDEN_COMMERCE_ANALYTICS_EVENTS = Object.freeze([
+    "purchase",
+    "begin_checkout",
+    "add_to_cart",
+    "subscribe",
+    "entitlement_granted",
+    "license_activated",
+]);

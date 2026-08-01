@@ -155,6 +155,9 @@ export function createSubscriptionPlan(input) {
         currency: null,
         billingProvider: null,
         activated: false,
+        // Product-linked plans are never global CinNova platform access.
+        planScope: input.planScope ?? "product",
+        featuresAreArchitectureExamples: true,
     });
 }
 
@@ -270,6 +273,7 @@ export function validateSubscriptionArchitecture(
     plans = COMMERCE_SUBSCRIPTION_PLANS,
 ) {
     const errors = [];
+    const tierSet = new Set(SUBSCRIPTION_TIER_LIST);
     for (const plan of plans) {
         if (plan.price != null) errors.push(`${plan.planId}: price set`);
         if (plan.billingProvider != null) {
@@ -281,6 +285,27 @@ export function validateSubscriptionArchitecture(
         }
         if (isSubscriptionPlanPurchasable(plan)) {
             errors.push(`${plan.planId}: unexpectedly purchasable`);
+        }
+        if (plan.planScope === "global") {
+            errors.push(`${plan.planId}: global scope forbidden in Phase 12`);
+        }
+        for (const path of [...plan.upgradePaths, ...plan.downgradePaths]) {
+            if (!tierSet.has(path)) {
+                errors.push(`${plan.planId}: invalid transition ${path}`);
+            }
+            if (path === plan.tier) {
+                errors.push(`${plan.planId}: self-transition ${path}`);
+            }
+        }
+        if (plan.upgradePaths.includes(plan.tier) || plan.downgradePaths.includes(plan.tier)) {
+            errors.push(`${plan.planId}: circular tier path`);
+        }
+    }
+    for (const tier of SUBSCRIPTION_TIER_DEFINITIONS) {
+        const seen = new Set([tier.tier]);
+        for (const up of tier.upgradePaths) {
+            if (seen.has(up)) errors.push(`${tier.tier}: circular upgrade`);
+            seen.add(up);
         }
     }
     return { ok: errors.length === 0, errors };

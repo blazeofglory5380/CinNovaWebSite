@@ -8,7 +8,10 @@ import { listEntitlementsForCustomer } from "./entitlementEngine.js";
 import { listLicensesForCustomer } from "./licensingModel.js";
 import { listNotificationsForCustomer } from "./notificationModel.js";
 import { listRecommendationsForProduct } from "./productRelationships.js";
-import { getCommerceProductById, listCommerceProductsByCategory } from "./productCatalog.js";
+import {
+    getCommerceProductById,
+    listPublicCommerceProducts,
+} from "./productCatalog.js";
 import { PRODUCT_CATEGORIES } from "./constants.js";
 import { listPlansForProduct } from "./subscriptionModel.js";
 
@@ -81,7 +84,9 @@ export function buildCustomerDashboard(customer) {
             title: SECTION_TITLES[DASHBOARD_SECTIONS.BOOKS],
             status: "architecture",
             data: {
-                catalogPreview: listCommerceProductsByCategory(PRODUCT_CATEGORIES.BOOK),
+                catalogPreview: listPublicCommerceProducts().filter(
+                    (p) => p.category === PRODUCT_CATEGORIES.BOOK,
+                ),
                 owned: ownedProducts.filter((p) => p.category === PRODUCT_CATEGORIES.BOOK),
             },
         },
@@ -90,8 +95,8 @@ export function buildCustomerDashboard(customer) {
             title: SECTION_TITLES[DASHBOARD_SECTIONS.APPLICATIONS],
             status: "architecture",
             data: {
-                catalogPreview: listCommerceProductsByCategory(
-                    PRODUCT_CATEGORIES.APPLICATION,
+                catalogPreview: listPublicCommerceProducts().filter(
+                    (p) => p.category === PRODUCT_CATEGORIES.APPLICATION,
                 ),
                 owned: ownedProducts.filter(
                     (p) => p.category === PRODUCT_CATEGORIES.APPLICATION,

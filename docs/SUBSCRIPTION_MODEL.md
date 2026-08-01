@@ -1,33 +1,23 @@
 # Subscription Model
 
-Architecture-only subscription tiers shared across CinNova applications.
+## CURRENTLY IMPLEMENTED (architecture plans)
 
-## Tiers
+Tiers: `FREE` · `PLUS` · `PRO` · `FAMILY` · `TEAM` · `ENTERPRISE`
 
-`FREE` · `PLUS` · `PRO` · `FAMILY` · `TEAM` · `ENTERPRISE`
-
-Each tier definition stores:
-
-- Features
-- Limits (`seats`, `projects`, `apiCalls` — `null` = unlimited / TBD)
-- Product access list
-- Upgrade paths
-- Downgrade paths
-
-## Plan records
-
+Each tier has features, limits, upgrade paths, and downgrade paths.
 Product-linked plans (PoisonGuard, StudyNest, Real Estate AI, StageScout,
 TechMate, Team, Enterprise) are `ARCHITECTURE_ONLY` with:
 
-- `price: null`
-- `currency: null`
-- `billingProvider: null`
-- `activated: false`
+- `price: null`, `currency: null`, `billingProvider: null`, `activated: false`
+- `planScope: "product"` (not global CinNova access)
+- `featuresAreArchitectureExamples: true`
 
-`ACTIVE` status and purchasability are rejected until a later billing phase.
+## Not implied
 
-## Compatibility
+- Features/limits do **not** claim currently shipping product behavior
+- Billing intervals do **not** create an active offer
+- Not every product needs every tier
 
-Phase 11 `src/data/subscriptionPlans.js` remains for storefront placeholders.
-Phase 12 `COMMERCE_SUBSCRIPTION_PLANS` is the platform source of truth for tier
-ladders and entitlement linkage.
+## BLOCKED UNTIL PAYMENT PROVIDER
+
+Purchasable / `ACTIVE` plans. Creating `ACTIVE` or `activated: true` throws.

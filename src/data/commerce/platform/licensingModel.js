@@ -9,6 +9,9 @@ import {
     LICENSE_TYPE_LIST,
     LICENSE_TYPES,
 } from "./constants.js";
+import { licenseGrantsAccess } from "./accessControl.js";
+
+export { licenseGrantsAccess };
 
 /**
  * @typedef {object} LicenseRecord
@@ -90,6 +93,33 @@ export function validateLicenseStore(store = LICENSE_STORE) {
             errors.push(
                 `${license.licenseId}: ACTIVE licenses forbidden in Phase 12 store`,
             );
+        }
+        if (licenseGrantsAccess(license)) {
+            errors.push(`${license.licenseId}: unexpectedly grants access`);
+        }
+    }
+    // Negative architecture checks for non-ACTIVE states.
+    for (const state of [
+        LICENSE_STATES.EXPIRED,
+        LICENSE_STATES.PENDING,
+        LICENSE_STATES.SUSPENDED,
+        LICENSE_STATES.CANCELLED,
+        LICENSE_STATES.ACTIVE,
+    ]) {
+        const probe = createLicense({
+            licenseId: `probe-${state}`,
+            customerId: "arch-fixture-customer-001",
+            productId: "commerce-app-poisonguard",
+            state: state === LICENSE_STATES.ACTIVE ? LICENSE_STATES.PENDING : state,
+            activated: false,
+        });
+        // Force-read ACTIVE+activated=false path via object override for the ACTIVE case.
+        const candidate =
+            state === LICENSE_STATES.ACTIVE
+                ? Object.freeze({ ...probe, state: LICENSE_STATES.ACTIVE, activated: false })
+                : probe;
+        if (licenseGrantsAccess(candidate)) {
+            errors.push(`license state ${state} unexpectedly grants access`);
         }
     }
     return { ok: errors.length === 0, errors };

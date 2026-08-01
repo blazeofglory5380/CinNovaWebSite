@@ -39,6 +39,9 @@ export {
     FUTURE_PAYMENT_PROVIDER_LIST,
     SUPPORT_STATUSES,
     SUPPORT_STATUS_LIST,
+    RECORD_KINDS,
+    RECORD_KIND_LIST,
+    FORBIDDEN_COMMERCE_ANALYTICS_EVENTS,
 } from "./constants.js";
 
 export {
@@ -54,8 +57,14 @@ export {
     createCommerceProduct,
     COMMERCE_PRODUCT_CATALOG,
     listCommerceProducts,
+    listPublicCommerceProducts,
+    listArchitecturePlaceholders,
     getCommerceProductById,
+    getCommerceProductBySlug,
     listCommerceProductsByCategory,
+    isArchitecturePlaceholder,
+    canOfferHostedCheckout,
+    countActiveCommercialInventory,
     validateCommerceProductCatalog,
 } from "./productCatalog.js";
 
@@ -80,6 +89,7 @@ export {
     listEntitlementsForCustomer,
     customerHasProductAccess,
     customerHasFeature,
+    storeHasActiveEntitlementRecord,
     validateEntitlementStore,
 } from "./entitlementEngine.js";
 
@@ -90,7 +100,18 @@ export {
     listLicenses,
     listLicensesForCustomer,
     validateLicenseStore,
+    licenseGrantsAccess,
 } from "./licensingModel.js";
+
+export {
+    evaluateProductAccess,
+    isAuthenticatedCommercePrincipal,
+    trustUserSuppliedCustomerId,
+    relationshipGrantsEntitlement,
+    amazonOutboundClickGrantsOwnership,
+    newsletterSubscriptionIsPaidEntitlement,
+    customerHasProductAccessFailClosed,
+} from "./accessControl.js";
 
 export {
     createProductRelationship,
@@ -137,6 +158,12 @@ import {
     isSubscriptionPlanPurchasable,
     listCommerceSubscriptionPlans,
 } from "./subscriptionModel.js";
+import {
+    amazonOutboundClickGrantsOwnership,
+    newsletterSubscriptionIsPaidEntitlement,
+    trustUserSuppliedCustomerId,
+} from "./accessControl.js";
+import { countActiveCommercialInventory } from "./productCatalog.js";
 
 /**
  * Aggregate platform health check for tests and docs.
@@ -157,6 +184,18 @@ export function validateCommercePlatform() {
     }
     if (listCommerceSubscriptionPlans().some(isSubscriptionPlanPurchasable)) {
         errors.push("no subscription plan may be purchasable");
+    }
+    if (countActiveCommercialInventory() !== 0) {
+        errors.push("active commercial inventory must be zero");
+    }
+    if (amazonOutboundClickGrantsOwnership()) {
+        errors.push("Amazon outbound must not grant ownership");
+    }
+    if (newsletterSubscriptionIsPaidEntitlement()) {
+        errors.push("newsletter must not be a paid entitlement");
+    }
+    if (trustUserSuppliedCustomerId("anyone")) {
+        errors.push("user-supplied customer ids must not be trusted");
     }
 
     return {

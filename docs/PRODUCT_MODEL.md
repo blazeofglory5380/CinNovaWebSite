@@ -1,40 +1,41 @@
 # Product Model
 
-Centralized commerce product catalog covering:
+## CURRENTLY IMPLEMENTED
 
-`book` · `application` · `course` · `download` · `membership` · `service` ·
-`bundle` · `resource`
+Central catalog adapted from authoritative sources (not competing truths):
+
+- Books → `booksCatalog.js` (title, slug, availability, description, image)
+- Apps already in Phase 11 → `commerceCatalog.js` product entities (availability,
+  title, subscriptionEligible)
+- Marketing-only apps (e.g. TechMate) → `products.js`
+- Placeholders → architecture-only records
 
 ## Fields
 
-| Field | Notes |
-|---|---|
-| `id` | `commerce-…` stable id |
-| `name` | Display name |
-| `category` | One of the supported categories |
-| `description` | Short description |
-| `currentStatus` | Human / marketing status string |
-| `availability` | `AVAILABLE` / `COMING_SOON` / `IN_DEVELOPMENT` / `BETA` / `UNAVAILABLE` |
-| `version` | Semver-ish architecture version |
-| `heroImage` | Optional path |
-| `platforms` | `web`, `ios`, `android`, `desktop`, `kindle`, `print`, `api`, `multi` |
-| `ownershipType` | purchase / subscription / license / free / bundle / enterprise / unknown |
-| `subscriptionEligible` | Whether subscription tiers may apply |
-| `commerceEligible` | CinNova-hosted checkout eligibility (**false** in Phase 12) |
-| `futurePricePlaceholder` | Always `null` |
-| `futureSkuPlaceholder` | Always `null` |
-| `launchStatus` | concept → retired ladder |
-| `relationshipIds` | Optional edge ids |
-| `legacyBookId` / `legacyProductPage` | Bridges to existing catalogs |
-| `internalRoute` | Optional site route |
+Includes `slug`, `recordKind` (`authoritative` | `architecture_placeholder`),
+`isPublicSurface`, null `futurePricePlaceholder` / `futureSkuPlaceholder` /
+`checkoutUrl` / `billingProvider` / `paymentProductId`, and always
+`commerceEligible: false`.
 
-## Seed sources
+## Placeholder isolation — ARCHITECTURE ONLY
 
-- Books from `booksCatalog.js`
-- Marketing apps from `products.js`
-- Architecture placeholders: StageScout, courses, downloads, membership, bundles,
-  enterprise services
+Course / download / resource / membership / bundle / service placeholders are:
 
-## Validation rule
+- `recordKind=architecture_placeholder`
+- `isPublicSurface=false`
+- `availability=UNAVAILABLE`
+- not purchasable / not launched / not active commercial inventory
+- excluded from `listPublicCommerceProducts()`
 
-`commerceEligible` must remain `false` until a real checkout provider ships.
+They must not appear in sitemap, recommendation rails, Offer schema, or public UI.
+
+## Fail-closed hosted commerce
+
+`canOfferHostedCheckout()` always returns `false` in Phase 12.
+Attempting `commerceEligible: true` throws.
+
+## External retail note
+
+SEAT Amazon availability is represented by Phase 11 `commerceCatalog` /
+Books — an outbound retail click is **not** CinNova-hosted checkout and does
+**not** create ownership or entitlements.

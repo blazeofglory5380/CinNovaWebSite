@@ -5,7 +5,10 @@
 
 import { listCustomers } from "./customerModel.js";
 import {
+    countActiveCommercialInventory,
+    listArchitecturePlaceholders,
     listCommerceProducts,
+    listPublicCommerceProducts,
     validateCommerceProductCatalog,
 } from "./productCatalog.js";
 import {
@@ -18,6 +21,7 @@ import {
 } from "./entitlementEngine.js";
 import { listLicenses, validateLicenseStore } from "./licensingModel.js";
 import { FUTURE_PAYMENT_PROVIDER_LIST } from "./constants.js";
+import { FORBIDDEN_COMMERCE_ANALYTICS_EVENTS } from "./constants.js";
 
 /**
  * Internal inventory snapshot for future authenticated admin tools.
@@ -29,19 +33,27 @@ export function getCommerceAdminSummary() {
     const plans = listCommerceSubscriptionPlans();
     const entitlements = listEntitlements();
     const licenses = listLicenses();
+    const placeholders = listArchitecturePlaceholders();
 
     return Object.freeze({
         productCatalogCount: products.length,
+        publicProductCount: listPublicCommerceProducts().length,
+        architecturePlaceholderCount: placeholders.length,
+        activeCommercialInventory: countActiveCommercialInventory(),
         customerCatalogCount: customers.length,
         subscriptionPlanCount: plans.length,
+        activeSubscriptionCount: 0,
         entitlementCount: entitlements.length,
+        activeEntitlementCount: 0,
         licenseCount: licenses.length,
+        activeLicenseCount: 0,
         partnerStatus: "see Phase 11.4D partner catalog — not linked here",
         analytics: Object.freeze({
             note: "Commerce analytics hooks reserved; no purchase events",
             purchases: 0,
             checkouts: 0,
             subscriptionActivations: 0,
+            forbiddenEvents: FORBIDDEN_COMMERCE_ANALYTICS_EVENTS.slice(),
         }),
         revenueSummary: Object.freeze({
             currency: "USD",
@@ -49,10 +61,14 @@ export function getCommerceAdminSummary() {
             net: 0,
             refunds: 0,
             placeholder: true,
+            unavailable: true,
             note: "Revenue unavailable — no payments or activated subscriptions",
         }),
+        invoices: Object.freeze([]),
+        receipts: Object.freeze([]),
         paymentProvidersConfigured: Object.freeze([]),
         futurePaymentProviders: FUTURE_PAYMENT_PROVIDER_LIST.slice(),
+        providerSelection: "undecided",
         publicAdminUi: false,
         authentication: false,
     });
@@ -69,6 +85,21 @@ export function validateCommerceAdminFoundation() {
     }
     if (summary.customerCatalogCount !== 0) {
         errors.push("production customer catalog must be empty");
+    }
+    if (summary.activeCommercialInventory !== 0) {
+        errors.push("active commercial inventory must be zero");
+    }
+    if (summary.activeSubscriptionCount !== 0) {
+        errors.push("active subscriptions must be zero");
+    }
+    if (summary.activeEntitlementCount !== 0) {
+        errors.push("active entitlements must be zero");
+    }
+    if (summary.activeLicenseCount !== 0) {
+        errors.push("active licenses must be zero");
+    }
+    if (summary.invoices.length || summary.receipts.length) {
+        errors.push("invoices/receipts must be empty placeholders");
     }
 
     const catalog = validateCommerceProductCatalog();

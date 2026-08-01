@@ -40,6 +40,10 @@ export function createProductRelationship(input) {
         kind: input.kind,
         label: input.label ?? input.kind,
         weight: Number.isFinite(input.weight) ? input.weight : 1,
+        // Relationships never imply ownership, bundle purchase, or entitlement.
+        grantsEntitlement: false,
+        grantsOwnership: false,
+        impliesAvailability: false,
     });
 }
 
@@ -203,14 +207,27 @@ export function listRelatedProductIds(productId) {
 export function validateProductRelationships(edges = listProductRelationships()) {
     const errors = [];
     const ids = new Set();
+    const pairs = new Set();
     for (const edge of edges) {
         if (ids.has(edge.id)) errors.push(`duplicate relationship ${edge.id}`);
         ids.add(edge.id);
+        const pair = `${edge.fromProductId}->${edge.toProductId}:${edge.kind}`;
+        if (pairs.has(pair)) errors.push(`duplicate edge ${pair}`);
+        pairs.add(pair);
         if (!getCommerceProductById(edge.fromProductId)) {
             errors.push(`${edge.id}: missing from product`);
         }
         if (!getCommerceProductById(edge.toProductId)) {
             errors.push(`${edge.id}: missing to product`);
+        }
+        if (edge.grantsEntitlement) {
+            errors.push(`${edge.id}: relationships must not grant entitlements`);
+        }
+        if (edge.grantsOwnership) {
+            errors.push(`${edge.id}: relationships must not grant ownership`);
+        }
+        if (edge.impliesAvailability) {
+            errors.push(`${edge.id}: relationships must not imply availability`);
         }
     }
     return { ok: errors.length === 0, errors };

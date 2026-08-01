@@ -9,6 +9,7 @@ import {
     ENTITLEMENT_STATUS,
     ENTITLEMENT_STATUS_LIST,
 } from "./constants.js";
+import { customerHasProductAccessFailClosed } from "./accessControl.js";
 
 /**
  * @typedef {object} EntitlementRecord
@@ -126,10 +127,23 @@ export function listEntitlementsForCustomer(customerId) {
 }
 
 /**
- * Access check — entitlements determine access only.
- * Returns false when no active entitlement exists (default in Phase 12).
+ * Access check — fail closed.
+ * Pending/expired grants do not allow access. Authentication is required for
+ * any future production grant; Phase 12 principals are never authenticated.
  */
-export function customerHasProductAccess(customerId, productId, store = ENTITLEMENT_STORE) {
+export function customerHasProductAccess(customerId, productId, store = ENTITLEMENT_STORE, options = {}) {
+    return customerHasProductAccessFailClosed(customerId, productId, {
+        entitlements: store,
+        licenses: options.licenses || [],
+        authenticated: options.authenticated === true,
+        featureKey: options.featureKey ?? null,
+    });
+}
+
+/**
+ * Low-level store matcher for tests only — does NOT authorize production access.
+ */
+export function storeHasActiveEntitlementRecord(customerId, productId, store = ENTITLEMENT_STORE) {
     return store.some(
         (e) =>
             e.customerId === customerId &&
@@ -146,14 +160,13 @@ export function customerHasFeature(
     productId,
     featureKey,
     store = ENTITLEMENT_STORE,
+    options = {},
 ) {
-    return store.some(
-        (e) =>
-            e.customerId === customerId &&
-            e.productId === productId &&
-            e.featureKey === featureKey &&
-            e.status === ENTITLEMENT_STATUS.ACTIVE,
-    );
+    return customerHasProductAccessFailClosed(customerId, productId, {
+        entitlements: store,
+        authenticated: options.authenticated === true,
+        featureKey,
+    });
 }
 
 export function validateEntitlementStore(store = ENTITLEMENT_STORE) {
@@ -163,6 +176,20 @@ export function validateEntitlementStore(store = ENTITLEMENT_STORE) {
             errors.push(
                 `${e.entitlementId}: live ACTIVE entitlements forbidden in Phase 12 store`,
             );
+        }
+    }
+    for (const example of ENTITLEMENT_ARCHITECTURE_EXAMPLES) {
+        if (example.status === ENTITLEMENT_STATUS.ACTIVE) {
+            errors.push(`${example.entitlementId}: examples must not be ACTIVE`);
+        }
+        if (
+            customerHasProductAccess(
+                example.customerId,
+                example.productId,
+                [example],
+            )
+        ) {
+            errors.push(`${example.entitlementId}: example unexpectedly grants access`);
         }
     }
     return { ok: errors.length === 0, errors };

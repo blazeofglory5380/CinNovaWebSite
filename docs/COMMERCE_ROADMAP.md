@@ -1,45 +1,37 @@
 # Commerce Roadmap
 
-## Phase 12 (this phase) — Foundation
+## Phase 12 (this phase) — Foundation — CURRENTLY IMPLEMENTED
 
-- Unified customer model (no auth)
-- Product catalog
-- Subscription tier architecture
-- Entitlement engine
-- Licensing model
-- Product relationships
-- Notification models
-- Customer dashboard architecture
-- Internal admin summary (no public UI)
-- Provider slots for future payments
+Architecture models, fail-closed access, placeholder isolation, docs, tests.
 
-## Later phases (not started)
+## Provider selection — UNDECIDED
 
-1. **Identity** — authentication without storing payment data in the identity
-   service
-2. **Stripe integration** — Checkout Sessions / Customer Portal; map webhooks to
-   entitlements
-3. **PayPal integration** — alternate provider behind the same entitlement API
-4. **Apple / Google IAP** — mobile purchase verification → entitlement grants
-5. **Tax handling** — Stripe Tax or equivalent; never invent rates in content
-6. **Invoicing / receipts** — provider-backed documents; dashboard placeholders
-   become real
-7. **Subscription activation** — flip plan status only after legal + pricing
-   approval
-8. **Migration** — map Phase 11 commerce entities and Amazon external retail into
-   ownership records without inventing CinNova-hosted purchase history
+Stripe, PayPal, Apple, and Google are **future slots only**. None are integrated.
+Choosing a provider requires a later explicit phase.
+
+## Later phases
+
+| Step | Status |
+|---|---|
+| Identity / authentication | BLOCKED UNTIL AUTHENTICATION |
+| Stripe adapter | FUTURE — BLOCKED UNTIL PAYMENT PROVIDER |
+| PayPal adapter | FUTURE — BLOCKED UNTIL PAYMENT PROVIDER |
+| Apple / Google IAP | FUTURE — BLOCKED UNTIL PAYMENT PROVIDER |
+| Tax handling | BLOCKED UNTIL LEGAL/TAX REVIEW |
+| Invoicing / receipts | BLOCKED UNTIL PAYMENT PROVIDER |
+| Subscription activation | BLOCKED UNTIL PAYMENT PROVIDER + legal pricing |
+| Migration from Phase 11 external retail | FUTURE — Amazon clicks ≠ ownership |
 
 ## Migration strategy (preview)
 
-1. Keep Phase 11 public CTAs unchanged until checkout is live
+1. Keep Phase 11 public CTAs unchanged until hosted checkout is live
 2. Introduce customer accounts only after auth ships
 3. Grant entitlements from verified provider webhooks only
 4. Backfill book ownership only with customer-evidenced purchases
-5. Re-verify partner / affiliate posture separately (Phase 11.4) — commerce
-   platform does not activate affiliates
+5. Partner/affiliate posture remains Phase 11.4 — commerce does not activate affiliates
 
 ## Provider independence
 
-All billing providers register through `providers.js` slots. The entitlement
-engine must never import a specific SDK — adapters belong in a future
+Billing providers register through `providers.js` slots. The entitlement engine
+must never import a specific SDK — adapters belong in a future
 `src/data/commerce/adapters/` package.
