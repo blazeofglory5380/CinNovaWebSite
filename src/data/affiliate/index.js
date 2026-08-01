@@ -67,11 +67,32 @@ export {
 } from "./catalogStatuses.js";
 
 export {
+    ENROLLMENT_PROGRAM_TYPES,
+    ENROLLMENT_PROGRAM_TYPE_LIST,
+    ENROLLMENT_PROGRAM_TYPE_LABELS,
+    PUBLIC_OR_PRIVATE,
+    PUBLIC_OR_PRIVATE_LIST,
+    VERIFICATION_BUCKETS,
+    VERIFICATION_BUCKET_LIST,
+    VERIFICATION_BUCKET_LABELS,
+    UNKNOWN_VERIFICATION_NOTE,
+    isEnrollmentProgramType,
+    isPublicOrPrivate,
+    isVerificationBucket,
+    getEnrollmentProgramTypeLabel,
+    verificationBucketForProgramType,
+} from "./enrollmentProgramTypes.js";
+
+export { DEFAULT_COMPLIANCE } from "./complianceDefaults.js";
+
+export {
     PARTNER_CATALOG,
     listPartnerCatalog,
     getPartnerCatalogEntry,
     listPartnerCatalogByCategory,
     listPartnerCatalogByApplicationStatus,
+    listPartnerCatalogByVerificationBucket,
+    listPartnerCatalogByEnrollmentProgramType,
     validatePartnerCatalogEntry,
     validatePartnerCatalog,
 } from "./partnerCatalog.js";
@@ -84,6 +105,11 @@ export {
     listActivePartners,
     getApplicationTrackerSummary,
 } from "./applicationTracker.js";
+
+export {
+    getPartnerVerificationReport,
+    getEnrollmentInventoryMetrics,
+} from "./verificationReport.js";
 
 export {
     REVENUE_METRICS_PLACEHOLDER,

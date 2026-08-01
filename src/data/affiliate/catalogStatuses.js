@@ -1,6 +1,6 @@
 /**
- * Phase 11.4B — Partner Catalog / Application Tracker status enums.
- * Defaults for every new company: not_applied, not_approved, disabled.
+ * Phase 11.4B/D — Partner Catalog / Application Tracker status enums.
+ * Defaults for every company: not_started, not_approved, disabled.
  */
 
 export const PROGRAM_STATUSES = Object.freeze({
@@ -12,13 +12,20 @@ export const PROGRAM_STATUSES = Object.freeze({
     NOT_AVAILABLE: "not_available",
 });
 
+/**
+ * Phase 11.4D application tracker statuses.
+ * Replaces the 11.4B not_applied / in_review / accepted / withdrawn set.
+ */
 export const APPLICATION_STATUSES = Object.freeze({
-    NOT_APPLIED: "not_applied",
+    NOT_STARTED: "not_started",
+    PREPARING: "preparing",
     APPLIED: "applied",
-    IN_REVIEW: "in_review",
-    ACCEPTED: "accepted",
+    PENDING: "pending",
+    APPROVED: "approved",
     REJECTED: "rejected",
-    WITHDRAWN: "withdrawn",
+    PAUSED: "paused",
+    INACTIVE: "inactive",
+    ARCHIVED: "archived",
 });
 
 export const APPROVAL_STATUSES = Object.freeze({
@@ -42,7 +49,7 @@ export const ACTIVATION_STATUS_LIST = Object.freeze(Object.values(ACTIVATION_STA
 /** Safe defaults — every catalog company starts here until intentionally changed. */
 export const CATALOG_DEFAULT_STATUSES = Object.freeze({
     programStatus: PROGRAM_STATUSES.RESEARCHING,
-    applicationStatus: APPLICATION_STATUSES.NOT_APPLIED,
+    applicationStatus: APPLICATION_STATUSES.NOT_STARTED,
     approvalStatus: APPROVAL_STATUSES.NOT_APPROVED,
     activationStatus: ACTIVATION_STATUSES.DISABLED,
 });

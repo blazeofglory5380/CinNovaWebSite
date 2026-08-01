@@ -1,7 +1,11 @@
-# Partner Catalog & Application Tracker (Phase 11.4B)
+# Partner Catalog & Application Tracker (Phase 11.4B / 11.4D)
 
 Centralized **AI & Technology Partner Catalog**, **Partner Application Tracker**,
-and **Revenue Opportunities** dashboard for CinNova.
+**Partner Enrollment verification**, and **Revenue Opportunities** dashboard for
+CinNova.
+
+Enrollment verification procedures live in `docs/PARTNER_ENROLLMENT.md`
+(Phase 11.4D).
 
 **Important:** Catalog entries are research / prospect records only.
 Listing a company does **not** claim a partnership, affiliate approval,
@@ -12,7 +16,7 @@ processing are introduced in this phase. Every company defaults to:
 
 | Field | Default |
 |---|---|
-| Application status | `not_applied` |
+| Application status | `not_started` |
 | Approval status | `not_approved` |
 | Activation status | `disabled` |
 | Affiliate / referral IDs | `null` |
@@ -32,8 +36,10 @@ processing are introduced in this phase. Every company defaults to:
 |---|---|
 | Categories | `src/data/affiliate/catalogCategories.js` |
 | Status enums | `src/data/affiliate/catalogStatuses.js` |
+| Enrollment program types | `src/data/affiliate/enrollmentProgramTypes.js` |
 | Partner Catalog | `src/data/affiliate/partnerCatalog.js` |
 | Application Tracker | `src/data/affiliate/applicationTracker.js` |
+| Verification report | `src/data/affiliate/verificationReport.js` |
 | Revenue Opportunities metrics | `src/data/affiliate/revenueOpportunities.js` |
 | Runtime affiliate registry (11.4A) | `src/data/affiliate/partnerRegistry.js` |
 | Dashboard UI (admin-gated) | `src/pages/RevenueOpportunities.jsx` |
@@ -55,32 +61,41 @@ Each catalog record includes:
 - Official website (HTTPS reference URL)
 - Category
 - Partner type (`affiliate` \| `referral` \| `partner` \| `official`)
+- Enrollment program type (`affiliate` \| `referral` \| `technology_partner` \|
+  `marketplace` \| `reseller` \| `enterprise` \| `none` \| `unknown`)
+- Official program URL, eligibility, country restrictions, application/approval
+  required flags, estimated review time, public/private, verification source
 - Program status
-- Application status
+- Application status (`not_started` \| `preparing` \| `applied` \| `pending` \|
+  `approved` \| `rejected` \| `paused` \| `inactive` \| `archived`)
 - Approval status
 - Activation status
+- Document storage dates/notes (`applicationDate`, `approvalDate`, `renewalDate`, …)
+- Compliance fields (FTC / trademark / brand guidelines / logo permissions)
 - Allowed domains
 - FTC disclosure requirement
 - Notes
-- Last reviewed (`YYYY-MM-DD`)
+- Last reviewed / last verified (`YYYY-MM-DD`)
 
 ## Revenue Opportunities dashboard
 
 Internal page key: `revenue-opportunities`  
 URL (local only when admin routes enabled): `/?page=revenue-opportunities`
 
-Shows placeholder KPIs (all **0** until real telemetry exists):
+Shows placeholder KPIs (all **0** until real telemetry / filed applications):
 
 - Total partners
-- Applications
-- Approved
+- Applications / Applications submitted
+- Approved / Pending review / Rejected / Inactive
 - Active
 - Affiliate clicks
 - Revenue
 - Conversion rate
+- Programs available / Programs verified (placeholders)
 
-Also shows catalog inventory and the application tracker table (all rows
-Not Applied / Disabled in this phase).
+Also shows research inventory (verification counts), the application tracker
+table (all rows Not Started / Disabled in this phase), and a verification
+report by category.
 
 Gated by `VITE_ENABLE_ADMIN_ROUTES=true` (same gate as Blog Manager /
 Newsletter Admin). Production must leave that flag unset/`false`.
@@ -102,27 +117,31 @@ Robots disallow: `/?page=revenue-opportunities`.
    - `notes` (state clearly that this is a prospect only)
 4. Do **not** set affiliate/referral IDs (fields stay `null`).
 5. Do **not** set `applicationStatus`, `approvalStatus`, or `activationStatus`
-   to anything other than the defaults (`not_applied` / `not_approved` /
+   to anything other than the defaults (`not_started` / `not_approved` /
    `disabled`) unless a later phase documents a real workflow change.
-6. Optionally set `registryPartnerId` if a matching 11.4A registry shell exists.
-7. Run `npm run test:partner-catalog` and `npm run test:affiliate-foundation`.
+6. Fill enrollment verification fields per `docs/PARTNER_ENROLLMENT.md`
+   (program type, official URL, sources). Use `unknown` when unsure.
+7. Optionally set `registryPartnerId` if a matching 11.4A registry shell exists.
+8. Run `npm run test:partner-catalog` and `npm run test:affiliate-foundation`.
 
 ## Applying to a program
 
-1. Confirm the company has a real, public partner / affiliate / referral program.
+1. Confirm the company has a real, public partner / affiliate / referral program
+   (see `docs/PARTNER_ENROLLMENT.md`).
 2. Complete the vendor application **outside** this repo (vendor portal / email).
 3. Update catalog fields in a dedicated PR only after the application is filed:
-   - `applicationStatus`: `applied` or `in_review`
+   - `applicationStatus`: `preparing` → `applied` → `pending`
+   - `applicationDate`: ISO date filed
    - `programStatus`: reflect known program state (`open`, `invite_only`, etc.)
    - `notes`: date filed + non-secret reference (ticket / portal name)
    - `lastReviewed`: today
 4. Keep `approvalStatus: not_approved` and `activationStatus: disabled`.
 5. Do **not** add affiliate IDs or env commercial URLs yet.
-6. Loosen Phase 11.4B validation guards in the same PR if statuses leave
-   `not_applied` (tests must be updated intentionally).
+6. Loosen Phase 11.4D validation guards in the same PR if statuses leave
+   `not_started` (tests must be updated intentionally).
 
 Until a later phase changes the validators, the shipped catalog must remain
-`not_applied` so CI continues to prove no silent activation.
+`not_started` so CI continues to prove no silent activation.
 
 ## Activating a partner
 
