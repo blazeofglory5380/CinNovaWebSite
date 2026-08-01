@@ -7,12 +7,11 @@ Centralized affiliate / partner management for future CinNova monetization.
 
 - One partner registry (no scattered hardcoded affiliate URLs)
 - Partner types: `affiliate`, `referral`, `partner`, `official`
-- Global enable/disable (`VITE_AFFILIATES_ENABLED`)
-- Per-partner `enabled` flag
+- Dual activation gates (global + per-partner)
 - FTC disclosure component
-- GA4 outbound click tracking (`affiliate_outbound_click`)
-- Link validation before render
-- Internal admin configuration view (`/partner-admin`)
+- GA4 outbound click tracking (`affiliate_outbound_click` for commercial types only)
+- HTTPS + host-allowlist validation before render
+- Documentation-driven activation (no unauthenticated Partner Admin UI)
 - No ads, checkout, or payment processing in this phase
 
 ## Architecture
@@ -28,68 +27,136 @@ Centralized affiliate / partner management for future CinNova monetization.
 | Article compatibility | `src/data/affiliateLinks.js` |
 | Disclosure UI | `src/components/commerce/AffiliateDisclosure.jsx` |
 | Outbound link UI | `src/components/commerce/PartnerOutboundLink.jsx` |
-| Admin UI | `src/pages/PartnerAdmin.jsx` |
+
+There is **no** Partner Admin page in Phase 11.4A. `/partner-admin` is not routed;
+robots.txt still disallows it for defense in depth. Configuration is code + env + docs.
+
+## Exact gates
+
+### Global gate
+
+- Env flag: `VITE_AFFILIATES_ENABLED`
+- Enabled only when the value is exactly `"true"`
+- Missing, empty, `false`, or any other value → **OFF** (fail closed)
+
+### Per-partner gate
+
+- Registry field: `enabled: true`
+- Default for every partner today: `enabled: false`
+
+### Both required
+
+`PartnerOutboundLink` / `resolvePartnerLink` render a destination only when:
+
+1. `VITE_AFFILIATES_ENABLED=true`, **and**
+2. `partner.enabled === true`, **and**
+3. A validated HTTPS destination is available (env URL or, for official/partner types only, `officialWebsite`), **and**
+4. Destination host matches the partner allowlist derived from `officialWebsite` (+ optional `allowedHosts`)
+
+One gate alone never activates a link.
+
+## Env key naming
+
+| Purpose | Pattern | Example |
+|---|---|---|
+| Global master switch | `VITE_AFFILIATES_ENABLED` | unset / `false` in production |
+| Commercial destination URL | `VITE_AFFILIATE_URL_<PARTNER>` | `VITE_AFFILIATE_URL_NOTION` |
+| Optional campaign label (not shipped to DOM) | `VITE_AFFILIATE_CAMPAIGN_<PARTNER>` | `VITE_AFFILIATE_CAMPAIGN_NOTION` |
+
+Never commit real production affiliate IDs, tags, or tracked URLs to git.
+Store them only in hosting env / local `.env.local` (gitignored).
+
+## URL validation requirements
+
+Allowed:
+
+- Absolute `https:` URLs only
+
+Rejected (fail closed):
+
+- `http:`, `javascript:`, `data:`, `file:`, other schemes
+- Relative / scheme-less strings
+- Empty / malformed URLs
+- Credential-bearing URLs (`https://user:pass@host/...`)
+- localhost / example.com / private-network destinations
+- Hosts outside the partner allowlist
+
+Raw env values are never written into documentation samples as secrets, never logged by the resolver, and never rendered in the DOM when invalid.
+
+## Partner type behavior
+
+| Type | Disclosure | `rel` | Analytics |
+|---|---|---|---|
+| `affiliate` | Required when shown | `noopener noreferrer sponsored nofollow` | `affiliate_outbound_click` |
+| `referral` | Required when shown | `noopener noreferrer sponsored nofollow` | `affiliate_outbound_click` |
+| `partner` | Not by default | `noopener noreferrer` | generic outbound only |
+| `official` | Never for commission | `noopener noreferrer` | generic outbound only |
+
+Do not label every external company a “partner” in user-facing copy unless the relationship is intentional and disclosed when commercial.
 
 ## Adding a new partner
 
-1. Add a frozen record to `PARTNER_REGISTRY` in `partnerRegistry.js`:
-   - Unique string `id`
-   - `type` from `PARTNER_TYPES`
-   - `enabled: false` initially
-   - `disclosureRequired: true` for affiliate/referral
-   - `officialWebsite` (https public site only — not an affiliate deep link)
-   - `urlEnvKey` / `campaignIdEnvKey` for commercial types (env var names only)
-2. Do **not** commit production affiliate IDs or tracked affiliate URLs.
-3. Run `npm run test:affiliate-foundation`.
-4. Document the env keys in `.env.example` as commented placeholders.
+1. Add a frozen record to `PARTNER_REGISTRY` with `enabled: false`
+2. Set `type`, `disclosureRequired`, `officialWebsite`, and commercial `urlEnvKey`
+3. Add `allowedHosts` when destinations may use hosts beyond the official apex
+4. Document env placeholders in `.env.example` (commented, empty)
+5. Run `npm run test:affiliate-foundation`
 
-## Enabling a partner
+## Enabling a partner (safe activation)
 
-All of the following must be true before a link renders:
+1. Legal/partner terms approved; disclosure copy reviewed
+2. Put the verified HTTPS destination in the partner `urlEnvKey` env var (not in git)
+3. Set registry `enabled: true` in a dedicated PR
+4. Set `VITE_AFFILIATES_ENABLED=true` only for the target environment
+5. Confirm `AffiliateDisclosure` renders next to commercial links
+6. Confirm `affiliate_outbound_click` in GA4 DebugView (host + partner_id only)
+7. Preview QA: no secrets in HTML, correct `rel`, no purchase events
 
-1. Partner `enabled: true` in the registry
-2. `VITE_AFFILIATES_ENABLED=true` for that build/deploy
-3. For affiliate/referral: a valid https URL in the partner's `urlEnvKey` env var
-4. For official/partner (optional): may use `officialWebsite` when no env URL is set
-5. Validation must pass (`validateResolvedPartnerLink`)
+## Rollback procedure
 
-Until then, `resolvePartnerLink` returns `renderable: false` and UI renders nothing.
+1. Set `VITE_AFFILIATES_ENABLED` to unset/`false` and redeploy (immediate global off), **or**
+2. Set the partner’s `enabled: false` and redeploy, **or**
+3. Remove/blank the env destination URL (fail closed → no href)
 
-Also see `docs/AFFILIATE_ACTIVATION.md` for commerce-catalog Associates activation.
+Prefer the global flag for emergency rollback.
 
-## Required disclosures
+## Disclosure requirements
 
-- Use `AffiliateDisclosure` whenever a commercial (affiliate/referral) destination is shown.
+- Use `AffiliateDisclosure` whenever an enabled affiliate/referral destination is shown
 - Default copy: “CinNova may earn a commission from qualifying purchases made through certain links.”
-- Do **not** show disclosure on ordinary non-affiliate retailer links (`affiliateEnabled: false`).
-- Official/partner recommendations without commission should set `disclosureRequired: false`.
+- Must be visible text near the links (`data-ftc-disclosure` is metadata only — not a substitute)
+- Do not show disclosure for ordinary official links or non-affiliate retailer links
 
-## Analytics events
+## Analytics verification
 
-| Event | When | Params (no PII) |
+| Event | When | Safe params |
 |---|---|---|
-| `affiliate_outbound_click` | Click on `PartnerOutboundLink` | `partner_id`, `partner_name`, `partner_type`, `placement`, `destination_url_host`, `campaign_id` (truncated), `disclosure_shown` |
+| `affiliate_outbound_click` | Enabled affiliate/referral click via `PartnerOutboundLink` | `partner_id`, `partner_type`, `destination_url_host`, `placement`, `disclosure_shown`, optional `entity_slug` / non-secret `campaign_id` |
 
-Preserved separately:
+Never send: full URL + query strings, affiliate tags/secrets, email, name, phone, or other PII.
 
-- `outbound_link_click` — generic delegated outbound listener
-- `commerce_outbound_click` — commerce catalog CTAs
+Do not fire: `purchase`, `begin_checkout`, `subscribe`.
 
-Reserved / never fire from this phase: `begin_checkout`, `purchase`, `subscribe`.
+Duplicate clicks within a short window are de-duplicated.
 
-GA4 Measurement ID remains `G-CD944CHBK6` (via `VITE_GA_MEASUREMENT_ID`).
+GA4 Measurement ID remains unchanged (`VITE_GA_MEASUREMENT_ID` / `G-CD944CHBK6`).
 
-## Admin configuration
+## Production approval checklist
 
-- Route: `/partner-admin` (also `?page=partner-admin`)
-- Gated by `VITE_ENABLE_ADMIN_ROUTES=true` (local only; leave off in production)
-- Read-only status of global flag, registry, env URL presence, renderability
-- Disallowed in `robots.txt`
+- [ ] `VITE_AFFILIATES_ENABLED` unset/false in production
+- [ ] Every registry partner `enabled: false` (or intentionally reviewed)
+- [ ] No affiliate IDs / tracked URLs in git
+- [ ] SEAT Amazon remains ordinary EXTERNAL_RETAIL until Associates verified
+- [ ] Zero affiliate disclosures on production pages
+- [ ] `/partner-admin` not a live UI route
+- [ ] `npm run test:affiliate-foundation` passes
+- [ ] Lint 0 errors; build passes
 
 ## Explicit non-goals (this phase)
 
 - No production affiliate IDs in git
 - No ads / ad networks
-- No checkout UI
-- No payment processing
+- No checkout UI / payment processing
+- No authenticated admin console
 - No auto-insertion of affiliate modules into News editorial automation
+- No Phase 11.4B activation work in this PR

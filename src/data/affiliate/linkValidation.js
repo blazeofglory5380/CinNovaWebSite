@@ -11,6 +11,15 @@ const BLOCKED_HOST_HINTS = Object.freeze([
     "0.0.0.0",
     "example.com",
     "example.org",
+    "::1",
+]);
+
+const PRIVATE_HOST_PATTERNS = Object.freeze([
+    /^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/,
+    /^192\.168\.\d{1,3}\.\d{1,3}$/,
+    /^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/,
+    /^169\.254\.\d{1,3}\.\d{1,3}$/,
+    /^100\.(6[4-9]|[7-9]\d|1[0-2]\d)\.\d{1,3}\.\d{1,3}$/,
 ]);
 
 /**
@@ -19,25 +28,80 @@ const BLOCKED_HOST_HINTS = Object.freeze([
  */
 export function validateHttpsUrl(value) {
     const errors = [];
-    if (!value || typeof value !== "string" || !value.trim()) {
+    if (value == null || typeof value !== "string" || !value.trim()) {
         return { ok: false, url: null, errors: ["URL is empty"] };
     }
+    const trimmed = value.trim();
+    if (/^\s*[.#/?]/.test(trimmed) || !/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) {
+        return { ok: false, url: null, errors: ["Relative or scheme-less URLs are not allowed"] };
+    }
+
     let url;
     try {
-        url = new URL(value.trim());
+        url = new URL(trimmed);
     } catch {
         return { ok: false, url: null, errors: ["URL is not parseable"] };
     }
+
     if (url.protocol !== "https:") {
         errors.push("URL must use https");
+    }
+    if (url.username || url.password) {
+        errors.push("Credential-bearing URLs are not allowed");
+    }
+    if (!url.hostname) {
+        errors.push("URL host is required");
     }
     if (BLOCKED_HOST_HINTS.some((h) => url.hostname === h || url.hostname.endsWith(`.${h}`))) {
         errors.push("URL host is not allowed for partner destinations");
     }
-    if (/[<>"']/.test(value)) {
+    if (PRIVATE_HOST_PATTERNS.some((re) => re.test(url.hostname))) {
+        errors.push("Private-network destinations are not allowed");
+    }
+    if (/[<>"']/.test(trimmed)) {
         errors.push("URL contains unsafe characters");
     }
-    return { ok: errors.length === 0, url, errors };
+
+    return { ok: errors.length === 0, url: errors.length === 0 ? url : url, errors };
+}
+
+/**
+ * Hostnames allowed for a partner destination (official site + optional allowlist).
+ * @param {import('./partnerRegistry.js').PartnerRecord} partner
+ * @returns {string[]}
+ */
+export function getPartnerAllowedHosts(partner) {
+    const hosts = new Set();
+    if (Array.isArray(partner?.allowedHosts)) {
+        partner.allowedHosts.forEach((h) => {
+            if (typeof h === "string" && h.trim()) hosts.add(h.trim().toLowerCase());
+        });
+    }
+    if (partner?.officialWebsite) {
+        try {
+            const site = new URL(partner.officialWebsite);
+            if (site.hostname) hosts.add(site.hostname.toLowerCase());
+            // Allow common www / apex pairing when official site uses one of them.
+            if (site.hostname.startsWith("www.")) {
+                hosts.add(site.hostname.slice(4));
+            } else {
+                hosts.add(`www.${site.hostname}`);
+            }
+        } catch {
+            /* ignore */
+        }
+    }
+    return [...hosts];
+}
+
+/**
+ * @param {string} hostname
+ * @param {string[]} allowedHosts
+ */
+export function hostMatchesAllowlist(hostname, allowedHosts = []) {
+    if (!hostname || !allowedHosts.length) return false;
+    const host = hostname.toLowerCase();
+    return allowedHosts.some((allowed) => host === allowed || host.endsWith(`.${allowed}`));
 }
 
 /**
@@ -65,7 +129,11 @@ export function validatePartnerRecord(partner) {
     if (commercial && !partner.urlEnvKey) {
         errors.push("affiliate/referral partners require urlEnvKey");
     }
-    if (commercial && partner.disclosureRequired !== true && AFFILIATE_PROGRAM_CONFIG.requireDisclosureWhenCommercial) {
+    if (
+        commercial &&
+        partner.disclosureRequired !== true &&
+        AFFILIATE_PROGRAM_CONFIG.requireDisclosureWhenCommercial
+    ) {
         warnings.push("commercial partner should set disclosureRequired: true");
     }
     if (partner.enabled === true && commercial && !partner.urlEnvKey) {
@@ -77,6 +145,7 @@ export function validatePartnerRecord(partner) {
 
 /**
  * Validate a resolved destination before rendering.
+ * Requires BOTH global program enablement and partner.enabled.
  * @param {object} options
  * @param {import('./partnerRegistry.js').PartnerRecord} options.partner
  * @param {string|null} options.href
@@ -116,7 +185,14 @@ export function validateResolvedPartnerLink({ partner, href, globallyEnabled }) 
     }
 
     const urlCheck = validateHttpsUrl(href);
-    if (!urlCheck.ok) errors.push(...urlCheck.errors);
+    if (!urlCheck.ok) {
+        errors.push(...urlCheck.errors);
+    } else {
+        const allowed = getPartnerAllowedHosts(partner);
+        if (allowed.length > 0 && !hostMatchesAllowlist(urlCheck.url.hostname, allowed)) {
+            errors.push("Destination host is not on the partner allowlist");
+        }
+    }
 
     return {
         ok: errors.length === 0,

@@ -130,6 +130,11 @@ export const PARTNER_REGISTRY = Object.freeze([
         category: "Retail",
         tagline: "Verified Associates destinations for catalog commerce entities",
         officialWebsite: "https://affiliate-program.amazon.com/",
+        allowedHosts: Object.freeze([
+            "amazon.com",
+            "www.amazon.com",
+            "affiliate-program.amazon.com",
+        ]),
         urlEnvKey: "VITE_AFFILIATE_URL_AMAZON",
         campaignIdEnvKey: "VITE_AFFILIATE_CAMPAIGN_AMAZON",
         surfaces: ["books", "commerce"],

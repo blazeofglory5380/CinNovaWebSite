@@ -32,6 +32,8 @@ export {
     validatePartnerRecord,
     validateResolvedPartnerLink,
     validatePartnerRegistry,
+    getPartnerAllowedHosts,
+    hostMatchesAllowlist,
 } from "./linkValidation.js";
 
 export {

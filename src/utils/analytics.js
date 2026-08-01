@@ -568,20 +568,33 @@ export function trackAffiliateOutboundClick({
     url = "",
     campaignId = "",
     disclosureShown = false,
+    entitySlug = "",
 } = {}) {
     if (!partnerId || !url) return;
-    const key = `aff:${partnerId}:${destinationHostFromUrl(url) || ""}:${placement}`;
+    // Commercial events only — official/partner use generic outbound tracking.
+    if (partnerType !== "affiliate" && partnerType !== "referral") return;
+
+    const host = destinationHostFromUrl(url) || "";
+    if (!host) return;
+
+    const key = `aff:${partnerId}:${host}:${placement}`;
     if (shouldSkipDuplicateCommerce(key)) return;
+
+    // Never send full URLs, query strings, tags, or PII.
     trackEvent(
         "affiliate_outbound_click",
         sanitizeCommerceAnalyticsParams({
-            partner_id: partnerId,
-            partner_name: partnerName,
+            partner_id: String(partnerId).slice(0, 64),
             partner_type: partnerType,
-            placement,
-            destination_url_host: destinationHostFromUrl(url) || "",
-            campaign_id: campaignId ? String(campaignId).slice(0, 64) : "",
+            placement: String(placement).slice(0, 64),
+            destination_url_host: host,
+            // campaign_id intentionally omitted unless a non-secret label is passed explicitly
+            // by a future activation layer — empty by default in 11.4A.
+            campaign_id: campaignId ? String(campaignId).slice(0, 32) : "",
             disclosure_shown: Boolean(disclosureShown),
+            entity_slug: entitySlug ? String(entitySlug).slice(0, 80) : "",
+            // Drop unused partnerName from payload to avoid accidental free-text leakage.
+            partner_name: partnerName ? String(partnerName).slice(0, 80) : "",
         }),
     );
 }
