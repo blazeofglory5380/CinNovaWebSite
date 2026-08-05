@@ -180,7 +180,64 @@ export const PUBLIC_PAGE_ROUTES = [
     { key: "claude-with-higgsfield-guide", path: "/guides/claude-with-higgsfield", schemaType: "TechArticle", group: "guide", language: "en",
         title: "How to Use Claude with Higgsfield | AI Video Prompt Guide",
         description: "Learn how to use Claude alongside Higgsfield to plan AI video: define the goal, write a concept, build scene-by-scene prompts with style, camera, lighting, and mood, and create platform variations. Includes example prompts and copyright tips." },
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Phase 11 revenue pages — legal, newsletter, and company surfaces.
+    //
+    // Tagged `phase: "revenue"` so the Phase 2B migration invariants in
+    // audit-seo.mjs keep counting the original 50 (16 core + 34 guides)
+    // rather than drifting whenever a policy or company page is added.
+    //
+    // Commerce, affiliate, and partner surfaces are deliberately NOT here:
+    // those already exist on main (src/data/commerce/*, src/data/affiliate/*)
+    // and must not be duplicated.
+    // ─────────────────────────────────────────────────────────────────────
+
+    { key: "press-kit", path: "/company/press-kit", schemaType: "WebPage", phase: "revenue",
+        title: "Press Kit | Cin Nova",
+        description: "Download the Cin Nova press kit: company boilerplate, product one-liners, approved facts, downloadable assets, and journalist contact details for accurate reporting." },
+    { key: "brand-assets", path: "/company/brand-assets", schemaType: "WebPage", phase: "revenue",
+        title: "Brand Assets & Usage Guidelines | Cin Nova",
+        description: "Official Cin Nova logos, wordmarks, colour values, typography, and clear-space rules — with the permitted and prohibited uses spelled out for partners, press, and affiliates." },
+    { key: "contact-sales", path: "/company/contact-sales", schemaType: "ContactPage", phase: "revenue",
+        title: "Contact Sales | Advertising & Partnerships at Cin Nova",
+        description: "Talk to Cin Nova about sponsorships, newsletter placements, sponsored articles, and partnership packages. See what to include in an enquiry and what happens after you send it." },
+
+    { key: "newsletter-archive", path: "/newsletter/archive", schemaType: "CollectionPage", phase: "revenue",
+        title: "Newsletter Archive | Cin Nova",
+        description: "Every past edition of the Cin Nova newsletter, kept as a permanent linkable page — plus what each edition covers and how often it is sent, so you know before you subscribe." },
+    { key: "newsletter-preferences", path: "/newsletter/preferences", schemaType: "WebPage", phase: "revenue",
+        title: "Email Preferences & Privacy Controls | Cin Nova Newsletter",
+        description: "Choose which Cin Nova editions you receive, cap delivery to a weekly or monthly digest, switch to tracking-free plain text, or request a data export or deletion at any time." },
+
+    { key: "legal", path: "/legal", schemaType: "CollectionPage", phase: "revenue",
+        title: "Legal Center | Cin Nova Policies and Disclosures",
+        description: "Every Cin Nova policy in one place: privacy, terms, affiliate disclosure, cookies, disclaimer, accessibility, DMCA, and copyright — with an honest note on their review status." },
+    { key: "legal-affiliate-disclosure", path: "/legal/affiliate-disclosure", schemaType: "WebPage", phase: "revenue",
+        title: "Affiliate Disclosure | Cin Nova",
+        description: "How Cin Nova handles partner recommendations: no affiliate link is active today, the two switches that must both be on before one is, and why a commission never buys a recommendation." },
+    { key: "legal-cookie-policy", path: "/legal/cookie-policy", schemaType: "WebPage", phase: "revenue",
+        title: "Cookie Policy | Cin Nova",
+        description: "What Cin Nova stores in your browser and why — session flags, newsletter preferences, and analytics cookies — plus how to remove all of it in any browser." },
+    { key: "legal-disclaimer", path: "/legal/disclaimer", schemaType: "WebPage", phase: "revenue",
+        title: "Disclaimer | Cin Nova",
+        description: "Cin Nova content is informational, not professional advice. Read the limits that apply to financial, real estate, health, safety, and AI-assisted content before relying on any of it." },
+    { key: "legal-accessibility", path: "/legal/accessibility", schemaType: "WebPage", phase: "revenue",
+        title: "Accessibility Statement | Cin Nova",
+        description: "The WCAG 2.1 AA standard Cin Nova builds to, what is already in place, the limitations we know about and have not fixed yet, and how to report a barrier and get a reply." },
+    { key: "legal-dmca", path: "/legal/dmca", schemaType: "WebPage", phase: "revenue",
+        title: "DMCA Notice & Takedown | Cin Nova",
+        description: "How to send Cin Nova a copyright infringement notice, exactly what a valid notice must contain, what happens after one is received, and how to file a counter-notice." },
+    { key: "legal-copyright", path: "/legal/copyright", schemaType: "WebPage", phase: "revenue",
+        title: "Copyright & Content Use | Cin Nova",
+        description: "Who owns Cin Nova content, what you may quote or share without asking, what needs written permission, and the terms attached to CinNova books sold through external retailers." },
 ];
+
+/** Phase 11 revenue routes — excluded from the Phase 2B migration invariants. */
+export const REVENUE_PAGE_ROUTES = PUBLIC_PAGE_ROUTES.filter((route) => route.phase === "revenue");
+
+/** The original Phase 2B set (16 core marketing/company/tool pages + 34 guides). */
+export const PHASE_2B_PAGE_ROUTES = PUBLIC_PAGE_ROUTES.filter((route) => route.phase !== "revenue");
 
 /** Set of migrated page keys. */
 export const MIGRATED_PUBLIC_PAGE_KEYS = new Set(PUBLIC_PAGE_ROUTES.map((route) => route.key));

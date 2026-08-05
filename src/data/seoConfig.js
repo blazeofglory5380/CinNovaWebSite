@@ -150,6 +150,20 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "sponsor-newsletter", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "privacy", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
     { key: "terms", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+
+    // ── Phase 11 revenue pages (legal, newsletter, company) ──────────────────
+    { key: "press-kit", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
+    { key: "brand-assets", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
+    { key: "contact-sales", changefreq: "monthly", priority: "0.7", lastmod: BUILD_LASTMOD },
+    { key: "newsletter-archive", changefreq: "weekly", priority: "0.6", lastmod: BUILD_LASTMOD },
+    { key: "newsletter-preferences", changefreq: "monthly", priority: "0.5", lastmod: BUILD_LASTMOD },
+    { key: "legal", changefreq: "monthly", priority: "0.5", lastmod: BUILD_LASTMOD },
+    { key: "legal-affiliate-disclosure", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "legal-cookie-policy", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "legal-disclaimer", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "legal-accessibility", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "legal-dmca", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "legal-copyright", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
 ];
 
 /** Valid `?page=` keys and internal route identifiers. */
