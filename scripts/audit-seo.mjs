@@ -27,7 +27,9 @@ import { getResourceHeroImage } from "../src/data/marketingImages.js";
 import { LEGACY_PRODUCT_KEYS, LEGACY_RESOURCE_SLUGS, resolveLegacyRouteRedirect } from "../src/data/legacyRouteRedirects.js";
 import {
     GUIDE_PAGE_ROUTES,
+    PHASE_2B_PAGE_ROUTES,
     PUBLIC_PAGE_ROUTES,
+    REVENUE_PAGE_ROUTES,
     PUBLIC_SITE_URL,
     MIGRATED_PUBLIC_PAGE_KEYS,
     getGuideAlternates,
@@ -464,8 +466,14 @@ const RESERVED_PREFIXES = ["/blog", "/products", "/resources", "/news", "/books"
 {
     // Registry integrity.
     if (PUBLIC_SITE_URL !== siteUrl) error("public-pages", `PUBLIC_SITE_URL (${PUBLIC_SITE_URL}) must equal siteUrl (${siteUrl})`);
-    if (PUBLIC_PAGE_ROUTES.length !== 50) error("public-pages", `expected exactly 50 migrated public pages, found ${PUBLIC_PAGE_ROUTES.length}`);
-    if (MIGRATED_PUBLIC_PAGE_KEYS.size !== 50) error("public-pages", `expected 50 unique migrated keys, found ${MIGRATED_PUBLIC_PAGE_KEYS.size}`);
+    // Phase 2B invariant: the original 16 core pages + 34 guides are all migrated.
+    // Phase 11 revenue pages are tagged `phase: "revenue"` and counted separately,
+    // so adding a policy or company page does not move this number.
+    if (PHASE_2B_PAGE_ROUTES.length !== 50) error("public-pages", `expected exactly 50 migrated Phase 2B public pages, found ${PHASE_2B_PAGE_ROUTES.length}`);
+    if (MIGRATED_PUBLIC_PAGE_KEYS.size !== PUBLIC_PAGE_ROUTES.length) {
+        error("public-pages", `duplicate page key in the registry (${PUBLIC_PAGE_ROUTES.length} routes, ${MIGRATED_PUBLIC_PAGE_KEYS.size} unique keys)`);
+    }
+    if (!REVENUE_PAGE_ROUTES.length) error("public-pages", "expected at least one Phase 11 revenue page");
 
     // The 404 error page must never be a real route: no registry entry for /404
     // and the NotFound component must suppress its canonical (no /404 canonical).
@@ -852,7 +860,7 @@ if (validateDist) {
     const unmigrated = STATIC_PUBLIC_PAGES.map((p) => p.key).filter(
         (k) => k !== "home" && k !== "news" && k !== "books" && !MIGRATED_PUBLIC_PAGE_KEYS.has(k),
     );
-    if (PUBLIC_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated public page keys, found ${PUBLIC_PAGE_ROUTES.length}`);
+    if (PHASE_2B_PAGE_ROUTES.length !== 50) error("checkpoint", `expected 50 migrated Phase 2B public page keys, found ${PHASE_2B_PAGE_ROUTES.length}`);
     if (GUIDE_PAGE_ROUTES.length !== 34) error("checkpoint", `expected 34 migrated guide pages, found ${GUIDE_PAGE_ROUTES.length}`);
     if (!STATIC_PUBLIC_PAGES.some((page) => page.key === "news")) error("checkpoint", "news must remain in STATIC_PUBLIC_PAGES");
     if (getStaticPageUrl("news") !== `${siteUrl}/news`) error("checkpoint", "news canonical URL must be /news");

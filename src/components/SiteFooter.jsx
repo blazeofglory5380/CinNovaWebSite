@@ -32,6 +32,7 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                     <button type="button" onClick={onGoResources}>White Papers</button>
                     <button type="button" onClick={onGoResources}>Case Studies</button>
                     <button type="button" onClick={() => onNavigate("newsletter")}>Newsletter</button>
+                    <button type="button" onClick={() => onNavigate("newsletter-archive")}>Newsletter Archive</button>
                 </div>
 
                 <div className="site-footer-col">
@@ -43,13 +44,23 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                     <button type="button" onClick={() => onNavigate("media-kit")}>Media Kit</button>
                     <button type="button" onClick={() => onNavigate("partnerships")}>Partnerships</button>
                     <button type="button" onClick={() => onNavigate("press-center")}>Press Center</button>
+                    <button type="button" onClick={() => onNavigate("press-kit")}>Press Kit</button>
+                    <button type="button" onClick={() => onNavigate("brand-assets")}>Brand Assets</button>
+                    <button type="button" onClick={() => onNavigate("contact-sales")}>Contact Sales</button>
                     <button type="button" onClick={() => onNavigate("contact")}>Contact</button>
                 </div>
 
                 <div className="site-footer-col">
                     <p className="site-footer-col-title">Legal</p>
+                    <button type="button" onClick={() => onNavigate("legal")}>Legal Center</button>
                     <button type="button" onClick={() => onNavigate("privacy")}>Privacy</button>
                     <button type="button" onClick={() => onNavigate("terms")}>Terms</button>
+                    <button type="button" onClick={() => onNavigate("legal-affiliate-disclosure")}>Affiliate Disclosure</button>
+                    <button type="button" onClick={() => onNavigate("legal-cookie-policy")}>Cookie Policy</button>
+                    <button type="button" onClick={() => onNavigate("legal-disclaimer")}>Disclaimer</button>
+                    <button type="button" onClick={() => onNavigate("legal-accessibility")}>Accessibility</button>
+                    <button type="button" onClick={() => onNavigate("legal-dmca")}>DMCA</button>
+                    <button type="button" onClick={() => onNavigate("legal-copyright")}>Copyright</button>
                 </div>
             </div>
 

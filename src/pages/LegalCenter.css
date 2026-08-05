@@ -1,0 +1,287 @@
+/* ==========================================================================
+   CinNova Legal Center + newsletter preference center — scoped stylesheet.
+   Scoped under .lg-page / .lg-* only. Reuses the global --cn-* palette with
+   literal fallbacks and swaps tokens for dark mode.
+   ========================================================================== */
+
+.lg-page {
+    --lg-ink: var(--cn-text, #131720);
+    --lg-body: var(--cn-text-muted, #4b5563);
+    --lg-muted: var(--cn-text-soft, #6b7280);
+    --lg-surface: var(--cn-surface, #ffffff);
+    --lg-surface-soft: var(--cn-surface-muted, #f6f7f9);
+    --lg-border: var(--cn-border, #e3e6ec);
+    --lg-accent: var(--cn-blue, #2457d6);
+    --lg-radius: 14px;
+    color: var(--lg-body);
+}
+
+.lg-page *,
+.lg-page *::before,
+.lg-page *::after {
+    box-sizing: border-box;
+}
+
+.lg-page h1,
+.lg-page h2,
+.lg-page h3 {
+    color: var(--lg-ink);
+}
+
+/* ── Breadcrumb ─────────────────────────────────────────────────────────── */
+.lg-breadcrumb {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 1.25rem 1.25rem 0;
+}
+
+.lg-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    color: var(--lg-muted);
+}
+
+.lg-breadcrumb li + li::before {
+    content: "›";
+    margin-right: 0.4rem;
+}
+
+.lg-breadcrumb a {
+    color: var(--lg-accent);
+    text-decoration: none;
+}
+
+.lg-breadcrumb a:hover,
+.lg-breadcrumb a:focus-visible {
+    text-decoration: underline;
+}
+
+/* ── Document body ──────────────────────────────────────────────────────── */
+.lg-article {
+    max-width: 78ch;
+}
+
+.lg-article-head h1 {
+    font-size: clamp(1.8rem, 4.2vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0.3rem 0 0.6rem;
+}
+
+.lg-summary {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin: 0 0 0.75rem;
+}
+
+.lg-meta {
+    font-size: 0.86rem;
+    color: var(--lg-muted);
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--lg-border);
+}
+
+.lg-meta a {
+    color: var(--lg-accent);
+}
+
+.lg-section {
+    margin-top: 2rem;
+}
+
+.lg-section h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.6rem;
+}
+
+.lg-section p,
+.lg-section li {
+    line-height: 1.75;
+}
+
+.lg-section ul {
+    padding-left: 1.2rem;
+}
+
+.lg-section li {
+    margin-bottom: 0.4rem;
+}
+
+.lg-article-foot {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--lg-border);
+    font-size: 0.9rem;
+    color: var(--lg-muted);
+}
+
+.lg-status p {
+    line-height: 1.7;
+}
+
+/* ── Index list ─────────────────────────────────────────────────────────── */
+.lg-index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.lg-index a {
+    display: grid;
+    gap: 0.3rem;
+    height: 100%;
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius);
+    background: var(--lg-surface);
+    padding: 1rem 1.15rem;
+    text-decoration: none;
+    color: var(--lg-body);
+}
+
+.lg-index a:hover,
+.lg-index a:focus-visible {
+    border-color: var(--lg-accent);
+}
+
+.lg-index-title {
+    font-weight: 700;
+    color: var(--lg-ink);
+}
+
+.lg-index-summary {
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.lg-index-path {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.76rem;
+    color: var(--lg-muted);
+}
+
+.lg-index--compact a {
+    padding: 0.85rem 1rem;
+}
+
+.lg-siblings h2 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Preference form ────────────────────────────────────────────────────── */
+.lg-prefs {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.lg-fieldset {
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius);
+    background: var(--lg-surface);
+    padding: 1.15rem 1.25rem 1.35rem;
+    margin: 0;
+}
+
+.lg-fieldset legend {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lg-muted);
+    padding: 0 0.4rem;
+}
+
+.lg-option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.85rem;
+}
+
+.lg-option {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    border: 1px solid var(--lg-border);
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+    cursor: pointer;
+    background: var(--lg-surface-soft);
+}
+
+.lg-option:focus-within {
+    border-color: var(--lg-accent);
+}
+
+.lg-option input {
+    margin-top: 0.25rem;
+    flex: 0 0 auto;
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--lg-accent);
+}
+
+.lg-option span {
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.lg-option strong {
+    color: var(--lg-ink);
+}
+
+.lg-option em {
+    font-style: normal;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--lg-muted);
+}
+
+.lg-prefs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.lg-saved,
+.lg-hint {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--lg-muted);
+}
+
+.lg-hint {
+    margin-top: 0.85rem;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .lg-page *,
+    .lg-page *::before,
+    .lg-page *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* ── Dark mode: token swap only ─────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+    .lg-page {
+        --lg-ink: #f1f5f9;
+        --lg-body: #cbd5e1;
+        --lg-muted: #94a3b8;
+        --lg-surface: #0f172a;
+        --lg-surface-soft: #131c31;
+        --lg-border: #26334d;
+        --lg-accent: #7aa2ff;
+    }
+}

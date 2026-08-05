@@ -1,4 +1,4 @@
-﻿import { Component, useEffect, useState } from "react";
+﻿import { Component, Suspense, lazy, useEffect, useState } from "react";
 import "./App.css";
 import HomePage from "./pages/HomePage.jsx";
 import ProductsPage from "./pages/ProductsPage.jsx";
@@ -96,6 +96,29 @@ import { getPublicPageKeyFromPath, getPublicPagePath } from "./data/publicPageRo
 import ProductEcosystemSection from "./components/ProductEcosystemSection.jsx";
 import NavMoreMenu from "./components/NavMoreMenu.jsx";
 import { useNavHeight, useScrollReveal, useStickyNav } from "./ui/index.js";
+
+/* Phase 11 revenue pages are code-split. They are long-form policy and company
+   pages that almost no session visits, and none is on the critical path for
+   home, blog, news, books, or product routes — so keeping them out of the main
+   bundle costs nothing. Their data modules (legalCenter, newsletterProgram,
+   brandAssets) travel inside these chunks rather than the entry bundle. */
+const PressKit = lazy(() => import("./pages/PressKit.jsx"));
+const BrandAssets = lazy(() => import("./pages/BrandAssets.jsx"));
+const ContactSales = lazy(() => import("./pages/ContactSales.jsx"));
+const NewsletterArchive = lazy(() => import("./pages/NewsletterArchive.jsx"));
+const NewsletterPreferences = lazy(() => import("./pages/NewsletterPreferences.jsx"));
+const LegalCenterPage = lazy(() => import("./pages/LegalCenterPage.jsx"));
+const LegalDocumentPage = lazy(() => import("./pages/LegalDocumentPage.jsx"));
+
+/* Minimal, non-animated fallback. The prerendered shell is already on screen
+   while the chunk downloads, so anything louder than this would be a flash. */
+function RouteFallback() {
+    return (
+        <div style={{ minHeight: "60vh" }} role="status" aria-live="polite">
+            <span className="sr-only">Loading page…</span>
+        </div>
+    );
+}
 
 // Admin/internal routes (BlogManager, NewsletterAdmin) are disabled by default.
 // Enable only for local dev via VITE_ENABLE_ADMIN_ROUTES=true; leave unset/false
@@ -718,6 +741,7 @@ function App() {
                     <NavMoreMenu
                         items={[
                             { label: "About", onSelect: () => { openPage("about"); setMobileMenuOpen(false); } },
+                            { label: "Legal Center", onSelect: () => { openPage("legal"); setMobileMenuOpen(false); } },
                             { label: "Pricing", onSelect: () => { openPage("pricing"); setMobileMenuOpen(false); } },
                             { label: "AI Tutorials", onSelect: () => { openPage("ai-tutorials"); setMobileMenuOpen(false); } },
                             { label: "Free Rental Calculator", onSelect: () => { openPage("free-rental-property-calculator"); setMobileMenuOpen(false); } },
@@ -1009,6 +1033,23 @@ function App() {
                     </div>
                 </div>
             )}
+
+            {/* ── Phase 11 revenue pages (code-split) ─────────────────────
+                Every one of these resolves through the existing migrated
+                public-page registry, so no new route matcher is needed. The
+                six /legal/* documents share one component driven by the page
+                key. ─────────────────────────────────────────────────────── */}
+            <Suspense fallback={<RouteFallback />}>
+                {page === "press-kit" && <PressKit onNavigate={openPage} />}
+                {page === "brand-assets" && <BrandAssets onNavigate={openPage} />}
+                {page === "contact-sales" && <ContactSales onNavigate={openPage} />}
+                {page === "newsletter-archive" && <NewsletterArchive onNavigate={openPage} />}
+                {page === "newsletter-preferences" && <NewsletterPreferences onNavigate={openPage} />}
+                {page === "legal" && <LegalCenterPage onNavigate={openPage} />}
+                {page.startsWith("legal-") && (
+                    <LegalDocumentPage key={page} pageKey={page} onNavigate={openPage} />
+                )}
+            </Suspense>
 
             {page === "not-found" && <NotFound onGoHome={goHome} />}
 
