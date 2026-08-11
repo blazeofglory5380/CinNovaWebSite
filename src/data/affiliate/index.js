@@ -122,6 +122,24 @@ export {
 } from "./verificationReport.js";
 
 export {
+    PARTNER_LIFECYCLE_STATUSES,
+    toPartnerLifecycleStatus,
+} from "./partnerLifecycle.js";
+
+export {
+    buildAffiliateOnboardingTracker,
+    summarizeAffiliateOnboarding,
+    mayRenderMonetizedAffiliateUrl,
+    assertAffiliateIdSafeForPublic,
+} from "./affiliateOnboarding.js";
+
+export {
+    buildAffiliatePriorityList,
+    groupAffiliatePriorities,
+    AFFILIATE_PRIORITY,
+} from "./affiliatePriority.js";
+
+export {
     REVENUE_METRICS_PLACEHOLDER,
     getRevenueOpportunityMetrics,
     formatRevenueMetric,

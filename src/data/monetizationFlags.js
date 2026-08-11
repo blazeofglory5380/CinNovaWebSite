@@ -55,6 +55,8 @@ export function getMonetizationActivationReport() {
         liveStore: isStoreLive(),
         liveAffiliates: isAffiliateLive(),
         liveAds: MONETIZATION_FLAGS.ads,
+        paymentModeNote:
+            "Server CINNOVA_PAYMENTS_MODE controls UNCONFIGURED|TEST|LIVE_DISABLED|LIVE. Client flags alone cannot enable LIVE.",
         note: "All revenue activation flags default OFF. Live payment activation requires explicit authorization.",
     };
 }

@@ -37,6 +37,10 @@ function StorePage({ onNavigate, locale = "en" }) {
                             : getMonetizationString("storeOffline", locale)}
                     </p>
                     <p>
+                        Phase M2: server-authoritative pricing + Stripe TEST mode architecture ready.
+                        LIVE payments remain blocked until tax, legal review, and explicit approval.
+                    </p>
+                    <p>
                         Flags — store: {String(MONETIZATION_FLAGS.store)}, checkout:{" "}
                         {String(MONETIZATION_FLAGS.checkout)}, payments:{" "}
                         {String(MONETIZATION_FLAGS.payments)}
