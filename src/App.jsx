@@ -53,6 +53,20 @@ import ClaudeWithHiggsfieldGuide from "./pages/ClaudeWithHiggsfieldGuide.jsx";
 import Languages from "./pages/Languages.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
+import {
+    AffiliateDisclosurePage,
+    RefundPolicyPage,
+    DigitalProductTermsPage,
+    CookiePolicyPage,
+    DisclaimerPage,
+    AccessibilityStatementPage,
+    DmcaPage,
+    SponsorshipDisclosurePage,
+} from "./pages/LegalDocumentPage.jsx";
+import ContactSales from "./pages/ContactSales.jsx";
+import BrandAssets from "./pages/BrandAssets.jsx";
+import { StorePage, CartPage, CheckoutPage } from "./pages/StorePages.jsx";
+import RevenueDashboardAdmin from "./pages/RevenueDashboardAdmin.jsx";
 import Blog from "./pages/Blog.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
 import Resources from "./pages/Resources.jsx";
@@ -913,6 +927,20 @@ function App() {
             {page === "contact" && <Contact />}
             {page === "privacy" && <PrivacyPolicy onNavigate={openPage} />}
             {page === "terms" && <TermsOfService onNavigate={openPage} />}
+            {page === "affiliate-disclosure" && <AffiliateDisclosurePage onNavigate={openPage} />}
+            {page === "refund-policy" && <RefundPolicyPage onNavigate={openPage} />}
+            {page === "digital-product-terms" && <DigitalProductTermsPage onNavigate={openPage} />}
+            {page === "cookie-policy" && <CookiePolicyPage onNavigate={openPage} />}
+            {page === "disclaimer" && <DisclaimerPage onNavigate={openPage} />}
+            {page === "accessibility" && <AccessibilityStatementPage onNavigate={openPage} />}
+            {page === "dmca" && <DmcaPage onNavigate={openPage} />}
+            {page === "sponsorship-disclosure" && <SponsorshipDisclosurePage onNavigate={openPage} />}
+            {page === "contact-sales" && <ContactSales onNavigate={openPage} />}
+            {page === "brand-assets" && <BrandAssets onNavigate={openPage} />}
+            {page === "store" && <StorePage onNavigate={openPage} />}
+            {page === "cart" && <CartPage onNavigate={openPage} />}
+            {page === "checkout" && <CheckoutPage />}
+            {ADMIN_ROUTES_ENABLED && page === "revenue-dashboard" && <RevenueDashboardAdmin />}
             {page === "partners" && <Partners onSubscribe={showNewsletterAlert} />}
             {page === "media-kit" && <MediaKit onNavigate={openPage} />}
             {page === "advertise" && <Advertise onNavigate={openPage} />}

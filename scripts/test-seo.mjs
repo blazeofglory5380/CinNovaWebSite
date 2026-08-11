@@ -64,9 +64,23 @@ function classify(loc) {
     if (path.startsWith("/company/")) return "Company";
     if (path.startsWith("/tools/")) return "Tools";
     if (
-        ["/pricing", "/about", "/contact", "/newsletter", "/languages", "/privacy", "/terms"].includes(
-            path,
-        )
+        [
+            "/pricing",
+            "/about",
+            "/contact",
+            "/newsletter",
+            "/languages",
+            "/privacy",
+            "/terms",
+            "/affiliate-disclosure",
+            "/refund-policy",
+            "/digital-product-terms",
+            "/cookie-policy",
+            "/disclaimer",
+            "/accessibility",
+            "/dmca",
+            "/sponsorship-disclosure",
+        ].includes(path)
     ) {
         return "Migrated pages";
     }
@@ -84,7 +98,10 @@ try {
     assert.ok(locs.includes(`${siteUrl}/blog`));
     assert.ok(locs.includes(`${siteUrl}/about`));
     assert.ok(locs.includes(`${siteUrl}/newsletter`));
-    assert.ok(!locs.includes(`${siteUrl}/pricing`), "pricing must be excluded (unverified subscription claims)");
+    assert.ok(!locs.includes(`${siteUrl}/pricing`), "pricing must be excluded (waitlist; hosted billing offline)");
+    assert.ok(!locs.includes(`${siteUrl}/cart`), "cart must be noindex");
+    assert.ok(!locs.includes(`${siteUrl}/checkout`), "checkout must be noindex");
+    assert.ok(!locs.includes(`${siteUrl}/store`), "store must be noindex while hosted commerce offline");
     assert.ok(!locs.some((l) => l.includes("?page=")), "no legacy query locs in sitemap");
     assert.ok(!locs.some((l) => l.includes("newsletter-success")));
     assert.ok(!locs.some((l) => l.includes("blog-admin")));
@@ -137,13 +154,13 @@ try {
     assert.equal(counts["Blog categories"], 11);
     assert.equal(counts.Resources, 13); // index + 12
     assert.equal(counts.Guides, 35); // hub + 34
-    assert.equal(counts.Company, 7);
+    assert.equal(counts.Company, 9);
     assert.equal(counts.Tools, 1);
-    assert.equal(counts["Migrated pages"], 6); // about, contact, newsletter, languages, privacy, terms (pricing excluded)
+    assert.equal(counts["Migrated pages"], 14); // core migrated + legal trust pages (pricing/store/cart/checkout excluded)
     assert.equal(counts.Other || 0, 0);
-    assert.equal(locs.length, 173);
+    assert.equal(locs.length, 183);
 
-    pass(`sitemap unique + family counts (${locs.length} URLs; pricing excluded)`);
+    pass(`sitemap unique + family counts (${locs.length} URLs; pricing/cart/checkout/store excluded)`);
 } catch (error) {
     fail(`sitemap: ${error.message}`);
 }
