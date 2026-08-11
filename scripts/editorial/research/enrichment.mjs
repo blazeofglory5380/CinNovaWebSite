@@ -24,11 +24,12 @@ import {
     resolveUncertainties,
     seedUncertaintiesFromClaims,
 } from "./uncertainty.mjs";
+import { companyIdsForTests } from "./clustering.mjs";
 
 export const ENRICHMENT_LIMITS = Object.freeze({
     maxMatchesPerCluster: 8,
     maxSelectedClusters: 8,
-    minHeadlineJaccard: 0.34,
+    minHeadlineJaccard: 0.28,
     minEntityOverlap: 2,
 });
 
@@ -84,6 +85,20 @@ export function isExactEventMatch(cluster, candidate, { now = new Date() } = {})
     if (headlineScore >= ENRICHMENT_LIMITS.minHeadlineJaccard && overlap >= ENRICHMENT_LIMITS.minEntityOverlap) {
         return { match: true, reason: "headline-entity-time" };
     }
+
+    // Company-shared topical match (newsroom ↔ company primary / specialty).
+    const leadText = `${cluster.canonicalTopic || ""} ${lead.headline || ""}`;
+    const candText = `${candidate.headline || ""}`;
+    const sharedCompanies = companyIdsForTests(leadText).filter((id) =>
+        companyIdsForTests(candText).includes(id));
+    const topical = jaccard(
+        tokenize(leadText).filter((token) => token.length > 3),
+        tokenize(candText).filter((token) => token.length > 3),
+    );
+    if (sharedCompanies.length >= 1 && topical >= 0.24 && headlineScore >= 0.12) {
+        return { match: true, reason: "shared-company-topic-time" };
+    }
+
     return { match: false, reason: "insufficient-similarity" };
 }
 

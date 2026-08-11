@@ -58,39 +58,43 @@ export function synthesizeShadowNewsBody(story = {}) {
     const verified = Array.isArray(story.verifiedClaims) ? story.verifiedClaims.filter(Boolean) : [];
     const attributed = Array.isArray(story.attributedClaims) ? story.attributedClaims.filter(Boolean) : [];
     const uncertainties = Array.isArray(story.uncertainties) ? story.uncertainties.filter(Boolean) : [];
+    const dek = stripHtml(story.dek || story.summary || "").slice(0, 220);
 
     const whatHappened = [];
     whatHappened.push(
-        `${story.title || "This development"} is covered for CinNova readers based on ${
+        `CinNova News is tracking this ${String(story.category || "technology").toLowerCase()} development for readers, based on reporting from ${
             publishers.length ? publishers.join(", ") : "the listed sources"
         }.`,
     );
     if (verified.length) {
         whatHappened.push(
-            `Verified from primary reporting: ${verified.slice(0, 4).map((c) => paraphraseClaim(c, publishers)).join(" ")}`,
+            `Verified from primary reporting: ${verified.slice(0, 3).map((c) => paraphraseClaim(c, publishers)).join(" ")}`,
+        );
+    } else if (dek) {
+        whatHappened.push(
+            `${publishers[0] || "Listed sources"} report that ${dek.charAt(0).toLowerCase()}${dek.slice(1)}${dek.endsWith(".") ? "" : "."}`,
+        );
+        whatHappened.push(
+            "Shadow synthesis attributes the core facts to those publishers and does not add unsourced quotes, statistics, or causal claims.",
         );
     } else if (attributed.length) {
         whatHappened.push(
             `Attributed reporting (not independently re-verified here): ${attributed
-                .slice(0, 3)
+                .slice(0, 2)
                 .map((c) => paraphraseClaim(c, publishers))
                 .join(" ")}`,
-        );
-    } else if (story.summary) {
-        whatHappened.push(
-            `According to the listed publishers, ${paraphraseClaim(story.summary, publishers)}`,
         );
     }
 
     const why = [];
     why.push(
-        story.whyItMatters
+        stripHtml(story.whyItMatters || "")
             || `This intersects CinNova coverage of ${(story.category || "technology").toLowerCase()} and related infrastructure.`,
     );
     if (uncertainties.length) {
         why.push(`Open questions remain: ${uncertainties.slice(0, 3).join("; ")}.`);
     } else {
-        why.push("No material unresolved uncertainties were flagged by enrichment for this shadow draft.");
+        why.push("Independent secondary corroboration should be confirmed before READY / controlled draft writing.");
     }
 
     const sourceNotes = (story.sources || [])
@@ -120,8 +124,8 @@ export function synthesizeShadowNewsBody(story = {}) {
                     : ["No source URLs were available for this candidate."],
             },
         ],
-        summary: story.summary || story.dek || story.title || "",
-        dek: story.dek || story.summary || "",
+        summary: dek || stripHtml(story.summary || story.title || ""),
+        dek: dek || stripHtml(story.dek || ""),
     };
 }
 
@@ -266,12 +270,9 @@ export function buildShadowNewsDraft(story = {}, extras = {}) {
         uncertainties: (story.uncertainties || []).map((c) => stripHtml(c)).filter(Boolean),
     };
     const body = synthesizeShadowNewsBody(cleaned);
-    const sourceTexts = [
-        ...(cleaned.sources || []).map((s) => `${s.label || ""} ${s.note || ""}`),
-        cleaned.summary,
-        ...(cleaned.attributedClaims || []),
-        ...(cleaned.verifiedClaims || []),
-    ].filter(Boolean);
+    const sourceTexts = (cleaned.sources || [])
+        .flatMap((s) => [s.note, s.publisher])
+        .filter(Boolean);
 
     const draft = {
         slug: cleaned.slug,

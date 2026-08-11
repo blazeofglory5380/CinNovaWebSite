@@ -1,26 +1,24 @@
 # Editorial Real Shadow Validation — 2026-08-11
 
-Generated: `2026-08-11T18:14:08.822Z`
-**Verdict:** BLOCKED — No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: national=HOLD).
+Generated: `2026-08-11T19:00:06.603Z`
+**Verdict:** EDITORIAL PHASE 2 SOURCE EXPANSION PASS — REVIEW shadow drafts only (READY still needs second independent source)
 
 ## DISCOVERY
 
-- Stories found: **908**
-- Clusters (deduped): **894**
-- Accepted (drafting-eligible): **4**
-- Rejected: **877**
-- Research-qualified: **9** · Selected: **1**
+- Stories found: **579**
+- Clusters (deduped): **572**
+- Accepted (drafting-eligible): **6**
+- Rejected: **502**
+- Research-qualified: **18** · Selected: **2**
 - Run status: `SUCCESS`
-- Active sources: nist-news, cisa-advisories, nasa-press, sec-press, mit-ai, arxiv-cs-ai
+- Active sources: nist-news, cisa-advisories, nasa-press, sec-press, federal-reserve-press, ftc-press, fda-press, cdc-mmwr, noaa-news, nsf-news, openai-blog, nvidia-blog, google-ai-blog, deepmind-blog, microsoft-research, meta-newsroom, apple-newsroom, aws-blog, bbc-technology, npr-technology, the-verge, techcrunch, ars-technica, ieee-spectrum, mit-technology-review, nature-news, mit-ai, arxiv-cs-ai
 - Note: Active feeds cover AI, cybersecurity, science/space, finance/regulation, technology research. Local/state only when verified partners are configured (currently none active).
 
 ## NEWS
 
-- Shadow drafts (READY/REVIEW only): **0** (daily cap 4)
-
-### Held / rejected after Phase 10A fact-check
-
-- **Johnson Controls C-CURE 9000 and Victor application server (Update A)** · national · HOLD · Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims
+- Shadow drafts (READY/REVIEW only): **2** (daily cap 4)
+- **An AI chatbot is joining the search for art looted by the Nazis** · technology · national · sources=1 · originality=NEEDS_REWRITE · fact=REVIEW
+- **Wall Street giants hand Nvidia $500bn to fund boom in AI projects** · technology · international · sources=1 · originality=NEEDS_REWRITE · fact=REVIEW
 
 ### Representative candidates (up to 15)
 
@@ -28,17 +26,17 @@ Generated: `2026-08-11T18:14:08.822Z`
 - ✅ **Mira Hormone Monitor, Mira Android App** · cybersecurity/national · src=1 (CISA Cybersecurity Advisories) · AGREE · dup=NEW
 - ✅ **Pulsetto Vagus Nerve Stimulator** · cybersecurity/national · src=1 (CISA Cybersecurity Advisories) · AGREE · dup=NEW
 - ✅ **#StopRansomware: Gunra Ransomware** · cybersecurity/national · src=1 (CISA Cybersecurity Advisories) · AGREE · dup=NEW
+- ✅ **Wall Street giants hand Nvidia $500bn to fund boom in AI projects** · technology/national · src=1 (BBC News Technology) · AGREE · dup=NEW
+- ✅ **An AI chatbot is joining the search for art looted by the Nazis** · technology/national · src=1 (NPR Technology) · AGREE · dup=NEW
 - ❌ **CISA Adds One Known Exploited Vulnerability to Catalog** · cybersecurity/national · src=3 (CISA Cybersecurity Advisories) · AGREE · dup=NEW · reject: outside current freshness window
-- ❌ **CORDA: A Benchmark for Hierarchical Harm-Centric Moral Reasoning in Large Language Models** · ai/international · src=3 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration
-- ❌ **FitAQA: A Benchmark of Fitness Action Quality Assessment for Multimodal Large Language Models** · ai/international · src=3 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration
-- ❌ **From Mimicry to True Intelligence (TI) -- A New Paradigm for Artificial General Intelligence** · ai/international · src=3 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.
+- ❌ **Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.** · finance/national · src=3 (Federal Reserve Press) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
 - ❌ **Lion Nebula Roars in Webb’s Sights** · science/national · src=2 (NASA Press Releases) · AGREE · dup=NEW · reject: Editorial fit score 1 below minimum 2; deprioritized.
-- ❌ **Controlled Memory Interference in Continual LLM Agents** · ai/international · src=2 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.
-- ❌ **IntelliAudit: Using Large Language Models to Evaluate Audit Controls** · ai/international · src=2 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration
-- ❌ **Motif 3: Technical Report** · ai/international · src=2 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration
-- ❌ **An Expectation-Maximization Perspective on Reinforcement Learning for LLM Reasoning** · ai/international · src=2 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration
-- ❌ **OBCache: Optimal Brain KV Cache Pruning for Efficient Long-Context LLM Inference** · ai/international · src=2 (arXiv cs.AI) · INSUFFICIENT · dup=NEW · reject: insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.
+- ❌ **Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank** · finance/national · src=2 (Federal Reserve Press) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
+- ❌ **Federal Reserve Board issues enforcement action with employee of Bank of Eufaula and S N B Bancshares, Inc.** · finance/national · src=2 (Federal Reserve Press) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
 - ❌ **NIST Researchers Correct Common Error Confounding Nanotech Measurements** · ai/national · src=1 (NIST News) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
+- ❌ **‘Spooky’ Particles Transit DC Suburbs, a Step Toward a Quantum Network** · ai/national · src=1 (NIST News) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
+- ❌ **NIST Joins National Genesis Mission to Accelerate AI Innovation** · ai/national · src=1 (NIST News) · AGREE · dup=NEW · reject: outside current freshness window
+- ❌ **NIST Announces Funding Opportunity for 14 MEP Centers to Advance Small and Medium-Sized U.S. Manufacturers** · ai/national · src=1 (NIST News) · AGREE · dup=NEW · reject: outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.
 
 ## BLOG
 
@@ -50,14 +48,14 @@ Generated: `2026-08-11T18:14:08.822Z`
 - ❌ **NIST Researchers Discover a New Way to Whisk Alloys Together With Lasers** · ai · outside current freshness window
 - ❌ **NASA Shares Station Research Today Supporting Moon, Mars Tomorrow** · science · no CinNova relevance topic matched
 - ❌ **Community College Instructors Bring Astronomy Textbook Into 21st Century** · science · no CinNova relevance topic matched
-- ❌ **The benefits of medical AI assistance vary based on user expertise** · ai · insufficient independent corroboration; outside current freshness window
-- ❌ **A better way to turn 2D designs into 3D models for rapid prototyping** · ai · insufficient independent corroboration; outside current freshness window
-- ❌ **Helping AI models to meet the real world** · ai · insufficient independent corroboration; outside current freshness window
-- ❌ **Jesse Thaler named director of the Laboratory for Nuclear Science** · ai · insufficient independent corroboration; outside current freshness window
+- ❌ **Federal Reserve issues initial findings from its 2025 triennial payments study** · finance · outside current freshness window
+- ❌ **Podcast: The Legacy Survey of Space and Time (LSST)** · science · Meets source, freshness, relevance, dedupe, and routing requirements.
+- ❌ **Podcast: New telescope to transform study of universe** · science · outside current freshness window
+- ❌ **New NSF State and Regional AI Infrastructure Hubs will power AI-enabled scientific research across the country** · science · outside current freshness window
 
 ## QUALITY
 
-- Originality: n/a
+- Originality: an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis=NEEDS_REWRITE; wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects=NEEDS_REWRITE
 - Duplicates detected: **0**
 - News vs Blog near-dup: **CLEAR**
 - Fact-check gate: no silent invented content; HOLD never publishes
@@ -75,19 +73,19 @@ Generated: `2026-08-11T18:14:08.822Z`
 
 ## RECOMMENDATION
 
-- News: min **0**/day · target **0**/day · max **4**/day
+- News: min **1**/day · target **2**/day · max **4**/day
 - Blog: target **1**/week (max 1/day)
 
 ### Remaining blockers before automatic publication
 
-- No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: national=HOLD).
+- No Phase-10A READY news drafts yet (2 REVIEW shadow draft(s) need human confirm / second source before controlled writing).
 - No Phase-10A READY/REVIEW blog shadow drafts today — corroboration/freshness/fit gates blocked evergreen ideas.
 - Local/state live feeds are not configured (registry placeholders remain inactive) — correct until verified partners exist.
 - Controlled draft-file writing + Draft PR path not activated (allow_draft_pr still OFF for schedule).
 - Production auto-publishing must remain OFF until multi-day READY shadow quality is proven.
 - Hero IMAGE REQUIRED resolution still manual.
 - Translations are MISSING (AI_DRAFT English only when drafts exist) — human review required before any locale publish.
-- Live selection is ICS-advisory-heavy (solo Tier-1 primary). Need more multi-source AI/tech/business stories clearing freshness+fit before auto-publish.
+- One or more shadow drafts need originality rewrite before publish consideration.
 
 ## SAFETY CONFIRM
 

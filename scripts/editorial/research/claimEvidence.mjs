@@ -4,6 +4,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { isPrimaryTier } from "./sourceTiers.mjs";
 
 export const CLAIM_EVIDENCE_STATUSES = Object.freeze([
     "VERIFIED_PRIMARY",
@@ -119,14 +120,14 @@ export function mapClaimEvidence(claims = [], supportingCandidates = [], allCand
         // Non-independent mirrors may appear in supportingSources but never in independentSupport.
         const primarySupport = dedupeSourceRefs(
             (supportingCandidates || [])
-                .filter((candidate) => candidate.sourceTier === "TIER_1_PRIMARY")
+                .filter((candidate) => isPrimaryTier(candidate.sourceTier))
                 .filter((candidate) => candidateSupportsClaim(candidate, claim))
                 .map(sourceRef)
                 .filter((ref) => supportingKeys.has(sourceKey(ref))),
         );
         const independentSupport = dedupeSourceRefs(
             (supportingCandidates || [])
-                .filter((candidate) => candidate.sourceTier !== "TIER_1_PRIMARY")
+                .filter((candidate) => !isPrimaryTier(candidate.sourceTier))
                 .filter((candidate) => candidateSupportsClaim(candidate, claim))
                 .map(sourceRef)
                 .filter((ref) => supportingKeys.has(sourceKey(ref))),

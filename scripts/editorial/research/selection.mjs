@@ -73,19 +73,39 @@ export function compositeRank(cluster = {}) {
         publicInterest += 5;
     }
     // Product-name ICS advisories remain eligible but rank below broader alerts.
-    if (/^(siemens|abb|mikrotik|rockwell|igloohome)\b/i.test(headline)
+    if (/^(siemens|abb|mikrotik|rockwell|igloohome|johnson controls|mira |pulsetto)\b/i.test(headline)
         && !/\b(known exploited|sbom|minimum elements|announces?|orders?)\b/i.test(headline)) {
-        publicInterest -= 6;
+        publicInterest -= 8;
     }
-    return Number((fit * 2 + freshness + confidence * 2 + primaryBonus + corroborationBonus + tierSpread + publicInterest).toFixed(3));
+    // Prefer multi-source / newsroom clusters; demote solo ICS product advisories.
+    const distinctSources = new Set((cluster.sources || []).map((s) => s.sourceId).filter(Boolean)).size;
+    const multiSourceBonus = distinctSources >= 2 ? 6 : 0;
+    const newsroomBonus = (cluster.sources || []).some((s) => {
+        const tier = String(s.sourceTier || "");
+        return tier === "TIER_1_NEWS" || tier === "TIER_2_HIGH_AUTHORITY" || tier === "TIER_2_REPUTABLE";
+    }) ? 5 : 0;
+    const soloIcsPenalty =
+        distinctSources === 1
+        && /cisa-advisories/.test(String(cluster.sources?.[0]?.sourceId || ""))
+        && /\b(icsa-|advisory|ransomware|c-cure|stimulator|hormone monitor)\b/i.test(headline)
+            ? -7
+            : 0;
+    return Number((fit * 2 + freshness + confidence * 2 + primaryBonus + corroborationBonus + tierSpread + publicInterest + multiSourceBonus + newsroomBonus + soloIcsPenalty).toFixed(3));
 }
 
 function primarySourceId(cluster) {
     return cluster.primarySources?.[0]?.sourceId || cluster.sources?.[0]?.sourceId || "unknown";
 }
 
-function bestScope(cluster) {
-    return ["local", "state", "national", "international"].find((desk) => cluster.scope?.includes(desk)) || "national";
+function availableScopes(cluster) {
+    const scopes = cluster.scope || [];
+    return ["local", "state", "national", "international"].filter((desk) => scopes.includes(desk));
+}
+
+function bestScope(cluster, usedDesks = new Set()) {
+    const scopes = availableScopes(cluster);
+    const open = scopes.find((desk) => !usedDesks.has(desk));
+    return open || scopes[0] || "national";
 }
 
 /**
@@ -109,7 +129,7 @@ export function selectClustersForPacket(qualified = [], {
                 bucket: diversityBucket(cluster),
                 route: cluster.route?.route || "SKIP",
                 sourceId: primarySourceId(cluster),
-                desk: bestScope(cluster),
+                scopes: availableScopes(cluster),
             };
         });
 
@@ -122,31 +142,39 @@ export function selectClustersForPacket(qualified = [], {
         .sort((a, b) => b.rank - a.rank || b.fit.score - a.fit.score);
 
     const selectedNews = [];
+    const selectedKeys = new Set();
     const usedBuckets = new Set();
     const usedDesks = new Set();
     const sourceCounts = new Map();
     const bucketCounts = new Map();
     const softMaxPerBucket = 2;
 
+    const itemKey = (item) => item.cluster?.clusterId || item.cluster?.canonicalTopic || primarySourceId(item.cluster);
+    const isSelected = (item) => selectedKeys.has(itemKey(item));
+    const resolveDesk = (item) => bestScope(item.cluster, usedDesks);
     const canTake = (item) => {
         const count = sourceCounts.get(item.sourceId) || 0;
         if (count < maxPerSource) return true;
-        // Soft-cap must not suppress the best remaining story for an open desk
-        // merely because another selected item already used the same source.
-        if (!deskOpen(item) || count >= maxPerSource + 1) return false;
+        const desk = resolveDesk(item);
+        if (!desk || usedDesks.has(desk) || count >= maxPerSource + 1) return false;
         const bestRemainingForDesk = newsPool.find((candidate) =>
-            !selectedNews.includes(candidate)
-            && deskOpen(candidate)
-            && candidate.desk === item.desk);
+            !isSelected(candidate)
+            && !usedDesks.has(resolveDesk(candidate))
+            && resolveDesk(candidate) === desk);
         return bestRemainingForDesk === item;
     };
     const bucketOpen = (item) => (bucketCounts.get(item.bucket) || 0) < softMaxPerBucket;
-    const deskOpen = (item) => !usedDesks.has(item.desk);
+    const deskOpen = (item) => {
+        const desk = resolveDesk(item);
+        return Boolean(desk) && !usedDesks.has(desk);
+    };
 
     const take = (item) => {
-        selectedNews.push(item);
+        const desk = resolveDesk(item);
+        selectedNews.push({ ...item, desk });
+        selectedKeys.add(itemKey(item));
         usedBuckets.add(item.bucket);
-        usedDesks.add(item.desk);
+        usedDesks.add(desk);
         sourceCounts.set(item.sourceId, (sourceCounts.get(item.sourceId) || 0) + 1);
         bucketCounts.set(item.bucket, (bucketCounts.get(item.bucket) || 0) + 1);
     };
@@ -162,9 +190,9 @@ export function selectClustersForPacket(qualified = [], {
     // Pass 2: fill remaining open desks with next-best strong items.
     for (const item of newsPool) {
         if (selectedNews.length >= maxNews) break;
-        if (selectedNews.includes(item) || !canTake(item) || !deskOpen(item)) continue;
+        if (isSelected(item) || !canTake(item) || !deskOpen(item)) continue;
         const otherBucketAvailable = newsPool.some((candidate) =>
-            !selectedNews.includes(candidate)
+            !isSelected(candidate)
             && canTake(candidate)
             && deskOpen(candidate)
             && candidate.bucket !== item.bucket

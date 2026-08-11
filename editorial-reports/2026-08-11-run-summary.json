@@ -32,25 +32,158 @@
       "error": null
     },
     {
+      "sourceId": "federal-reserve-press",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "ftc-press",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "fda-press",
+      "ok": true,
+      "count": 0,
+      "error": null
+    },
+    {
+      "sourceId": "cdc-mmwr",
+      "ok": true,
+      "count": 0,
+      "error": null
+    },
+    {
+      "sourceId": "noaa-news",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "nsf-news",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "sourceId": "openai-blog",
+      "ok": true,
+      "count": 40,
+      "error": null
+    },
+    {
+      "sourceId": "nvidia-blog",
+      "ok": true,
+      "count": 18,
+      "error": null
+    },
+    {
+      "sourceId": "google-ai-blog",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "deepmind-blog",
+      "ok": true,
+      "count": 40,
+      "error": null
+    },
+    {
+      "sourceId": "microsoft-research",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "meta-newsroom",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "apple-newsroom",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "aws-blog",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "bbc-technology",
+      "ok": true,
+      "count": 21,
+      "error": null
+    },
+    {
+      "sourceId": "npr-technology",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "the-verge",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "techcrunch",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "ars-technica",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "ieee-spectrum",
+      "ok": true,
+      "count": 30,
+      "error": null
+    },
+    {
+      "sourceId": "mit-technology-review",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "nature-news",
+      "ok": true,
+      "count": 40,
+      "error": null
+    },
+    {
       "sourceId": "mit-ai",
       "ok": true,
-      "count": 50,
+      "count": 40,
       "error": null
     },
     {
       "sourceId": "arxiv-cs-ai",
       "ok": true,
-      "count": 753,
+      "count": 40,
       "error": null
     }
   ],
-  "candidateCount": 908,
-  "clusterCount": 894,
-  "qualifiedCount": 9,
-  "selectedCount": 1,
+  "candidateCount": 579,
+  "clusterCount": 572,
+  "qualifiedCount": 18,
+  "selectedCount": 2,
   "selection": {
     "newsTopics": [
-      "Johnson Controls C-CURE 9000 and Victor application server (Update A)"
+      "An AI chatbot is joining the search for art looted by the Nazis",
+      "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
     ],
     "blogTopics": [],
     "rejectedWeakFit": [
@@ -83,6 +216,48 @@
         "route": "NEWS",
         "fit": 0,
         "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "FTC Stops Sprawling Credit Repair Scheme that Scammed Consumers Out of Nearly $200 Million",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Leila Vergara",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Podcast: The Legacy Survey of Space and Time (LSST)",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "AI agent hacks gym to get its user a spot in pilates class",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Tech leaders say AI means less work - their staff say they work up to 90 hours a week",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "China's courts side with workers displaced by AI, but job anxiety persists",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "'The Nerd Reich' tracks the 'unmasking of Silicon Valley's true politics'",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       }
     ],
     "limits": {
@@ -96,7 +271,7 @@
     "local": false,
     "state": false,
     "national": true,
-    "international": false,
+    "international": true,
     "blog": false
   },
   "safety": "Research ingestion only; no publishing, merging, deployment, or social posting."

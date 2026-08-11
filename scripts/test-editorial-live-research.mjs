@@ -34,11 +34,17 @@ function candidate(overrides = {}) {
 }
 
 async function run() {
-    assert.ok(SOURCE_REGISTRY.length >= 10 && SOURCE_REGISTRY.length <= 18);
+    assert.ok(SOURCE_REGISTRY.length >= 20 && SOURCE_REGISTRY.length <= 80);
     assert.equal(getSourceById("nist-news").authorityTier, "TIER_1_PRIMARY");
     assert.ok(getActiveSources().every((source) => source.active && source.feedUrl?.startsWith("https://")));
-    assert.ok(SOURCE_REGISTRY.some((source) => source.authorityTier === "TIER_4_DISCOVERY_ONLY"));
+    assert.ok(SOURCE_REGISTRY.some((source) =>
+        source.authorityTier === "TIER_3_DISCOVERY_ONLY" || source.authorityTier === "TIER_4_DISCOVERY_ONLY"));
     assert.ok(SOURCE_REGISTRY.filter((source) => source.feedUrl === null).length >= 3);
+    assert.ok(getActiveSources().length >= 12, "Phase 2 should activate a broader trusted feed set");
+    assert.equal(getSourceById("arxiv-cs-ai").authorityTier, "TIER_3_DISCOVERY_ONLY");
+    assert.equal(getSourceById("arxiv-cs-ai").supportsCorroboration, false);
+    assert.ok(getSourceById("bbc-technology")?.active);
+    assert.ok(getSourceById("reuters-wire") && !getSourceById("reuters-wire").active);
 
     assert.equal(isSafePublicUrl("https://www.nist.gov/news-events/news/rss.xml"), true);
     for (const unsafe of [

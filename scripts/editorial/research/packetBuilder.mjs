@@ -1,4 +1,5 @@
 import { selectClustersForPacket } from "./selection.mjs";
+import { isPrimaryTier } from "./sourceTiers.mjs";
 
 const SAFETY = "VERIFIED RESEARCH PACKET — research ingestion only. Empty desks become NO QUALIFIED STORY. Never invent events, claims, or sources; Phase 10A fact-check decides readiness.";
 
@@ -59,7 +60,7 @@ function blankBlog() {
 }
 
 function sourceType(candidate) {
-    return candidate.sourceTier === "TIER_1_PRIMARY" ? "official" : "verified";
+    return isPrimaryTier(candidate.sourceTier) ? "official" : "verified";
 }
 
 function packetSources(cluster) {
@@ -68,8 +69,8 @@ function packetSources(cluster) {
         publisher: candidate.sourceName,
         url: candidate.articleUrl,
         type: sourceType(candidate),
-        note: candidate.sourceTier === "TIER_1_PRIMARY"
-            ? "Direct official announcement; claims remain attributed until Phase 10A fact-check."
+        note: isPrimaryTier(candidate.sourceTier)
+            ? "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
             : candidate.matchReason
               ? `Corroboration match (${candidate.matchReason}).`
               : "Independent research source included for corroboration.",

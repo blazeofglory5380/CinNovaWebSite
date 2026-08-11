@@ -1,23 +1,26 @@
 /**
- * Phase 10B.3 — source independence beyond simple syndication markers.
- * Tier 4 discovery-only sources never independently satisfy a consequential claim.
+ * Phase 10B.3 / Phase 2 — source independence beyond simple syndication markers.
+ * Discovery-only and BLOCKED sources never independently satisfy a consequential claim.
  */
 
 import { jaccard, normalizeHeadline, tokenize } from "../../lib/editorial-dedupe.mjs";
 import { areLikelySyndicated, detectSyndicationGroup } from "./syndication.mjs";
+import {
+    CORROBORATION_ELIGIBLE_TIERS,
+    isCorroborationEligibleTier,
+    isDiscoveryOnlyTier,
+    isPrimaryTier,
+    canonicalizeTier,
+    SOURCE_TIERS,
+} from "./sourceTiers.mjs";
 
-const ELIGIBLE_TIERS = new Set([
-    "TIER_1_PRIMARY",
-    "TIER_2_HIGH_AUTHORITY",
-    "TIER_3_REPUTABLE_SECONDARY",
-]);
+const ELIGIBLE_TIERS = new Set(CORROBORATION_ELIGIBLE_TIERS);
 
 function registrableHost(url) {
     try {
         const host = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
         const parts = host.split(".");
         if (parts.length <= 2) return host;
-        // Keep last two labels for common TLDs; leave government multi-part hosts intact.
         if (/\.(gov|mil|edu)$/.test(host) || host.endsWith(".gov.uk")) return host;
         return parts.slice(-2).join(".");
     } catch {
@@ -25,9 +28,32 @@ function registrableHost(url) {
     }
 }
 
+/** Parent-org groups so about.fb.com and meta.com count as one organization. */
+const ORG_ALIASES = Object.freeze({
+    "about.fb.com": "meta",
+    "fb.com": "meta",
+    "meta.com": "meta",
+    "blog.google": "google",
+    "deepmind.google": "google",
+    "google.com": "google",
+    "openai.com": "openai",
+    "nvidia.com": "nvidia",
+    "blogs.nvidia.com": "nvidia",
+    "microsoft.com": "microsoft",
+    "apple.com": "apple",
+    "aws.amazon.com": "amazon",
+    "amazon.com": "amazon",
+});
+
 function orgKey(candidate = {}) {
-    const host = registrableHost(candidate.articleUrl || "");
-    if (host) return `host:${host}`;
+    const host = registrableHost(candidate.articleUrl || candidate.sourceUrl || "");
+    if (host && ORG_ALIASES[host]) return `org:${ORG_ALIASES[host]}`;
+    if (host) {
+        for (const [aliasHost, org] of Object.entries(ORG_ALIASES)) {
+            if (host === aliasHost || host.endsWith(`.${aliasHost}`)) return `org:${org}`;
+        }
+        return `host:${host}`;
+    }
     const name = normalizeHeadline(candidate.sourceName || candidate.sourceId || "");
     return name ? `name:${name}` : "";
 }
@@ -51,6 +77,27 @@ export function isPressReleaseMirror(a = {}, b = {}) {
     return false;
 }
 
+/** One article primarily quoting/attributing the other outlet. */
+export function isAttributionCopy(a = {}, b = {}) {
+    const textA = `${a.headline || ""} ${a.summary || ""}`.toLowerCase();
+    const textB = `${b.headline || ""} ${b.summary || ""}`.toLowerCase();
+    const nameA = String(a.sourceName || "").toLowerCase();
+    const nameB = String(b.sourceName || "").toLowerCase();
+    const cites = (text, name) => {
+        if (!name || name.length < 3) return false;
+        const short = name.split(/[:(/]/)[0].trim();
+        if (short.length < 3) return false;
+        return (
+            text.includes(`according to ${short}`)
+            || text.includes(`${short} reported`)
+            || text.includes(`${short} says`)
+            || text.includes(`${short} said`)
+            || text.includes(`via ${short}`)
+        );
+    };
+    return cites(textA, nameB) || cites(textB, nameA);
+}
+
 /**
  * Independent enough to count as separate corroboration?
  * Returns { independent, reasons[] }.
@@ -69,22 +116,32 @@ export function assessPairIndependence(a = {}, b = {}) {
     const orgB = orgKey(b);
     if (orgA && orgB && orgA === orgB) reasons.push("same organization / registrable domain");
     if (isPressReleaseMirror(a, b)) reasons.push("press-release mirror or near-copy rewrite");
-    if (!ELIGIBLE_TIERS.has(a.sourceTier) || !ELIGIBLE_TIERS.has(b.sourceTier)) {
-        reasons.push("non-eligible authority tier (Tier 4 cannot independently corroborate)");
+    if (isAttributionCopy(a, b)) reasons.push("one source primarily attributes/quotes the other");
+    if (!isCorroborationEligibleTier(a.sourceTier) || !isCorroborationEligibleTier(b.sourceTier)) {
+        reasons.push("non-eligible authority tier (discovery-only/BLOCKED cannot independently corroborate)");
     }
     return { independent: reasons.length === 0, reasons };
 }
 
 /**
  * Build an independence-filtered list of corroborating sources.
- * Tier 4 never enters independentSupport.
+ * Discovery-only never enters independentSupport.
  */
 export function filterIndependentSources(candidates = [], { registry = [] } = {}) {
-    const eligible = (candidates || []).filter((candidate) => ELIGIBLE_TIERS.has(candidate.sourceTier));
+    const eligible = (candidates || []).filter((candidate) => ELIGIBLE_TIERS.has(candidate.sourceTier)
+        || isCorroborationEligibleTier(candidate.sourceTier));
     const independent = [];
     const rejected = [];
 
     for (const candidate of eligible) {
+        if (isDiscoveryOnlyTier(candidate.sourceTier)) {
+            rejected.push({
+                candidate,
+                against: null,
+                reasons: ["discovery-only tier"],
+            });
+            continue;
+        }
         const definition = registry.find((source) => source.id === candidate.sourceId);
         const clash = independent.find((other) => !assessPairIndependence(other, candidate).independent);
         if (clash) {
@@ -95,24 +152,32 @@ export function filterIndependentSources(candidates = [], { registry = [] } = {}
             });
             continue;
         }
+        const tier = canonicalizeTier(candidate.sourceTier);
         independent.push({
             ...candidate,
-            requiresSecondaryConfirmation: definition?.requiresSecondaryConfirmation ?? candidate.sourceTier !== "TIER_1_PRIMARY",
+            sourceTier: candidate.sourceTier,
+            requiresSecondaryConfirmation:
+                definition?.requiresSecondaryConfirmation
+                ?? tier !== SOURCE_TIERS.TIER_1_PRIMARY,
         });
     }
 
-    const tier4 = (candidates || []).filter((candidate) => candidate.sourceTier === "TIER_4_DISCOVERY_ONLY");
+    const discoveryOnly = (candidates || []).filter((candidate) => isDiscoveryOnlyTier(candidate.sourceTier));
     return {
         independent,
         rejected,
-        discoveryOnly: tier4,
+        discoveryOnly,
         independentSourceIds: independent.map((item) => item.sourceId).filter(Boolean),
-        primarySupport: independent.filter((item) => item.sourceTier === "TIER_1_PRIMARY"),
-        secondarySupport: independent.filter((item) =>
-            ["TIER_2_HIGH_AUTHORITY", "TIER_3_REPUTABLE_SECONDARY"].includes(item.sourceTier)),
+        primarySupport: independent.filter((item) => isPrimaryTier(item.sourceTier)),
+        secondarySupport: independent.filter((item) => {
+            const tier = canonicalizeTier(item.sourceTier);
+            return tier === SOURCE_TIERS.TIER_1_NEWS || tier === SOURCE_TIERS.TIER_2_REPUTABLE;
+        }),
     };
 }
 
 export function canTier4IndependentlySatisfy() {
     return false;
 }
+
+export { orgKey as organizationKeyForTests };

@@ -245,7 +245,8 @@ export function writeRealShadowValidationReport({
         };
         const desk = scoreNewsDesk(coverage, cleanedStory, dateIso);
         const pipe = (pipelineResult?.newsResults || []).find((r) => r.coverage === coverage);
-        if (!desk.qualified || !["READY", "REVIEW"].includes(desk.disposition)) {
+        // Shadow drafts for READY or REVIEW (human-confirm path). Never HOLD/REJECT.
+        if (!["READY", "REVIEW"].includes(desk.disposition)) {
             heldOrRejectedPacketNews.push({
                 coverage,
                 title: cleanedStory.title,
@@ -262,6 +263,11 @@ export function writeRealShadowValidationReport({
             duplicateClassification: pipe?.duplicateClassification || desk.duplicate?.classification || "",
             relatedStorySuggestions: [],
         });
+        draft.phase10aQualifiedForAutoDraft = Boolean(desk.qualified);
+        draft.shadowDraftPolicy =
+            desk.disposition === "READY"
+                ? "READY — eligible for future controlled draft writing"
+                : "REVIEW — shadow draft only; requires human confirm / forceDraft before file write";
         shadowNewsDrafts.push(draft);
     }
     const shadowBlogDrafts = [];
@@ -273,7 +279,7 @@ export function writeRealShadowValidationReport({
             excerpt: stripHtml(packet.blog.excerpt || "").slice(0, 500),
         };
         const blogDesk = scoreBlogCandidate(blogStory, dateIso);
-        if (!blogDesk.qualified || !["READY", "REVIEW"].includes(blogDesk.disposition)) {
+        if (!["READY", "REVIEW"].includes(blogDesk.disposition)) {
             heldOrRejectedPacketBlog.push({
                 title: blogStory.title,
                 disposition: blogDesk.disposition,
@@ -284,9 +290,10 @@ export function writeRealShadowValidationReport({
                 classification: "evergreen",
                 factCheckStatus: blogDesk.disposition,
                 duplicateContentCheck: "NEW",
-                eligibility: "PASS",
+                eligibility: blogDesk.qualified ? "PASS" : "REVIEW_ONLY",
                 valueProposition: `Search-oriented explainer on ${blogStory.researchBrief?.primaryKeyword || blogStory.category}`,
             });
+            blogDraft.phase10aQualifiedForAutoDraft = Boolean(blogDesk.qualified);
             shadowBlogDrafts.push(blogDraft);
         }
     }
@@ -339,11 +346,15 @@ export function writeRealShadowValidationReport({
     }));
 
     const blockers = [];
-    if (shadowNewsDrafts.length < 1) {
+    const readyDrafts = shadowNewsDrafts.filter((d) => d.factCheckStatus === "READY");
+    const reviewDrafts = shadowNewsDrafts.filter((d) => d.factCheckStatus === "REVIEW");
+    if (readyDrafts.length < 1) {
         blockers.push(
-            `No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: ${
-                heldOrRejectedPacketNews.map((h) => `${h.coverage}=${h.disposition}`).join(", ") || "none selected"
-            }).`,
+            reviewDrafts.length
+                ? `No Phase-10A READY news drafts yet (${reviewDrafts.length} REVIEW shadow draft(s) need human confirm / second source before controlled writing).`
+                : `No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: ${
+                    heldOrRejectedPacketNews.map((h) => `${h.coverage}=${h.disposition}`).join(", ") || "none selected"
+                }).`,
         );
     }
     if (shadowBlogDrafts.length < 1) {
@@ -366,9 +377,13 @@ export function writeRealShadowValidationReport({
         );
     }
 
-    const readyEnoughForPass = shadowNewsDrafts.length >= 1; // blog optional for news-first validation
-    const verdict = readyEnoughForPass && originalityResults.every((o) => o.status === "PASS")
-        ? "EDITORIAL REAL SHADOW VALIDATION PASS"
+    const readyEnoughForPass = shadowNewsDrafts.length >= 1;
+    const originalityHardFail = originalityResults.some((o) =>
+        (o.issues || []).some((issue) => /invented|long quotation/i.test(issue)));
+    const verdict = readyEnoughForPass && !originalityHardFail
+        ? (readyDrafts.length >= 1
+            ? "EDITORIAL REAL SHADOW VALIDATION PASS"
+            : "EDITORIAL PHASE 2 SOURCE EXPANSION PASS — REVIEW shadow drafts only (READY still needs second independent source)")
         : `BLOCKED — ${blockers[0]}`;
 
     const report = {

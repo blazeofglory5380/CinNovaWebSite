@@ -1,3 +1,5 @@
+import { isDiscoveryOnlyTier } from "./sourceTiers.mjs";
+
 const BLOG_SIGNALS = /\b(study|research|paper|analysis|guide|explainer|how to|framework|benchmark)\b/i;
 const NEWS_SIGNALS = /\b(announces?|advisory|advisories|orders?|approves?|launches?|releases?|rule|policy|regulation|funding|acquires?|files?|charges?|vulnerabilit(?:y|ies)|cve-\d|icsa-|known exploited)\b/i;
 
@@ -6,7 +8,7 @@ export function routeCluster(cluster) {
     const summary = (cluster.sources || []).map((source) => source.summary || "").join(" ");
     const urls = (cluster.sources || []).map((source) => source.articleUrl || "").join(" ");
     const text = `${headline} ${summary} ${urls}`;
-    if ((cluster.sources || []).every((source) => source.sourceTier === "TIER_4_DISCOVERY_ONLY")) {
+    if ((cluster.sources || []).every((source) => isDiscoveryOnlyTier(source.sourceTier))) {
         return { route: "SKIP", rationale: "Discovery-only sources cannot route directly to editorial desks." };
     }
     // Prefer NEWS when the full cluster (not just the short product headline) is an advisory/announcement.

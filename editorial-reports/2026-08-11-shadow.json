@@ -1,7 +1,7 @@
 {
   "schemaVersion": "10B-shadow",
   "date": "2026-08-11",
-  "generatedAt": "2026-08-11T18:14:12.816Z",
+  "generatedAt": "2026-08-11T19:00:06.570Z",
   "mode": "shadow",
   "dryRun": true,
   "autoPublish": false,
@@ -17,9 +17,12 @@
     "openDraftPr": false,
     "writeDraftFiles": false,
     "autoPublish": false,
-    "rationale": "Draft PR preparation is not activated — defaulting to shadow/dry-run mode."
+    "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
   },
-  "researchStatus": null,
+  "researchStatus": {
+    "status": "SUCCESS",
+    "rationale": "All sources healthy and editorial candidates were selected."
+  },
   "wouldCreate": [],
   "wouldSkip": [],
   "noQualified": [
@@ -36,12 +39,12 @@
     {
       "type": "news",
       "coverage": "national",
-      "reason": "Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims"
+      "reason": "Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm"
     },
     {
       "type": "news",
       "coverage": "international",
-      "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk."
+      "reason": "Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm"
     },
     {
       "type": "blog",
@@ -69,7 +72,7 @@
     "No news/blog drafts were written to disk.",
     "No Draft PR was opened.",
     "No production catalog publish occurred.",
-    "Packet: D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\editorial-reports\\2026-08-11-live-packet.json",
-    "Discover mode: live"
+    "Real shadow validation run",
+    "Packet: D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\editorial-reports\\2026-08-11-live-packet.json"
   ]
 }

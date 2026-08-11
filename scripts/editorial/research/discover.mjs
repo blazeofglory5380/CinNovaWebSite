@@ -15,6 +15,14 @@ import { getActiveSources, getSourceById, SOURCE_REGISTRY } from "./sourceRegist
 import { writeDiscoveryReport } from "./report.mjs";
 
 const DEFAULT_FIXTURE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures");
+/** Cap per-source ingest so unbounded company/history feeds cannot dominate discovery. */
+export const MAX_CANDIDATES_PER_SOURCE = 40;
+
+function preferFreshest(candidates = [], limit = MAX_CANDIDATES_PER_SOURCE) {
+    return [...candidates]
+        .sort((a, b) => Date.parse(b.publishedAt || 0) - Date.parse(a.publishedAt || 0))
+        .slice(0, limit);
+}
 
 function replaceTimeTokens(text, now) {
     return String(text).replace(/PLACEHOLDER_NOW_MINUS_(\d+)(H|D)/g, (_, amount, unit) => {
@@ -39,8 +47,9 @@ function fixtureSources(fixtureDir, now, selectedCases) {
 
 export function qualifyCluster(cluster) {
     const reasons = [];
-    const supported = cluster.corroborated || cluster.primarySources?.some((source) => source.sourceTier === "TIER_1_PRIMARY");
-    if (!supported) reasons.push("insufficient independent corroboration");
+    // Trust assessCorroboration only — do not bypass with "any primary present"
+    // (company primaries require secondary; discovery-only never qualifies alone).
+    if (!cluster.corroborated) reasons.push("insufficient independent corroboration");
     if (!isFreshEnough(cluster.freshness, { requireFresh: true }) &&
         !(cluster.freshness === "BACKGROUND" && cluster.cinovaClassification === "UPDATE")) {
         reasons.push("outside current freshness window");
@@ -77,10 +86,27 @@ export async function runDiscovery({
                 fixtureText: input.fixtureText,
                 retrievedAt: current,
             });
-            candidates.push(...found);
-            sourceResults.push({ sourceId: input.source.id, caseId: input.caseId || null, ok: true, count: found.length, error: null });
+            const capped = preferFreshest(found, MAX_CANDIDATES_PER_SOURCE);
+            candidates.push(...capped);
+            sourceResults.push({
+                sourceId: input.source.id,
+                caseId: input.caseId || null,
+                ok: true,
+                count: capped.length,
+                fetchedCount: found.length,
+                capped: found.length > capped.length,
+                error: null,
+            });
         } catch (error) {
-            sourceResults.push({ sourceId: input.source.id, caseId: input.caseId || null, ok: false, count: 0, error: String(error?.message || error) });
+            sourceResults.push({
+                sourceId: input.source.id,
+                caseId: input.caseId || null,
+                ok: false,
+                count: 0,
+                fetchedCount: 0,
+                capped: false,
+                error: String(error?.message || error),
+            });
         }
     }
 

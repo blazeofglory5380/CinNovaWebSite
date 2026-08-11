@@ -1,8 +1,11 @@
+import { SOURCE_TIERS, canonicalizeTier } from "./sourceTiers.mjs";
 import { jaccard, normalizeHeadline, tokenize } from "../../lib/editorial-dedupe.mjs";
 
 const WIRE_MARKERS = [
     ["reuters", /\b(reuters|thomson reuters)\b/i],
     ["associated-press", /\b(associated press|the ap|ap news)\b/i],
+    ["bbc", /\b(bbc news|bbc)\b/i],
+    ["npr", /\b(npr|national public radio)\b/i],
 ];
 
 function wireMarker(candidate) {
@@ -53,3 +56,11 @@ export function areLikelySyndicated(a, b) {
     }
     return jaccard(tokenize(a.headline), tokenize(b.headline)) >= 0.86;
 }
+
+/** Wire/newsroom tiers may still carry wire markers — preserve for independence. */
+export function isWireAttributed(candidate = {}) {
+    return Boolean(wireMarker(candidate));
+}
+
+export { SOURCE_TIERS, canonicalizeTier };
+
