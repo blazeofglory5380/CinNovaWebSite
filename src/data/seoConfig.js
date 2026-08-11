@@ -30,13 +30,10 @@ export const EXCLUDED_PAGE_KEYS = new Set([
 
 /**
  * Public pages that remain routable for humans but must NOT be indexed.
- * Reason (Phase 11.3 indexability review): `/pricing` currently displays
- * specific subscription dollar amounts that are not verified live commerce
- * offers (monetization foundation keeps subscription plan prices null).
- * Keep the page for waitlist UX; exclude from sitemap + emit noindex until
- * pricing claims are rewritten to match real availability.
+ * Reason (Phase 11.3 / M1): `/pricing` is waitlist UX without live billed offers;
+ * cart/checkout/store hosted commerce is offline / fail-closed.
  */
-export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing"]);
+export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing", "cart", "checkout", "store"]);
 
 /**
  * Admin/internal route keys. Gated behind VITE_ENABLE_ADMIN_ROUTES so they
@@ -49,6 +46,7 @@ export const NOINDEX_PUBLIC_PAGE_KEYS = new Set(["pricing"]);
 export const ADMIN_PAGE_KEYS = new Set([
     "blog-manager",
     "newsletter-admin",
+    "revenue-dashboard",
 ]);
 // Phase 11.4D: enrollment inventory is data modules + docs only (no public UI).
 
@@ -57,10 +55,13 @@ export const ROBOTS_DISALLOW_PATHS = [
     "/blog-admin",
     // Defense-in-depth: Phase 11.4A removed PartnerAdmin UI; keep disallow if old links linger.
     "/partner-admin",
+    "/cart",
+    "/checkout",
     "/?page=newsletter-admin",
     "/?page=blog-manager",
     "/?page=partner-admin",
     "/?page=revenue-opportunities",
+    "/?page=revenue-dashboard",
     "/?page=news-preview",
     "/?page=blog-preview",
     "/?page=newsletter-success",
@@ -148,6 +149,19 @@ export const STATIC_PUBLIC_PAGES = [
     { key: "advertise", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "partner-with-us", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
     { key: "sponsor-newsletter", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
+    { key: "contact-sales", changefreq: "monthly", priority: "0.6", lastmod: BUILD_LASTMOD },
+    { key: "brand-assets", changefreq: "monthly", priority: "0.5", lastmod: BUILD_LASTMOD },
+    { key: "affiliate-disclosure", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "refund-policy", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "digital-product-terms", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "cookie-policy", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "disclaimer", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "accessibility", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "dmca", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "sponsorship-disclosure", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
+    { key: "store", changefreq: "weekly", priority: "0.5", lastmod: BUILD_LASTMOD },
+    { key: "cart", changefreq: "yearly", priority: "0.1", lastmod: BUILD_LASTMOD },
+    { key: "checkout", changefreq: "yearly", priority: "0.1", lastmod: BUILD_LASTMOD },
     { key: "privacy", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
     { key: "terms", changefreq: "yearly", priority: "0.4", lastmod: BUILD_LASTMOD },
 ];
@@ -163,6 +177,7 @@ export const VALID_PAGE_KEYS = new Set([
     "resources",
     "blog-manager",
     "newsletter-admin",
+    "revenue-dashboard",
     "newsletter-success",
     "not-found",
 ]);

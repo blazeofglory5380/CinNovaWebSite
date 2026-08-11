@@ -146,12 +146,12 @@ function downloadAsset(assetType) {
 }
 
 const STATS = [
-    { value: "Growing", label: "Newsletter subscribers", placeholder: true },
+    { value: "Available on request", label: "Newsletter subscribers", placeholder: true },
     { value: "Active", label: "Monthly content program", placeholder: false },
     { value: "Live", label: "Resource downloads", placeholder: false },
     { value: "5", label: "Product verticals", placeholder: false },
     { value: "7", label: "Article categories", placeholder: false },
-    { value: "TBD", label: "Campaign reach (est.)", placeholder: true },
+    { value: "Available on request", label: "Campaign reach", placeholder: true },
 ];
 
 const mediaKitSchema = {
@@ -253,7 +253,7 @@ export default function MediaKit() {
                     <p className="mk-section-sub">
                         Current audience metrics across newsletter, blog, and resources.{" "}
                         <span className="mk-muted">
-                            Metrics marked “Placeholder” will be updated with verified analytics.
+                            Metrics without verified analytics are labeled “Available on request” — never fabricated.
                         </span>
                     </p>
                 </header>
@@ -262,7 +262,7 @@ export default function MediaKit() {
                         <div className="mk-card mk-stat" key={s.label}>
                             <div className="mk-stat-row">
                                 <span className="mk-stat-value">{s.value}</span>
-                                {s.placeholder && <span className="mk-badge-placeholder">PLACEHOLDER METRIC</span>}
+                                {s.placeholder && <span className="mk-badge-placeholder">AVAILABLE ON REQUEST</span>}
                             </div>
                             <span className="mk-stat-label">{s.label}</span>
                         </div>

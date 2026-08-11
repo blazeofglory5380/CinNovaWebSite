@@ -20,7 +20,11 @@ export function listPaymentProviderSlots() {
             configured: false,
             apiKeyRef: null,
             status: "architecture_only",
-            notes: `${provider} integration reserved for a later phase`,
+            notes:
+                provider === FUTURE_PAYMENT_PROVIDERS.APPLE
+                    || provider === FUTURE_PAYMENT_PROVIDERS.GOOGLE
+                    ? `${provider} Pay via supported processor (e.g. Stripe) — not activated`
+                    : `${provider} integration reserved — not activated`,
         }),
     );
 }

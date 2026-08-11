@@ -11,6 +11,8 @@ import { getPublicPageUrl } from "../data/publicPageRoutes.js";
 import { siteUrl } from "../data/blogPosts.js";
 import { trackEvent } from "../utils/analytics.js";
 
+/* Honesty rule (Phase M1): do not display invented dollar prices.
+   Hosted subscriptions are not live — tiers are planned; CTAs go to waitlist. */
 const products = [
     {
         key: "studynest",
@@ -20,15 +22,15 @@ const products = [
         tiers: [
             {
                 label: "Free",
-                price: "$0",
+                price: "Planned",
                 highlight: false,
-                perks: "Basic notes, flashcards, and starter quizzes. Up to 10 AI tutor queries per month.",
+                perks: "Planned starter tools: notes, flashcards, and quizzes. Limits will be published at launch.",
             },
             {
                 label: "Student Pro",
-                price: "$9.99/mo",
+                price: "Coming Soon",
                 highlight: true,
-                perks: "Unlimited notes, flashcards, quizzes, study guides, and full AI Tutor access.",
+                perks: "Planned: expanded study tools and AI tutor access. Pricing published when billing goes live.",
             },
             {
                 label: "School Plan",
@@ -46,15 +48,15 @@ const products = [
         tiers: [
             {
                 label: "Free",
-                price: "$0",
+                price: "Planned",
                 highlight: false,
-                perks: "Basic substance lookup, emergency contact directory, and 10 AI safety queries.",
+                perks: "Planned: basic substance lookup and emergency contact directory. Not a medical substitute.",
             },
             {
                 label: "Family Premium",
-                price: "$4.99/mo",
+                price: "Coming Soon",
                 highlight: true,
-                perks: "Full AI guidance, complete pet safety database, unlimited lookups, and priority alerts.",
+                perks: "Planned: expanded guidance and pet safety features. Pricing published when billing goes live.",
             },
             {
                 label: "Professional",
@@ -72,15 +74,15 @@ const products = [
         tiers: [
             {
                 label: "Free",
-                price: "$0",
+                price: "Planned",
                 highlight: false,
-                perks: "AI chat assistant, error code lookup, basic guides, and 20 support sessions per month.",
+                perks: "Planned: AI chat assistant, error code lookup, and basic guides.",
             },
             {
                 label: "TechMate Pro",
-                price: "$14.99/mo",
+                price: "Coming Soon",
                 highlight: true,
-                perks: "Unlimited AI chat, network diagnostics, full repair guides, and software support.",
+                perks: "Planned: expanded diagnostics and repair guides. Pricing published when billing goes live.",
             },
             {
                 label: "Team / IT Desk",
@@ -98,15 +100,15 @@ const products = [
         tiers: [
             {
                 label: "Free",
-                price: "$0",
+                price: "Planned",
                 highlight: false,
-                perks: "ABCs, basic counting, 5 interactive stories, and memory games. One child profile.",
+                perks: "Planned starter learning modules. Details published at launch.",
             },
             {
                 label: "Family Plan",
-                price: "$6.99/mo",
+                price: "Coming Soon",
                 highlight: true,
-                perks: "All 12 modules, unlimited stories, parent dashboard, progress tracking, and 3 profiles.",
+                perks: "Planned: expanded modules and parent dashboard. Pricing published when billing goes live.",
             },
             {
                 label: "School Plan",
@@ -124,21 +126,21 @@ const products = [
         tiers: [
             {
                 label: "Free",
-                price: "$0",
+                price: "Planned",
                 highlight: false,
-                perks: "Property search, basic mortgage calculator, and 10 AI advisor queries per month.",
+                perks: "Free rental calculator is live today. Broader product tiers remain planned.",
             },
             {
                 label: "Investor Pro",
-                price: "$29/mo",
+                price: "Coming Soon",
                 highlight: true,
-                perks: "Unlimited deal analysis, cash flow modeling, market intelligence, and full AI advisor.",
+                perks: "Planned: deeper deal analysis and market tools. Pricing published when billing goes live.",
             },
             {
                 label: "Business / Broker",
-                price: "$199/mo",
+                price: "Coming Soon",
                 highlight: false,
-                perks: "BIM intelligence, commercial underwriting, land development tools, and team collaboration.",
+                perks: "Planned: commercial underwriting and team collaboration tools.",
             },
         ],
     },
@@ -147,24 +149,24 @@ const products = [
 // FAQ content — preserved verbatim from the previous static pricing FAQ.
 const pricingFaqItems = [
     {
-        question: "Can I use multiple Cin Nova products under one account?",
+        question: "Are these prices live?",
         answer:
-            "Yes — your Cin Nova account gives you access to all products. Each product has its own plan, so you only pay for what you use. You can mix and match: for example, StudyNest Pro + Kiddo Family Plan from a single login.",
+            "No. Cin Nova hosted subscriptions and checkout are not live yet. This page shows planned tiers only — we do not invent or display unverified dollar prices.",
     },
     {
-        question: "Do free plans expire?",
+        question: "Can I buy a plan today?",
         answer:
-            "No. Free plans stay free forever. There are no trials or hidden time limits. You upgrade only when you need more features or higher usage limits.",
+            "Not through Cin Nova hosted checkout. Join the waitlist for launch updates. The free rental calculator and published books (via their retailers) remain available where labeled.",
     },
     {
-        question: "Can I cancel my subscription at any time?",
+        question: "Will free and paid tiers be available at launch?",
         answer:
-            "Yes — cancel anytime from your account settings with no penalties or cancellation fees. Your plan stays active until the end of the billing period, then reverts to the free tier.",
+            "We plan free and paid tiers per product. Exact limits, prices, and cancellation terms will be published when billing is activated.",
     },
     {
-        question: "Are there discounts for annual billing?",
+        question: "How do I get notified?",
         answer:
-            "Annual billing will be available at launch with a 2-month discount (equivalent to paying for 10 months and getting 12). Join the waitlist to be notified when annual plans go live.",
+            "Join the waitlist on this page or subscribe to the Cin Nova newsletter for product and pricing updates.",
     },
 ];
 
@@ -178,9 +180,8 @@ const pricingSchema = {
 };
 
 function ctaLabel(price) {
-    if (price === "Coming Soon") return "Coming Soon";
-    if (price === "$0") return "Start Free";
-    return "Get Started";
+    if (price === "Coming Soon" || price === "Planned") return "Join Waitlist";
+    return "Join Waitlist";
 }
 
 function computePerView() {
@@ -253,7 +254,7 @@ function PricingCarousel() {
 
                                 <div className="pricing-pcard-plans">
                                     {product.tiers.map((tier) => {
-                                        const comingSoon = tier.price === "Coming Soon";
+                                        const notLive = tier.price === "Coming Soon" || tier.price === "Planned";
                                         return (
                                             <div
                                                 key={tier.label}
@@ -261,24 +262,22 @@ function PricingCarousel() {
                                             >
                                                 <div className="pricing-pplan-head">
                                                     <span className="pricing-pplan-name">{tier.label}</span>
-                                                    {tier.highlight && <span className="pricing-pplan-tag">Most Popular</span>}
+                                                    {tier.highlight && <span className="pricing-pplan-tag">Planned</span>}
                                                 </div>
                                                 <div className="pricing-pplan-price">{tier.price}</div>
                                                 <p className="pricing-pplan-perks">{tier.perks}</p>
-                                                <button
-                                                    type="button"
+                                                <a
+                                                    href="#waitlist"
                                                     className={`pricing-pplan-cta${tier.highlight ? " pricing-pplan-cta--primary" : ""}`}
-                                                    disabled={comingSoon}
-                                                    aria-disabled={comingSoon}
                                                     onClick={() => trackEvent("pricing_plan_cta_click", {
                                                         product: product.name,
                                                         plan: tier.label,
                                                         price: tier.price,
-                                                        availability: comingSoon ? "coming_soon" : "available",
+                                                        availability: notLive ? "coming_soon" : "waitlist",
                                                     })}
                                                 >
                                                     {ctaLabel(tier.price)}
-                                                </button>
+                                                </a>
                                             </div>
                                         );
                                     })}
@@ -343,11 +342,11 @@ function Pricing() {
             <section className="section" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading" style={{ marginBottom: "0" }}>
                     <p className="eyebrow">PRICING</p>
-                    <h1>Flexible plans for every Cin Nova product</h1>
+                    <h1>Planned plans for every Cin Nova product</h1>
                     <p>
-                        Choose the tools that fit your learning, safety, technology,
-                        and real estate goals. Start free on any product — upgrade
-                        when you're ready.
+                        Hosted billing is not live yet. Review planned tiers below,
+                        then join the waitlist for launch updates. We do not show
+                        unverified subscription prices.
                     </p>
                     <div className="hero-actions" style={{ justifyContent: "center", marginTop: "28px" }}>
                         <a href="#all-plans" className="primary-btn">See Plans</a>
@@ -360,8 +359,8 @@ function Pricing() {
             <section className="section" style={{ paddingTop: "0", paddingBottom: "60px" }}>
                 <div className="hero-stats" style={{ maxWidth: "680px", margin: "0 auto" }}>
                     <div><strong>5</strong><span>Products</span></div>
-                    <div><strong>Free</strong><span>Entry on All</span></div>
-                    <div><strong>No Lock-in</strong><span>Cancel Anytime</span></div>
+                    <div><strong>Planned</strong><span>Tier Roadmap</span></div>
+                    <div><strong>Waitlist</strong><span>Billing Not Live</span></div>
                 </div>
             </section>
 
@@ -369,7 +368,7 @@ function Pricing() {
             <section className="section showcase-section" id="all-plans" style={{ paddingBottom: "40px" }}>
                 <div className="section-heading">
                     <p className="eyebrow">ALL PLANS</p>
-                    <h2>Pick a product. Pick a plan. Get started free.</h2>
+                    <h2>Pick a product. Review planned tiers. Join the waitlist.</h2>
                 </div>
 
                 <PricingCarousel />
