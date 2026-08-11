@@ -149,6 +149,27 @@ export {
     isAnyPaymentProviderConfigured,
 } from "./providers.js";
 
+export {
+    createEmptyCart,
+    assertCheckoutAllowed,
+    beginCheckoutArchitecture,
+    completePurchaseArchitecture,
+    applyCouponArchitecture,
+    CHECKOUT_STATES,
+    TAX_ARCHITECTURE,
+} from "./checkoutArchitecture.js";
+
+export {
+    createSignedDownloadGrant,
+    revokeDownloadGrant,
+    listDemoEntitlements,
+    DIGITAL_DELIVERY_RULES,
+} from "./digitalDelivery.js";
+
+export { validateCouponArchitecture } from "./couponArchitecture.js";
+
+export { getRevenueDashboardModel } from "./revenueDashboard.js";
+
 import { validateCommerceAdminFoundation } from "./adminFoundation.js";
 import { validateProductRelationships } from "./productRelationships.js";
 import { validateNotificationStore } from "./notificationModel.js";

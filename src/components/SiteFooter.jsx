@@ -41,6 +41,8 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                     <button type="button" onClick={() => onNavigate("partner-with-us")}>Partner With Us</button>
                     <button type="button" onClick={() => onNavigate("advertise")}>Advertise with CinNova</button>
                     <button type="button" onClick={() => onNavigate("media-kit")}>Media Kit</button>
+                    <button type="button" onClick={() => onNavigate("contact-sales")}>Contact Sales</button>
+                    <button type="button" onClick={() => onNavigate("store")}>Store</button>
                     <button type="button" onClick={() => onNavigate("partnerships")}>Partnerships</button>
                     <button type="button" onClick={() => onNavigate("press-center")}>Press Center</button>
                     <button type="button" onClick={() => onNavigate("contact")}>Contact</button>
@@ -50,6 +52,13 @@ function SiteFooter({ onNavigate, onGoBlog, onGoResources, onGoHome }) {
                     <p className="site-footer-col-title">Legal</p>
                     <button type="button" onClick={() => onNavigate("privacy")}>Privacy</button>
                     <button type="button" onClick={() => onNavigate("terms")}>Terms</button>
+                    <button type="button" onClick={() => onNavigate("affiliate-disclosure")}>Affiliate Disclosure</button>
+                    <button type="button" onClick={() => onNavigate("cookie-policy")}>Cookies</button>
+                    <button type="button" onClick={() => onNavigate("refund-policy")}>Refunds</button>
+                    <button type="button" onClick={() => onNavigate("disclaimer")}>Disclaimer</button>
+                    <button type="button" onClick={() => onNavigate("accessibility")}>Accessibility</button>
+                    <button type="button" onClick={() => onNavigate("dmca")}>Copyright</button>
+                    <button type="button" onClick={() => onNavigate("sponsorship-disclosure")}>Sponsorship Disclosure</button>
                 </div>
             </div>
 

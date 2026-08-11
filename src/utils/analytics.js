@@ -581,20 +581,81 @@ export function trackAffiliateOutboundClick({
     if (shouldSkipDuplicateCommerce(key)) return;
 
     // Never send full URLs, query strings, tags, or PII.
+    const payload = sanitizeCommerceAnalyticsParams({
+        partner_id: String(partnerId).slice(0, 64),
+        partner_type: partnerType,
+        placement: String(placement).slice(0, 64),
+        destination_url_host: host,
+        campaign_id: campaignId ? String(campaignId).slice(0, 32) : "",
+        disclosure_shown: Boolean(disclosureShown),
+        entity_slug: entitySlug ? String(entitySlug).slice(0, 80) : "",
+        partner_name: partnerName ? String(partnerName).slice(0, 80) : "",
+    });
+    trackEvent("affiliate_outbound_click", payload);
+    // Canonical Phase M1 alias (same sanitized payload).
+    trackEvent("affiliate_link_click", payload);
+}
+
+/** Privacy-safe affiliate impression (no PII / IP / raw search / health data). */
+export function trackAffiliateLinkView({
+    partnerId = "",
+    category = "",
+    placement = "",
+    pageType = "",
+    locale = "",
+    campaignId = "",
+} = {}) {
+    if (!partnerId) return;
     trackEvent(
-        "affiliate_outbound_click",
+        "affiliate_link_view",
         sanitizeCommerceAnalyticsParams({
             partner_id: String(partnerId).slice(0, 64),
-            partner_type: partnerType,
+            category: String(category).slice(0, 64),
             placement: String(placement).slice(0, 64),
-            destination_url_host: host,
-            // campaign_id intentionally omitted unless a non-secret label is passed explicitly
-            // by a future activation layer — empty by default in 11.4A.
+            page_type: String(pageType).slice(0, 40),
+            locale: String(locale).slice(0, 12),
             campaign_id: campaignId ? String(campaignId).slice(0, 32) : "",
-            disclosure_shown: Boolean(disclosureShown),
-            entity_slug: entitySlug ? String(entitySlug).slice(0, 80) : "",
-            // Drop unused partnerName from payload to avoid accidental free-text leakage.
-            partner_name: partnerName ? String(partnerName).slice(0, 80) : "",
+        }),
+    );
+}
+
+export function trackPartnerPageView({
+    partnerId = "",
+    category = "",
+    pageType = "partner",
+    locale = "",
+    campaignId = "",
+} = {}) {
+    if (!partnerId) return;
+    trackEvent(
+        "partner_page_view",
+        sanitizeCommerceAnalyticsParams({
+            partner_id: String(partnerId).slice(0, 64),
+            category: String(category).slice(0, 64),
+            page_type: String(pageType).slice(0, 40),
+            locale: String(locale).slice(0, 12),
+            campaign_id: campaignId ? String(campaignId).slice(0, 32) : "",
+        }),
+    );
+}
+
+export function trackComparisonView({
+    partnerId = "",
+    category = "",
+    placement = "comparison",
+    pageType = "comparison",
+    locale = "",
+    campaignId = "",
+} = {}) {
+    trackEvent(
+        "comparison_view",
+        sanitizeCommerceAnalyticsParams({
+            partner_id: partnerId ? String(partnerId).slice(0, 64) : "",
+            category: String(category).slice(0, 64),
+            placement: String(placement).slice(0, 64),
+            page_type: String(pageType).slice(0, 40),
+            locale: String(locale).slice(0, 12),
+            campaign_id: campaignId ? String(campaignId).slice(0, 32) : "",
         }),
     );
 }
