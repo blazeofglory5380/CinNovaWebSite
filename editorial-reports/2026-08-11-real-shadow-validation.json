@@ -1,0 +1,2517 @@
+{
+  "schemaVersion": "10B-real-shadow-validation",
+  "date": "2026-08-11",
+  "generatedAt": "2026-08-11T18:14:08.822Z",
+  "mode": "shadow",
+  "dryRun": true,
+  "autoPublish": false,
+  "openDraftPr": false,
+  "writeDraftFiles": false,
+  "researchMode": {
+    "mode": "live",
+    "rationale": "Manual run explicitly selected live research."
+  },
+  "executionMode": {
+    "shadow": true,
+    "dryRun": true,
+    "openDraftPr": false,
+    "writeDraftFiles": false,
+    "autoPublish": false,
+    "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+  },
+  "discovery": {
+    "activeSources": [
+      {
+        "id": "nist-news",
+        "name": "NIST News",
+        "topics": [
+          "ai",
+          "cybersecurity",
+          "standards",
+          "semiconductors"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "cisa-advisories",
+        "name": "CISA Cybersecurity Advisories",
+        "topics": [
+          "cybersecurity",
+          "infrastructure",
+          "software"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "nasa-press",
+        "name": "NASA Press Releases",
+        "topics": [
+          "science",
+          "space",
+          "technology"
+        ],
+        "scope": [
+          "national",
+          "international"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "sec-press",
+        "name": "SEC Press Releases",
+        "topics": [
+          "finance",
+          "regulation",
+          "technology"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "mit-ai",
+        "name": "MIT News: Artificial Intelligence",
+        "topics": [
+          "ai",
+          "research",
+          "education"
+        ],
+        "scope": [
+          "national",
+          "international"
+        ],
+        "tier": "TIER_3_REPUTABLE_SECONDARY"
+      },
+      {
+        "id": "arxiv-cs-ai",
+        "name": "arXiv cs.AI",
+        "topics": [
+          "ai",
+          "research",
+          "software"
+        ],
+        "scope": [
+          "international"
+        ],
+        "tier": "TIER_3_REPUTABLE_SECONDARY"
+      }
+    ],
+    "inactiveSourcesNotAdded": [
+      {
+        "id": "ftc-news",
+        "name": "FTC News and Events",
+        "topics": [
+          "consumer tech",
+          "policy",
+          "regulation",
+          "privacy"
+        ],
+        "reason": "Configure a verified current FTC endpoint before enabling; no endpoint is assumed."
+      },
+      {
+        "id": "nsf-news",
+        "name": "NSF News",
+        "topics": [
+          "science",
+          "ai",
+          "education",
+          "research"
+        ],
+        "reason": "Configure a verified current NSF endpoint before enabling."
+      },
+      {
+        "id": "ap-wire",
+        "name": "Associated Press",
+        "topics": [
+          "technology",
+          "policy",
+          "science"
+        ],
+        "reason": "Configure verified licensed endpoint; do not scrape."
+      },
+      {
+        "id": "reuters-wire",
+        "name": "Reuters",
+        "topics": [
+          "technology",
+          "finance",
+          "policy"
+        ],
+        "reason": "Configure verified licensed endpoint; do not scrape."
+      },
+      {
+        "id": "local-partner",
+        "name": "Verified Local News Partner",
+        "topics": [
+          "infrastructure",
+          "education",
+          "real estate",
+          "policy"
+        ],
+        "reason": "Placeholder registry slot; configure verified publisher and endpoint before enabling."
+      },
+      {
+        "id": "white-house-briefing",
+        "name": "White House Briefing Room",
+        "topics": [
+          "policy",
+          "ai",
+          "infrastructure"
+        ],
+        "reason": "Configure a verified current official endpoint before enabling."
+      },
+      {
+        "id": "hacker-news-discovery",
+        "name": "Hacker News Discovery",
+        "topics": [
+          "software",
+          "ai",
+          "cybersecurity"
+        ],
+        "reason": "Discovery only. Cannot support READY or corroboration by itself."
+      },
+      {
+        "id": "community-tip",
+        "name": "Community Tip Queue",
+        "topics": [
+          "technology",
+          "education",
+          "infrastructure"
+        ],
+        "reason": "Discovery only. Every claim requires verification from independent reputable sources."
+      }
+    ],
+    "storiesFound": 908,
+    "clusters": 894,
+    "candidatesDeduped": 894,
+    "candidatesRejected": 877,
+    "candidatesAccepted": 4,
+    "qualifiedCount": 9,
+    "selectedCount": 1,
+    "runStatus": {
+      "status": "SUCCESS",
+      "rationale": "All sources healthy and editorial candidates were selected."
+    },
+    "sourceResults": [
+      {
+        "sourceId": "nist-news",
+        "caseId": null,
+        "ok": true,
+        "count": 40,
+        "error": null
+      },
+      {
+        "sourceId": "cisa-advisories",
+        "caseId": null,
+        "ok": true,
+        "count": 30,
+        "error": null
+      },
+      {
+        "sourceId": "nasa-press",
+        "caseId": null,
+        "ok": true,
+        "count": 10,
+        "error": null
+      },
+      {
+        "sourceId": "sec-press",
+        "caseId": null,
+        "ok": true,
+        "count": 25,
+        "error": null
+      },
+      {
+        "sourceId": "mit-ai",
+        "caseId": null,
+        "ok": true,
+        "count": 50,
+        "error": null
+      },
+      {
+        "sourceId": "arxiv-cs-ai",
+        "caseId": null,
+        "ok": true,
+        "count": 753,
+        "error": null
+      }
+    ],
+    "topicCoverageNote": "Active feeds cover AI, cybersecurity, science/space, finance/regulation, technology research. Local/state only when verified partners are configured (currently none active)."
+  },
+  "news": {
+    "targetCandidateBand": "8-15 representative (quality-gated; not padded)",
+    "candidates": [
+      {
+        "headline": "Johnson Controls C-CURE 9000 and Victor application server (Update A)",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-204-01"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T12:00:00.000Z",
+          "latest": "2026-08-11T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 6,
+          "passes": true,
+          "rationale": "Editorial fit score 6 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-c95776894434"
+      },
+      {
+        "headline": "Mira Hormone Monitor, Mira Android App",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/ics-medical-advisories/icsma-26-223-01"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T12:00:00.000Z",
+          "latest": "2026-08-11T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 5,
+          "passes": true,
+          "rationale": "Editorial fit score 5 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-699b739594be"
+      },
+      {
+        "headline": "Pulsetto Vagus Nerve Stimulator",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/ics-medical-advisories/icsma-26-223-02"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T12:00:00.000Z",
+          "latest": "2026-08-11T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 6,
+          "passes": true,
+          "rationale": "Editorial fit score 6 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-0c6031762608"
+      },
+      {
+        "headline": "#StopRansomware: Gunra Ransomware",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-222a"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T12:00:00.000Z",
+          "latest": "2026-08-10T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "RECENT",
+        "editorialFit": {
+          "score": 6,
+          "passes": true,
+          "rationale": "Editorial fit score 6 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-ffbc31fbe8d4"
+      },
+      {
+        "headline": "CISA Adds One Known Exploited Vulnerability to Catalog",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/alerts/2026/08/07/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "https://www.cisa.gov/news-events/alerts/2026/08/05/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "https://www.cisa.gov/news-events/alerts/2026/08/03/cisa-adds-one-known-exploited-vulnerability-catalog"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-03T12:00:00.000Z",
+          "latest": "2026-08-07T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window",
+        "corroborated": true,
+        "clusterId": "research-c3c34c12e9b1"
+      },
+      {
+        "headline": "CORDA: A Benchmark for Hierarchical Harm-Centric Moral Reasoning in Large Language Models",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.08061",
+          "https://arxiv.org/abs/2608.09548",
+          "https://arxiv.org/abs/2603.28590"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-c495ba8be79c"
+      },
+      {
+        "headline": "FitAQA: A Benchmark of Fitness Action Quality Assessment for Multimodal Large Language Models",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.08736",
+          "https://arxiv.org/abs/2608.07525",
+          "https://arxiv.org/abs/2608.07581"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-bda2f4afe6e6"
+      },
+      {
+        "headline": "From Mimicry to True Intelligence (TI) -- A New Paradigm for Artificial General Intelligence",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2509.14474",
+          "https://arxiv.org/abs/2511.10119",
+          "https://arxiv.org/abs/2501.17629"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-3730e47db986"
+      },
+      {
+        "headline": "Lion Nebula Roars in Webb’s Sights",
+        "category": "science",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NASA Press Releases"
+        ],
+        "sourceUrls": [
+          "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+          "https://science.nasa.gov/missions/webb/lion-nebula-roars-to-life-with-nasas-webb/"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T14:00:00.000Z",
+          "latest": "2026-08-11T17:02:49.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NASA Press Releases is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BREAKING",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-ef9c4239a45a"
+      },
+      {
+        "headline": "Controlled Memory Interference in Continual LLM Agents",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.07622",
+          "https://arxiv.org/abs/2608.08055"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-4a334c809f10"
+      },
+      {
+        "headline": "IntelliAudit: Using Large Language Models to Evaluate Audit Controls",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.07688",
+          "https://arxiv.org/abs/2608.08822"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-df8c72e94258"
+      },
+      {
+        "headline": "Motif 3: Technical Report",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.09119",
+          "https://arxiv.org/abs/2601.03888"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-b801c628340d"
+      },
+      {
+        "headline": "An Expectation-Maximization Perspective on Reinforcement Learning for LLM Reasoning",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2504.18587",
+          "https://arxiv.org/abs/2505.15062"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-98a5ff3a3a14"
+      },
+      {
+        "headline": "OBCache: Optimal Brain KV Cache Pruning for Efficient Long-Context LLM Inference",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2510.07651",
+          "https://arxiv.org/abs/2607.21985"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-cbf196639daa"
+      },
+      {
+        "headline": "NIST Researchers Correct Common Error Confounding Nanotech Measurements",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/nist-researchers-correct-common-error-confounding-nanotech-measurements"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-06T12:00:00.000Z",
+          "latest": "2026-08-06T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-758277f4bc33"
+      },
+      {
+        "headline": "‘Spooky’ Particles Transit DC Suburbs, a Step Toward a Quantum Network",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/spooky-particles-transit-dc-suburbs-step-toward-quantum-network"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-05T12:00:00.000Z",
+          "latest": "2026-08-05T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-61d388c67f0f"
+      },
+      {
+        "headline": "NIST Joins National Genesis Mission to Accelerate AI Innovation",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/nist-joins-national-genesis-mission-accelerate-ai-innovation"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-04T12:00:00.000Z",
+          "latest": "2026-08-04T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window",
+        "corroborated": true,
+        "clusterId": "research-8e1842276e51"
+      },
+      {
+        "headline": "NIST Announces Funding Opportunity for 14 MEP Centers to Advance Small and Medium-Sized U.S. Manufacturers",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/nist-announces-funding-opportunity-14-mep-centers-advance-small-and-medium"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-22T12:00:00.000Z",
+          "latest": "2026-07-22T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-bc7c8f312122"
+      },
+      {
+        "headline": "NIST Receives New Patent for Microbe-Killing Water Heater",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/nist-receives-new-patent-microbe-killing-water-heater"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-14T12:00:00.000Z",
+          "latest": "2026-07-14T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-6e4857f0c5aa"
+      },
+      {
+        "headline": "New Fabric Test Material Could Help Strengthen Domestic Supply Chain for Textiles and Clothing",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/new-fabric-test-material-could-help-strengthen-domestic-supply-chain"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-09T12:00:00.000Z",
+          "latest": "2026-07-09T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-6780c1c394b9"
+      }
+    ],
+    "acceptedDrafts": [],
+    "heldOrRejectedAfterFactCheck": [
+      {
+        "coverage": "national",
+        "title": "Johnson Controls C-CURE 9000 and Victor application server (Update A)",
+        "disposition": "HOLD",
+        "reason": "Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims",
+        "factCheckStatus": "HOLD"
+      }
+    ],
+    "rejectedCandidates": [
+      {
+        "headline": "CISA Adds One Known Exploited Vulnerability to Catalog",
+        "category": "cybersecurity",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "sourceUrls": [
+          "https://www.cisa.gov/news-events/alerts/2026/08/07/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "https://www.cisa.gov/news-events/alerts/2026/08/05/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "https://www.cisa.gov/news-events/alerts/2026/08/03/cisa-adds-one-known-exploited-vulnerability-catalog"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-03T12:00:00.000Z",
+          "latest": "2026-08-07T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window",
+        "corroborated": true,
+        "clusterId": "research-c3c34c12e9b1"
+      },
+      {
+        "headline": "CORDA: A Benchmark for Hierarchical Harm-Centric Moral Reasoning in Large Language Models",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.08061",
+          "https://arxiv.org/abs/2608.09548",
+          "https://arxiv.org/abs/2603.28590"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-c495ba8be79c"
+      },
+      {
+        "headline": "FitAQA: A Benchmark of Fitness Action Quality Assessment for Multimodal Large Language Models",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.08736",
+          "https://arxiv.org/abs/2608.07525",
+          "https://arxiv.org/abs/2608.07581"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-bda2f4afe6e6"
+      },
+      {
+        "headline": "From Mimicry to True Intelligence (TI) -- A New Paradigm for Artificial General Intelligence",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 3,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2509.14474",
+          "https://arxiv.org/abs/2511.10119",
+          "https://arxiv.org/abs/2501.17629"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-3730e47db986"
+      },
+      {
+        "headline": "Lion Nebula Roars in Webb’s Sights",
+        "category": "science",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NASA Press Releases"
+        ],
+        "sourceUrls": [
+          "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+          "https://science.nasa.gov/missions/webb/lion-nebula-roars-to-life-with-nasas-webb/"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T14:00:00.000Z",
+          "latest": "2026-08-11T17:02:49.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NASA Press Releases is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BREAKING",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-ef9c4239a45a"
+      },
+      {
+        "headline": "Controlled Memory Interference in Continual LLM Agents",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.07622",
+          "https://arxiv.org/abs/2608.08055"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-4a334c809f10"
+      },
+      {
+        "headline": "IntelliAudit: Using Large Language Models to Evaluate Audit Controls",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.07688",
+          "https://arxiv.org/abs/2608.08822"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-df8c72e94258"
+      },
+      {
+        "headline": "Motif 3: Technical Report",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2608.09119",
+          "https://arxiv.org/abs/2601.03888"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-b801c628340d"
+      },
+      {
+        "headline": "An Expectation-Maximization Perspective on Reinforcement Learning for LLM Reasoning",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2504.18587",
+          "https://arxiv.org/abs/2505.15062"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration",
+        "corroborated": false,
+        "clusterId": "research-98a5ff3a3a14"
+      },
+      {
+        "headline": "OBCache: Optimal Brain KV Cache Pruning for Efficient Long-Context LLM Inference",
+        "category": "ai",
+        "coverageLevel": "international",
+        "route": "NEWS",
+        "sourceCount": 2,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "arXiv cs.AI"
+        ],
+        "sourceUrls": [
+          "https://arxiv.org/abs/2510.07651",
+          "https://arxiv.org/abs/2607.21985"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T04:00:00.000Z",
+          "latest": "2026-08-11T04:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "INSUFFICIENT",
+          "details": "Needs two independent Tier 1–3 sources; Tier 4 and syndicated copies do not count."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": false,
+        "clusterId": "research-cbf196639daa"
+      },
+      {
+        "headline": "NIST Researchers Correct Common Error Confounding Nanotech Measurements",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/nist-researchers-correct-common-error-confounding-nanotech-measurements"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-06T12:00:00.000Z",
+          "latest": "2026-08-06T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-758277f4bc33"
+      },
+      {
+        "headline": "‘Spooky’ Particles Transit DC Suburbs, a Step Toward a Quantum Network",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/spooky-particles-transit-dc-suburbs-step-toward-quantum-network"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-05T12:00:00.000Z",
+          "latest": "2026-08-05T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-61d388c67f0f"
+      },
+      {
+        "headline": "NIST Joins National Genesis Mission to Accelerate AI Innovation",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/08/nist-joins-national-genesis-mission-accelerate-ai-innovation"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-04T12:00:00.000Z",
+          "latest": "2026-08-04T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window",
+        "corroborated": true,
+        "clusterId": "research-8e1842276e51"
+      },
+      {
+        "headline": "NIST Announces Funding Opportunity for 14 MEP Centers to Advance Small and Medium-Sized U.S. Manufacturers",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/nist-announces-funding-opportunity-14-mep-centers-advance-small-and-medium"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-22T12:00:00.000Z",
+          "latest": "2026-07-22T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-bc7c8f312122"
+      },
+      {
+        "headline": "NIST Receives New Patent for Microbe-Killing Water Heater",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/nist-receives-new-patent-microbe-killing-water-heater"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-14T12:00:00.000Z",
+          "latest": "2026-07-14T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-6e4857f0c5aa"
+      },
+      {
+        "headline": "New Fabric Test Material Could Help Strengthen Domestic Supply Chain for Textiles and Clothing",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/new-fabric-test-material-could-help-strengthen-domestic-supply-chain"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-09T12:00:00.000Z",
+          "latest": "2026-07-09T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-6780c1c394b9"
+      },
+      {
+        "headline": "Arvind Raman Confirmed as the 18th NIST Director",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/07/arvind-raman-confirmed-18th-nist-director"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-07-06T12:00:00.000Z",
+          "latest": "2026-07-06T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-386af62ab648"
+      },
+      {
+        "headline": "NIST Launches Center to Drive the Manufacture of Quantum Technologies",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/06/nist-launches-center-drive-manufacture-quantum-technologies"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-06-29T12:00:00.000Z",
+          "latest": "2026-06-29T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-202684202f51"
+      },
+      {
+        "headline": "NIST Releases Technical Findings on What Caused the 2021 Partial Collapse of Champlain Towers South",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/06/nist-releases-technical-findings-what-caused-2021-partial-collapse"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-06-22T12:00:00.000Z",
+          "latest": "2026-06-22T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-dc55ac066379"
+      },
+      {
+        "headline": "NIST Expands Its Library of ‘Chemical Fingerprints’ to Identify Unknown Substances",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/06/nist-expands-its-library-chemical-fingerprints-identify-unknown-substances"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-06-09T12:00:00.000Z",
+          "latest": "2026-06-09T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-5f8ddb0b971d"
+      },
+      {
+        "headline": "NIST Mathematical Proof Supports Transition to a Continuous-Monitor-and-Update Security Model for AI Systems",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/06/nist-mathematical-proof-supports-transition-continuous-monitor-and-update"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-06-09T12:00:00.000Z",
+          "latest": "2026-06-09T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window",
+        "corroborated": true,
+        "clusterId": "research-e3517e427b01"
+      },
+      {
+        "headline": "NIST Expands AI Consortium’s Scope, Calls for New Members",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/05/nist-expands-ai-consortiums-scope-calls-new-members"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-05-29T12:00:00.000Z",
+          "latest": "2026-05-29T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-0e2212cbd227"
+      },
+      {
+        "headline": "Shooting for the Moon: Ultrastable Lasers in Dark Craters Could Enable Lunar Navigation, Precision Timekeeping, New Science",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/05/shooting-moon-ultrastable-lasers-dark-craters-could-enable-lunar-navigation"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-05-18T12:00:00.000Z",
+          "latest": "2026-05-18T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-f5b1f2057ab3"
+      },
+      {
+        "headline": "Wear and Tear Changes Measurable PFAS Levels in Firefighter Hoods, Gloves and Wildland Gear",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/05/wear-and-tear-changes-measurable-pfas-levels-firefighter-hoods-gloves-and"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-05-13T12:00:00.000Z",
+          "latest": "2026-05-13T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-72387196b115"
+      },
+      {
+        "headline": "NIST Weighs In on the Mystery of the Gravitational Constant",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/04/nist-weighs-mystery-gravitational-constant"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-04-16T12:00:00.000Z",
+          "latest": "2026-04-16T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-cefde74f86dc"
+      },
+      {
+        "headline": "Any Color You Like: NIST Scientists Create ‘Any Wavelength’ Lasers in Tiny Circuits for Light",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/04/any-color-you-nist-scientists-create-any-wavelength-lasers-tiny-circuits"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-04-15T12:00:00.000Z",
+          "latest": "2026-04-15T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-d146fcdd03f9"
+      },
+      {
+        "headline": "NIST Researchers Develop Photonic Chip Packaging That Can Withstand Extreme Environments",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/03/nist-researchers-develop-photonic-chip-packaging-can-withstand-extreme"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-03-30T12:00:00.000Z",
+          "latest": "2026-03-30T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-67b4b8522770"
+      },
+      {
+        "headline": "NIST Helps Fingerprint Examiners With New Data and Software Release",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/03/nist-helps-fingerprint-examiners-new-data-and-software-release"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-03-23T12:00:00.000Z",
+          "latest": "2026-03-23T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-0e6ca424a838"
+      },
+      {
+        "headline": "NIST Submits Annual Report to Congress Summarizing FY 2025 Progress on National Construction Safety Team Investigations",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/03/nist-submits-annual-report-congress-summarizing-fy-2025-progress-national"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-03-19T12:00:00.000Z",
+          "latest": "2026-03-19T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-d86123bac161"
+      },
+      {
+        "headline": "2 Health Care Organizations Will Receive 2025 Baldrige National Quality Awards",
+        "category": "ai",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NIST News"
+        ],
+        "sourceUrls": [
+          "https://www.nist.gov/news-events/news/2026/02/2-health-care-organizations-will-receive-2025-baldrige-national-quality"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-02-19T12:00:00.000Z",
+          "latest": "2026-02-19T12:00:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NIST News is a direct Tier 1 primary source permitted to qualify its own announcement."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BACKGROUND",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-0280f64eba44"
+      }
+    ],
+    "sourcingMatrix": [
+      {
+        "headline": "Johnson Controls C-CURE 9000 and Victor application server (Update A)",
+        "sources": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "urls": [
+          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-204-01"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        }
+      },
+      {
+        "headline": "Mira Hormone Monitor, Mira Android App",
+        "sources": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "urls": [
+          "https://www.cisa.gov/news-events/ics-medical-advisories/icsma-26-223-01"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        }
+      },
+      {
+        "headline": "Pulsetto Vagus Nerve Stimulator",
+        "sources": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "urls": [
+          "https://www.cisa.gov/news-events/ics-medical-advisories/icsma-26-223-02"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        }
+      },
+      {
+        "headline": "#StopRansomware: Gunra Ransomware",
+        "sources": [
+          "CISA Cybersecurity Advisories"
+        ],
+        "urls": [
+          "https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-222a"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "CISA Cybersecurity Advisories is a direct Tier 1 primary source permitted to qualify its own announcement."
+        }
+      }
+    ],
+    "pipelineWouldCreate": [],
+    "dailyCap": 4
+  },
+  "blog": {
+    "targetCandidateBand": "3-5 strong ideas",
+    "ideas": [
+      {
+        "title": "New AI Model Shows How to Evacuate for Fires One Safe Step at a Time",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, cybersecurity, standards, semiconductors",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "outside current freshness window"
+      },
+      {
+        "title": "NIST Researchers Discover a New Way to Whisk Alloys Together With Lasers",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, cybersecurity, standards, semiconductors",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "outside current freshness window"
+      },
+      {
+        "title": "NASA Shares Station Research Today Supporting Moon, Mars Tomorrow",
+        "topic": "science",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on science, space, technology",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "no CinNova relevance topic matched"
+      },
+      {
+        "title": "Community College Instructors Bring Astronomy Textbook Into 21st Century",
+        "topic": "science",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on science, space, technology",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "no CinNova relevance topic matched"
+      },
+      {
+        "title": "The benefits of medical AI assistance vary based on user expertise",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "A better way to turn 2D designs into 3D models for rapid prototyping",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Helping AI models to meet the real world",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Jesse Thaler named director of the Laboratory for Nuclear Science",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Inaugural Music Technology Research Showcase celebrates work of new graduate program’s initial students",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "MIT’s Initiative for New Manufacturing builds momentum",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      }
+    ],
+    "acceptedDrafts": [],
+    "heldOrRejectedAfterFactCheck": [],
+    "rejectedIdeas": [
+      {
+        "title": "New AI Model Shows How to Evacuate for Fires One Safe Step at a Time",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, cybersecurity, standards, semiconductors",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "outside current freshness window"
+      },
+      {
+        "title": "NIST Researchers Discover a New Way to Whisk Alloys Together With Lasers",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, cybersecurity, standards, semiconductors",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "outside current freshness window"
+      },
+      {
+        "title": "NASA Shares Station Research Today Supporting Moon, Mars Tomorrow",
+        "topic": "science",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on science, space, technology",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "no CinNova relevance topic matched"
+      },
+      {
+        "title": "Community College Instructors Bring Astronomy Textbook Into 21st Century",
+        "topic": "science",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on science, space, technology",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "no CinNova relevance topic matched"
+      },
+      {
+        "title": "The benefits of medical AI assistance vary based on user expertise",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "A better way to turn 2D designs into 3D models for rapid prototyping",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Helping AI models to meet the real world",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Jesse Thaler named director of the Laboratory for Nuclear Science",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "Inaugural Music Technology Research Showcase celebrates work of new graduate program’s initial students",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      },
+      {
+        "title": "MIT’s Initiative for New Manufacturing builds momentum",
+        "topic": "ai",
+        "classification": "evergreen",
+        "searchIntent": "Informational",
+        "valueProposition": "Useful explainer on ai, research, education",
+        "sourceRequirements": "Same corroboration rules as news; prefer evergreen framing",
+        "duplicateContentCheck": "NEW",
+        "eligibilityVerdict": "REJECTED",
+        "rejectionReason": "insufficient independent corroboration; outside current freshness window"
+      }
+    ],
+    "pipelineWouldCreate": [],
+    "dailyCap": 1
+  },
+  "quality": {
+    "factCheckGate": {
+      "description": "Structural fact-check gate (scoreNewsFactCheck) rejects/holds unsafe patterns without inventing content.",
+      "patternsVerifiedInCodeAndTests": [
+        {
+          "pattern": "one-source rumor",
+          "behavior": "REVIEW/HOLD — prefer independent corroboration; Tier-4 alone cannot READY"
+        },
+        {
+          "pattern": "contradictory reporting",
+          "behavior": "enrichment CONFLICT blocks READY; HOLD/REVIEW with notes"
+        },
+        {
+          "pattern": "unverifiable quote",
+          "behavior": "missing verifiedClaims + weak sources → HOLD/REVIEW"
+        },
+        {
+          "pattern": "invented statistic",
+          "behavior": "no silent numeric invention; uncertainties must be listed"
+        },
+        {
+          "pattern": "future-dated event as completed",
+          "behavior": "HOLD language vs completed-language checks"
+        },
+        {
+          "pattern": "stale story as current",
+          "behavior": "freshness window + ageDays HOLD"
+        },
+        {
+          "pattern": "duplicate article",
+          "behavior": "DUPLICATE classification → REJECT drafting path"
+        },
+        {
+          "pattern": "unsupported causal claim",
+          "behavior": "uncertainties / attributed-only claims → HOLD/REVIEW"
+        },
+        {
+          "pattern": "speculative headline as fact",
+          "behavior": "HOLD_LANGUAGE_RE + missing verified claims"
+        }
+      ],
+      "silentFallbackToInventedContent": false
+    },
+    "factCheckPipeline": {
+      "newsResults": [
+        {
+          "coverage": "local",
+          "disposition": "NO QUALIFIED STORY",
+          "slug": null,
+          "factCheckStatus": "NO QUALIFIED STORY",
+          "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk.",
+          "seoOk": null,
+          "heroStatus": null
+        },
+        {
+          "coverage": "state",
+          "disposition": "NO QUALIFIED STORY",
+          "slug": null,
+          "factCheckStatus": "NO QUALIFIED STORY",
+          "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk.",
+          "seoOk": null,
+          "heroStatus": null
+        },
+        {
+          "coverage": "national",
+          "disposition": "HOLD",
+          "slug": "johnson-controls-c-cure-9000-and-victor-application-server-update-a",
+          "factCheckStatus": "HOLD",
+          "factCheckScore": 80,
+          "duplicateClassification": "NEW STORY",
+          "reason": "Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims",
+          "seoOk": null,
+          "heroStatus": null
+        },
+        {
+          "coverage": "international",
+          "disposition": "NO QUALIFIED STORY",
+          "slug": null,
+          "factCheckStatus": "NO QUALIFIED STORY",
+          "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk.",
+          "seoOk": null,
+          "heroStatus": null
+        }
+      ],
+      "blogResult": {
+        "disposition": "NO QUALIFIED STORY",
+        "slug": null,
+        "reason": "No verified Blog topic provided. Gap hints listed for humans/agents — do not invent a post."
+      },
+      "publishReadiness": [],
+      "heldPacketNews": [
+        {
+          "coverage": "national",
+          "title": "Johnson Controls C-CURE 9000 and Victor application server (Update A)",
+          "disposition": "HOLD",
+          "reason": "Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims",
+          "factCheckStatus": "HOLD"
+        }
+      ]
+    },
+    "originality": [],
+    "duplicateProtection": {
+      "duplicatesDetected": 0,
+      "classifications": [
+        "NEW"
+      ]
+    },
+    "sourceQuality": {
+      "activeTier": [
+        "TIER_1_PRIMARY",
+        "TIER_3_REPUTABLE_SECONDARY"
+      ],
+      "noLowQualitySourcesAdded": true
+    },
+    "newsVsBlogSeparation": {
+      "breakingStaysNews": true,
+      "evergreenStaysBlog": true,
+      "nearDuplicateNewsPlusBlog": {
+        "status": "CLEAR",
+        "items": []
+      },
+      "crossLinkingAllowedWhenPurposeDiffers": true
+    },
+    "quoteStatisticSafety": {
+      "inventQuotes": false,
+      "inventStatistics": false,
+      "longQuotationsDiscouraged": true
+    }
+  },
+  "translation": {
+    "supportedLocales": [
+      "en",
+      "es",
+      "fr",
+      "de"
+    ],
+    "englishAuthoritative": true,
+    "translatedVersionsCannotAddFacts": true,
+    "unsupportedLocalesDoNotBlockEnglish": true,
+    "queues": []
+  },
+  "automation": {
+    "scheduleBehavior": {
+      "shadow": true,
+      "dryRun": true,
+      "openDraftPr": false,
+      "writeDraftFiles": false,
+      "autoPublish": false,
+      "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+    },
+    "failureBehavior": {
+      "sourceTimeoutOrUnavailable": {
+        "observed": [],
+        "behavior": "Logged in sourceResults; discovery continues with healthy sources; no invented candidates"
+      },
+      "onlyOneQualifyingSource": {
+        "behavior": "Corroboration requires 2 independent Tier 1–3 OR solo Tier-1 primary without secondary requirement"
+      },
+      "allCandidatesRejected": {
+        "observed": false,
+        "behavior": "NO_QUALIFIED_STORY / empty packet desks; no fake article; report still produced"
+      },
+      "translationServiceFailure": {
+        "behavior": "Unsupported/missing locales stay MISSING; English shadow validation is not blocked"
+      },
+      "duplicateDetectionCollision": {
+        "behavior": "DUPLICATE → skip drafting; UPDATE/FOLLOW-UP require material development"
+      },
+      "malformedSourceData": {
+        "behavior": "Provider errors recorded per source; cluster builders skip invalid items; no silent fill"
+      },
+      "requiredOutcomes": {
+        "noPublication": true,
+        "noEmptyFakeArticle": true,
+        "failureLogged": true,
+        "reportProduced": true,
+        "retryBounded": true,
+        "noSilentInventedContent": true
+      },
+      "healthySources": [
+        "nist-news",
+        "cisa-advisories",
+        "nasa-press",
+        "sec-press",
+        "mit-ai",
+        "arxiv-cs-ai"
+      ],
+      "failedSources": []
+    },
+    "publishGate": {
+      "autoPublish": false,
+      "draftPrOnSchedule": false,
+      "requiresHumanPublishCommands": true,
+      "holdNeverPublishes": true
+    }
+  },
+  "recommendation": {
+    "productionCadence": {
+      "news": {
+        "minimumPerDay": 0,
+        "targetPerDay": 0,
+        "maximumPerDay": 4,
+        "rationale": "Based on 0 Phase-10A READY/REVIEW shadow drafts and 4 research-eligible clusters; pipeline cap MAX_NEWS_PER_DAY=4. Do not fill desks with HOLD content."
+      },
+      "blog": {
+        "targetPerWeek": 1,
+        "maximumPerDay": 1,
+        "rationale": "No READY blog shadow drafts in this window — keep blog at most 1/week until evergreen ideas clear corroboration/freshness."
+      },
+      "doNotOptimizeForMaximumVolume": true
+    },
+    "remainingBlockersBeforeAutomaticPublication": [
+      "No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: national=HOLD).",
+      "No Phase-10A READY/REVIEW blog shadow drafts today — corroboration/freshness/fit gates blocked evergreen ideas.",
+      "Local/state live feeds are not configured (registry placeholders remain inactive) — correct until verified partners exist.",
+      "Controlled draft-file writing + Draft PR path not activated (allow_draft_pr still OFF for schedule).",
+      "Production auto-publishing must remain OFF until multi-day READY shadow quality is proven.",
+      "Hero IMAGE REQUIRED resolution still manual.",
+      "Translations are MISSING (AI_DRAFT English only when drafts exist) — human review required before any locale publish.",
+      "Live selection is ICS-advisory-heavy (solo Tier-1 primary). Need more multi-source AI/tech/business stories clearing freshness+fit before auto-publish."
+    ]
+  },
+  "safety": {
+    "publishedCatalogsTouched": false,
+    "draftPrOpened": false,
+    "socialPosted": false,
+    "deployed": false,
+    "merged": false,
+    "fabricatedFacts": false,
+    "inventedQuotes": false,
+    "weakSourcePublication": false
+  },
+  "verdict": "BLOCKED — No Phase-10A READY/REVIEW news shadow drafts today (selected packet news held/rejected: national=HOLD)."
+}

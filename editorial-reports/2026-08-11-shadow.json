@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "10B-shadow",
+  "date": "2026-08-11",
+  "generatedAt": "2026-08-11T18:14:12.816Z",
+  "mode": "shadow",
+  "dryRun": true,
+  "autoPublish": false,
+  "openDraftPr": false,
+  "writeDraftFiles": false,
+  "researchMode": {
+    "mode": "live",
+    "rationale": "Manual run explicitly selected live research."
+  },
+  "executionMode": {
+    "shadow": true,
+    "dryRun": true,
+    "openDraftPr": false,
+    "writeDraftFiles": false,
+    "autoPublish": false,
+    "rationale": "Draft PR preparation is not activated — defaulting to shadow/dry-run mode."
+  },
+  "researchStatus": null,
+  "wouldCreate": [],
+  "wouldSkip": [],
+  "noQualified": [
+    {
+      "type": "news",
+      "coverage": "local",
+      "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk."
+    },
+    {
+      "type": "news",
+      "coverage": "state",
+      "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk."
+    },
+    {
+      "type": "news",
+      "coverage": "national",
+      "reason": "Unresolved uncertainties listed (1); Only one source — prefer independent corroboration for consequential claims"
+    },
+    {
+      "type": "news",
+      "coverage": "international",
+      "reason": "No verified candidate provided for this desk. Do not invent a story to fill the desk."
+    },
+    {
+      "type": "blog",
+      "reason": "No verified Blog topic provided. Gap hints listed for humans/agents — do not invent a post."
+    }
+  ],
+  "imageRequirements": [],
+  "counts": {
+    "wouldCreateNews": 0,
+    "wouldCreateBlog": 0,
+    "wouldCreateSocial": 0,
+    "skipped": 0,
+    "noQualified": 5,
+    "imageRequired": 0
+  },
+  "safety": {
+    "publishedCatalogsTouched": false,
+    "draftPrOpened": false,
+    "socialPosted": false,
+    "deployed": false,
+    "merged": false
+  },
+  "notes": [
+    "Shadow mode simulates the complete editorial automation.",
+    "No news/blog drafts were written to disk.",
+    "No Draft PR was opened.",
+    "No production catalog publish occurred.",
+    "Packet: D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\editorial-reports\\2026-08-11-live-packet.json",
+    "Discover mode: live"
+  ]
+}

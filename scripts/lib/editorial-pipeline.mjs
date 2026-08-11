@@ -90,6 +90,7 @@ export function runEditorialDailyPipeline({
     }
 
     const created = [];
+    const shadowDrafts = [];
     const skipped = [];
     const noQualified = [];
     const newsResults = [];
@@ -238,6 +239,7 @@ export function runEditorialDailyPipeline({
         const outbound = stripPrivate(draft);
         if (dryRun) {
             created.push({ type: "news", coverage, slug, path: newsDraftPath(slug), dryRun: true });
+            shadowDrafts.push({ type: "news", coverage, slug, draft: outbound });
         } else {
             const filePath = writeNewsDraft(outbound);
             created.push({ type: "news", coverage, slug, path: filePath });
@@ -339,6 +341,7 @@ export function runEditorialDailyPipeline({
             const outbound = stripPrivate(draft);
             if (dryRun) {
                 created.push({ type: "blog", slug, path: blogDraftPath(slug), dryRun: true });
+                shadowDrafts.push({ type: "blog", slug, draft: outbound });
             } else {
                 const filePath = writeBlogDraft(outbound);
                 created.push({ type: "blog", slug, path: filePath });
@@ -389,6 +392,7 @@ export function runEditorialDailyPipeline({
         dateIso,
         dryRun,
         created,
+        shadowDrafts,
         skipped,
         noQualified,
         newsResults,
