@@ -79,7 +79,7 @@ export function compositeRank(cluster = {}) {
     }
     // Prefer multi-source / newsroom clusters; demote solo ICS product advisories.
     const distinctSources = new Set((cluster.sources || []).map((s) => s.sourceId).filter(Boolean)).size;
-    const multiSourceBonus = distinctSources >= 2 ? 6 : 0;
+    const multiSourceBonus = distinctSources >= 2 ? 12 : 0;
     const newsroomBonus = (cluster.sources || []).some((s) => {
         const tier = String(s.sourceTier || "");
         return tier === "TIER_1_NEWS" || tier === "TIER_2_HIGH_AUTHORITY" || tier === "TIER_2_REPUTABLE";
@@ -90,7 +90,11 @@ export function compositeRank(cluster = {}) {
         && /\b(icsa-|advisory|ransomware|c-cure|stimulator|hormone monitor)\b/i.test(headline)
             ? -7
             : 0;
-    return Number((fit * 2 + freshness + confidence * 2 + primaryBonus + corroborationBonus + tierSpread + publicInterest + multiSourceBonus + newsroomBonus + soloIcsPenalty).toFixed(3));
+    // Prefer already-corroborated multi-outlet clusters over solo newsroom REVIEW slots.
+    const independentHint = cluster.corroboration?.independentSourceIds?.length
+        || new Set((cluster.sources || []).map((s) => s.sourceId).filter(Boolean)).size;
+    const corroboratedPairBonus = independentHint >= 2 ? 8 : 0;
+    return Number((fit * 2 + freshness + confidence * 2 + primaryBonus + corroborationBonus + tierSpread + publicInterest + multiSourceBonus + newsroomBonus + soloIcsPenalty + corroboratedPairBonus).toFixed(3));
 }
 
 function primarySourceId(cluster) {
@@ -139,6 +143,18 @@ export function selectClustersForPacket(qualified = [], {
 
     const blogPool = withMeta
         .filter((item) => item.route === "BLOG" && item.fit.score >= minFit)
+        .map((item) => {
+            // Evergreen Blog: do not punish BACKGROUND freshness the way News does.
+            const evergreenBoost =
+                item.cluster.freshness === "BACKGROUND" || item.cluster.blogQualification?.evergreen
+                    ? 3
+                    : 0;
+            const primaryBoost = (item.cluster.primarySources || []).length ? 2 : 0;
+            const text = `${item.cluster.canonicalTopic || ""}`;
+            const frameworkBoost = /\b(nist|framework|guidance|standard|risk management)\b/i.test(text) ? 6 : 0;
+            const icsPenalty = /\b(icsa-|igss|c-cure|stimulator|pulsetto|mira )\b/i.test(text) ? -20 : 0;
+            return { ...item, rank: item.rank + evergreenBoost + primaryBoost + frameworkBoost + icsPenalty };
+        })
         .sort((a, b) => b.rank - a.rank || b.fit.score - a.fit.score);
 
     const selectedNews = [];

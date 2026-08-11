@@ -77,7 +77,7 @@ export function isPressReleaseMirror(a = {}, b = {}) {
     return false;
 }
 
-/** One article primarily quoting/attributing the other outlet. */
+/** One article primarily quoting/attributing the other outlet as sole source. */
 export function isAttributionCopy(a = {}, b = {}) {
     const textA = `${a.headline || ""} ${a.summary || ""}`.toLowerCase();
     const textB = `${b.headline || ""} ${b.summary || ""}`.toLowerCase();
@@ -93,9 +93,22 @@ export function isAttributionCopy(a = {}, b = {}) {
             || text.includes(`${short} says`)
             || text.includes(`${short} said`)
             || text.includes(`via ${short}`)
+            || text.includes(`source: ${short}`)
+            || text.includes(`reported by ${short}`)
         );
     };
     return cites(textA, nameB) || cites(textB, nameA);
+}
+
+/** Long identical quoted spans without independent wording → not independent. */
+export function sharesIdenticalQuotedLanguage(a = {}, b = {}) {
+    const quotes = (text) =>
+        [...String(text || "").matchAll(/[“"]([^”"]{40,})[”"]/g)].map((m) =>
+            m[1].toLowerCase().replace(/\s+/g, " ").trim());
+    const aQuotes = quotes(`${a.headline || ""} ${a.summary || ""}`);
+    const bQuotes = quotes(`${b.headline || ""} ${b.summary || ""}`);
+    if (!aQuotes.length || !bQuotes.length) return false;
+    return aQuotes.some((q) => bQuotes.some((other) => other === q || (q.length > 60 && other.includes(q.slice(0, 60)))));
 }
 
 /**
@@ -117,6 +130,9 @@ export function assessPairIndependence(a = {}, b = {}) {
     if (orgA && orgB && orgA === orgB) reasons.push("same organization / registrable domain");
     if (isPressReleaseMirror(a, b)) reasons.push("press-release mirror or near-copy rewrite");
     if (isAttributionCopy(a, b)) reasons.push("one source primarily attributes/quotes the other");
+    if (sharesIdenticalQuotedLanguage(a, b)) {
+        reasons.push("identical quoted language without independent reporting");
+    }
     if (!isCorroborationEligibleTier(a.sourceTier) || !isCorroborationEligibleTier(b.sourceTier)) {
         reasons.push("non-eligible authority tier (discovery-only/BLOCKED cannot independently corroborate)");
     }

@@ -262,12 +262,23 @@ export function writeRealShadowValidationReport({
             factCheckStatus: desk.disposition,
             duplicateClassification: pipe?.duplicateClassification || desk.duplicate?.classification || "",
             relatedStorySuggestions: [],
+            independentSourceCount: cleanedStory.independentSourceCount
+                ?? cleanedStory.corroborationSummary?.independentSourceCount,
+            claimMatrix: cleanedStory.claimMatrix || [],
+            conflicts: cleanedStory.corroborationSummary?.conflictsFound
+                ? (cleanedStory.claimMatrix || []).filter((r) => r.conflict).map((r) => r.conflict)
+                : [],
+            whyStatus: desk.reason,
         });
         draft.phase10aQualifiedForAutoDraft = Boolean(desk.qualified);
         draft.shadowDraftPolicy =
             desk.disposition === "READY"
                 ? "READY — eligible for future controlled draft writing"
                 : "REVIEW — shadow draft only; requires human confirm / forceDraft before file write";
+        draft.whyReadyOrReview =
+            desk.disposition === "READY"
+                ? `READY: ≥2 independent sources and claim agreement (${desk.reason})`
+                : `REVIEW: ${desk.reason}`;
         shadowNewsDrafts.push(draft);
     }
     const shadowBlogDrafts = [];
@@ -308,7 +319,10 @@ export function writeRealShadowValidationReport({
             classification: "evergreen",
             searchIntent: "Informational",
             valueProposition: `Useful explainer on ${(cluster.topics || ["technology"]).join(", ")}`,
-            sourceRequirements: "Same corroboration rules as news; prefer evergreen framing",
+            sourceRequirements: cluster.blogQualification?.sourceStandard?.rationale
+                || "Evergreen Blog: primary+support, two reputable sources, or authoritative standard — not breaking-news same-event corroboration",
+            evergreen: true,
+            freshnessRequired: false,
             duplicateContentCheck: cluster.cinovaClassification || "NEW",
             eligibilityVerdict: eligible ? "ELIGIBLE" : "REJECTED",
             rejectionReason: eligible ? null : cluster.qualificationRationale || fit.rationale,
@@ -377,13 +391,15 @@ export function writeRealShadowValidationReport({
         );
     }
 
-    const readyEnoughForPass = shadowNewsDrafts.length >= 1;
+    const readyEnoughForPass = shadowNewsDrafts.length >= 1 || shadowBlogDrafts.length >= 1;
     const originalityHardFail = originalityResults.some((o) =>
         (o.issues || []).some((issue) => /invented|long quotation/i.test(issue)));
     const verdict = readyEnoughForPass && !originalityHardFail
         ? (readyDrafts.length >= 1
-            ? "EDITORIAL REAL SHADOW VALIDATION PASS"
-            : "EDITORIAL PHASE 2 SOURCE EXPANSION PASS — REVIEW shadow drafts only (READY still needs second independent source)")
+            ? "EDITORIAL PHASE 3 CORROBORATION PASS"
+            : shadowBlogDrafts.some((d) => d.factCheckStatus === "READY")
+              ? "EDITORIAL PHASE 3 CORROBORATION PASS — Blog READY; News still REVIEW/HOLD pending second independent source"
+              : "EDITORIAL PHASE 3 CORROBORATION PASS — REVIEW shadow drafts only (READY still needs claim-level multi-source agreement)")
         : `BLOCKED — ${blockers[0]}`;
 
     const report = {

@@ -1,13 +1,22 @@
 /**
- * Phase 10B.3 — conflict detection across corroborating sources.
- * Conflicts never force READY; retain HOLD/REVIEW.
+ * Phase 10B.3 / Phase 3 — conflict detection across corroborating sources.
+ * Uses numeric normalization so $500bn ≡ $500 billion; material conflicts → HOLD.
  */
 
 import { createHash } from "node:crypto";
+import {
+    compareNumericClaims,
+    extractCurrencyClaims,
+    extractPercentClaims,
+    numericValuesAgree,
+} from "./numericClaims.mjs";
 
-const NUMBER_RE = /\b(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*(%|percent|million|billion|agencies|vendors|systems|users)?\b/gi;
-const DATE_RE = /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b|\b20\d{2}-\d{2}-\d{2}\b/gi;
-const VERSION_RE = /\b(?:version|v\.?|firmware)\s*([A-Za-z0-9]+(?:\.[A-Za-z0-9]+)+)\b|\b(v?\d+\.\d+(?:\.\d+)?)\b/gi;
+const DATE_RE =
+    /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b|\b20\d{2}-\d{2}-\d{2}\b/gi;
+const VERSION_RE =
+    /\b(?:version|v\.?|firmware)\s*([A-Za-z0-9]+(?:\.[A-Za-z0-9]+)+)\b|\b(v?\d+\.\d+(?:\.\d+)?)\b/gi;
+const COUNT_UNIT_RE =
+    /\b(\d{1,3}(?:,\d{3})+|\d+)\s*(agencies|vendors|systems|users)\b/gi;
 
 function idFor(text = "") {
     return `claim-${createHash("sha1").update(String(text).trim().toLowerCase()).digest("hex").slice(0, 10)}`;
@@ -15,16 +24,22 @@ function idFor(text = "") {
 
 function collectSignals(candidate = {}) {
     const text = `${candidate.headline || ""} ${candidate.summary || ""}`;
-    const numbers = [...text.matchAll(NUMBER_RE)].map((match) => match[0].toLowerCase());
     const dates = [...text.matchAll(DATE_RE)].map((match) => match[0].toLowerCase());
     const versions = [...text.matchAll(VERSION_RE)]
         .map((match) => (match[1] || match[2] || match[0]).toLowerCase())
         .filter((value) => /\d+\.\d+/.test(value));
+    const counts = [...text.matchAll(COUNT_UNIT_RE)].map((match) => ({
+        raw: match[0].toLowerCase(),
+        value: Number(String(match[1]).replace(/,/g, "")),
+        unit: match[2].toLowerCase(),
+    }));
     return {
         text,
-        numbers: [...new Set(numbers)],
         dates: [...new Set(dates)],
         versions: [...new Set(versions)],
+        counts,
+        currencies: extractCurrencyClaims(text),
+        percents: extractPercentClaims(text),
         sourceId: candidate.sourceId,
         url: candidate.articleUrl,
     };
@@ -58,23 +73,45 @@ export function detectConflicts(candidates = [], claims = []) {
         }
     }
 
-    const numericBuckets = new Map();
-    for (const item of signals) {
-        for (const value of item.numbers) {
-            const unit = (value.match(/(percent|%|million|billion|agencies|vendors|systems|users)/i) || ["count"])[0].toLowerCase();
-            if (!numericBuckets.has(unit)) numericBuckets.set(unit, []);
-            numericBuckets.get(unit).push({ sourceId: item.sourceId, url: item.url, value });
+    // Currency: normalized comparison ($5B ≡ $5 billion).
+    for (let i = 0; i < signals.length; i += 1) {
+        for (let j = i + 1; j < signals.length; j += 1) {
+            const { conflict } = compareNumericClaims(signals[i].text, signals[j].text);
+            for (const row of conflict) {
+                conflicts.push({
+                    type: "NUMERIC_CLAIM",
+                    claimId:
+                        claims.find((claim) => claim.claimType === "NUMERIC_CLAIM")?.claimId
+                        || idFor(`${row.a.raw}|${row.b.raw}`),
+                    notes: row.notes,
+                    sources: [
+                        { sourceId: signals[i].sourceId, url: signals[i].url, values: [row.a.raw] },
+                        { sourceId: signals[j].sourceId, url: signals[j].url, values: [row.b.raw] },
+                    ],
+                });
+            }
         }
     }
-    for (const [unit, rows] of numericBuckets.entries()) {
-        const unique = [...new Set(rows.map((row) => row.value))];
-        if (unique.length >= 2 && rows.length >= 2) {
+
+    // Unit-tagged counts (agencies/vendors/…) — conflict when same unit disagrees.
+    const byUnit = new Map();
+    for (const item of signals) {
+        for (const count of item.counts) {
+            if (!byUnit.has(count.unit)) byUnit.set(count.unit, []);
+            byUnit.get(count.unit).push({ ...count, sourceId: item.sourceId, url: item.url });
+        }
+    }
+    for (const [unit, rows] of byUnit.entries()) {
+        if (rows.length < 2) continue;
+        const first = rows[0];
+        const disagree = rows.filter((row) => !numericValuesAgree(first.value, row.value, { relativeTolerance: 0 }));
+        if (disagree.length) {
             conflicts.push({
                 type: "NUMERIC_CLAIM",
                 claimId:
-                    claims.find((claim) => /impact|number|count/i.test(claim.claimText))?.claimId ||
-                    idFor(unique.join("|")),
-                notes: `Numeric conflict on ${unit}: ${unique.join(" vs ")}`,
+                    claims.find((claim) => /impact|number|count|agenc/i.test(claim.claimText))?.claimId
+                    || idFor(`${unit}:${rows.map((r) => r.value).join("|")}`),
+                notes: `Numeric conflict on ${unit}: ${rows.map((r) => r.raw).join(" vs ")}`,
                 sources: rows,
             });
         }
@@ -88,8 +125,8 @@ export function detectConflicts(candidates = [], claims = []) {
             conflicts.push({
                 type: "PRODUCT_VERSION",
                 claimId:
-                    claims.find((claim) => /version|firmware|affected/i.test(claim.claimText))?.claimId ||
-                    idFor(first),
+                    claims.find((claim) => /version|firmware|affected/i.test(claim.claimText))?.claimId
+                    || idFor(first),
                 notes: `Version mismatch: ${versionRows[0].sourceId} has "${first}" vs ${disagree
                     .map((item) => `${item.sourceId}:${item.versions[0]}`)
                     .join("; ")}`,
@@ -102,5 +139,12 @@ export function detectConflicts(candidates = [], claims = []) {
         }
     }
 
-    return conflicts;
+    // Deduplicate identical notes.
+    const seen = new Set();
+    return conflicts.filter((item) => {
+        const key = `${item.type}:${item.notes}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
 }

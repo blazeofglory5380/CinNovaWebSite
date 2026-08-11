@@ -4,6 +4,12 @@
  */
 import assert from "node:assert/strict";
 import { deriveClaimsFromCluster, mapClaimEvidence } from "./editorial/research/claimEvidence.mjs";
+import {
+    assessClaimReadyGate,
+    buildClaimMatrix,
+    extractPrincipalClaims,
+} from "./editorial/research/claimMatrix.mjs";
+import { qualifyBlogCluster, assessBlogSourceStandard } from "./editorial/research/blogEvergreen.mjs";
 import { detectConflicts } from "./editorial/research/conflict.mjs";
 import {
     enrichCluster,
@@ -17,7 +23,13 @@ import {
 import {
     assessPairIndependence,
     filterIndependentSources,
+    isPressReleaseMirror,
 } from "./editorial/research/independence.mjs";
+import {
+    compareNumericClaims,
+    normalizeCurrencyToken,
+    numericValuesAgree,
+} from "./editorial/research/numericClaims.mjs";
 import { buildResearchPacket } from "./editorial/research/packetBuilder.mjs";
 import { computeReadinessScore } from "./editorial/research/readiness.mjs";
 import { SOURCE_REGISTRY } from "./editorial/research/sourceRegistry.mjs";
@@ -28,6 +40,7 @@ import {
     seedUncertaintiesFromClaims,
 } from "./editorial/research/uncertainty.mjs";
 import { scoreNewsDesk } from "./lib/editorial-research.mjs";
+import { scoreBlogFactCheck } from "./lib/editorial-factcheck.mjs";
 
 const now = "2026-07-30T15:00:00.000Z";
 
@@ -227,13 +240,14 @@ function clusterFrom(sources) {
     assert.equal(desk.qualified, true);
 }
 
-// ── B: Tier-1 only + consequential uncertainty → HOLD ──────────────────────
+// ── B: Tier-1 only → REVIEW (not READY); missing secondary is not HOLD ──────
 {
     const enriched = enrichCluster(clusterFrom([candidate()]), {
         candidates: [],
         registry: SOURCE_REGISTRY,
     });
-    assert.ok(enriched.enrichment.remainingUncertainties.length > 0);
+    assert.ok(enriched.enrichment.corroborationSummary.independentSourceCount < 2);
+    assert.equal(enriched.enrichment.corroborationSummary.blocksReady, true);
     const packet = buildResearchPacket({
         dateIso: "2026-07-30",
         selection: {
@@ -244,7 +258,9 @@ function clusterFrom(sources) {
         },
     });
     const desk = scoreNewsDesk("national", packet.news.national, "2026-07-30");
-    assert.equal(desk.disposition, "HOLD");
+    // Solo source without conflicts → REVIEW (needs corroboration), not automatic READY.
+    assert.ok(["REVIEW", "HOLD"].includes(desk.disposition), desk.disposition);
+    assert.notEqual(desk.disposition, "READY");
     assert.equal(desk.qualified, false);
 }
 
@@ -527,6 +543,243 @@ function clusterFrom(sources) {
     const desk = scoreNewsDesk("national", legacy, "2026-07-30");
     assert.equal(desk.disposition, "READY");
     assert.equal(desk.qualified, true);
+}
+
+// ── Phase 3: same-event different-title clustering / enrichment ────────────
+{
+    const bbc = candidate({
+        sourceId: "bbc-technology",
+        sourceName: "BBC Technology",
+        sourceTier: "TIER_1_NEWS",
+        headline: "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
+        summary: "Major lenders are committing about $500 billion in financing tied to Nvidia AI infrastructure projects.",
+        articleUrl: "https://www.bbc.com/news/technology-nvidia-500bn",
+        guid: "bbc-nvidia-500",
+        topics: ["ai", "business"],
+        scope: ["international"],
+    });
+    const verge = candidate({
+        sourceId: "the-verge",
+        sourceName: "The Verge",
+        sourceTier: "TIER_2_REPUTABLE",
+        headline: "Major lenders commit financing for Nvidia infrastructure expansion",
+        summary: "Banks are lining up roughly $500bn in funding to support Nvidia-linked AI data center buildouts.",
+        articleUrl: "https://www.theverge.com/nvidia-financing-500bn",
+        guid: "verge-nvidia-500",
+        topics: ["ai", "business"],
+        scope: ["national"],
+    });
+    assert.equal(isExactEventMatch(clusterFrom([bbc]), verge).match, true, "different titles, same funding event");
+    const enriched = enrichCluster(clusterFrom([bbc]), { candidates: [verge], registry: SOURCE_REGISTRY });
+    assert.ok(enriched.enrichment.corroborationSummary.independentSourceCount >= 2);
+    assert.ok((enriched.enrichment.claimMatrix || []).length >= 1);
+    assert.equal(enriched.enrichment.corroborationSummary.blocksReady, false);
+    const packet = buildResearchPacket({
+        dateIso: "2026-07-30",
+        selection: {
+            news: [{ ...enriched, selectedDesk: "international" }],
+            blog: [],
+            limits: { news: 4, blog: 1 },
+            rejectedWeakFit: [],
+        },
+    });
+    const desk = scoreNewsDesk("international", packet.news.international, "2026-07-30");
+    assert.equal(desk.disposition, "READY", desk.reason);
+}
+
+// ── Phase 3: same-wire / press-release mirrors not independent ─────────────
+{
+    const wire = candidate({
+        sourceId: "ap-wire",
+        sourceName: "Associated Press",
+        sourceTier: "TIER_1_NEWS",
+        headline: "Nvidia secures AI financing package",
+        summary: "Nvidia-linked projects secured a large AI financing package from major lenders.",
+        articleUrl: "https://apnews.com/article/nvidia-financing",
+        guid: "wire-nvidia-1",
+    });
+    const syndicated = candidate({
+        sourceId: "reuters-wire",
+        sourceName: "Reuters",
+        sourceTier: "TIER_1_NEWS",
+        headline: "Nvidia secures AI financing package",
+        summary: "Nvidia-linked projects secured a large AI financing package from major lenders.",
+        articleUrl: "https://www.reuters.com/technology/nvidia-financing",
+        guid: "wire-nvidia-1",
+    });
+    assert.equal(assessPairIndependence(wire, syndicated).independent, false);
+    const prPrimary = candidate({
+        sourceId: "nvidia-blog",
+        sourceName: "NVIDIA Blog",
+        sourceTier: "TIER_1_PRIMARY",
+        headline: "NVIDIA Announces Expanded AI Infrastructure Financing",
+        summary: "NVIDIA today announced expanded AI infrastructure financing with leading global banks.",
+        articleUrl: "https://blogs.nvidia.com/blog/ai-financing",
+        guid: "nvidia-pr-1",
+    });
+    const mirror = candidate({
+        sourceId: "seo-mirror",
+        sourceName: "Tech Wire Mirror",
+        sourceTier: "TIER_2_REPUTABLE",
+        headline: "NVIDIA Announces Expanded AI Infrastructure Financing",
+        summary: "NVIDIA today announced expanded AI infrastructure financing with leading global banks.",
+        articleUrl: "https://example-news.test/nvidia-announces-expanded-ai",
+        guid: "mirror-1",
+    });
+    assert.equal(isPressReleaseMirror(prPrimary, mirror), true);
+}
+
+// ── Phase 3: primary + secondary pairing + cross-desk ──────────────────────
+{
+    const openai = candidate({
+        sourceId: "openai-news",
+        sourceName: "OpenAI News",
+        sourceTier: "TIER_1_PRIMARY",
+        headline: "OpenAI announces new enterprise API pricing",
+        summary: "OpenAI announced updated enterprise API pricing for business customers.",
+        articleUrl: "https://openai.com/index/enterprise-api-pricing",
+        guid: "openai-1",
+        topics: ["ai"],
+        scope: ["national"],
+    });
+    const ars = candidate({
+        sourceId: "ars-technica",
+        sourceName: "Ars Technica",
+        sourceTier: "TIER_2_REPUTABLE",
+        headline: "OpenAI refreshes enterprise API pricing for businesses",
+        summary: "Ars Technica reports OpenAI announced updated enterprise API pricing.",
+        articleUrl: "https://arstechnica.com/ai/openai-enterprise-api-pricing",
+        guid: "ars-openai-1",
+        topics: ["business", "technology"],
+        scope: ["national"],
+    });
+    const enriched = enrichCluster(clusterFrom([openai]), { candidates: [ars], registry: SOURCE_REGISTRY });
+    assert.ok(enriched.enrichment.corroborationSummary.independentSourceCount >= 2);
+    assert.ok(enriched.enrichment.matchReasons.some((m) => m.sourceId === "ars-technica"));
+}
+
+// ── Phase 3: numeric agreement vs conflict → HOLD ──────────────────────────
+{
+    assert.equal(normalizeCurrencyToken("$500bn"), normalizeCurrencyToken("$500 billion"));
+    assert.equal(numericValuesAgree(normalizeCurrencyToken("$5B"), normalizeCurrencyToken("$5 billion")), true);
+    const conflict = compareNumericClaims(
+        "Company X raised $5 billion in funding.",
+        "Company X raised $50 billion in funding.",
+    );
+    assert.ok(conflict.conflict.length >= 1);
+    const enriched = enrichCluster(clusterFrom([
+        candidate({
+            sourceId: "bbc-technology",
+            sourceName: "BBC Technology",
+            sourceTier: "TIER_1_NEWS",
+            headline: "Company X raises $5 billion",
+            summary: "Company X raised $5 billion for AI expansion.",
+            articleUrl: "https://www.bbc.com/news/company-x-5b",
+            guid: "bbc-5b",
+        }),
+    ]), {
+        candidates: [candidate({
+            sourceId: "the-verge",
+            sourceName: "The Verge",
+            sourceTier: "TIER_2_REPUTABLE",
+            headline: "Company X raises $50 billion",
+            summary: "Company X raised $50 billion for AI expansion.",
+            articleUrl: "https://www.theverge.com/company-x-50b",
+            guid: "verge-50b",
+        })],
+        registry: SOURCE_REGISTRY,
+    });
+    assert.ok(enriched.enrichment.conflicts.length >= 1 || enriched.enrichment.corroborationSummary.blocksReady);
+    const packet = buildResearchPacket({
+        dateIso: "2026-07-30",
+        selection: {
+            news: [{ ...enriched, selectedDesk: "national" }],
+            blog: [],
+            limits: { news: 4, blog: 1 },
+            rejectedWeakFit: [],
+        },
+    });
+    assert.notEqual(scoreNewsDesk("national", packet.news.national, "2026-07-30").disposition, "READY");
+}
+
+// ── Phase 3: REVIEW cannot promote without claim agreement ─────────────────
+{
+    const lead = candidate({
+        sourceId: "bbc-technology",
+        sourceName: "BBC Technology",
+        sourceTier: "TIER_1_NEWS",
+        headline: "Company X raised $5B",
+        summary: "Company X raised $5B in a funding round.",
+        articleUrl: "https://www.bbc.com/news/x-5b",
+    });
+    const weak = candidate({
+        sourceId: "the-verge",
+        sourceName: "The Verge",
+        sourceTier: "TIER_2_REPUTABLE",
+        headline: "Company X is investing in AI",
+        summary: "Company X continues investing in AI products.",
+        articleUrl: "https://www.theverge.com/x-ai",
+    });
+    const claims = extractPrincipalClaims(clusterFrom([lead, weak]));
+    const matrix = buildClaimMatrix(claims, [lead, weak], [lead, weak], []);
+    const gate = assessClaimReadyGate({ independentCount: 2, claimMatrix: matrix, conflicts: [] });
+    // Topic overlap without financing-amount agreement must not unlock READY.
+    const numericRow = matrix.find((row) => row.claimType === "NUMERIC_CLAIM");
+    if (numericRow) {
+        assert.notEqual(numericRow.status, "VERIFIED_MULTI_SOURCE");
+        assert.equal(gate.blocksReady, true);
+    }
+}
+
+// ── Phase 3: evergreen Blog ≠ breaking-news freshness; still needs sources ─
+{
+    const nistCluster = {
+        clusterId: "blog-nist",
+        canonicalTopic: "NIST AI Risk Management Framework guidance for businesses",
+        sources: [candidate({
+            sourceId: "nist-news",
+            sourceName: "NIST News",
+            sourceTier: "TIER_1_PRIMARY",
+            headline: "NIST AI Risk Management Framework guidance",
+            summary: "NIST published AI Risk Management Framework guidance for organizations.",
+            articleUrl: "https://www.nist.gov/news-events/news/ai-rmf",
+            publishedAt: "2026-06-01T00:00:00.000Z",
+        })],
+        freshness: "BACKGROUND",
+        relevance: 3,
+        topics: ["ai", "policy"],
+        cinovaClassification: "NEW",
+        route: { route: "BLOG" },
+    };
+    const blogQual = qualifyBlogCluster(nistCluster, { registry: SOURCE_REGISTRY });
+    assert.equal(blogQual.qualified, true);
+    assert.equal(blogQual.freshnessRequired, false);
+    assert.ok(assessBlogSourceStandard(nistCluster, { registry: SOURCE_REGISTRY }).ok);
+
+    const unsourced = scoreBlogFactCheck({
+        title: "Understanding AI inference chips",
+        classification: "evergreen",
+        seoTitle: "Understanding AI inference chips",
+        seoDescription: "A practical overview of AI inference chips for builders.",
+        sources: [],
+        content: [{ heading: "Overview", body: "x ".repeat(200) }],
+    });
+    assert.ok(["HOLD", "REVIEW"].includes(unsourced.status));
+    assert.notEqual(unsourced.status, "READY");
+
+    const sourced = scoreBlogFactCheck({
+        title: "What NIST’s latest AI guidance means for businesses",
+        classification: "evergreen",
+        seoTitle: "What NIST AI guidance means for businesses",
+        seoDescription: "A sourced explainer on NIST AI Risk Management Framework guidance.",
+        sources: [{ publisher: "NIST", url: "https://www.nist.gov/news-events/news/ai-rmf", type: "official" }],
+        content: [
+            { heading: "Overview", body: "NIST published AI Risk Management Framework guidance. ".repeat(8) },
+            { heading: "Takeaways", body: "Businesses should map controls to the framework. ".repeat(8) },
+            { heading: "Sources", body: "Treat NIST as the authoritative anchor. ".repeat(8) },
+        ],
+    });
+    assert.equal(sourced.status, "READY", sourced.reasons.join("; "));
 }
 
 console.log("test:editorial-corroboration passed");

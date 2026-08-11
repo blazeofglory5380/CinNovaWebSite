@@ -125,12 +125,22 @@ export function resolveUncertainties({
 }
 
 /** Seed uncertainties for an enriched packet before resolution. */
-export function seedUncertaintiesFromClaims(claimEvidence = []) {
+export function seedUncertaintiesFromClaims(claimEvidence = [], { independentCount = 0 } = {}) {
     const seeds = [];
     for (const claim of claimEvidence) {
         if (claim.status === "CONFLICTING") {
             seeds.push(`Conflicting evidence for: ${claim.claimText.slice(0, 140)}`);
-        } else if (claim.consequential && claim.status !== "VERIFIED_MULTI_SOURCE" && claim.status !== "VERIFIED_PRIMARY") {
+        } else if (
+            claim.consequential
+            && claim.status !== "VERIFIED_MULTI_SOURCE"
+            && claim.status !== "VERIFIED_PRIMARY"
+        ) {
+            // Missing a second independent source is REVIEW (via source-count gate), not HOLD.
+            // Only seed HOLD-grade uncertainties when conflicts exist or multi-source still fails
+            // after ≥2 independents are already present.
+            if (independentCount < 2 && claim.status !== "CONFLICTING") {
+                continue;
+            }
             seeds.push(`Unresolved consequential claim (${claim.status}): ${claim.claimText.slice(0, 140)}`);
         }
     }

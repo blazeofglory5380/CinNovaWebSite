@@ -1,7 +1,7 @@
 {
   "schemaVersion": "10B-shadow",
   "date": "2026-08-11",
-  "generatedAt": "2026-08-11T19:00:06.570Z",
+  "generatedAt": "2026-08-11T20:16:31.053Z",
   "mode": "shadow",
   "dryRun": true,
   "autoPublish": false,
@@ -23,7 +23,14 @@
     "status": "SUCCESS",
     "rationale": "All sources healthy and editorial candidates were selected."
   },
-  "wouldCreate": [],
+  "wouldCreate": [
+    {
+      "type": "blog",
+      "coverage": null,
+      "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+      "path": "D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\src\\data\\blog-drafts\\what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b.json"
+    }
+  ],
   "wouldSkip": [],
   "noQualified": [
     {
@@ -45,20 +52,26 @@
       "type": "news",
       "coverage": "international",
       "reason": "Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm"
-    },
-    {
-      "type": "blog",
-      "reason": "No verified Blog topic provided. Gap hints listed for humans/agents — do not invent a post."
     }
   ],
-  "imageRequirements": [],
+  "imageRequirements": [
+    {
+      "filename": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b.webp",
+      "folder": "public/images/blog/hero/",
+      "dimensions": "1600×900",
+      "aspectRatio": "16:9",
+      "alt": "Editorial hero for What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders",
+      "visualConcept": "Editorial illustration grounded in the reported topic: NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+      "generationPrompt": "Premium website blog hero, 16:9, subject: What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders. Cinematic but grounded, no text overlays, no logos."
+    }
+  ],
   "counts": {
     "wouldCreateNews": 0,
-    "wouldCreateBlog": 0,
+    "wouldCreateBlog": 1,
     "wouldCreateSocial": 0,
     "skipped": 0,
-    "noQualified": 5,
-    "imageRequired": 0
+    "noQualified": 4,
+    "imageRequired": 1
   },
   "safety": {
     "publishedCatalogsTouched": false,

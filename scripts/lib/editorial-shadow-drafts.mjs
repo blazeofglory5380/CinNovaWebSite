@@ -304,6 +304,32 @@ export function buildShadowNewsDraft(story = {}, extras = {}) {
         shadowOnly: true,
         isDraft: true,
         isPublished: false,
+        // Phase 3 corroboration report fields
+        sourceCount: (cleaned.sources || []).length,
+        independentSourceCount:
+            extras.independentSourceCount
+            ?? cleaned.independentSourceCount
+            ?? cleaned.corroborationSummary?.independentSourceCount
+            ?? null,
+        sourceOrganizations: [...new Set((cleaned.sources || []).map((s) => s.publisher).filter(Boolean))],
+        primaryClaims: (cleaned.claimMatrix || cleaned.claimEvidence || [])
+            .filter((c) => c.consequential)
+            .map((c) => c.claim || c.claimText),
+        claimCorroborationMatrix: cleaned.claimMatrix || extras.claimMatrix || [],
+        conflicts: extras.conflicts || cleaned.corroborationSummary?.conflictsFound || [],
+        verificationStatus: extras.factCheckStatus || cleaned.factCheckStatus || "",
+        publicationEligibility:
+            extras.factCheckStatus === "READY"
+                ? "READY — future controlled draft writing only"
+                : extras.factCheckStatus === "REVIEW"
+                  ? "REVIEW — human confirm required"
+                  : "NOT_ELIGIBLE",
+        whyStatus: extras.whyStatus || cleaned.editorialNotes || "",
+        quoteSafety: {
+            inventedQuotesForbidden: true,
+            longQuotesRewritten: true,
+            singleSourceQuotesAttributedOnly: true,
+        },
     };
     draft.readingTimeMinutes = estimateReadingTimeFromDraft(draft);
     draft.originality = assessOriginality(draft, sourceTexts);

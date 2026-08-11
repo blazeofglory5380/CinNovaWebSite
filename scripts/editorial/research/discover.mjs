@@ -6,6 +6,7 @@ import { clusterCandidates } from "./clustering.mjs";
 import { assessCorroboration } from "./corroboration.mjs";
 import { enrichSelection } from "./enrichment.mjs";
 import { isFreshEnough } from "./freshness.mjs";
+import { qualifyBlogCluster } from "./blogEvergreen.mjs";
 import { buildResearchPacket } from "./packetBuilder.mjs";
 import { fetchSourceCandidates } from "./providers/index.mjs";
 import { scoreCinovaRelevance } from "./relevance.mjs";
@@ -46,6 +47,16 @@ function fixtureSources(fixtureDir, now, selectedCases) {
 }
 
 export function qualifyCluster(cluster) {
+    // Evergreen Blog: separate from breaking-news freshness / same-event corroboration.
+    if (cluster.route?.route === "BLOG") {
+        const blog = qualifyBlogCluster(cluster, { registry: SOURCE_REGISTRY });
+        return {
+            qualified: blog.qualified,
+            rationale: blog.rationale,
+            blogQualification: blog,
+        };
+    }
+
     const reasons = [];
     // Trust assessCorroboration only — do not bypass with "any primary present"
     // (company primaries require secondary; discovery-only never qualifies alone).

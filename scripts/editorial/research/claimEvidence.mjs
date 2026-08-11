@@ -142,15 +142,23 @@ export function mapClaimEvidence(claims = [], supportingCandidates = [], allCand
         } else if (primarySupport.length && independentSupport.length) {
             status = "VERIFIED_MULTI_SOURCE";
             notes = "Tier-1 primary plus independent secondary support.";
+        } else if (independentSupport.length >= 2) {
+            // Path B: two independent Tier-1/2 reputable sources agree on the claim.
+            status = "VERIFIED_MULTI_SOURCE";
+            notes = "Two or more independent reputable sources agree on this claim.";
+        } else if (
+            primarySupport.length >= 2
+            || (primarySupport.length >= 1
+                && supportingCandidates.filter((c) => candidateSupportsClaim(c, claim)).length >= 2)
+        ) {
+            status = "VERIFIED_MULTI_SOURCE";
+            notes = "Multiple independent qualifying sources support this claim.";
         } else if (primarySupport.length && !claim.consequential) {
             status = "VERIFIED_PRIMARY";
             notes = "Non-consequential claim supported by Tier-1 primary.";
         } else if (primarySupport.length && claim.consequential && independentSupport.length === 0) {
             status = "PARTIALLY_VERIFIED";
             notes = "Consequential claim has Tier-1 primary only — independent secondary still required for READY.";
-        } else if (independentSupport.length >= 2 && primarySupport.length === 0) {
-            status = "PARTIALLY_VERIFIED";
-            notes = "Multiple independent secondaries without a Tier-1 primary.";
         } else if (supportingSources.length) {
             status = "PARTIALLY_VERIFIED";
             notes = "Some overlapping wording found; independence not established.";

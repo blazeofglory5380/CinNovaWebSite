@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
 import { jaccard, tokenize } from "../../lib/editorial-dedupe.mjs";
+import { sharedNormalizedEntities } from "./entities.mjs";
+import { sharedCurrencyAgreement } from "./numericClaims.mjs";
 import { classifyFreshness } from "./freshness.mjs";
 import { TIER_RANK, isPrimaryTier, canonicalizeTier, SOURCE_TIERS } from "./sourceTiers.mjs";
 
@@ -20,7 +22,7 @@ const COMPANY_ALIASES = Object.freeze([
     { id: "ftc", pattern: /\b(ftc)\b/i },
 ]);
 
-const EVENT_VERBS = /\b(announc\w*|launch\w*|acquir\w*|merg\w*|charg\w*|sue[sd]?|orders?|finaliz\w*|releas\w*|unveil\w*|partners?\w*|fund\w*|invest\w*)\b/i;
+const EVENT_VERBS = /\b(announc\w*|launch\w*|acquir\w*|merg\w*|charg\w*|sue[sd]?|orders?|finaliz\w*|releas\w*|unveil\w*|partners?\w*|fund\w*|invest\w*|commit\w*|lend\w*)\b/i;
 
 function entities(text = "") {
     const words = String(text).match(/\b[A-Z][A-Za-z0-9&.-]{2,}\b/g) || [];
@@ -109,6 +111,17 @@ function candidateSimilarity(a, b) {
             tokenize(b.headline || "").filter((token) => token.length > 3),
         );
         if (companyInBothHeadlines && topical >= 0.24) {
+            match = true;
+        }
+    }
+
+    // Phase 3: same-event different-title — shared normalized entity + funding amount.
+    if (!match && !sameSource) {
+        const aText = `${a.headline || ""} ${a.summary || ""}`;
+        const bText = `${b.headline || ""} ${b.summary || ""}`;
+        const shared = sharedNormalizedEntities(aText, bText);
+        const currency = sharedCurrencyAgreement(aText, bText);
+        if (shared.length >= 1 && currency.length >= 1 && timeNear(a, b, 48)) {
             match = true;
         }
     }

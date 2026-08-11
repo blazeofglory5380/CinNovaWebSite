@@ -211,11 +211,14 @@ export function scoreNewsFactCheck(draft = {}, options = {}) {
 }
 
 /**
- * Blog fact-check is lighter: sources + non-empty body + SEO fields.
+ * Blog fact-check: evergreen may pass with authoritative sources + SEO without
+ * breaking-news freshness. Research-heavy pieces still need real source URLs.
+ * Does not invent body content; scores structural honesty only.
  */
 export function scoreBlogFactCheck(draft = {}) {
     const reviews = [];
     const rejects = [];
+    const holds = [];
     let score = 100;
 
     if (!isNonEmpty(draft.title)) {
@@ -231,9 +234,17 @@ export function scoreBlogFactCheck(draft = {}) {
     const realSources = sources.filter(
         (source) => source?.url && validHttpUrl(source.url) && !PLACEHOLDER_URL_RE.test(source.url),
     );
+    const evergreen = String(draft.classification || "").toLowerCase() === "evergreen"
+        || /evergreen|explainer|guide/i.test(String(draft.editorialNotes || ""));
+
     if (realSources.length === 0) {
-        reviews.push("No authoritative sources yet (ok for pure product explainers; required for research-heavy pieces)");
-        score -= 8;
+        if (evergreen) {
+            holds.push("Evergreen Blog still requires at least one authoritative source URL for factual anchors");
+            score -= 20;
+        } else {
+            reviews.push("No authoritative sources yet (ok for pure product explainers; required for research-heavy pieces)");
+            score -= 8;
+        }
     }
 
     const content = Array.isArray(draft.content) ? draft.content : [];
@@ -242,7 +253,7 @@ export function scoreBlogFactCheck(draft = {}) {
         .filter(Boolean).length;
     if (words < 350) {
         reviews.push(`Thin draft body (~${words} words)`);
-        score -= 15;
+        score -= evergreen ? 8 : 15;
     } else if (words < 900) {
         reviews.push(`Below target length (~${words} words; target 900–1800)`);
         score -= 5;
@@ -250,14 +261,28 @@ export function scoreBlogFactCheck(draft = {}) {
 
     let status = "REVIEW";
     if (rejects.length) status = "REJECT";
-    else if (score >= 80 && words >= 500 && isNonEmpty(draft.seoTitle)) status = "READY";
-    else if (score < 50) status = "HOLD";
+    else if (holds.length) status = "HOLD";
+    else if (
+        evergreen
+        && score >= 75
+        && realSources.length >= 1
+        && isNonEmpty(draft.seoTitle)
+        && words >= 120
+    ) {
+        // Evergreen READY: sourced + SEO — does not require breaking-news multi-outlet same-event.
+        status = "READY";
+    } else if (score >= 80 && words >= 500 && isNonEmpty(draft.seoTitle)) {
+        status = "READY";
+    } else if (score < 50) {
+        status = "HOLD";
+    }
 
     return {
         status,
         score: Math.max(0, Math.min(100, score)),
-        reasons: [...rejects, ...reviews],
+        reasons: [...rejects, ...holds, ...reviews],
         wordCount: words,
+        evergreen,
         publishCandidate: status === "READY" || status === "REVIEW",
         blockedFromPublish: status === "HOLD" || status === "REJECT",
     };

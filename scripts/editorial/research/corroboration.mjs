@@ -1,4 +1,3 @@
-import { areLikelySyndicated } from "./syndication.mjs";
 import { filterIndependentSources } from "./independence.mjs";
 import {
     isCorroborationEligibleTier,

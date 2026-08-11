@@ -14,8 +14,190 @@
       "An AI chatbot is joining the search for art looted by the Nazis",
       "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
     ],
-    "selectedBlogTopics": [],
+    "selectedBlogTopics": [
+      "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+    ],
     "rejectedWeakFit": [
+      {
+        "topic": "NIST Researchers Correct Common Error Confounding Nanotech Measurements",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "‘Spooky’ Particles Transit DC Suburbs, a Step Toward a Quantum Network",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Receives New Patent for Microbe-Killing Water Heater",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "New Fabric Test Material Could Help Strengthen Domestic Supply Chain for Textiles and Clothing",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Arvind Raman Confirmed as the 18th NIST Director",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Launches Center to Drive the Manufacture of Quantum Technologies",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Releases Technical Findings on What Caused the 2021 Partial Collapse of Champlain Towers South",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Expands Its Library of ‘Chemical Fingerprints’ to Identify Unknown Substances",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "New AI Model Shows How to Evacuate for Fires One Safe Step at a Time",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Researchers Discover a New Way to Whisk Alloys Together With Lasers",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Expands AI Consortium’s Scope, Calls for New Members",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Shooting for the Moon: Ultrastable Lasers in Dark Craters Could Enable Lunar Navigation, Precision Timekeeping, New Science",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Wear and Tear Changes Measurable PFAS Levels in Firefighter Hoods, Gloves and Wildland Gear",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Weighs In on the Mystery of the Gravitational Constant",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Any Color You Like: NIST Scientists Create ‘Any Wavelength’ Lasers in Tiny Circuits for Light",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Researchers Develop Photonic Chip Packaging That Can Withstand Extreme Environments",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Helps Fingerprint Examiners With New Data and Software Release",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Submits Annual Report to Congress Summarizing FY 2025 Progress on National Construction Safety Team Investigations",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "2 Health Care Organizations Will Receive 2025 Baldrige National Quality Awards",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Announcing the \"AI Agent Standards Initiative\" for Interoperable and Secure Innovation",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Releases New Forensic Genetic Reference Material to Help Crime Laboratories Analyze Challenging Cases",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Space: The Final Frontier for Standards",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Physicists Bring Unruly Molecules to the Quantum Party",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Department of Commerce Announces Transition of Baldrige Performance Excellence Program",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "What Time Is It on Mars? NIST Physicists Have the Answer.",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "CAISI Evaluation of DeepSeek AI Models Finds Shortcomings and Risks",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Engineers Design 5 New Ways to Connect Concrete Pieces for More Resilient Buildings",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NIST Issues Broad Agency Announcement for Proposals to Advance Microelectronics Technologies",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "In Quantum Sensing, What Beats Beating Noise? Meeting Noise Halfway.",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Champlain Towers South Investigation Nears Completion of Technical Work",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
       {
         "topic": "Lion Nebula Roars in Webb’s Sights",
         "route": "NEWS",
@@ -47,6 +229,18 @@
         "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
       },
       {
+        "topic": "SEC Publishes Updated Market Statistics, Highlighting Increase in IPOs and Proceeds Raised",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Federal Reserve issues initial findings from its 2025 triennial payments study",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
         "topic": "FTC Stops Sprawling Credit Repair Scheme that Scammed Consumers Out of Nearly $200 Million",
         "route": "NEWS",
         "fit": 1,
@@ -61,6 +255,210 @@
       {
         "topic": "Podcast: The Legacy Survey of Space and Time (LSST)",
         "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Podcast: New telescope to transform study of universe",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NSF stands up 2 Materials Innovation Platforms with $50M investment",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Building the future, atom by atom — NSF deploys $108M for materials science at 6 research centers",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NSF partners with universities and industry on pilot initiative for four-year Ph.D. programs with real-world research placements",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NSF awards 12 new Regional Innovation Engines to fuel research, jobs and economic growth nationwide",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Model ML completes finance work more efficiently with GPT-5.6 Sol",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Virgin Atlantic sharpens customer journeys with ChatGPT Work",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Working with the American Psychological Association on youth mental health and AI",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "New ways to learn and teach with ChatGPT Work and Codex",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "How enabling two settings tripled our scores on the ARC-AGI-3 benchmark",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "How AI is expanding what people do at work",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Best in Class: Stream PC Games and Study on the Same Laptop With GeForce NOW",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "AMIE, our research medical AI system, demonstrates real-time clinical video consultation capabilities in a first-of-its-kind study.",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Ask an AI expert: What exactly is the full stack?",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "New research shows how AMIE, our medical AI, could help manage health conditions.",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Gemini Robotics ER 2: powering robotics with video understanding, task orchestration, and multi-robot collaboration",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Google DeepMind and A24 announce first-of-its-kind research partnership",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Investing in multi-agent AI safety research",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Opening new paths in aging research",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Co-Scientist: A multi-agent AI partner to accelerate research",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Introducing CARE-X: Towards Clinically Useful Radiology VLMs with Auxiliary Supervision, Reward-Aligned Learning, and Tool-Augmented Measurement",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Echoverse: Deep, evolving environments for computer-use agents",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "EvoLib: Turning experience into evolving knowledge",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Verifying Rust cryptography in SymCrypt, from standards to code",
+        "route": "BLOG",
+        "fit": 0,
+        "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Aurora 1.5: Extending open foundation models for weather and Earth-system applications",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Flint: A visualization language for the AI era",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "SkillOpt: Agent skills as trainable parameters",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Memora: A Harmonic Memory Representation Balancing Abstraction and Specificity",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Understanding the brain with AI-driven explanations and experiments",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Meta is Signing the EU AI Act Code of Practice on Transparency of AI-Generated Content",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Tech Life",
+        "route": "NEWS",
         "fit": 0,
         "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
       },
@@ -87,17 +485,24 @@
         "route": "NEWS",
         "fit": 1,
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "ChatGPT and Gemini both just passed 1 billion users",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       }
     ],
     "corroboration": {
-      "phase": "10B.3",
-      "corroborationAttempted": 2,
+      "phase": "3",
+      "corroborationAttempted": 3,
       "corroborationSuccessful": 0,
+      "secondSourcesFound": 0,
       "claimsVerified": 0,
-      "claimsUnresolved": 2,
+      "claimsUnresolved": 4,
       "conflicts": 0,
       "candidatesPromoted": 0,
-      "candidatesStillHeld": 2
+      "candidatesStillHeld": 3
     }
   },
   "news": {
@@ -167,39 +572,42 @@
       ],
       "verifiedClaims": [],
       "attributedClaims": [
-        "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help."
+        "An AI chatbot is joining the search for art looted by the Nazis"
       ],
       "uncertainties": [],
-      "editorialNotes": "NPR Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=60.",
+      "editorialNotes": "NPR Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=50.",
       "forceDraft": false,
       "factCheckStatus": "",
+      "claimMatrix": [
+        {
+          "claim": "An AI chatbot is joining the search for art looted by the Nazis",
+          "claimId": "claim-b5a949778a",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
+          "sourceA": null,
+          "sourceB": null,
+          "supportingSourceIds": [],
+          "agreement": "none",
+          "conflict": null,
+          "status": "UNRESOLVED",
+          "readyImpact": "blocks-ready-if-consequential"
+        }
+      ],
+      "independentSourceCount": 1,
       "claimEvidence": [
         {
-          "claimId": "claim-d09c364f7b",
-          "claimText": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
-          "claimType": "CONTEXT",
-          "consequential": false,
-          "supportingSources": [
-            {
-              "sourceId": "npr-technology",
-              "sourceName": "NPR Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant",
-              "headline": "An AI chatbot is joining the search for art looted by the Nazis"
-            }
-          ],
+          "claimId": "claim-b5a949778a",
+          "claimText": "An AI chatbot is joining the search for art looted by the Nazis",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
+          "supportingSources": [],
           "primarySupport": [],
-          "independentSupport": [
-            {
-              "sourceId": "npr-technology",
-              "sourceName": "NPR Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant",
-              "headline": "An AI chatbot is joining the search for art looted by the Nazis"
-            }
-          ],
-          "status": "PARTIALLY_VERIFIED",
-          "notes": "Some overlapping wording found; independence not established."
+          "independentSupport": [],
+          "status": "UNRESOLVED",
+          "notes": "agreement=none; readyImpact=blocks-ready-if-consequential",
+          "agreement": "none",
+          "readyImpact": "blocks-ready-if-consequential",
+          "conflict": null
         }
       ],
       "corroborationSummary": {
@@ -214,18 +622,28 @@
         "claimsChecked": 1,
         "claimSummary": {
           "total": 1,
-          "consequential": 0,
+          "consequential": 1,
           "VERIFIED_PRIMARY": 0,
           "VERIFIED_MULTI_SOURCE": 0,
-          "PARTIALLY_VERIFIED": 1,
-          "UNRESOLVED": 0,
+          "PARTIALLY_VERIFIED": 0,
+          "UNRESOLVED": 1,
           "CONFLICTING": 0
+        },
+        "claimGate": {
+          "blocksReady": true,
+          "independentCount": 1,
+          "consequentialCount": 1,
+          "agreedCount": 0,
+          "unresolvedCount": 1,
+          "conflictCount": 0,
+          "rationale": "Needs ≥2 independent sources"
         },
         "conflictsFound": 0,
         "uncertaintiesResolved": 0,
         "uncertaintiesRemaining": 0,
-        "readinessScore": 60,
-        "blocksReady": true
+        "readinessScore": 50,
+        "blocksReady": true,
+        "phase": "3"
       },
       "resolvedUncertainties": [],
       "remainingUncertainties": [],
@@ -240,19 +658,20 @@
         "rejected": []
       },
       "readinessScore": {
-        "score": 60,
+        "score": 50,
         "blocksReady": true,
         "notes": [
           "single eligible source only",
           "freshness",
           "relevance",
-          "editorial fit"
+          "editorial fit",
+          "unresolved consequential claims"
         ],
         "inputs": {
           "primaryCount": 0,
           "independentCount": 1,
           "verifiedClaims": 0,
-          "unresolvedConsequential": 0,
+          "unresolvedConsequential": 1,
           "remainingUncertainties": 0,
           "conflicts": 0,
           "freshness": "RECENT",
@@ -281,18 +700,64 @@
       ],
       "verifiedClaims": [],
       "attributedClaims": [
-        "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions."
+        "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
+        "nvidia financing/value claim $500bn"
       ],
       "uncertainties": [],
-      "editorialNotes": "BBC News Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=54.",
+      "editorialNotes": "BBC News Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=34.",
       "forceDraft": false,
       "factCheckStatus": "",
+      "claimMatrix": [
+        {
+          "claim": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
+          "claimId": "claim-bd2274f98d",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
+          "sourceA": {
+            "sourceId": "bbc-technology",
+            "sourceName": "BBC News Technology",
+            "sourceTier": "TIER_1_NEWS",
+            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
+            "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+          },
+          "sourceB": null,
+          "supportingSourceIds": [
+            "bbc-technology"
+          ],
+          "agreement": "partial",
+          "conflict": null,
+          "status": "PARTIALLY_VERIFIED",
+          "readyImpact": "REVIEW"
+        },
+        {
+          "claim": "nvidia financing/value claim $500bn",
+          "claimId": "claim-1f91cd8e75",
+          "claimType": "NUMERIC_CLAIM",
+          "consequential": true,
+          "sourceA": {
+            "sourceId": "bbc-technology",
+            "sourceName": "BBC News Technology",
+            "sourceTier": "TIER_1_NEWS",
+            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
+            "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+          },
+          "sourceB": null,
+          "supportingSourceIds": [
+            "bbc-technology"
+          ],
+          "agreement": "partial",
+          "conflict": null,
+          "status": "PARTIALLY_VERIFIED",
+          "readyImpact": "REVIEW"
+        }
+      ],
+      "independentSourceCount": 1,
       "claimEvidence": [
         {
-          "claimId": "claim-c0357e4d84",
-          "claimText": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-          "claimType": "CONTEXT",
-          "consequential": false,
+          "claimId": "claim-bd2274f98d",
+          "claimText": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
           "supportingSources": [
             {
               "sourceId": "bbc-technology",
@@ -313,7 +778,40 @@
             }
           ],
           "status": "PARTIALLY_VERIFIED",
-          "notes": "Some overlapping wording found; independence not established."
+          "notes": "agreement=partial; readyImpact=REVIEW",
+          "agreement": "partial",
+          "readyImpact": "REVIEW",
+          "conflict": null
+        },
+        {
+          "claimId": "claim-1f91cd8e75",
+          "claimText": "nvidia financing/value claim $500bn",
+          "claimType": "NUMERIC_CLAIM",
+          "consequential": true,
+          "supportingSources": [
+            {
+              "sourceId": "bbc-technology",
+              "sourceName": "BBC News Technology",
+              "sourceTier": "TIER_1_NEWS",
+              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
+              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+            }
+          ],
+          "primarySupport": [],
+          "independentSupport": [
+            {
+              "sourceId": "bbc-technology",
+              "sourceName": "BBC News Technology",
+              "sourceTier": "TIER_1_NEWS",
+              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
+              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+            }
+          ],
+          "status": "PARTIALLY_VERIFIED",
+          "notes": "agreement=partial; readyImpact=REVIEW",
+          "agreement": "partial",
+          "readyImpact": "REVIEW",
+          "conflict": null
         }
       ],
       "corroborationSummary": {
@@ -325,21 +823,31 @@
         "primarySourceCount": 0,
         "discoveryOnlyCount": 0,
         "rejectedIndependence": 0,
-        "claimsChecked": 1,
+        "claimsChecked": 2,
         "claimSummary": {
-          "total": 1,
-          "consequential": 0,
+          "total": 2,
+          "consequential": 2,
           "VERIFIED_PRIMARY": 0,
           "VERIFIED_MULTI_SOURCE": 0,
-          "PARTIALLY_VERIFIED": 1,
+          "PARTIALLY_VERIFIED": 2,
           "UNRESOLVED": 0,
           "CONFLICTING": 0
+        },
+        "claimGate": {
+          "blocksReady": true,
+          "independentCount": 1,
+          "consequentialCount": 2,
+          "agreedCount": 0,
+          "unresolvedCount": 2,
+          "conflictCount": 0,
+          "rationale": "Needs ≥2 independent sources"
         },
         "conflictsFound": 0,
         "uncertaintiesResolved": 0,
         "uncertaintiesRemaining": 0,
-        "readinessScore": 54,
-        "blocksReady": true
+        "readinessScore": 34,
+        "blocksReady": true,
+        "phase": "3"
       },
       "resolvedUncertainties": [],
       "remainingUncertainties": [],
@@ -354,18 +862,19 @@
         "rejected": []
       },
       "readinessScore": {
-        "score": 54,
+        "score": 34,
         "blocksReady": true,
         "notes": [
           "single eligible source only",
           "relevance",
-          "editorial fit"
+          "editorial fit",
+          "unresolved consequential claims"
         ],
         "inputs": {
           "primaryCount": 0,
           "independentCount": 1,
           "verifiedClaims": 0,
-          "unresolvedConsequential": 0,
+          "unresolvedConsequential": 2,
           "remainingUncertainties": 0,
           "conflicts": 0,
           "freshness": "CURRENT",
@@ -376,32 +885,195 @@
     }
   },
   "blog": {
-    "slug": "",
-    "title": "",
+    "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+    "title": "What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders",
     "category": "Artificial Intelligence",
-    "excerpt": "",
-    "seoTitle": "",
-    "seoDescription": "",
+    "excerpt": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
+    "seoTitle": "What NIST Launches Centers for AI in Manufacturing and Criti",
+    "seoDescription": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
     "relatedReading": [],
     "relatedNewsIds": [],
-    "sources": [],
+    "sources": [
+      {
+        "label": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+        "publisher": "NIST News",
+        "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+        "type": "official",
+        "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
+      }
+    ],
     "forceDraft": false,
+    "classification": "evergreen",
+    "evergreenQualification": {
+      "qualified": true,
+      "rationale": "Evergreen Blog path C: Authoritative technical standard with explanatory synthesis framing.",
+      "sourceStandard": {
+        "ok": true,
+        "path": "C",
+        "rationale": "Authoritative technical standard with explanatory synthesis framing.",
+        "independentSourceIds": [
+          "nist-news"
+        ],
+        "synthesisLabelRequired": true
+      },
+      "evergreen": true,
+      "topicValue": 2,
+      "reviewOnly": false,
+      "freshnessRequired": false
+    },
+    "editorialNotes": "Evergreen Blog path C: Authoritative technical standard with explanatory synthesis framing.",
     "researchBrief": {
-      "primaryKeyword": "",
-      "secondaryKeywords": [],
-      "audience": "",
-      "searchIntent": ""
+      "primaryKeyword": "ai",
+      "secondaryKeywords": [
+        "cybersecurity",
+        "standards",
+        "semiconductors",
+        "science"
+      ],
+      "audience": "CinNova readers evaluating technology, policy, and infrastructure",
+      "searchIntent": "Informational"
     },
     "heroImageBrief": {
-      "concept": "",
-      "mood": "",
+      "concept": "Editorial illustration grounded in the reported topic: NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+      "mood": "Cinematic, credible, restrained",
       "avoid": [
         "fabricated logos",
         "readable fake UI text"
       ]
     },
-    "claimEvidence": [],
-    "corroborationSummary": null,
-    "readinessScore": null
+    "claimEvidence": [
+      {
+        "claimId": "claim-ddd83308ad",
+        "claimText": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+        "claimType": "EVENT_IDENTITY",
+        "consequential": true,
+        "supportingSources": [
+          {
+            "sourceId": "nist-news",
+            "sourceName": "NIST News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+          }
+        ],
+        "primarySupport": [
+          {
+            "sourceId": "nist-news",
+            "sourceName": "NIST News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+          }
+        ],
+        "independentSupport": [
+          {
+            "sourceId": "nist-news",
+            "sourceName": "NIST News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+          }
+        ],
+        "status": "PARTIALLY_VERIFIED",
+        "notes": "agreement=partial; readyImpact=REVIEW",
+        "agreement": "partial",
+        "readyImpact": "REVIEW",
+        "conflict": null
+      }
+    ],
+    "claimMatrix": [
+      {
+        "claim": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+        "claimId": "claim-ddd83308ad",
+        "claimType": "EVENT_IDENTITY",
+        "consequential": true,
+        "sourceA": {
+          "sourceId": "nist-news",
+          "sourceName": "NIST News",
+          "sourceTier": "TIER_1_PRIMARY",
+          "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+          "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+        },
+        "sourceB": null,
+        "supportingSourceIds": [
+          "nist-news"
+        ],
+        "agreement": "partial",
+        "conflict": null,
+        "status": "PARTIALLY_VERIFIED",
+        "readyImpact": "REVIEW"
+      }
+    ],
+    "corroborationSummary": {
+      "attempted": true,
+      "matchCount": 0,
+      "originalSourceCount": 1,
+      "enrichedSourceCount": 1,
+      "independentSourceCount": 1,
+      "primarySourceCount": 1,
+      "discoveryOnlyCount": 0,
+      "rejectedIndependence": 0,
+      "claimsChecked": 1,
+      "claimSummary": {
+        "total": 1,
+        "consequential": 1,
+        "VERIFIED_PRIMARY": 0,
+        "VERIFIED_MULTI_SOURCE": 0,
+        "PARTIALLY_VERIFIED": 1,
+        "UNRESOLVED": 0,
+        "CONFLICTING": 0
+      },
+      "claimGate": {
+        "blocksReady": true,
+        "independentCount": 1,
+        "consequentialCount": 1,
+        "agreedCount": 0,
+        "unresolvedCount": 1,
+        "conflictCount": 0,
+        "rationale": "Needs ≥2 independent sources"
+      },
+      "conflictsFound": 0,
+      "uncertaintiesResolved": 0,
+      "uncertaintiesRemaining": 0,
+      "readinessScore": 66,
+      "blocksReady": true,
+      "phase": "3"
+    },
+    "readinessScore": {
+      "score": 66,
+      "blocksReady": true,
+      "notes": [
+        "primary-source support",
+        "single eligible source only",
+        "relevance",
+        "editorial fit",
+        "unresolved consequential claims"
+      ],
+      "inputs": {
+        "primaryCount": 1,
+        "independentCount": 1,
+        "verifiedClaims": 0,
+        "unresolvedConsequential": 1,
+        "remainingUncertainties": 0,
+        "conflicts": 0,
+        "freshness": "BACKGROUND",
+        "relevance": 6,
+        "editorialFitScore": 3
+      }
+    },
+    "content": [
+      {
+        "heading": "Overview",
+        "body": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence. CinNova frames this as an evergreen explainer grounded in the listed authoritative sources. No additional events, quotes, or statistics are invented."
+      },
+      {
+        "heading": "Source-backed context",
+        "body": "Readers should treat NIST News as the factual anchors. Practical takeaways synthesize public guidance without fabricating vendor endorsements."
+      },
+      {
+        "heading": "What to verify next",
+        "body": "Confirm whether newer revisions of any cited standard or notice supersede this framing before publication. Translations must not add facts beyond the English source."
+      }
+    ]
   }
 }
