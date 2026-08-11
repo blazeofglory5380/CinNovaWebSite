@@ -1,7 +1,7 @@
 {
   "schemaVersion": "10B-real-shadow-validation",
   "date": "2026-08-11",
-  "generatedAt": "2026-08-11T20:16:31.091Z",
+  "generatedAt": "2026-08-11T21:24:22.474Z",
   "mode": "shadow",
   "dryRun": true,
   "autoPublish": false,
@@ -12,12 +12,15 @@
     "rationale": "Manual run explicitly selected live research."
   },
   "executionMode": {
+    "mode": "SHADOW",
     "shadow": true,
     "dryRun": true,
     "openDraftPr": false,
     "writeDraftFiles": false,
     "autoPublish": false,
-    "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+    "publish": false,
+    "failClosed": true,
+    "rationale": "Production scheduler remains SHADOW — no draft files, no PR, no publish."
   },
   "discovery": {
     "activeSources": [
@@ -419,6 +422,107 @@
         "tier": "TIER_2_REPUTABLE"
       },
       {
+        "id": "epa-news",
+        "name": "EPA News Releases",
+        "topics": [
+          "environment",
+          "science",
+          "health",
+          "policy"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "usgs-news",
+        "name": "USGS News",
+        "topics": [
+          "science",
+          "environment",
+          "space",
+          "technology"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "energy-gov-news",
+        "name": "U.S. Department of Energy News",
+        "topics": [
+          "energy",
+          "science",
+          "technology",
+          "infrastructure",
+          "ai"
+        ],
+        "scope": [
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "esa-news",
+        "name": "ESA Space News",
+        "topics": [
+          "space",
+          "science",
+          "technology"
+        ],
+        "scope": [
+          "international"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "guardian-technology",
+        "name": "The Guardian Technology",
+        "topics": [
+          "technology",
+          "ai",
+          "business",
+          "science",
+          "environment"
+        ],
+        "scope": [
+          "international",
+          "national"
+        ],
+        "tier": "TIER_1_NEWS"
+      },
+      {
+        "id": "cloudflare-blog",
+        "name": "Cloudflare Blog",
+        "topics": [
+          "cybersecurity",
+          "technology",
+          "software",
+          "infrastructure"
+        ],
+        "scope": [
+          "international",
+          "national"
+        ],
+        "tier": "TIER_1_PRIMARY"
+      },
+      {
+        "id": "huggingface-blog",
+        "name": "Hugging Face Blog",
+        "topics": [
+          "ai",
+          "software",
+          "research",
+          "technology"
+        ],
+        "scope": [
+          "international"
+        ],
+        "tier": "TIER_2_REPUTABLE"
+      },
+      {
         "id": "arxiv-cs-ai",
         "name": "arXiv cs.AI",
         "topics": [
@@ -584,12 +688,12 @@
         "reason": "BLOCKED policy placeholder — untrusted content classes."
       }
     ],
-    "storiesFound": 579,
-    "clusters": 570,
-    "candidatesDeduped": 570,
-    "candidatesRejected": 443,
-    "candidatesAccepted": 7,
-    "qualifiedCount": 104,
+    "storiesFound": 693,
+    "clusters": 683,
+    "candidatesDeduped": 683,
+    "candidatesRejected": 534,
+    "candidatesAccepted": 14,
+    "qualifiedCount": 124,
     "selectedCount": 3,
     "runStatus": {
       "status": "SUCCESS",
@@ -836,6 +940,69 @@
         "ok": true,
         "count": 40,
         "fetchedCount": 50,
+        "capped": true,
+        "error": null
+      },
+      {
+        "sourceId": "epa-news",
+        "caseId": null,
+        "ok": true,
+        "count": 0,
+        "fetchedCount": 0,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "usgs-news",
+        "caseId": null,
+        "ok": true,
+        "count": 0,
+        "fetchedCount": 0,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "energy-gov-news",
+        "caseId": null,
+        "ok": true,
+        "count": 10,
+        "fetchedCount": 10,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "esa-news",
+        "caseId": null,
+        "ok": true,
+        "count": 15,
+        "fetchedCount": 15,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "guardian-technology",
+        "caseId": null,
+        "ok": true,
+        "count": 29,
+        "fetchedCount": 29,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "cloudflare-blog",
+        "caseId": null,
+        "ok": true,
+        "count": 20,
+        "fetchedCount": 20,
+        "capped": false,
+        "error": null
+      },
+      {
+        "sourceId": "huggingface-blog",
+        "caseId": null,
+        "ok": true,
+        "count": 40,
+        "fetchedCount": 839,
         "capped": true,
         "error": null
       },
@@ -1093,6 +1260,244 @@
         "clusterId": "research-16804f3b0b95"
       },
       {
+        "headline": "Energy Secretary Continues Progress to Strengthen Energy Reliability in Puerto Rico",
+        "category": "energy",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "U.S. Department of Energy News"
+        ],
+        "sourceUrls": [
+          "https://www.energy.gov/articles/energy-secretary-continues-progress-strengthen-energy-reliability-puerto-rico-0"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T14:10:00.000Z",
+          "latest": "2026-08-10T14:10:00.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "U.S. Department of Energy News is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "RECENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-e03aab57c541"
+      },
+      {
+        "headline": "Meta faces expensive child safety reckoning",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/technology/2026/aug/10/meta-child-safety-google-executives-ai-techscape"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T12:04:51.000Z",
+          "latest": "2026-08-11T12:04:51.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-66b369da828a"
+      },
+      {
+        "headline": "Virtue and a Sledgehammer – take a literal hammer to your past",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T09:00:09.000Z",
+          "latest": "2026-08-11T09:00:09.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-0e32243a6d03"
+      },
+      {
+        "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T22:57:57.000Z",
+          "latest": "2026-08-10T22:57:57.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "CURRENT",
+        "editorialFit": {
+          "score": 6,
+          "passes": true,
+          "rationale": "Editorial fit score 6 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-f56a1ccb1f1d"
+      },
+      {
+        "headline": "Bernie Sanders calls on Silicon Valley to ‘pause AI development’ in interest of humanity",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/technology/2026/aug/10/bernie-sanders-ai-development-pause-letter"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T17:44:21.000Z",
+          "latest": "2026-08-10T17:44:21.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "RECENT",
+        "editorialFit": {
+          "score": 3,
+          "passes": true,
+          "rationale": "Editorial fit score 3 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-422867dbbc67"
+      },
+      {
+        "headline": "SA premier announces royal commission into AI – as it happened",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/australia-news/live/2026/aug/10/australia-news-live-transport-minister-sydney-airport-air-traffic-control-catherine-king-aukus-public-inquiry-malcolm-turnbull-alan-jones-trial-ntwnfb"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T07:56:39.000Z",
+          "latest": "2026-08-10T07:56:39.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "RECENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-7b6c7950e868"
+      },
+      {
+        "headline": "UK manufacturers face rising hacking risk as survey shows 30% were hit last year",
+        "category": "technology",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "sourceUrls": [
+          "https://www.theguardian.com/technology/2026/aug/10/uk-companies-cyber-attack-third-jlr"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-10T05:00:36.000Z",
+          "latest": "2026-08-10T05:00:36.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "RECENT",
+        "editorialFit": {
+          "score": 2,
+          "passes": true,
+          "rationale": "Editorial fit score 2 meets minimum 2."
+        },
+        "eligibilityForDrafting": "ELIGIBLE",
+        "rejectionReason": null,
+        "corroborated": true,
+        "clusterId": "research-2a586318f82b"
+      },
+      {
         "headline": "CISA Adds One Known Exploited Vulnerability to Catalog",
         "category": "cybersecurity",
         "coverageLevel": "national",
@@ -1165,26 +1570,29 @@
         "clusterId": "research-7676d700d88b"
       },
       {
-        "headline": "Lion Nebula Roars in Webb’s Sights",
-        "category": "science",
+        "headline": "Gemini becomes Google's fastest-growing product ever as it hits 1B users",
+        "category": "technology",
         "coverageLevel": "national",
         "route": "NEWS",
-        "sourceCount": 2,
-        "independentSourceCount": 1,
+        "sourceCount": 3,
+        "independentSourceCount": 3,
         "sourceOrganizations": [
-          "NASA Press Releases"
+          "Ars Technica",
+          "The Verge",
+          "TechCrunch"
         ],
         "sourceUrls": [
-          "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
-          "https://science.nasa.gov/missions/webb/lion-nebula-roars-to-life-with-nasas-webb/"
+          "https://arstechnica.com/ai/2026/08/google-says-gemini-has-reached-1b-users-faster-than-any-other-google-product/",
+          "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "https://techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users/"
         ],
         "publicationTimestamps": {
-          "earliest": "2026-08-10T14:00:00.000Z",
-          "latest": "2026-08-11T17:02:49.000Z"
+          "earliest": "2026-08-11T18:49:12.000Z",
+          "latest": "2026-08-11T19:48:12.000Z"
         },
         "agreementConflict": {
           "status": "AGREE",
-          "details": "NASA Press Releases is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+          "details": "Confirmed by 3 independent corroboration-eligible sources (two-independent-reputable) after syndication/independence filtering."
         },
         "verificationVerdict": "QUALIFIED",
         "duplicateStoryVerdict": "NEW",
@@ -1197,7 +1605,7 @@
         "eligibilityForDrafting": "REJECTED",
         "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
         "corroborated": true,
-        "clusterId": "research-ef9c4239a45a"
+        "clusterId": "research-60b9740fb735"
       },
       {
         "headline": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
@@ -1304,272 +1712,32 @@
         "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
         "corroborated": true,
         "clusterId": "research-41475efd94f0"
-      },
-      {
-        "headline": "ChatGPT and Gemini both just passed 1 billion users",
-        "category": "technology",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 2,
-        "independentSourceCount": 2,
-        "sourceOrganizations": [
-          "The Verge",
-          "TechCrunch"
-        ],
-        "sourceUrls": [
-          "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
-          "https://techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users/"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-11T18:49:12.000Z",
-          "latest": "2026-08-11T19:41:42.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "Confirmed by 2 independent corroboration-eligible sources (two-independent-reputable) after syndication/independence filtering."
-        },
-        "verificationVerdict": "QUALIFIED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BREAKING",
-        "editorialFit": {
-          "score": 1,
-          "passes": false,
-          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
-        "corroborated": true,
-        "clusterId": "research-3690e1e74cd4"
-      },
-      {
-        "headline": "NIST Announces Funding Opportunity for 14 MEP Centers to Advance Small and Medium-Sized U.S. Manufacturers",
-        "category": "ai",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "NIST News"
-        ],
-        "sourceUrls": [
-          "https://www.nist.gov/news-events/news/2026/07/nist-announces-funding-opportunity-14-mep-centers-advance-small-and-medium"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-07-22T12:00:00.000Z",
-          "latest": "2026-07-22T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "NIST News is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 0,
-          "passes": false,
-          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window; Editorial fit score 0 below minimum 2; deprioritized.",
-        "corroborated": true,
-        "clusterId": "research-bc7c8f312122"
-      },
-      {
-        "headline": "CPDLC over ATN-B1 Vulnerabilities",
-        "category": "cybersecurity",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "CISA Cybersecurity Advisories"
-        ],
-        "sourceUrls": [
-          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-219-01"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-07T12:00:00.000Z",
-          "latest": "2026-08-07T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "CISA Cybersecurity Advisories is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 3,
-          "passes": true,
-          "rationale": "Editorial fit score 3 meets minimum 2."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window",
-        "corroborated": true,
-        "clusterId": "research-8acbca2122b1"
-      },
-      {
-        "headline": "ABB Ability Zenon",
-        "category": "cybersecurity",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "CISA Cybersecurity Advisories"
-        ],
-        "sourceUrls": [
-          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-218-01"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-06T12:00:00.000Z",
-          "latest": "2026-08-06T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "CISA Cybersecurity Advisories is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 7,
-          "passes": true,
-          "rationale": "Editorial fit score 7 meets minimum 2."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window",
-        "corroborated": true,
-        "clusterId": "research-477a6f3aea97"
-      },
-      {
-        "headline": "Johnson Controls Inc. TL280",
-        "category": "cybersecurity",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "CISA Cybersecurity Advisories"
-        ],
-        "sourceUrls": [
-          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-218-02"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-06T12:00:00.000Z",
-          "latest": "2026-08-06T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "CISA Cybersecurity Advisories is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 6,
-          "passes": true,
-          "rationale": "Editorial fit score 6 meets minimum 2."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window",
-        "corroborated": true,
-        "clusterId": "research-d2a75f2e4c61"
-      },
-      {
-        "headline": "Acrisure KARR BT and DR-100",
-        "category": "cybersecurity",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "CISA Cybersecurity Advisories"
-        ],
-        "sourceUrls": [
-          "https://www.cisa.gov/news-events/ics-advisories/icsa-26-216-01"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-04T12:00:00.000Z",
-          "latest": "2026-08-04T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "CISA Cybersecurity Advisories is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 5,
-          "passes": true,
-          "rationale": "Editorial fit score 5 meets minimum 2."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window",
-        "corroborated": true,
-        "clusterId": "research-fbc8ec714bca"
-      },
-      {
-        "headline": "CISA Adds Three Known Exploited Vulnerabilities to Catalog",
-        "category": "cybersecurity",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "CISA Cybersecurity Advisories"
-        ],
-        "sourceUrls": [
-          "https://www.cisa.gov/news-events/alerts/2026/08/04/cisa-adds-three-known-exploited-vulnerabilities-catalog"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-04T12:00:00.000Z",
-          "latest": "2026-08-04T12:00:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "CISA Cybersecurity Advisories is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "REJECTED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BACKGROUND",
-        "editorialFit": {
-          "score": 2,
-          "passes": true,
-          "rationale": "Editorial fit score 2 meets minimum 2."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "outside current freshness window",
-        "corroborated": true,
-        "clusterId": "research-fdfe0cbc3479"
       }
     ],
     "acceptedDrafts": [
       {
-        "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
-        "title": "An AI chatbot is joining the search for art looted by the Nazis",
-        "dek": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
-        "summary": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
+        "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+        "title": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+        "dek": "Meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay on Monday detailing his views on artificial intelligence and anno",
+        "summary": "Meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay on Monday detailing his views on artificial intelligence and anno",
         "category": "technology",
         "coverageLevel": "national",
         "topic": "technology",
         "author": "Cin Nova News Desk",
-        "publishDateCandidate": "2026-08-09T21:27:13.000Z",
+        "publishDateCandidate": "2026-08-10T22:57:57.000Z",
         "sources": [
           {
-            "label": "An AI chatbot is joining the search for art looted by the Nazis",
-            "publisher": "NPR Technology",
-            "url": "https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant",
+            "label": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+            "publisher": "The Guardian Technology",
+            "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
             "type": "verified",
             "note": "Independent research source included for corroboration."
           }
         ],
         "citations": [
           {
-            "publisher": "NPR Technology",
-            "url": "https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant",
+            "publisher": "The Guardian Technology",
+            "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
             "note": "Independent research source included for corroboration."
           }
         ],
@@ -1577,8 +1745,8 @@
           "technology",
           "national"
         ],
-        "seoTitle": "An AI chatbot is joining the search for art looted by the Na",
-        "seoDescription": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
+        "seoTitle": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drop",
+        "seoDescription": "Meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay ",
         "relatedStorySuggestions": [],
         "sections": [
           {
@@ -1586,8 +1754,8 @@
             "heading": "What happened",
             "claimType": "attributed",
             "body": [
-              "CinNova News is tracking this technology development for readers, based on reporting from NPR Technology.",
-              "NPR Technology report that more than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
+              "CinNova News is tracking this technology development for readers, based on reporting from The Guardian Technology.",
+              "The Guardian Technology report that meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay on Monday detailing his views on artificial intelligence and anno.",
               "Shadow synthesis attributes the core facts to those publishers and does not add unsourced quotes, statistics, or causal claims."
             ]
           },
@@ -1596,7 +1764,7 @@
             "heading": "Why it matters",
             "claimType": "analysis",
             "body": [
-              "The development intersects with CinNova coverage of technology, ai, science.",
+              "The development intersects with CinNova coverage of technology, ai, business.",
               "Independent secondary corroboration should be confirmed before READY / controlled draft writing."
             ]
           },
@@ -1605,13 +1773,13 @@
             "heading": "Source notes",
             "claimType": "attribution",
             "body": [
-              "NPR Technology: https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant (Independent research source included for corroboration.)"
+              "The Guardian Technology: https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta (Independent research source included for corroboration.)"
             ]
           }
         ],
         "verifiedClaims": [],
         "attributedClaims": [
-          "An AI chatbot is joining the search for art looted by the Nazis"
+          "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
         ],
         "uncertainties": [],
         "factCheckStatus": "REVIEW",
@@ -1623,15 +1791,186 @@
         "sourceCount": 1,
         "independentSourceCount": 1,
         "sourceOrganizations": [
-          "NPR Technology"
+          "The Guardian Technology"
         ],
         "primaryClaims": [
-          "An AI chatbot is joining the search for art looted by the Nazis"
+          "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
         ],
         "claimCorroborationMatrix": [
           {
-            "claim": "An AI chatbot is joining the search for art looted by the Nazis",
-            "claimId": "claim-b5a949778a",
+            "claim": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+            "claimId": "claim-b3ce1784b3",
+            "claimType": "EVENT_IDENTITY",
+            "consequential": true,
+            "sourceA": {
+              "sourceId": "guardian-technology",
+              "sourceName": "The Guardian Technology",
+              "sourceTier": "TIER_1_NEWS",
+              "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
+              "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
+            },
+            "sourceB": null,
+            "supportingSourceIds": [
+              "guardian-technology"
+            ],
+            "agreement": "partial",
+            "conflict": null,
+            "status": "PARTIALLY_VERIFIED",
+            "readyImpact": "REVIEW"
+          }
+        ],
+        "conflicts": [],
+        "verificationStatus": "REVIEW",
+        "publicationEligibility": "REVIEW — human confirm required",
+        "whyStatus": "Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm",
+        "quoteSafety": {
+          "inventedQuotesForbidden": true,
+          "longQuotesRewritten": true,
+          "singleSourceQuotesAttributedOnly": true
+        },
+        "originality": {
+          "status": "NEEDS_REWRITE",
+          "maxSourceOverlap": 1,
+          "issues": [
+            "High n-gram overlap with a source summary (100.0%); rewrite more independently."
+          ],
+          "notes": [
+            "Shadow originality check is heuristic (n-gram + quote length).",
+            "It does not replace human copyright review before publication.",
+            "English source remains authoritative for any future translations."
+          ]
+        },
+        "translationQueue": [
+          {
+            "locale": "en",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+            "status": "AI_DRAFT",
+            "englishAuthoritative": true,
+            "mayAddFacts": false,
+            "preserveNamesQuotesLegal": true,
+            "humanReviewed": false,
+            "note": "English shadow draft — not human-reviewed for publication."
+          },
+          {
+            "locale": "es",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+            "status": "MISSING",
+            "englishAuthoritative": true,
+            "mayAddFacts": false,
+            "preserveNamesQuotesLegal": true,
+            "humanReviewed": false,
+            "note": "Translation not generated in shadow validation; missing locale does not block English."
+          },
+          {
+            "locale": "fr",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+            "status": "MISSING",
+            "englishAuthoritative": true,
+            "mayAddFacts": false,
+            "preserveNamesQuotesLegal": true,
+            "humanReviewed": false,
+            "note": "Translation not generated in shadow validation; missing locale does not block English."
+          },
+          {
+            "locale": "de",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+            "status": "MISSING",
+            "englishAuthoritative": true,
+            "mayAddFacts": false,
+            "preserveNamesQuotesLegal": true,
+            "humanReviewed": false,
+            "note": "Translation not generated in shadow validation; missing locale does not block English."
+          }
+        ],
+        "phase10aQualifiedForAutoDraft": false,
+        "shadowDraftPolicy": "REVIEW — shadow draft only; requires human confirm / forceDraft before file write",
+        "whyReadyOrReview": "REVIEW: Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm"
+      },
+      {
+        "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
+        "title": "Virtue and a Sledgehammer – take a literal hammer to your past",
+        "dek": "What do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot of her car, Pratelle carries the corpse of her mother and a gian",
+        "summary": "What do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot of her car, Pratelle carries the corpse of her mother and a gian",
+        "category": "technology",
+        "coverageLevel": "international",
+        "topic": "technology",
+        "author": "Cin Nova News Desk",
+        "publishDateCandidate": "2026-08-11T09:00:09.000Z",
+        "sources": [
+          {
+            "label": "Virtue and a Sledgehammer – take a literal hammer to your past",
+            "publisher": "The Guardian Technology",
+            "url": "https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
+            "type": "verified",
+            "note": "Independent research source included for corroboration."
+          }
+        ],
+        "citations": [
+          {
+            "publisher": "The Guardian Technology",
+            "url": "https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
+            "note": "Independent research source included for corroboration."
+          }
+        ],
+        "tags": [
+          "technology",
+          "international"
+        ],
+        "seoTitle": "Virtue and a Sledgehammer – take a literal hammer to your pa",
+        "seoDescription": "What do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot",
+        "relatedStorySuggestions": [],
+        "sections": [
+          {
+            "id": "what-happened",
+            "heading": "What happened",
+            "claimType": "attributed",
+            "body": [
+              "CinNova News is tracking this technology development for readers, based on reporting from The Guardian Technology.",
+              "The Guardian Technology report that what do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot of her car, Pratelle carries the corpse of her mother and a gian.",
+              "Shadow synthesis attributes the core facts to those publishers and does not add unsourced quotes, statistics, or causal claims."
+            ]
+          },
+          {
+            "id": "why-it-matters-detail",
+            "heading": "Why it matters",
+            "claimType": "analysis",
+            "body": [
+              "The development intersects with CinNova coverage of technology, ai, business.",
+              "Independent secondary corroboration should be confirmed before READY / controlled draft writing."
+            ]
+          },
+          {
+            "id": "sources-notes",
+            "heading": "Source notes",
+            "claimType": "attribution",
+            "body": [
+              "The Guardian Technology: https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past (Independent research source included for corroboration.)"
+            ]
+          }
+        ],
+        "verifiedClaims": [],
+        "attributedClaims": [
+          "Virtue and a Sledgehammer – take a literal hammer to your past"
+        ],
+        "uncertainties": [],
+        "factCheckStatus": "REVIEW",
+        "duplicateClassification": "NEW STORY",
+        "readingTimeMinutes": 1,
+        "shadowOnly": true,
+        "isDraft": true,
+        "isPublished": false,
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "The Guardian Technology"
+        ],
+        "primaryClaims": [
+          "Virtue and a Sledgehammer – take a literal hammer to your past"
+        ],
+        "claimCorroborationMatrix": [
+          {
+            "claim": "Virtue and a Sledgehammer – take a literal hammer to your past",
+            "claimId": "claim-920905529e",
             "claimType": "EVENT_IDENTITY",
             "consequential": true,
             "sourceA": null,
@@ -1667,7 +2006,7 @@
         "translationQueue": [
           {
             "locale": "en",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "AI_DRAFT",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -1677,7 +2016,7 @@
           },
           {
             "locale": "es",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -1687,7 +2026,7 @@
           },
           {
             "locale": "fr",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -1697,201 +2036,7 @@
           },
           {
             "locale": "de",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
-            "status": "MISSING",
-            "englishAuthoritative": true,
-            "mayAddFacts": false,
-            "preserveNamesQuotesLegal": true,
-            "humanReviewed": false,
-            "note": "Translation not generated in shadow validation; missing locale does not block English."
-          }
-        ],
-        "phase10aQualifiedForAutoDraft": false,
-        "shadowDraftPolicy": "REVIEW — shadow draft only; requires human confirm / forceDraft before file write",
-        "whyReadyOrReview": "REVIEW: Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm"
-      },
-      {
-        "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
-        "title": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-        "dek": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-        "summary": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-        "category": "technology",
-        "coverageLevel": "international",
-        "topic": "technology",
-        "author": "Cin Nova News Desk",
-        "publishDateCandidate": "2026-08-11T08:44:52.000Z",
-        "sources": [
-          {
-            "label": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-            "publisher": "BBC News Technology",
-            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-            "type": "verified",
-            "note": "Independent research source included for corroboration."
-          }
-        ],
-        "citations": [
-          {
-            "publisher": "BBC News Technology",
-            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-            "note": "Independent research source included for corroboration."
-          }
-        ],
-        "tags": [
-          "technology",
-          "international"
-        ],
-        "seoTitle": "Wall Street giants hand Nvidia $500bn to fund boom in AI pro",
-        "seoDescription": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-        "relatedStorySuggestions": [],
-        "sections": [
-          {
-            "id": "what-happened",
-            "heading": "What happened",
-            "claimType": "attributed",
-            "body": [
-              "CinNova News is tracking this technology development for readers, based on reporting from BBC News Technology.",
-              "BBC News Technology report that the money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-              "Shadow synthesis attributes the core facts to those publishers and does not add unsourced quotes, statistics, or causal claims."
-            ]
-          },
-          {
-            "id": "why-it-matters-detail",
-            "heading": "Why it matters",
-            "claimType": "analysis",
-            "body": [
-              "The development intersects with CinNova coverage of technology, ai, science.",
-              "Independent secondary corroboration should be confirmed before READY / controlled draft writing."
-            ]
-          },
-          {
-            "id": "sources-notes",
-            "heading": "Source notes",
-            "claimType": "attribution",
-            "body": [
-              "BBC News Technology: https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss (Independent research source included for corroboration.)"
-            ]
-          }
-        ],
-        "verifiedClaims": [],
-        "attributedClaims": [
-          "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-          "nvidia financing/value claim $500bn"
-        ],
-        "uncertainties": [],
-        "factCheckStatus": "REVIEW",
-        "duplicateClassification": "NEW STORY",
-        "readingTimeMinutes": 1,
-        "shadowOnly": true,
-        "isDraft": true,
-        "isPublished": false,
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "BBC News Technology"
-        ],
-        "primaryClaims": [
-          "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-          "nvidia financing/value claim $500bn"
-        ],
-        "claimCorroborationMatrix": [
-          {
-            "claim": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-            "claimId": "claim-bd2274f98d",
-            "claimType": "EVENT_IDENTITY",
-            "consequential": true,
-            "sourceA": {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            },
-            "sourceB": null,
-            "supportingSourceIds": [
-              "bbc-technology"
-            ],
-            "agreement": "partial",
-            "conflict": null,
-            "status": "PARTIALLY_VERIFIED",
-            "readyImpact": "REVIEW"
-          },
-          {
-            "claim": "nvidia financing/value claim $500bn",
-            "claimId": "claim-1f91cd8e75",
-            "claimType": "NUMERIC_CLAIM",
-            "consequential": true,
-            "sourceA": {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            },
-            "sourceB": null,
-            "supportingSourceIds": [
-              "bbc-technology"
-            ],
-            "agreement": "partial",
-            "conflict": null,
-            "status": "PARTIALLY_VERIFIED",
-            "readyImpact": "REVIEW"
-          }
-        ],
-        "conflicts": [],
-        "verificationStatus": "REVIEW",
-        "publicationEligibility": "REVIEW — human confirm required",
-        "whyStatus": "Only one source — prefer independent corroboration for consequential claims; No clear primary/official source flagged — treat company/media wording carefully; REVIEW items draft only when packet sets forceDraft=true or after human confirm",
-        "quoteSafety": {
-          "inventedQuotesForbidden": true,
-          "longQuotesRewritten": true,
-          "singleSourceQuotesAttributedOnly": true
-        },
-        "originality": {
-          "status": "NEEDS_REWRITE",
-          "maxSourceOverlap": 1,
-          "issues": [
-            "High n-gram overlap with a source summary (100.0%); rewrite more independently."
-          ],
-          "notes": [
-            "Shadow originality check is heuristic (n-gram + quote length).",
-            "It does not replace human copyright review before publication.",
-            "English source remains authoritative for any future translations."
-          ]
-        },
-        "translationQueue": [
-          {
-            "locale": "en",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
-            "status": "AI_DRAFT",
-            "englishAuthoritative": true,
-            "mayAddFacts": false,
-            "preserveNamesQuotesLegal": true,
-            "humanReviewed": false,
-            "note": "English shadow draft — not human-reviewed for publication."
-          },
-          {
-            "locale": "es",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
-            "status": "MISSING",
-            "englishAuthoritative": true,
-            "mayAddFacts": false,
-            "preserveNamesQuotesLegal": true,
-            "humanReviewed": false,
-            "note": "Translation not generated in shadow validation; missing locale does not block English."
-          },
-          {
-            "locale": "fr",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
-            "status": "MISSING",
-            "englishAuthoritative": true,
-            "mayAddFacts": false,
-            "preserveNamesQuotesLegal": true,
-            "humanReviewed": false,
-            "note": "Translation not generated in shadow validation; missing locale does not block English."
-          },
-          {
-            "locale": "de",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -1980,26 +2125,29 @@
         "clusterId": "research-7676d700d88b"
       },
       {
-        "headline": "Lion Nebula Roars in Webb’s Sights",
-        "category": "science",
+        "headline": "Gemini becomes Google's fastest-growing product ever as it hits 1B users",
+        "category": "technology",
         "coverageLevel": "national",
         "route": "NEWS",
-        "sourceCount": 2,
-        "independentSourceCount": 1,
+        "sourceCount": 3,
+        "independentSourceCount": 3,
         "sourceOrganizations": [
-          "NASA Press Releases"
+          "Ars Technica",
+          "The Verge",
+          "TechCrunch"
         ],
         "sourceUrls": [
-          "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
-          "https://science.nasa.gov/missions/webb/lion-nebula-roars-to-life-with-nasas-webb/"
+          "https://arstechnica.com/ai/2026/08/google-says-gemini-has-reached-1b-users-faster-than-any-other-google-product/",
+          "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
+          "https://techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users/"
         ],
         "publicationTimestamps": {
-          "earliest": "2026-08-10T14:00:00.000Z",
-          "latest": "2026-08-11T17:02:49.000Z"
+          "earliest": "2026-08-11T18:49:12.000Z",
+          "latest": "2026-08-11T19:48:12.000Z"
         },
         "agreementConflict": {
           "status": "AGREE",
-          "details": "NASA Press Releases is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+          "details": "Confirmed by 3 independent corroboration-eligible sources (two-independent-reputable) after syndication/independence filtering."
         },
         "verificationVerdict": "QUALIFIED",
         "duplicateStoryVerdict": "NEW",
@@ -2012,7 +2160,7 @@
         "eligibilityForDrafting": "REJECTED",
         "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
         "corroborated": true,
-        "clusterId": "research-ef9c4239a45a"
+        "clusterId": "research-60b9740fb735"
       },
       {
         "headline": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
@@ -2119,42 +2267,6 @@
         "rejectionReason": "outside current freshness window; Editorial fit score 1 below minimum 2; deprioritized.",
         "corroborated": true,
         "clusterId": "research-41475efd94f0"
-      },
-      {
-        "headline": "ChatGPT and Gemini both just passed 1 billion users",
-        "category": "technology",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 2,
-        "independentSourceCount": 2,
-        "sourceOrganizations": [
-          "The Verge",
-          "TechCrunch"
-        ],
-        "sourceUrls": [
-          "https://www.theverge.com/ai-artificial-intelligence/978113/chatgpt-gemini-1-billion-users",
-          "https://techcrunch.com/2026/08/11/googles-gemini-app-surges-to-one-billion-users/"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-11T18:49:12.000Z",
-          "latest": "2026-08-11T19:41:42.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "Confirmed by 2 independent corroboration-eligible sources (two-independent-reputable) after syndication/independence filtering."
-        },
-        "verificationVerdict": "QUALIFIED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "BREAKING",
-        "editorialFit": {
-          "score": 1,
-          "passes": false,
-          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
-        "corroborated": true,
-        "clusterId": "research-3690e1e74cd4"
       },
       {
         "headline": "NIST Announces Funding Opportunity for 14 MEP Centers to Advance Small and Medium-Sized U.S. Manufacturers",
@@ -2803,6 +2915,74 @@
         "clusterId": "research-c3c34c12e9b1"
       },
       {
+        "headline": "What Is the Nancy Grace Roman Space Telescope? (Grades 5-8)",
+        "category": "science",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NASA Press Releases"
+        ],
+        "sourceUrls": [
+          "https://www.nasa.gov/learning-resources/for-kids-and-students/what-is-the-nancy-grace-roman-space-telescope-grades-5-8/"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T21:04:39.000Z",
+          "latest": "2026-08-11T21:04:39.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NASA Press Releases is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+        },
+        "verificationVerdict": "QUALIFIED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BREAKING",
+        "editorialFit": {
+          "score": 1,
+          "passes": false,
+          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-5a30acc68b4d"
+      },
+      {
+        "headline": "NASA Completes Astronaut-Deployed Science Instrument for Lunar Surface",
+        "category": "science",
+        "coverageLevel": "national",
+        "route": "NEWS",
+        "sourceCount": 1,
+        "independentSourceCount": 1,
+        "sourceOrganizations": [
+          "NASA Press Releases"
+        ],
+        "sourceUrls": [
+          "https://science.nasa.gov/missions/artemis/nasa-completes-astronaut-deployed-science-instrument-for-lunar-surface/"
+        ],
+        "publicationTimestamps": {
+          "earliest": "2026-08-11T19:41:34.000Z",
+          "latest": "2026-08-11T19:41:34.000Z"
+        },
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "NASA Press Releases is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+        },
+        "verificationVerdict": "REJECTED",
+        "duplicateStoryVerdict": "NEW",
+        "freshness": "BREAKING",
+        "editorialFit": {
+          "score": 0,
+          "passes": false,
+          "rationale": "Editorial fit score 0 below minimum 2; deprioritized."
+        },
+        "eligibilityForDrafting": "REJECTED",
+        "rejectionReason": "no CinNova relevance topic matched; Editorial fit score 0 below minimum 2; deprioritized.",
+        "corroborated": true,
+        "clusterId": "research-857972727e84"
+      },
+      {
         "headline": "NASA Telescopes Create Colorful ‘Craft’ From Nearby Nebula",
         "category": "science",
         "coverageLevel": "national",
@@ -2825,7 +3005,7 @@
         },
         "verificationVerdict": "QUALIFIED",
         "duplicateStoryVerdict": "NEW",
-        "freshness": "BREAKING",
+        "freshness": "CURRENT",
         "editorialFit": {
           "score": 1,
           "passes": false,
@@ -2859,7 +3039,7 @@
         },
         "verificationVerdict": "QUALIFIED",
         "duplicateStoryVerdict": "NEW",
-        "freshness": "BREAKING",
+        "freshness": "CURRENT",
         "editorialFit": {
           "score": 1,
           "passes": false,
@@ -2903,40 +3083,6 @@
         "rejectionReason": "no CinNova relevance topic matched; Editorial fit score 0 below minimum 2; deprioritized.",
         "corroborated": true,
         "clusterId": "research-d92c7d6ce7a4"
-      },
-      {
-        "headline": "APOD: 2026 August 11 – Six Moons of Saturn",
-        "category": "science",
-        "coverageLevel": "national",
-        "route": "NEWS",
-        "sourceCount": 1,
-        "independentSourceCount": 1,
-        "sourceOrganizations": [
-          "NASA Press Releases"
-        ],
-        "sourceUrls": [
-          "https://science.nasa.gov/image-article/apod/apod-2026-august-11-six-moons-of-saturn/"
-        ],
-        "publicationTimestamps": {
-          "earliest": "2026-08-11T04:05:00.000Z",
-          "latest": "2026-08-11T04:05:00.000Z"
-        },
-        "agreementConflict": {
-          "status": "AGREE",
-          "details": "NASA Press Releases is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
-        },
-        "verificationVerdict": "QUALIFIED",
-        "duplicateStoryVerdict": "NEW",
-        "freshness": "CURRENT",
-        "editorialFit": {
-          "score": 1,
-          "passes": false,
-          "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
-        },
-        "eligibilityForDrafting": "REJECTED",
-        "rejectionReason": "Editorial fit score 1 below minimum 2; deprioritized.",
-        "corroborated": true,
-        "clusterId": "research-2a9e5dcd2d44"
       }
     ],
     "sourcingMatrix": [
@@ -3036,6 +3182,104 @@
         "agreementConflict": {
           "status": "AGREE",
           "details": "NPR Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "Energy Secretary Continues Progress to Strengthen Energy Reliability in Puerto Rico",
+        "sources": [
+          "U.S. Department of Energy News"
+        ],
+        "urls": [
+          "https://www.energy.gov/articles/energy-secretary-continues-progress-strengthen-energy-reliability-puerto-rico-0"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "U.S. Department of Energy News is an allowlisted Tier-1 primary that may research-qualify alone; Phase 10A may still HOLD/REVIEW and never auto-publishes."
+        }
+      },
+      {
+        "headline": "Meta faces expensive child safety reckoning",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/technology/2026/aug/10/meta-child-safety-google-executives-ai-techscape"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "Virtue and a Sledgehammer – take a literal hammer to your past",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "Bernie Sanders calls on Silicon Valley to ‘pause AI development’ in interest of humanity",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/technology/2026/aug/10/bernie-sanders-ai-development-pause-letter"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "SA premier announces royal commission into AI – as it happened",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/australia-news/live/2026/aug/10/australia-news-live-transport-minister-sydney-airport-air-traffic-control-catherine-king-aukus-public-inquiry-malcolm-turnbull-alan-jones-trial-ntwnfb"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
+        }
+      },
+      {
+        "headline": "UK manufacturers face rising hacking risk as survey shows 30% were hit last year",
+        "sources": [
+          "The Guardian Technology"
+        ],
+        "urls": [
+          "https://www.theguardian.com/technology/2026/aug/10/uk-companies-cyber-attack-third-jlr"
+        ],
+        "independentSourceCount": 1,
+        "agreementConflict": {
+          "status": "AGREE",
+          "details": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY."
         }
       }
     ],
@@ -3178,21 +3422,21 @@
     ],
     "acceptedDrafts": [
       {
-        "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-        "title": "What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders",
-        "topic": "ai",
+        "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+        "title": "What Lion Nebula Roars in Webb’s Sights means for businesses and builders",
+        "topic": "science",
         "classification": "evergreen",
         "searchIntent": "Informational",
-        "valueProposition": "Search-oriented explainer on ai",
+        "valueProposition": "Search-oriented explainer on science",
         "category": "Artificial Intelligence",
         "author": "CinNova Editorial Team",
-        "excerpt": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
+        "excerpt": "Observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s “mane” is clear and detailed in this image released on Aug. 10, 2026, due to Webb’s high-resolution imaging. See more images of the Lion Nebula from Webb. Image: NASA, ESA, […]",
         "sections": [
           {
             "heading": "What this guide covers",
             "body": [
-              "This CinNova explainer focuses on ai for readers with informational intent.",
-              "Context drawn from listed sources (NIST News): NIST News reporting indicates that nIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence."
+              "This CinNova explainer focuses on science for readers with informational intent.",
+              "Context drawn from listed sources (NASA Press Releases, ESA Space News): NASA Press Releases reporting indicates that observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s “mane” is clear and detailed in this image released on Aug. 10, 2026, due to Webb’s high-resolution imaging. See more imag…."
             ]
           },
           {
@@ -3214,9 +3458,23 @@
         ],
         "sources": [
           {
-            "label": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
-            "publisher": "NIST News",
-            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+            "label": "Lion Nebula Roars in Webb’s Sights",
+            "publisher": "NASA Press Releases",
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "type": "official",
+            "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
+          },
+          {
+            "label": "Lion Nebula roars to life for Webb",
+            "publisher": "ESA Space News",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "type": "official",
+            "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
+          },
+          {
+            "label": "Webb opens a Treasure Chest filled with stars",
+            "publisher": "ESA Space News",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Webb_opens_a_Treasure_Chest_filled_with_stars",
             "type": "official",
             "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
           }
@@ -3226,20 +3484,18 @@
           "No invented tutorials steps that imply vendor endorsement",
           "English authoritative; translations may not add facts"
         ],
-        "seoTitle": "What NIST Launches Centers for AI in Manufacturing and Criti",
-        "seoDescription": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
+        "seoTitle": "What Lion Nebula Roars in Webb’s Sights means for businesses",
+        "seoDescription": "Observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s ",
         "researchBrief": {
-          "primaryKeyword": "ai",
+          "primaryKeyword": "science",
           "secondaryKeywords": [
-            "cybersecurity",
-            "standards",
-            "semiconductors",
-            "science"
+            "space",
+            "technology"
           ],
           "audience": "CinNova readers evaluating technology, policy, and infrastructure",
           "searchIntent": "Informational"
         },
-        "factCheckStatus": "REVIEW",
+        "factCheckStatus": "READY",
         "duplicateContentCheck": "NEW",
         "eligibility": "PASS",
         "readingTimeMinutes": 1,
@@ -3260,7 +3516,7 @@
         "translationQueue": [
           {
             "locale": "en",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "AI_DRAFT",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3270,7 +3526,7 @@
           },
           {
             "locale": "es",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3280,7 +3536,7 @@
           },
           {
             "locale": "fr",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3290,7 +3546,7 @@
           },
           {
             "locale": "de",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3438,8 +3694,8 @@
     "pipelineWouldCreate": [
       {
         "type": "blog",
-        "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-        "path": "D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\src\\data\\blog-drafts\\what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b.json",
+        "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+        "path": "D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\src\\data\\blog-drafts\\what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders.json",
         "dryRun": true
       }
     ],
@@ -3511,7 +3767,7 @@
         {
           "coverage": "national",
           "disposition": "REVIEW",
-          "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+          "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
           "factCheckStatus": "REVIEW",
           "factCheckScore": 86,
           "duplicateClassification": "NEW STORY",
@@ -3522,7 +3778,7 @@
         {
           "coverage": "international",
           "disposition": "REVIEW",
-          "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+          "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
           "factCheckStatus": "REVIEW",
           "factCheckScore": 86,
           "duplicateClassification": "NEW STORY",
@@ -3532,11 +3788,11 @@
         }
       ],
       "blogResult": {
-        "disposition": "REVIEW",
-        "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-        "factCheckStatus": "REVIEW",
+        "disposition": "READY",
+        "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+        "factCheckStatus": "READY",
         "factCheckScore": 92,
-        "reason": "Thin draft body (~85 words)",
+        "reason": "Thin draft body (~126 words)",
         "seoOk": true,
         "seoSummary": "ok",
         "heroStatus": "IMAGE_REQUIRED"
@@ -3544,8 +3800,8 @@
       "publishReadiness": [
         {
           "kind": "blog",
-          "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-          "status": "REVIEW",
+          "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+          "status": "READY",
           "publishCandidate": true,
           "blockedFromPublish": false
         }
@@ -3554,7 +3810,7 @@
     },
     "originality": [
       {
-        "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+        "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
         "type": "news",
         "status": "NEEDS_REWRITE",
         "maxSourceOverlap": 1,
@@ -3563,7 +3819,7 @@
         ]
       },
       {
-        "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+        "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
         "type": "news",
         "status": "NEEDS_REWRITE",
         "maxSourceOverlap": 1,
@@ -3572,7 +3828,7 @@
         ]
       },
       {
-        "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+        "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
         "type": "blog",
         "status": "NEEDS_REWRITE",
         "maxSourceOverlap": 1,
@@ -3623,11 +3879,11 @@
     "unsupportedLocalesDoNotBlockEnglish": true,
     "queues": [
       {
-        "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+        "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
         "queue": [
           {
             "locale": "en",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
             "status": "AI_DRAFT",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3637,7 +3893,7 @@
           },
           {
             "locale": "es",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3647,7 +3903,7 @@
           },
           {
             "locale": "fr",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3657,7 +3913,7 @@
           },
           {
             "locale": "de",
-            "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
+            "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3668,11 +3924,11 @@
         ]
       },
       {
-        "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+        "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
         "queue": [
           {
             "locale": "en",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "AI_DRAFT",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3682,7 +3938,7 @@
           },
           {
             "locale": "es",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3692,7 +3948,7 @@
           },
           {
             "locale": "fr",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3702,7 +3958,7 @@
           },
           {
             "locale": "de",
-            "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
+            "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3713,11 +3969,11 @@
         ]
       },
       {
-        "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+        "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
         "queue": [
           {
             "locale": "en",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "AI_DRAFT",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3727,7 +3983,7 @@
           },
           {
             "locale": "es",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3737,7 +3993,7 @@
           },
           {
             "locale": "fr",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3747,7 +4003,7 @@
           },
           {
             "locale": "de",
-            "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
+            "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
             "status": "MISSING",
             "englishAuthoritative": true,
             "mayAddFacts": false,
@@ -3761,12 +4017,15 @@
   },
   "automation": {
     "scheduleBehavior": {
+      "mode": "SHADOW",
       "shadow": true,
       "dryRun": true,
       "openDraftPr": false,
       "writeDraftFiles": false,
       "autoPublish": false,
-      "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+      "publish": false,
+      "failClosed": true,
+      "rationale": "Production scheduler remains SHADOW — no draft files, no PR, no publish."
     },
     "failureBehavior": {
       "sourceTimeoutOrUnavailable": {
@@ -3825,6 +4084,13 @@
         "mit-technology-review",
         "nature-news",
         "mit-ai",
+        "epa-news",
+        "usgs-news",
+        "energy-gov-news",
+        "esa-news",
+        "guardian-technology",
+        "cloudflare-blog",
+        "huggingface-blog",
         "arxiv-cs-ai"
       ],
       "failedSources": []
@@ -3842,7 +4108,7 @@
         "minimumPerDay": 1,
         "targetPerDay": 2,
         "maximumPerDay": 4,
-        "rationale": "Based on 2 Phase-10A READY/REVIEW shadow drafts and 7 research-eligible clusters; pipeline cap MAX_NEWS_PER_DAY=4. Do not fill desks with HOLD content."
+        "rationale": "Based on 2 Phase-10A READY/REVIEW shadow drafts and 14 research-eligible clusters; pipeline cap MAX_NEWS_PER_DAY=4. Do not fill desks with HOLD content."
       },
       "blog": {
         "targetPerWeek": 2,
@@ -3861,6 +4127,760 @@
       "One or more shadow drafts need originality rewrite before publish consideration."
     ]
   },
+  "phase4": {
+    "sourceCoverage": {
+      "generatedAt": "2026-08-11T21:24:22.450Z",
+      "summary": {
+        "activeSourceCount": 35,
+        "inactiveDocumented": 15,
+        "strongDesks": [
+          "ai",
+          "technology",
+          "business",
+          "science",
+          "health",
+          "environment",
+          "national",
+          "international"
+        ],
+        "adequateDesks": [
+          "finance",
+          "cybersecurity",
+          "space"
+        ],
+        "weakDesks": [],
+        "insufficientDesks": [],
+        "overall": "ADEQUATE"
+      },
+      "desks": [
+        {
+          "desk": "ai",
+          "label": "AI",
+          "primaryCount": 11,
+          "primarySources": [
+            "nist-news",
+            "nsf-news",
+            "openai-blog",
+            "nvidia-blog",
+            "google-ai-blog",
+            "deepmind-blog",
+            "microsoft-research",
+            "meta-newsroom",
+            "apple-newsroom",
+            "aws-blog",
+            "energy-gov-news"
+          ],
+          "independentNewsCount": 11,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "the-verge",
+            "techcrunch",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "specialtyCount": 9,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "discoveryCount": 1,
+          "discoverySources": [
+            "arxiv-cs-ai"
+          ],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "None material"
+        },
+        {
+          "desk": "technology",
+          "label": "Technology",
+          "primaryCount": 18,
+          "primarySources": [
+            "nist-news",
+            "cisa-advisories",
+            "nasa-press",
+            "sec-press",
+            "fda-press",
+            "nsf-news",
+            "openai-blog",
+            "nvidia-blog",
+            "google-ai-blog",
+            "deepmind-blog",
+            "microsoft-research",
+            "meta-newsroom",
+            "apple-newsroom",
+            "aws-blog",
+            "usgs-news",
+            "energy-gov-news",
+            "esa-news",
+            "cloudflare-blog"
+          ],
+          "independentNewsCount": 10,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "the-verge",
+            "techcrunch",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "specialtyCount": 8,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "discoveryCount": 1,
+          "discoverySources": [
+            "arxiv-cs-ai"
+          ],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "None material"
+        },
+        {
+          "desk": "business",
+          "label": "Business",
+          "primaryCount": 7,
+          "primarySources": [
+            "sec-press",
+            "federal-reserve-press",
+            "ftc-press",
+            "nvidia-blog",
+            "meta-newsroom",
+            "apple-newsroom",
+            "aws-blog"
+          ],
+          "independentNewsCount": 6,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "the-verge",
+            "techcrunch",
+            "mit-technology-review",
+            "guardian-technology"
+          ],
+          "specialtyCount": 4,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "mit-technology-review",
+            "guardian-technology"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "Licensed wires (Reuters/AP/Bloomberg/FT) unavailable — corroboration fragile"
+        },
+        {
+          "desk": "finance",
+          "label": "Finance",
+          "primaryCount": 2,
+          "primarySources": [
+            "sec-press",
+            "federal-reserve-press"
+          ],
+          "independentNewsCount": 1,
+          "independentNewsSources": [
+            "techcrunch"
+          ],
+          "specialtyCount": 0,
+          "specialtySources": [],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "ADEQUATE",
+          "expectedStoryFrequency": "moderate",
+          "coverageWeakness": "Often depends on one newsroom + primary pairing"
+        },
+        {
+          "desk": "science",
+          "label": "Science",
+          "primaryCount": 12,
+          "primarySources": [
+            "nist-news",
+            "nasa-press",
+            "fda-press",
+            "cdc-mmwr",
+            "noaa-news",
+            "nsf-news",
+            "deepmind-blog",
+            "microsoft-research",
+            "epa-news",
+            "usgs-news",
+            "energy-gov-news",
+            "esa-news"
+          ],
+          "independentNewsCount": 9,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "specialtyCount": 9,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "discoveryCount": 1,
+          "discoverySources": [
+            "arxiv-cs-ai"
+          ],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "None material"
+        },
+        {
+          "desk": "health",
+          "label": "Health",
+          "primaryCount": 3,
+          "primarySources": [
+            "fda-press",
+            "cdc-mmwr",
+            "epa-news"
+          ],
+          "independentNewsCount": 2,
+          "independentNewsSources": [
+            "npr-technology",
+            "nature-news"
+          ],
+          "specialtyCount": 2,
+          "specialtySources": [
+            "npr-technology",
+            "nature-news"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "Secondary health/environment newsrooms limited vs official notices"
+        },
+        {
+          "desk": "environment",
+          "label": "Environment",
+          "primaryCount": 4,
+          "primarySources": [
+            "cdc-mmwr",
+            "noaa-news",
+            "epa-news",
+            "usgs-news"
+          ],
+          "independentNewsCount": 2,
+          "independentNewsSources": [
+            "nature-news",
+            "guardian-technology"
+          ],
+          "specialtyCount": 2,
+          "specialtySources": [
+            "nature-news",
+            "guardian-technology"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "Secondary health/environment newsrooms limited vs official notices"
+        },
+        {
+          "desk": "cybersecurity",
+          "label": "Cybersecurity",
+          "primaryCount": 3,
+          "primarySources": [
+            "nist-news",
+            "cisa-advisories",
+            "cloudflare-blog"
+          ],
+          "independentNewsCount": 1,
+          "independentNewsSources": [
+            "ars-technica"
+          ],
+          "specialtyCount": 1,
+          "specialtySources": [
+            "ars-technica"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "ADEQUATE",
+          "expectedStoryFrequency": "moderate",
+          "coverageWeakness": "Often depends on one newsroom + primary pairing"
+        },
+        {
+          "desk": "space",
+          "label": "Space",
+          "primaryCount": 3,
+          "primarySources": [
+            "nasa-press",
+            "usgs-news",
+            "esa-news"
+          ],
+          "independentNewsCount": 1,
+          "independentNewsSources": [
+            "ars-technica"
+          ],
+          "specialtyCount": 1,
+          "specialtySources": [
+            "ars-technica"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "ADEQUATE",
+          "expectedStoryFrequency": "moderate",
+          "coverageWeakness": "Often depends on one newsroom + primary pairing"
+        },
+        {
+          "desk": "national",
+          "label": "U.S. National",
+          "primaryCount": 21,
+          "primarySources": [
+            "nist-news",
+            "cisa-advisories",
+            "nasa-press",
+            "sec-press",
+            "federal-reserve-press",
+            "ftc-press",
+            "fda-press",
+            "cdc-mmwr",
+            "noaa-news",
+            "nsf-news",
+            "openai-blog",
+            "nvidia-blog",
+            "google-ai-blog",
+            "microsoft-research",
+            "meta-newsroom",
+            "apple-newsroom",
+            "aws-blog",
+            "epa-news",
+            "usgs-news",
+            "energy-gov-news",
+            "cloudflare-blog"
+          ],
+          "independentNewsCount": 8,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "the-verge",
+            "techcrunch",
+            "ars-technica",
+            "mit-technology-review",
+            "mit-ai",
+            "guardian-technology"
+          ],
+          "specialtyCount": 6,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "mit-technology-review",
+            "mit-ai",
+            "guardian-technology"
+          ],
+          "discoveryCount": 0,
+          "discoverySources": [],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "None material"
+        },
+        {
+          "desk": "international",
+          "label": "International",
+          "primaryCount": 14,
+          "primarySources": [
+            "nasa-press",
+            "federal-reserve-press",
+            "cdc-mmwr",
+            "noaa-news",
+            "openai-blog",
+            "nvidia-blog",
+            "google-ai-blog",
+            "deepmind-blog",
+            "microsoft-research",
+            "meta-newsroom",
+            "apple-newsroom",
+            "aws-blog",
+            "esa-news",
+            "cloudflare-blog"
+          ],
+          "independentNewsCount": 11,
+          "independentNewsSources": [
+            "bbc-technology",
+            "npr-technology",
+            "the-verge",
+            "techcrunch",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "specialtyCount": 9,
+          "specialtySources": [
+            "bbc-technology",
+            "npr-technology",
+            "ars-technica",
+            "ieee-spectrum",
+            "mit-technology-review",
+            "nature-news",
+            "mit-ai",
+            "guardian-technology",
+            "huggingface-blog"
+          ],
+          "discoveryCount": 1,
+          "discoverySources": [
+            "arxiv-cs-ai"
+          ],
+          "corroborationCapability": true,
+          "readyPotential": "STRONG",
+          "expectedStoryFrequency": "regular",
+          "coverageWeakness": "None material"
+        }
+      ],
+      "inactiveSources": [
+        {
+          "id": "ap-wire",
+          "reason": "UNAVAILABLE without license. Documented for future activation.",
+          "licensingNotes": "Licensed wire — configure verified licensed endpoint; do not scrape."
+        },
+        {
+          "id": "reuters-wire",
+          "reason": "UNAVAILABLE without license.",
+          "licensingNotes": "Licensed wire — configure verified licensed endpoint; do not scrape."
+        },
+        {
+          "id": "bloomberg",
+          "reason": "UNAVAILABLE — documented rather than forced.",
+          "licensingNotes": "Paywalled / licensed — no public ingest path configured."
+        },
+        {
+          "id": "financial-times",
+          "reason": "UNAVAILABLE — documented rather than forced.",
+          "licensingNotes": "Paywalled / licensed — no public ingest path configured."
+        },
+        {
+          "id": "cnbc",
+          "reason": "UNAVAILABLE pending verified feed/terms review.",
+          "licensingNotes": "No verified CinNova-safe public feed configured yet."
+        },
+        {
+          "id": "wired",
+          "reason": "UNAVAILABLE pending verified feed/terms review.",
+          "licensingNotes": "No verified CinNova-safe public feed configured yet."
+        },
+        {
+          "id": "science-journal",
+          "reason": "UNAVAILABLE — documented rather than forced.",
+          "licensingNotes": "Paywalled journal — no free bulk ingest configured."
+        },
+        {
+          "id": "anthropic-news",
+          "reason": "UNAVAILABLE — no verified public feed.",
+          "licensingNotes": "No public RSS found (404 on /news/rss)."
+        },
+        {
+          "id": "nih-news",
+          "reason": "UNAVAILABLE — HTTP 403 on probed RSS endpoints.",
+          "licensingNotes": "Feed endpoints returned 403; do not scrape HTML."
+        },
+        {
+          "id": "white-house-briefing",
+          "reason": "Inactive pending verified feed.",
+          "licensingNotes": "Configure a verified current official endpoint before enabling."
+        },
+        {
+          "id": "doj-press",
+          "reason": "UNAVAILABLE pending verified endpoint.",
+          "licensingNotes": "No verified CinNova-safe public feed configured yet."
+        },
+        {
+          "id": "local-partner",
+          "reason": "Placeholder — no local/state partner configured.",
+          "licensingNotes": "Configure verified publisher and endpoint before enabling."
+        },
+        {
+          "id": "hacker-news-discovery",
+          "reason": "Discovery only. Cannot support READY or corroboration by itself.",
+          "licensingNotes": "Community discussion — discovery only."
+        },
+        {
+          "id": "community-tip",
+          "reason": "Discovery only. Every claim requires verification from independent reputable sources.",
+          "licensingNotes": "Internal tip queue."
+        },
+        {
+          "id": "blocked-seo-farms",
+          "reason": "BLOCKED policy placeholder — untrusted content classes.",
+          "licensingNotes": "Never ingest affiliate farms, rumor blogs, or unverifiable scrapes."
+        }
+      ]
+    },
+    "blogCalendar": {
+      "articleCount": 13,
+      "targetPostsPerWeek": 3,
+      "sampleTitles": [
+        "What NIST’s AI Risk Management Framework means for businesses",
+        "How harmful AI hallucinations are evaluated in practice",
+        "A practical guide to securing small-business cloud accounts",
+        "How satellite weather data is used in forecasting",
+        "Understanding AI inference chips"
+      ],
+      "planOnly": true
+    },
+    "commercialBoundary": {
+      "rules": {
+        "editorialConclusionsIndependentOfMonetization": true,
+        "affiliateDisclosureRequired": true,
+        "sponsoredContentMustBeLabeled": true,
+        "noFakeReviews": true,
+        "noFakeProductTesting": true,
+        "noInventedPersonalExperience": true,
+        "affiliateMustNotInfluenceFactualRanking": true,
+        "monetizationActivationDeferred": true
+      },
+      "sponsored": false,
+      "sponsoredLabel": null,
+      "ctas": [
+        {
+          "type": "subscribe_newsletter",
+          "label": "Subscribe to CinNova newsletter",
+          "path": "/newsletter",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "explore_product",
+          "label": "StudyNest",
+          "path": "/studynest",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "explore_product",
+          "label": "TechMate AI",
+          "path": "/techmate",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "read_book",
+          "label": "Explore CinNova books",
+          "path": "/books",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "download_app",
+          "label": "StudyNest",
+          "path": "/studynest",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "download_app",
+          "label": "TechMate AI",
+          "path": "/techmate",
+          "influencesFacts": false,
+          "disclosureRequired": false
+        },
+        {
+          "type": "affiliate_recommendation",
+          "label": "Example affiliate slot (inactive)",
+          "url": null,
+          "influencesFacts": false,
+          "disclosureRequired": true,
+          "disclosureText": "This recommendation may include an affiliate relationship. Editorial conclusions are independent of affiliate compensation.",
+          "activated": false
+        }
+      ],
+      "affiliateDisclosure": {
+        "required": true,
+        "text": "Affiliate relationships, when present, are disclosed. They do not change factual ranking or editorial conclusions.",
+        "activated": false
+      },
+      "safety": [
+        "Editorial conclusions cannot be changed because of monetization.",
+        "No fake reviews, fake testing, or invented personal experience.",
+        "Affiliate/payment activation remains OFF in Phase 4."
+      ],
+      "validation": {
+        "ok": true,
+        "issues": []
+      }
+    },
+    "heroImagePipeline": {
+      "summary": {
+        "ready": 0,
+        "missing": 3,
+        "attributionRequired": 0,
+        "aiLabeled": 0
+      },
+      "designOnly": true,
+      "noUnauthorizedGeneration": true
+    },
+    "translationQueue": {
+      "queued": 12,
+      "missing": 9,
+      "reviewRequired": 3,
+      "approved": 0,
+      "published": 0,
+      "stale": 0,
+      "archived": 0,
+      "counts": {
+        "MISSING": 9,
+        "AI_DRAFT": 3,
+        "HUMAN_REVIEW": 0,
+        "APPROVED": 0,
+        "PUBLISHED": 0,
+        "STALE": 0,
+        "ARCHIVED": 0
+      }
+    },
+    "draftOperations": {
+      "mode": "SHADOW",
+      "shadow": true,
+      "draftCapabilityPrepared": true,
+      "draftActivated": false,
+      "publish": false,
+      "autoPublish": false,
+      "catalogExcludesDrafts": {
+        "ok": true,
+        "issues": [],
+        "counts": {
+          "publicNews": 36,
+          "publishedNews": 36,
+          "publishedBlog": 50
+        },
+        "surfaces": {
+          "sitemapUsesPublishedOnly": true,
+          "rssExcludesDrafts": true,
+          "searchExcludesDrafts": true,
+          "prerenderExcludesDrafts": true,
+          "structuredDataExcludesDrafts": true
+        }
+      }
+    },
+    "dailyOperations": {
+      "schemaVersion": "phase4-daily-ops",
+      "date": "2026-08-11",
+      "generatedAt": "2026-08-11T21:24:22.472Z",
+      "mode": "SHADOW",
+      "shadowArticlesAreNotPublished": true,
+      "discovery": {
+        "fetched": 693,
+        "deduplicated": 683,
+        "rejected": 534,
+        "qualified": 124
+      },
+      "news": {
+        "READY": 0,
+        "REVIEW": 2,
+        "HOLD": 0,
+        "REJECTED": 0,
+        "titles": [
+          "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+          "Virtue and a Sledgehammer – take a literal hammer to your past"
+        ]
+      },
+      "blog": {
+        "READY": 1,
+        "REVIEW": 0,
+        "rejected": 0,
+        "titles": [
+          "What Lion Nebula Roars in Webb’s Sights means for businesses and builders"
+        ]
+      },
+      "sources": {
+        "healthy": 35,
+        "degraded": 0,
+        "failed": 0,
+        "coverageGaps": []
+      },
+      "translation": {
+        "queued": 12,
+        "missing": 9,
+        "reviewRequired": 3
+      },
+      "images": {
+        "ready": 0,
+        "missing": 3,
+        "attributionRequired": 0
+      },
+      "publication": {
+        "draftsThatWouldBeCreated": 3,
+        "articlesEligibleToPublish": 0,
+        "articlesBlocked": 0,
+        "exactBlockers": [
+          "No Phase-10A READY news drafts yet (2 REVIEW shadow draft(s) need human confirm / second source before controlled writing).",
+          "Local/state live feeds are not configured (registry placeholders remain inactive) — correct until verified partners exist.",
+          "Controlled draft-file writing + Draft PR path not activated (allow_draft_pr still OFF for schedule).",
+          "Production auto-publishing must remain OFF until multi-day READY shadow quality is proven.",
+          "Hero IMAGE REQUIRED resolution still manual.",
+          "Translations are MISSING (AI_DRAFT English only when drafts exist) — human review required before any locale publish.",
+          "One or more shadow drafts need originality rewrite before publish consideration."
+        ],
+        "shadowNotPublished": true
+      }
+    },
+    "multiDayMetrics": {
+      "recorded": true,
+      "summary": {
+        "days": 1,
+        "avgReadyNews": 0,
+        "avgReviewNews": 2,
+        "avgBlogReady": 1,
+        "avgBlogReview": 0,
+        "totalSourceFailures": 0,
+        "avgCorroborationSuccess": 1,
+        "avgFactualConflicts": 0,
+        "latestDate": "2026-08-11"
+      }
+    }
+  },
   "safety": {
     "publishedCatalogsTouched": false,
     "draftPrOpened": false,
@@ -3869,7 +4889,9 @@
     "merged": false,
     "fabricatedFacts": false,
     "inventedQuotes": false,
-    "weakSourcePublication": false
+    "weakSourcePublication": false,
+    "unauthorizedImages": false,
+    "liveAffiliateActivation": false
   },
-  "verdict": "EDITORIAL PHASE 3 CORROBORATION PASS — REVIEW shadow drafts only (READY still needs claim-level multi-source agreement)"
+  "verdict": "EDITORIAL PHASE 4 READY FOR REVIEW — continued shadow; READY News still needs claim-level multi-source agreement"
 }

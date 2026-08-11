@@ -4,10 +4,10 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 - Mode: live
 - Run status: SUCCESS
-- Sources attempted: 28
-- Candidates: 579
-- Clusters: 570
-- Research-qualified: 104
+- Sources attempted: 35
+- Candidates: 693
+- Clusters: 683
+- Research-qualified: 124
 - Editorial-selected: 3
 
 ## Source results
@@ -38,12 +38,19 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - mit-technology-review: 10 candidate(s)
 - nature-news: 40 candidate(s)
 - mit-ai: 40 candidate(s)
+- epa-news: 0 candidate(s)
+- usgs-news: 0 candidate(s)
+- energy-gov-news: 10 candidate(s)
+- esa-news: 15 candidate(s)
+- guardian-technology: 29 candidate(s)
+- cloudflare-blog: 20 candidate(s)
+- huggingface-blog: 40 candidate(s)
 - arxiv-cs-ai: 40 candidate(s)
 
 ## Editorial selection
-- News: An AI chatbot is joining the search for art looted by the Nazis; Wall Street giants hand Nvidia $500bn to fund boom in AI projects
-- Blog: NIST Launches Centers for AI in Manufacturing and Critical Infrastructure
-- Weak-fit rejected: 79
+- News: Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model; Virtue and a Sledgehammer – take a literal hammer to your past
+- Blog: Lion Nebula Roars in Webb’s Sights
+- Weak-fit rejected: 90
 
 ## Clusters
 ### NIST Researchers Correct Common Error Confounding Nanotech Measurements
@@ -658,7 +665,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Qualified: no
 - Reason: outside current freshness window
 
-### Lion Nebula Roars in Webb’s Sights
+### What Is the Nancy Grace Roman Space Telescope? (Grades 5-8)
 - Route: NEWS
 - Freshness: BREAKING
 - Corroborated: yes
@@ -667,9 +674,27 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Qualified: yes
 - Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
 
-### NASA Telescopes Create Colorful ‘Craft’ From Nearby Nebula
+### NASA Completes Astronaut-Deployed Science Instrument for Lunar Surface
 - Route: NEWS
 - Freshness: BREAKING
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: no CinNova relevance topic matched
+
+### Lion Nebula Roars in Webb’s Sights
+- Route: BLOG
+- Freshness: BREAKING
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: yes
+- Reason: Evergreen Blog path A: Authoritative primary plus supporting authoritative documentation.
+
+### NASA Telescopes Create Colorful ‘Craft’ From Nearby Nebula
+- Route: NEWS
+- Freshness: CURRENT
 - Corroborated: yes
 - CinNova classification: NEW
 - Relevance: 1
@@ -678,7 +703,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### Building the Moon Base: NASA Stories at the Ion
 - Route: NEWS
-- Freshness: BREAKING
+- Freshness: CURRENT
 - Corroborated: yes
 - CinNova classification: NEW
 - Relevance: 1
@@ -723,15 +748,6 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### Community College Instructors Bring Astronomy Textbook Into 21st Century
 - Route: BLOG
-- Freshness: RECENT
-- Corroborated: yes
-- CinNova classification: NEW
-- Relevance: 0
-- Qualified: no
-- Reason: no CinNova relevance topic matched
-
-### NASA+ Debuts on discovery+, Coming Soon to HBO Max
-- Route: NEWS
 - Freshness: RECENT
 - Corroborated: yes
 - CinNova classification: NEW
@@ -1785,7 +1801,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### Why Scaling AI Compute Performance Requires a New Power Architecture
 - Route: NEWS
-- Freshness: BREAKING
+- Freshness: CURRENT
 - Corroborated: no
 - CinNova classification: NEW
 - Relevance: 4
@@ -3295,12 +3311,12 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Qualified: no
 - Reason: outside current freshness window
 
-### ChatGPT and Gemini both just passed 1 billion users
+### Gemini becomes Google's fastest-growing product ever as it hits 1B users
 - Route: NEWS
 - Freshness: BREAKING
 - Corroborated: yes
 - CinNova classification: NEW
-- Relevance: 2
+- Relevance: 4
 - Qualified: yes
 - Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
 
@@ -3369,7 +3385,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### ‘Zoomsday’ hack uncovered using fewer than 20 AI prompts
 - Route: NEWS
-- Freshness: BREAKING
+- Freshness: CURRENT
 - Corroborated: no
 - CinNova classification: NEW
 - Relevance: 3
@@ -3504,7 +3520,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### Kyoto Fusioneering starts work on key fusion power plant device
 - Route: NEWS
-- Freshness: BREAKING
+- Freshness: CURRENT
 - Corroborated: no
 - CinNova classification: NEW
 - Relevance: 1
@@ -3553,6 +3569,15 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Corroborated: no
 - CinNova classification: NEW
 - Relevance: 1
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Meta can't stop states' $1.4 trillion lawsuit from going to trial
+- Route: NEWS
+- Freshness: BREAKING
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 3
 - Qualified: no
 - Reason: insufficient independent corroboration
 
@@ -3657,7 +3682,7 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 
 ### Amazon backs power plant that may become top source of US climate pollution
 - Route: NEWS
-- Freshness: CURRENT
+- Freshness: RECENT
 - Corroborated: no
 - CinNova classification: NEW
 - Relevance: 5
@@ -3710,24 +3735,6 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Reason: insufficient independent corroboration
 
 ### One of China's workhorse rockets just exploded in flight
-- Route: NEWS
-- Freshness: RECENT
-- Corroborated: no
-- CinNova classification: NEW
-- Relevance: 3
-- Qualified: no
-- Reason: insufficient independent corroboration
-
-### Dogs can tell if you're scared or sad
-- Route: NEWS
-- Freshness: RECENT
-- Corroborated: no
-- CinNova classification: NEW
-- Relevance: 3
-- Qualified: no
-- Reason: insufficient independent corroboration
-
-### 2026 Subaru Outback review: Great interior, refined drive, divisive looks
 - Route: NEWS
 - Freshness: RECENT
 - Corroborated: no
@@ -4808,6 +4815,1023 @@ Research ingestion only. No publish, merge, deploy, or social action was perform
 - Reason: insufficient independent corroboration; outside current freshness window
 
 ### MIT affiliates win 2026 Hertz Foundation Fellowships
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Energy Secretary Continues Progress to Strengthen Energy Reliability in Puerto Rico
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Energy Department Launches $100 Million Initiative to Build America’s Critical Minerals Workforce, Strengthen Domestic Supply Chains
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: outside current freshness window
+
+### Energy Secretary Keeps Guam Power On
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: outside current freshness window
+
+### United States to Host International Atomic Energy Agency Launch for New Maritime Nuclear Initiative
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: outside current freshness window
+
+### DOE’s Office of Energy Dominance Financing Closes Loan to Strengthen Puerto Rico’s Grid, Delivering Hundreds of Millions in Electricity Cost Savings
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: outside current freshness window
+
+### Energy Department Announces Partnership to Expand Reliable, Affordable Energy Access and Power America’s AI Future in Western Kentucky
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: outside current freshness window
+
+### Nuclear Lifecycle Innovation Campuses Contenders Announced
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: outside current freshness window
+
+### Energy Secretary Secures Grid Across 17 States Amid Period of Hot Weather
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: outside current freshness window
+
+### Energy Department Announces Up to $65.5 Million to Advance Domestic Oil and Natural Gas Production and Delivery
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: yes
+- Reason: Evergreen Blog path C: Single authoritative primary/standard — Blog REVIEW with labeled synthesis; factual claims attributed.
+
+### United States and Saudi Arabia Reach Historic Nuclear Cooperation Agreement
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: outside current freshness window
+
+### A total solar eclipse is coming to Europe
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Dust and water spotted close to giant black hole
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: no CinNova relevance topic matched
+
+### How ESA mimics and models the 2026 total solar eclipse
+- Route: BLOG
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: no CinNova relevance topic matched
+
+### Join us live and enjoy the total solar eclipse!
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Webb opens a Treasure Chest filled with stars
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Evergreen Blog path C: Single authoritative primary/standard — Blog REVIEW with labeled synthesis; factual claims attributed.
+
+### Total solar eclipse: how to watch live from home
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Evergreen Blog path C: Single authoritative primary/standard — Blog REVIEW with labeled synthesis; factual claims attributed.
+
+### How to safely watch a solar eclipse
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Evergreen Blog path C: Single authoritative primary/standard — Blog REVIEW with labeled synthesis; factual claims attributed.
+
+### Watch the total solar eclipse with ESA in León
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Evergreen Blog path C: Single authoritative primary/standard — Blog REVIEW with labeled synthesis; factual claims attributed.
+
+### Plato's electronics ready for space
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### ESA’s Mars Express meets NASA’s Psyche
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: outside current freshness window; no CinNova relevance topic matched
+
+### Expedition Sound podcast series
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: outside current freshness window; no CinNova relevance topic matched
+
+### Replay of the online media briefing on the total solar eclipse
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Thousands of planets are hidden in this photo
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### Smile reaches science orbit
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 0
+- Qualified: no
+- Reason: outside current freshness window; no CinNova relevance topic matched
+
+### Spotify to distinguish AI artists from real people – and stop recommending them
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Meta faces expensive child safety reckoning
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Meta glasses banned from courts in England and Wales
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### AI’s potential climate benefits outweighed by role in boosting fossil fuels, study finds
+- Route: BLOG
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### How to buy a bike: expert tips for finding the right budget, frame and fit
+- Route: BLOG
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Virtue and a Sledgehammer – take a literal hammer to your past
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 6
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Bernie Sanders calls on Silicon Valley to ‘pause AI development’ in interest of humanity
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### ‘People in Japan thought we made footy up’: Pro Jank Footy, the video game taking Australian rules to the world
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Convince an AI it’s not alive in psychological horror game Prove You’re Human
+- Route: BLOG
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### SA premier announces royal commission into AI – as it happened
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### Samsung Galaxy Z Fold 8 review: your passport to a folding phone future
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### UK manufacturers face rising hacking risk as survey shows 30% were hit last year
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### ‘I’ve definitely lost followers’: influencers face backlash over Meta ‘pervert glasses’ content
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### AI push is putting banks at mercy of tech firms, warns Moody’s
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: yes
+- Reason: Meets source, freshness, relevance, dedupe, and routing requirements.
+
+### OpenAI to pause some work on AI model Astra due to security concerns
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: outside current freshness window
+
+### Google DeepMind enters a new era as co-founder Demis Hassabis shifts AI role
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### The ornithological artist drawing 1,000 birds by hand – all for an app that wants you off your phone
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### This man was secretly snapped by someone with smartglasses. He’s not alone in calling that a violation of privacy
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### EA Sports FC 27: what does the next instalment of the world’s biggest football game have in store?
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Pony Island 2 Panda Circus: gallop out of hell in this phantasmagorical follow-up to 2016’s indie hit
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Honor Magic V6 review: sleek foldable phone lacking a bit of polish
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### Microsoft Surface Laptop 8 review: a quality PC whose trackpad taps you back
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### AI and artists can click – a new manifesto for modern creativity
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### Sennheiser Momentum 5 headphones review: great sound meets exceptional battery life
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Oura Ring 5 review: a stunning generational leap for smart rings
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Ring Video Doorbell Pro review: night and day better with new 4K camera
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 1
+- Qualified: no
+- Reason: outside current freshness window
+
+### Nothing Phone 4a Pro review: premium aluminium meets quirky design
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### Galaxy S26 review: Samsung’s still-compact flagship Android
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: yes
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: outside current freshness window
+
+### Cloudflare DDoS Threat Report H1 2026: 1 Tbps attacks soar as DNS floods and geopolitical tensions drive a new wave
+- Route: NEWS
+- Freshness: CURRENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Everything we launched during Agents Week
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Serving the most critical missions: Cloudflare for Government achieves FedRAMP Class D (High) Certified status
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Unveiling good and bad behaviors on the Agentic Internet
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Introducing Radar Researcher: An AI tool for exploring Internet data in plain language
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Announcing Cloudflare Ambassadors, Community Engineers, and another $1M in open-source funding
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Unifying Workers AI and AI Gateway into a single AI control plane
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Cloudflare AI Search: give your agents a search engine for your data
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### The next generation of MCP
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### From ranking to recommended: get your site ready to thrive in the age of AI agents
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Building an open Agentic Internet: readable, discoverable, callable, and payable
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Introducing Kitesurf: The agent-first browser that runs in V8 isolates on Cloudflare Workers
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Give any website a WebMCP interface
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Cloudflare is the only vendor named a Visionary in 2026 SASE and SSE reports
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### The Agent Access Model
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### How we’re rethinking work at Cloudflare with Cloudflare OS
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Cloudflare OS: an open platform for agents, apps, and work
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 4
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### WriteGuard: fine-grained controls for MCP Servers
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Catching rogue AI behavior with identity-aware analytics
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### The Agent Development Lifecycle has arrived on Cloudflare
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 5
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Thinking of ACE? We Can Do It with Fewer Tokens
+- Route: BLOG
+- Freshness: CURRENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Build Low-Latency Multilingual Voice Agents: Open Weights & Full Deployment Control with NVIDIA Magpie TTS
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Making Knowledge Distillation Cheap Enough to Run at Scale
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### Meta is back with Muse Glimmer: local, agentic, multimodal, and open source
+- Route: NEWS
+- Freshness: RECENT
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration
+
+### TutorMoments: Do AI tutors know when to help and when to hold back?
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Baseten on Hugging Face Inference Providers 🔥
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Deploy local agents everywhere with LFM2.5-2.6B
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### GPU Management: Why Idle GPUs Are the New Grounded Aircraft
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Anatomy of a Frontier Lab Agent Intrusion: A Technical Timeline of the July 2026 Incident
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Bringing Nunchaku 4-bit Diffusion Inference to Diffusers
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Grabette: an open system to record robot-manipulation data
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Newer Models, Same Advantage
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Security incident disclosure — July 2026
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Model Routing Is Simple. Until It Isn’t.
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Welcome Inkling by Thinking Machines
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Introducing Real World VoiceEQ: Measuring the human quality of voice AI
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Profiling in PyTorch (Part 3): Attention is all you profile
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Native-speed vLLM transformers modeling backend
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### From Hugging Face to Amazon SageMaker Studio in one click
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Hugging Face Models on Foundry Managed Compute
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Run AI workloads on any cloud, store on Hugging Face: zero-egress storage with SkyPilot
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### LeRobot v0.6.0: Imagine, Evaluate, Improve
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 3
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### PRX Part 4: Our Data Strategy
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### 🤗 Kernels: Major Updates
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Hugging Face and Cerebras bring Gemma 4 to real-time voice AI
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### ScarfBench: Benchmarking AI Agents for Enterprise Java Framework Migration
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Why Specialization Is Inevitable
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Featuring Every Eval Ever Results on Hugging Face Model Pages
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### DiScoFormer: One transformer for density and score, across distributions
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Run a vLLM Server on HF Jobs in One Command
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Accelerating Transformers Fine-Tuning with NVIDIA NeMo AutoModel
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Introducing the FFASR Leaderboard: Benchmarking ASR in the Real World
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Shipping huggingface_hub every week with AI, open tools, and a human in the loop
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Experimenting with the proposed Cross-Origin Storage API in Transformers.js
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### PP-OCRv6 on Hugging Face: 50-Language OCR from 1.5M to 34.5M Parameters
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### We got local models to triage the OpenClaw repo for FREE!*
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### MosaicLeaks: Can your research agent keep a secret?
+- Route: BLOG
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: Blog evergreen requires primary+support, two reputable sources, or an authoritative standard — discovery-only/SEO farms do not qualify.
+
+### Beyond LoRA: Can you beat the most popular fine-tuning technique?
+- Route: NEWS
+- Freshness: BACKGROUND
+- Corroborated: no
+- CinNova classification: NEW
+- Relevance: 2
+- Qualified: no
+- Reason: insufficient independent corroboration; outside current freshness window
+
+### Is it agentic enough? Benchmarking open models on your own tooling
 - Route: NEWS
 - Freshness: BACKGROUND
 - Corroborated: no

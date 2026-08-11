@@ -1,11 +1,14 @@
 /**
- * Phase 10B.2 — resolve research mode for GitHub Actions / local helpers.
+ * Phase 10B.2 / Phase 4 — resolve research + automation execution modes.
  *
- * Schedule (cron): live research feeds
- * Manual workflow_dispatch default: fixture
- * Manual live: only when explicitly selected
- * Local npm defaults: unchanged (fixture unless --live)
+ * Schedule (cron): live research feeds + SHADOW execution (fail closed)
+ * Manual workflow_dispatch default: fixture + SHADOW
+ * PUBLISH / AUTO_PUBLISH cannot be enabled here
  */
+
+import { resolveEditorialMode, EDITORIAL_MODES } from "./editorialModes.mjs";
+
+export { EDITORIAL_MODES, resolveEditorialMode };
 
 export function resolveResearchMode({
     eventName = "workflow_dispatch",
@@ -36,70 +39,39 @@ export function resolveResearchMode({
 }
 
 /**
- * Automation execution mode — shadow/dry-run vs draft-PR preparation.
- *
+ * Automation execution mode — shadow/dry-run vs controlled draft preparation.
  * Production auto-publishing is NEVER enabled by this helper.
- * Scheduled cron stays in shadow mode until an explicit future activation phase.
- *
- * @returns {{
- *   shadow: boolean,
- *   dryRun: boolean,
- *   openDraftPr: boolean,
- *   autoPublish: false,
- *   writeDraftFiles: boolean,
- *   rationale: string,
- * }}
+ * Scheduled cron stays in SHADOW until an explicit future activation phase.
  */
 export function resolveAutomationExecutionMode({
     eventName = "workflow_dispatch",
     dryRunInput = "",
     allowDraftPrInput = "",
     shadowInput = "",
+    modeInput = "",
+    allowPublishInput = "",
+    allowAutoPublishInput = "",
 } = {}) {
-    const dryRunRequested = String(dryRunInput || "").trim().toLowerCase() === "true";
-    const allowDraftPr =
-        String(allowDraftPrInput || "").trim().toLowerCase() === "true";
-    const shadowRequested = String(shadowInput || "").trim().toLowerCase() === "true";
+    const resolved = resolveEditorialMode({
+        eventName,
+        modeInput,
+        shadowInput,
+        dryRunInput,
+        allowDraftPrInput,
+        allowPublishInput,
+        allowAutoPublishInput,
+    });
 
-    // Hard invariant — never auto-publish catalogs / social / deploy from automation.
-    const autoPublish = false;
-
-    // Scheduled production cron: shadow only until an explicit activation phase.
-    if (eventName === "schedule") {
-        return {
-            shadow: true,
-            dryRun: true,
-            openDraftPr: false,
-            writeDraftFiles: false,
-            autoPublish,
-            rationale:
-                "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation.",
-        };
-    }
-
-    // Explicit shadow or dry-run wins.
-    if (shadowRequested || dryRunRequested || !allowDraftPr) {
-        return {
-            shadow: true,
-            dryRun: true,
-            openDraftPr: false,
-            writeDraftFiles: false,
-            autoPublish,
-            rationale: allowDraftPr
-                ? "Dry-run/shadow requested — pipeline simulates output without writing drafts or opening a PR."
-                : "Draft PR preparation is not activated — defaulting to shadow/dry-run mode.",
-        };
-    }
-
-    // Manual activation of Draft PR preparation only (still never publishes).
     return {
-        shadow: false,
-        dryRun: false,
-        openDraftPr: true,
-        writeDraftFiles: true,
-        autoPublish,
-        rationale:
-            "Manual run explicitly allowed Draft PR preparation. Auto-publish remains disabled.",
+        mode: resolved.mode,
+        shadow: resolved.shadow,
+        dryRun: resolved.dryRun,
+        openDraftPr: resolved.openDraftPr,
+        writeDraftFiles: resolved.writeDraftFiles,
+        autoPublish: false,
+        publish: false,
+        failClosed: resolved.failClosed,
+        rationale: resolved.rationale,
     };
 }
 

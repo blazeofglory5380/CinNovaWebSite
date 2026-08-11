@@ -1,7 +1,7 @@
 {
   "schemaVersion": "10B-shadow",
   "date": "2026-08-11",
-  "generatedAt": "2026-08-11T20:16:31.053Z",
+  "generatedAt": "2026-08-11T21:24:22.405Z",
   "mode": "shadow",
   "dryRun": true,
   "autoPublish": false,
@@ -12,12 +12,15 @@
     "rationale": "Manual run explicitly selected live research."
   },
   "executionMode": {
+    "mode": "SHADOW",
     "shadow": true,
     "dryRun": true,
     "openDraftPr": false,
     "writeDraftFiles": false,
     "autoPublish": false,
-    "rationale": "Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+    "publish": false,
+    "failClosed": true,
+    "rationale": "Production scheduler remains SHADOW — no draft files, no PR, no publish."
   },
   "researchStatus": {
     "status": "SUCCESS",
@@ -27,8 +30,8 @@
     {
       "type": "blog",
       "coverage": null,
-      "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-      "path": "D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\src\\data\\blog-drafts\\what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b.json"
+      "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+      "path": "D:\\CinNovaWebSite-worktrees\\editorial-shadow-mode\\src\\data\\blog-drafts\\what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders.json"
     }
   ],
   "wouldSkip": [],
@@ -56,13 +59,13 @@
   ],
   "imageRequirements": [
     {
-      "filename": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b.webp",
+      "filename": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders.webp",
       "folder": "public/images/blog/hero/",
       "dimensions": "1600×900",
       "aspectRatio": "16:9",
-      "alt": "Editorial hero for What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders",
-      "visualConcept": "Editorial illustration grounded in the reported topic: NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
-      "generationPrompt": "Premium website blog hero, 16:9, subject: What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders. Cinematic but grounded, no text overlays, no logos."
+      "alt": "Editorial hero for What Lion Nebula Roars in Webb’s Sights means for businesses and builders",
+      "visualConcept": "Editorial illustration grounded in the reported topic: Lion Nebula Roars in Webb’s Sights",
+      "generationPrompt": "Premium website blog hero, 16:9, subject: What Lion Nebula Roars in Webb’s Sights means for businesses and builders. Cinematic but grounded, no text overlays, no logos."
     }
   ],
   "counts": {

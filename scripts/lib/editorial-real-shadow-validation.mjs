@@ -19,6 +19,20 @@ import {
 } from "../editorial/research/selection.mjs";
 import { resolveAutomationExecutionMode } from "../editorial/research/scheduleMode.mjs";
 import { SOURCE_REGISTRY, getActiveSources } from "../editorial/research/sourceRegistry.mjs";
+import { buildCoverageMatrix } from "../editorial/research/sourceCoverage.mjs";
+import { buildBlogContentCalendar } from "../editorial/research/blogEngine.mjs";
+import { buildCommercialCtas, assertCommercialBoundary } from "../editorial/research/commercialBoundary.mjs";
+import { buildHeroImageRecord, summarizeHeroPipelineReadiness, HERO_IMAGE_KINDS } from "../editorial/research/heroImagePipeline.mjs";
+import {
+    createTranslationJobs,
+    summarizeTranslationQueue,
+} from "../editorial/research/translationQueue.mjs";
+import {
+    buildDailyOperationsReport,
+    renderDailyOperationsMarkdown,
+} from "../editorial/research/dailyOpsReport.mjs";
+import { recordShadowRun, summarizeShadowMetrics } from "../editorial/research/shadowMetrics.mjs";
+import { assertCatalogExcludesDrafts } from "../editorial/research/draftSafety.mjs";
 import { scoreNewsDesk, scoreBlogCandidate } from "./editorial-research.mjs";
 
 function safeReadJson(filePath) {
@@ -394,13 +408,98 @@ export function writeRealShadowValidationReport({
     const readyEnoughForPass = shadowNewsDrafts.length >= 1 || shadowBlogDrafts.length >= 1;
     const originalityHardFail = originalityResults.some((o) =>
         (o.issues || []).some((issue) => /invented|long quotation/i.test(issue)));
-    const verdict = readyEnoughForPass && !originalityHardFail
+    const coverageMatrix = buildCoverageMatrix();
+    const blogCalendar = buildBlogContentCalendar({ startDateIso: dateIso, postsPerWeek: 3, days: 30 });
+    const commercial = buildCommercialCtas({
+        allowedTypes: ["subscribe_newsletter", "explore_product", "read_book", "download_app", "affiliate_recommendation"],
+        products: [
+            { label: "StudyNest", path: "/studynest" },
+            { label: "TechMate AI", path: "/techmate" },
+        ],
+        affiliateRecommendations: [
+            { label: "Example affiliate slot (inactive)", url: null },
+        ],
+    });
+    const commercialCheck = assertCommercialBoundary(commercial);
+    const heroRecords = [...shadowNewsDrafts, ...shadowBlogDrafts].map((d) =>
+        buildHeroImageRecord({
+            kind: HERO_IMAGE_KINDS.NO_IMAGE,
+            articleSlug: d.slug,
+        }).record);
+    const heroSummary = summarizeHeroPipelineReadiness(heroRecords);
+    const translationJobs = [...shadowNewsDrafts, ...shadowBlogDrafts].flatMap((d) =>
+        createTranslationJobs({ slug: d.slug }));
+    const translationSummary = summarizeTranslationQueue(translationJobs);
+    const catalogSafety = assertCatalogExcludesDrafts();
+
+    const readyNewsCount = readyDrafts.length;
+    const reviewNewsCount = reviewDrafts.length;
+    const holdNewsCount = heldOrRejectedPacketNews.filter((h) => h.disposition === "HOLD").length;
+    const dailyOps = buildDailyOperationsReport({
+        dateIso,
+        mode: exec,
+        discovery: {
+            fetched: discovery?.candidateCount || 0,
+            deduplicated: discovery?.clusterCount || 0,
+            rejected: rejectedNews.length,
+            qualified: discovery?.qualifiedCount || 0,
+        },
+        news: {
+            ready: readyNewsCount,
+            review: reviewNewsCount,
+            hold: holdNewsCount,
+            rejected: heldOrRejectedPacketNews.filter((h) => h.disposition === "REJECT").length,
+            titles: shadowNewsDrafts.map((d) => d.title),
+        },
+        blog: {
+            ready: shadowBlogDrafts.filter((d) => d.factCheckStatus === "READY").length,
+            review: shadowBlogDrafts.filter((d) => d.factCheckStatus === "REVIEW").length,
+            rejected: heldOrRejectedPacketBlog.length,
+            titles: shadowBlogDrafts.map((d) => d.title),
+        },
+        sources: {
+            healthy: sourceHealth.healthy,
+            degraded: 0,
+            failed: sourceHealth.failed,
+            coverageGaps: coverageMatrix.summary.weakDesks.concat(coverageMatrix.summary.insufficientDesks),
+        },
+        translation: translationSummary,
+        images: heroSummary,
+        publication: {
+            draftsThatWouldBeCreated: shadowNewsDrafts.length + shadowBlogDrafts.length,
+            articlesBlocked: heldOrRejectedPacketNews.length + heldOrRejectedPacketBlog.length,
+            exactBlockers: blockers,
+        },
+    });
+
+    const metricsResult = recordShadowRun({
+        dateIso,
+        readyNews: readyNewsCount,
+        reviewNews: reviewNewsCount,
+        holdNews: holdNewsCount,
+        rejectedNews: rejectedNews.length,
+        blogReady: shadowBlogDrafts.filter((d) => d.factCheckStatus === "READY").length,
+        blogReview: shadowBlogDrafts.filter((d) => d.factCheckStatus === "REVIEW").length,
+        rejectionRate: newsCandidates.length
+            ? Number((rejectedNews.length / newsCandidates.length).toFixed(3))
+            : 0,
+        sourceFailures: sourceHealth.failed,
+        duplicateRate: newsCandidates.length
+            ? Number((duplicates.length / newsCandidates.length).toFixed(3))
+            : 0,
+        corroborationSuccess: discovery?.corroboration?.corroborationSuccessful || 0,
+        factualConflicts: discovery?.corroboration?.conflicts || 0,
+        imageReady: heroSummary.ready,
+        imageMissing: heroSummary.missing,
+        translationQueued: translationSummary.queued,
+        translationMissing: translationSummary.missing,
+    });
+
+    const verdict = readyEnoughForPass && !originalityHardFail && commercialCheck.ok && catalogSafety.ok
         ? (readyDrafts.length >= 1
-            ? "EDITORIAL PHASE 3 CORROBORATION PASS"
-            : shadowBlogDrafts.some((d) => d.factCheckStatus === "READY")
-              ? "EDITORIAL PHASE 3 CORROBORATION PASS — Blog READY; News still REVIEW/HOLD pending second independent source"
-              : "EDITORIAL PHASE 3 CORROBORATION PASS — REVIEW shadow drafts only (READY still needs claim-level multi-source agreement)")
-        : `BLOCKED — ${blockers[0]}`;
+            ? "EDITORIAL PHASE 4 READY FOR REVIEW"
+            : "EDITORIAL PHASE 4 READY FOR REVIEW — continued shadow; READY News still needs claim-level multi-source agreement")
+        : `BLOCKED — ${blockers[0] || commercialCheck.issues[0] || catalogSafety.issues[0]}`;
 
     const report = {
         schemaVersion: "10B-real-shadow-validation",
@@ -510,6 +609,39 @@ export function writeRealShadowValidationReport({
             productionCadence: cadence,
             remainingBlockersBeforeAutomaticPublication: blockers,
         },
+        phase4: {
+            sourceCoverage: coverageMatrix,
+            blogCalendar: {
+                articleCount: blogCalendar.articleCount,
+                targetPostsPerWeek: blogCalendar.targetPostsPerWeek,
+                sampleTitles: blogCalendar.articles.slice(0, 5).map((a) => a.workingTitle),
+                planOnly: true,
+            },
+            commercialBoundary: {
+                ...commercial,
+                validation: commercialCheck,
+            },
+            heroImagePipeline: {
+                summary: heroSummary,
+                designOnly: true,
+                noUnauthorizedGeneration: true,
+            },
+            translationQueue: translationSummary,
+            draftOperations: {
+                mode: exec.mode || "SHADOW",
+                shadow: true,
+                draftCapabilityPrepared: true,
+                draftActivated: false,
+                publish: false,
+                autoPublish: false,
+                catalogExcludesDrafts: catalogSafety,
+            },
+            dailyOperations: dailyOps,
+            multiDayMetrics: {
+                recorded: metricsResult.ok,
+                summary: summarizeShadowMetrics(metricsResult.store),
+            },
+        },
         safety: {
             publishedCatalogsTouched: false,
             draftPrOpened: false,
@@ -519,6 +651,8 @@ export function writeRealShadowValidationReport({
             fabricatedFacts: false,
             inventedQuotes: false,
             weakSourcePublication: false,
+            unauthorizedImages: false,
+            liveAffiliateActivation: false,
         },
         verdict,
     };
@@ -526,9 +660,11 @@ export function writeRealShadowValidationReport({
     mkdirSync(EDITORIAL_REPORTS_DIR, { recursive: true });
     const jsonPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-real-shadow-validation.json`);
     const mdPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-real-shadow-validation.md`);
+    const opsPath = path.join(EDITORIAL_REPORTS_DIR, `${dateIso}-daily-ops.md`);
     writeFileSync(jsonPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+    writeFileSync(opsPath, renderDailyOperationsMarkdown(dailyOps), "utf8");
     writeFileSync(mdPath, renderValidationMarkdown(report), "utf8");
-    return { jsonPath, mdPath, report };
+    return { jsonPath, mdPath, opsPath, report };
 }
 
 function renderValidationMarkdown(report) {
@@ -619,6 +755,18 @@ function renderValidationMarkdown(report) {
         lines.push(`- ${b}`);
     }
     lines.push("");
+    if (report.phase4) {
+        lines.push("## PHASE 4");
+        lines.push("");
+        lines.push(`- Active sources: **${report.phase4.sourceCoverage?.summary?.activeSourceCount ?? "n/a"}**`);
+        lines.push(`- Coverage overall: **${report.phase4.sourceCoverage?.summary?.overall ?? "n/a"}**`);
+        lines.push(`- Weak/insufficient desks: **${[...(report.phase4.sourceCoverage?.summary?.weakDesks || []), ...(report.phase4.sourceCoverage?.summary?.insufficientDesks || [])].join(", ") || "none"}**`);
+        lines.push(`- Blog calendar (plan-only): **${report.phase4.blogCalendar?.articleCount ?? 0}** slots @ ${report.phase4.blogCalendar?.targetPostsPerWeek}/week`);
+        lines.push(`- Draft mode: **${report.phase4.draftOperations?.mode}** (activated=${report.phase4.draftOperations?.draftActivated})`);
+        lines.push(`- Multi-day metrics days: **${report.phase4.multiDayMetrics?.summary?.days ?? 0}**`);
+        lines.push("- PUBLISH / AUTO_PUBLISH remain OFF; scheduler stays SHADOW");
+        lines.push("");
+    }
     lines.push("## SAFETY CONFIRM");
     lines.push("");
     lines.push("- No merge / deploy / live publication / automatic Draft PR");

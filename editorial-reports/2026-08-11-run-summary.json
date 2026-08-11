@@ -170,23 +170,65 @@
       "error": null
     },
     {
+      "sourceId": "epa-news",
+      "ok": true,
+      "count": 0,
+      "error": null
+    },
+    {
+      "sourceId": "usgs-news",
+      "ok": true,
+      "count": 0,
+      "error": null
+    },
+    {
+      "sourceId": "energy-gov-news",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "sourceId": "esa-news",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "sourceId": "guardian-technology",
+      "ok": true,
+      "count": 29,
+      "error": null
+    },
+    {
+      "sourceId": "cloudflare-blog",
+      "ok": true,
+      "count": 20,
+      "error": null
+    },
+    {
+      "sourceId": "huggingface-blog",
+      "ok": true,
+      "count": 40,
+      "error": null
+    },
+    {
       "sourceId": "arxiv-cs-ai",
       "ok": true,
       "count": 40,
       "error": null
     }
   ],
-  "candidateCount": 579,
-  "clusterCount": 570,
-  "qualifiedCount": 104,
+  "candidateCount": 693,
+  "clusterCount": 683,
+  "qualifiedCount": 124,
   "selectedCount": 3,
   "selection": {
     "newsTopics": [
-      "An AI chatbot is joining the search for art looted by the Nazis",
-      "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+      "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+      "Virtue and a Sledgehammer – take a literal hammer to your past"
     ],
     "blogTopics": [
-      "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+      "Lion Nebula Roars in Webb’s Sights"
     ],
     "rejectedWeakFit": [
       {
@@ -370,7 +412,7 @@
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       },
       {
-        "topic": "Lion Nebula Roars in Webb’s Sights",
+        "topic": "What Is the Nancy Grace Roman Space Telescope? (Grades 5-8)",
         "route": "NEWS",
         "fit": 1,
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
@@ -658,7 +700,73 @@
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       },
       {
-        "topic": "ChatGPT and Gemini both just passed 1 billion users",
+        "topic": "Gemini becomes Google's fastest-growing product ever as it hits 1B users",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "A total solar eclipse is coming to Europe",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Webb opens a Treasure Chest filled with stars",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Total solar eclipse: how to watch live from home",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "How to safely watch a solar eclipse",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Watch the total solar eclipse with ESA in León",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Spotify to distinguish AI artists from real people – and stop recommending them",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Meta glasses banned from courts in England and Wales",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "‘People in Japan thought we made footy up’: Pro Jank Footy, the video game taking Australian rules to the world",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Samsung Galaxy Z Fold 8 review: your passport to a folding phone future",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "‘I’ve definitely lost followers’: influencers face backlash over Meta ‘pervert glasses’ content",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "AI push is putting banks at mercy of tech firms, warns Moody’s",
         "route": "NEWS",
         "fit": 1,
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."

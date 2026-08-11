@@ -11,11 +11,11 @@
       "maxPerSource": 2
     },
     "selectedNewsTopics": [
-      "An AI chatbot is joining the search for art looted by the Nazis",
-      "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
+      "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+      "Virtue and a Sledgehammer – take a literal hammer to your past"
     ],
     "selectedBlogTopics": [
-      "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+      "Lion Nebula Roars in Webb’s Sights"
     ],
     "rejectedWeakFit": [
       {
@@ -199,7 +199,7 @@
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       },
       {
-        "topic": "Lion Nebula Roars in Webb’s Sights",
+        "topic": "What Is the Nancy Grace Roman Space Telescope? (Grades 5-8)",
         "route": "NEWS",
         "fit": 1,
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
@@ -487,7 +487,73 @@
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
       },
       {
-        "topic": "ChatGPT and Gemini both just passed 1 billion users",
+        "topic": "Gemini becomes Google's fastest-growing product ever as it hits 1B users",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "A total solar eclipse is coming to Europe",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Webb opens a Treasure Chest filled with stars",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Total solar eclipse: how to watch live from home",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "How to safely watch a solar eclipse",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Watch the total solar eclipse with ESA in León",
+        "route": "BLOG",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Spotify to distinguish AI artists from real people – and stop recommending them",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Meta glasses banned from courts in England and Wales",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "‘People in Japan thought we made footy up’: Pro Jank Footy, the video game taking Australian rules to the world",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "Samsung Galaxy Z Fold 8 review: your passport to a folding phone future",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "‘I’ve definitely lost followers’: influencers face backlash over Meta ‘pervert glasses’ content",
+        "route": "NEWS",
+        "fit": 1,
+        "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
+      },
+      {
+        "topic": "AI push is putting banks at mercy of tech firms, warns Moody’s",
         "route": "NEWS",
         "fit": 1,
         "rationale": "Editorial fit score 1 below minimum 2; deprioritized."
@@ -496,13 +562,13 @@
     "corroboration": {
       "phase": "3",
       "corroborationAttempted": 3,
-      "corroborationSuccessful": 0,
-      "secondSourcesFound": 0,
-      "claimsVerified": 0,
-      "claimsUnresolved": 4,
+      "corroborationSuccessful": 1,
+      "secondSourcesFound": 1,
+      "claimsVerified": 2,
+      "claimsUnresolved": 2,
       "conflicts": 0,
-      "candidatesPromoted": 0,
-      "candidatesStillHeld": 3
+      "candidatesPromoted": 1,
+      "candidatesStillHeld": 2
     }
   },
   "news": {
@@ -553,35 +619,186 @@
       "readinessScore": null
     },
     "national": {
-      "slug": "an-ai-chatbot-is-joining-the-search-for-art-looted-by-the-nazis",
-      "title": "An AI chatbot is joining the search for art looted by the Nazis",
-      "dek": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
+      "slug": "zuckerberg-pushes-superintelligent-ai-for-all-as-meta-drops-open-source-model",
+      "title": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+      "dek": "Meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay on Monday detailing his views on artificial intelligence and announced several plans for how Meta would develop the technology in the future. The CEO’s essay went online the same day as Meta released a new, open-source AI model that seeks to rival Anthropic and OpenAI’s products called Muse Glimmer. Over the course of more than 6,000 words in a post titled The Future is for Everyone, Zuckerberg addressed a range of topics related to AI that included datacenters, government regulation, cybersecurity, the creation of bioweapons, labor market disruption, surveillance powers and more. The essay presented a utopian vision of AI as a personalized “superintelligence” – using the word 60 times. Continue reading...",
       "category": "technology",
       "location": "National",
-      "publishedAt": "2026-08-09T21:27:13.000Z",
-      "summary": "More than 100,000 artifacts stolen by Nazis have never been returned to their owners. Researchers are turning to artificial intelligence to help.",
-      "whyItMatters": "The development intersects with CinNova coverage of technology, ai, science.",
+      "publishedAt": "2026-08-10T22:57:57.000Z",
+      "summary": "Meta CEO presents utopian vision of AI in 6,000-word essay amid Silicon Valley debate over government regulation Mark Zuckerberg published a lengthy essay on Monday detailing his views on artificial intelligence and announced several plans for how Meta would develop the technology in the future. The CEO’s essay went online the same day as Meta released a new, open-source AI model that seeks to rival Anthropic and OpenAI’s products called Muse Glimmer. Over the course of more than 6,000 words in a post titled The Future is for Everyone, Zuckerberg addressed a range of topics related to AI that included datacenters, government regulation, cybersecurity, the creation of bioweapons, labor market disruption, surveillance powers and more. The essay presented a utopian vision of AI as a personalized “superintelligence” – using the word 60 times. Continue reading...",
+      "whyItMatters": "The development intersects with CinNova coverage of technology, ai, business.",
       "sources": [
         {
-          "label": "An AI chatbot is joining the search for art looted by the Nazis",
-          "publisher": "NPR Technology",
-          "url": "https://www.npr.org/2026/08/06/nx-s1-5922729/ai-art-provenance-assistant",
+          "label": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+          "publisher": "The Guardian Technology",
+          "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
           "type": "verified",
           "note": "Independent research source included for corroboration."
         }
       ],
       "verifiedClaims": [],
       "attributedClaims": [
-        "An AI chatbot is joining the search for art looted by the Nazis"
+        "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
       ],
       "uncertainties": [],
-      "editorialNotes": "NPR Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=50.",
+      "editorialNotes": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 6; bucket ai_technology. Enrichment: independent=1, readiness=48.",
       "forceDraft": false,
       "factCheckStatus": "",
       "claimMatrix": [
         {
-          "claim": "An AI chatbot is joining the search for art looted by the Nazis",
-          "claimId": "claim-b5a949778a",
+          "claim": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+          "claimId": "claim-b3ce1784b3",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
+          "sourceA": {
+            "sourceId": "guardian-technology",
+            "sourceName": "The Guardian Technology",
+            "sourceTier": "TIER_1_NEWS",
+            "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
+            "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
+          },
+          "sourceB": null,
+          "supportingSourceIds": [
+            "guardian-technology"
+          ],
+          "agreement": "partial",
+          "conflict": null,
+          "status": "PARTIALLY_VERIFIED",
+          "readyImpact": "REVIEW"
+        }
+      ],
+      "independentSourceCount": 1,
+      "claimEvidence": [
+        {
+          "claimId": "claim-b3ce1784b3",
+          "claimText": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model",
+          "claimType": "EVENT_IDENTITY",
+          "consequential": true,
+          "supportingSources": [
+            {
+              "sourceId": "guardian-technology",
+              "sourceName": "The Guardian Technology",
+              "sourceTier": "TIER_1_NEWS",
+              "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
+              "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
+            }
+          ],
+          "primarySupport": [],
+          "independentSupport": [
+            {
+              "sourceId": "guardian-technology",
+              "sourceName": "The Guardian Technology",
+              "sourceTier": "TIER_1_NEWS",
+              "url": "https://www.theguardian.com/technology/2026/aug/10/mark-zuckerberg-superintelligent-ai-essay-meta",
+              "headline": "Zuckerberg pushes ‘superintelligent’ AI for all as Meta drops open-source model"
+            }
+          ],
+          "status": "PARTIALLY_VERIFIED",
+          "notes": "agreement=partial; readyImpact=REVIEW",
+          "agreement": "partial",
+          "readyImpact": "REVIEW",
+          "conflict": null
+        }
+      ],
+      "corroborationSummary": {
+        "attempted": true,
+        "matchCount": 0,
+        "originalSourceCount": 1,
+        "enrichedSourceCount": 1,
+        "independentSourceCount": 1,
+        "primarySourceCount": 0,
+        "discoveryOnlyCount": 0,
+        "rejectedIndependence": 0,
+        "claimsChecked": 1,
+        "claimSummary": {
+          "total": 1,
+          "consequential": 1,
+          "VERIFIED_PRIMARY": 0,
+          "VERIFIED_MULTI_SOURCE": 0,
+          "PARTIALLY_VERIFIED": 1,
+          "UNRESOLVED": 0,
+          "CONFLICTING": 0
+        },
+        "claimGate": {
+          "blocksReady": true,
+          "independentCount": 1,
+          "consequentialCount": 1,
+          "agreedCount": 0,
+          "unresolvedCount": 1,
+          "conflictCount": 0,
+          "rationale": "Needs ≥2 independent sources"
+        },
+        "conflictsFound": 0,
+        "uncertaintiesResolved": 0,
+        "uncertaintiesRemaining": 0,
+        "readinessScore": 48,
+        "blocksReady": true,
+        "phase": "3"
+      },
+      "resolvedUncertainties": [],
+      "remainingUncertainties": [],
+      "sourceIndependence": {
+        "independentSourceIds": [
+          "guardian-technology"
+        ],
+        "primarySupport": [],
+        "secondarySupport": [
+          "guardian-technology"
+        ],
+        "rejected": []
+      },
+      "readinessScore": {
+        "score": 48,
+        "blocksReady": true,
+        "notes": [
+          "single eligible source only",
+          "relevance",
+          "editorial fit",
+          "unresolved consequential claims"
+        ],
+        "inputs": {
+          "primaryCount": 0,
+          "independentCount": 1,
+          "verifiedClaims": 0,
+          "unresolvedConsequential": 1,
+          "remainingUncertainties": 0,
+          "conflicts": 0,
+          "freshness": "CURRENT",
+          "relevance": 6,
+          "editorialFitScore": 6
+        }
+      }
+    },
+    "international": {
+      "slug": "virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
+      "title": "Virtue and a Sledgehammer – take a literal hammer to your past",
+      "dek": "What do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot of her car, Pratelle carries the corpse of her mother and a giant sledgehammer. Her mission is simple: take the hammer to her home town. As you enter shops and homes through the door and leave them through the opposite wall, it becomes clear that the robots who either attack you or flee are all digital versions of your old neighbours. Pratelle, with her close-cropped hair and dungarees, read to me as a queer woman, but interestingly, testers of the game often mistook her as a man. The team at developer Deconstructeam and longtime collaborator Selkie Harbour didn’t anticipate this confusion but found it fits the character perfectly, especially in this setting based on a small Spanish town like those in which the developers grew up. Continue reading...",
+      "category": "technology",
+      "location": "International",
+      "publishedAt": "2026-08-11T09:00:09.000Z",
+      "summary": "What do you do when you return to your home town, with your dead mother in your car boot, to find the inhabitants have been turned into robots? In the boot of her car, Pratelle carries the corpse of her mother and a giant sledgehammer. Her mission is simple: take the hammer to her home town. As you enter shops and homes through the door and leave them through the opposite wall, it becomes clear that the robots who either attack you or flee are all digital versions of your old neighbours. Pratelle, with her close-cropped hair and dungarees, read to me as a queer woman, but interestingly, testers of the game often mistook her as a man. The team at developer Deconstructeam and longtime collaborator Selkie Harbour didn’t anticipate this confusion but found it fits the character perfectly, especially in this setting based on a small Spanish town like those in which the developers grew up. Continue reading...",
+      "whyItMatters": "The development intersects with CinNova coverage of technology, ai, business.",
+      "sources": [
+        {
+          "label": "Virtue and a Sledgehammer – take a literal hammer to your past",
+          "publisher": "The Guardian Technology",
+          "url": "https://www.theguardian.com/games/2026/aug/11/virtue-and-a-sledgehammer-take-a-literal-hammer-to-your-past",
+          "type": "verified",
+          "note": "Independent research source included for corroboration."
+        }
+      ],
+      "verifiedClaims": [],
+      "attributedClaims": [
+        "Virtue and a Sledgehammer – take a literal hammer to your past"
+      ],
+      "uncertainties": [],
+      "editorialNotes": "The Guardian Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket broader. Enrichment: independent=1, readiness=44.",
+      "forceDraft": false,
+      "factCheckStatus": "",
+      "claimMatrix": [
+        {
+          "claim": "Virtue and a Sledgehammer – take a literal hammer to your past",
+          "claimId": "claim-920905529e",
           "claimType": "EVENT_IDENTITY",
           "consequential": true,
           "sourceA": null,
@@ -596,8 +813,8 @@
       "independentSourceCount": 1,
       "claimEvidence": [
         {
-          "claimId": "claim-b5a949778a",
-          "claimText": "An AI chatbot is joining the search for art looted by the Nazis",
+          "claimId": "claim-920905529e",
+          "claimText": "Virtue and a Sledgehammer – take a literal hammer to your past",
           "claimType": "EVENT_IDENTITY",
           "consequential": true,
           "supportingSources": [],
@@ -641,7 +858,7 @@
         "conflictsFound": 0,
         "uncertaintiesResolved": 0,
         "uncertaintiesRemaining": 0,
-        "readinessScore": 50,
+        "readinessScore": 44,
         "blocksReady": true,
         "phase": "3"
       },
@@ -649,20 +866,19 @@
       "remainingUncertainties": [],
       "sourceIndependence": {
         "independentSourceIds": [
-          "npr-technology"
+          "guardian-technology"
         ],
         "primarySupport": [],
         "secondarySupport": [
-          "npr-technology"
+          "guardian-technology"
         ],
         "rejected": []
       },
       "readinessScore": {
-        "score": 50,
+        "score": 44,
         "blocksReady": true,
         "notes": [
           "single eligible source only",
-          "freshness",
           "relevance",
           "editorial fit",
           "unresolved consequential claims"
@@ -674,209 +890,6 @@
           "unresolvedConsequential": 1,
           "remainingUncertainties": 0,
           "conflicts": 0,
-          "freshness": "RECENT",
-          "relevance": 2,
-          "editorialFitScore": 2
-        }
-      }
-    },
-    "international": {
-      "slug": "wall-street-giants-hand-nvidia-500bn-to-fund-boom-in-ai-projects",
-      "title": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-      "dek": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-      "category": "technology",
-      "location": "International",
-      "publishedAt": "2026-08-11T08:44:52.000Z",
-      "summary": "The money will be used to develop new data centres to house, operate, and cool miles of stacked computer chips that process AI data and actions.",
-      "whyItMatters": "The development intersects with CinNova coverage of technology, ai, science.",
-      "sources": [
-        {
-          "label": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-          "publisher": "BBC News Technology",
-          "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-          "type": "verified",
-          "note": "Independent research source included for corroboration."
-        }
-      ],
-      "verifiedClaims": [],
-      "attributedClaims": [
-        "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-        "nvidia financing/value claim $500bn"
-      ],
-      "uncertainties": [],
-      "editorialNotes": "BBC News Technology is a Tier-1 newsroom that may research-qualify alone; enrichment should seek an independent secondary before READY. Dedupe: NEW. Editorial fit 2; bucket ai_technology. Enrichment: independent=1, readiness=34.",
-      "forceDraft": false,
-      "factCheckStatus": "",
-      "claimMatrix": [
-        {
-          "claim": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-          "claimId": "claim-bd2274f98d",
-          "claimType": "EVENT_IDENTITY",
-          "consequential": true,
-          "sourceA": {
-            "sourceId": "bbc-technology",
-            "sourceName": "BBC News Technology",
-            "sourceTier": "TIER_1_NEWS",
-            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-            "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-          },
-          "sourceB": null,
-          "supportingSourceIds": [
-            "bbc-technology"
-          ],
-          "agreement": "partial",
-          "conflict": null,
-          "status": "PARTIALLY_VERIFIED",
-          "readyImpact": "REVIEW"
-        },
-        {
-          "claim": "nvidia financing/value claim $500bn",
-          "claimId": "claim-1f91cd8e75",
-          "claimType": "NUMERIC_CLAIM",
-          "consequential": true,
-          "sourceA": {
-            "sourceId": "bbc-technology",
-            "sourceName": "BBC News Technology",
-            "sourceTier": "TIER_1_NEWS",
-            "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-            "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-          },
-          "sourceB": null,
-          "supportingSourceIds": [
-            "bbc-technology"
-          ],
-          "agreement": "partial",
-          "conflict": null,
-          "status": "PARTIALLY_VERIFIED",
-          "readyImpact": "REVIEW"
-        }
-      ],
-      "independentSourceCount": 1,
-      "claimEvidence": [
-        {
-          "claimId": "claim-bd2274f98d",
-          "claimText": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects",
-          "claimType": "EVENT_IDENTITY",
-          "consequential": true,
-          "supportingSources": [
-            {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            }
-          ],
-          "primarySupport": [],
-          "independentSupport": [
-            {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            }
-          ],
-          "status": "PARTIALLY_VERIFIED",
-          "notes": "agreement=partial; readyImpact=REVIEW",
-          "agreement": "partial",
-          "readyImpact": "REVIEW",
-          "conflict": null
-        },
-        {
-          "claimId": "claim-1f91cd8e75",
-          "claimText": "nvidia financing/value claim $500bn",
-          "claimType": "NUMERIC_CLAIM",
-          "consequential": true,
-          "supportingSources": [
-            {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            }
-          ],
-          "primarySupport": [],
-          "independentSupport": [
-            {
-              "sourceId": "bbc-technology",
-              "sourceName": "BBC News Technology",
-              "sourceTier": "TIER_1_NEWS",
-              "url": "https://www.bbc.co.uk/news/articles/c78gr0jv0mdo?at_medium=RSS&at_campaign=rss",
-              "headline": "Wall Street giants hand Nvidia $500bn to fund boom in AI projects"
-            }
-          ],
-          "status": "PARTIALLY_VERIFIED",
-          "notes": "agreement=partial; readyImpact=REVIEW",
-          "agreement": "partial",
-          "readyImpact": "REVIEW",
-          "conflict": null
-        }
-      ],
-      "corroborationSummary": {
-        "attempted": true,
-        "matchCount": 0,
-        "originalSourceCount": 1,
-        "enrichedSourceCount": 1,
-        "independentSourceCount": 1,
-        "primarySourceCount": 0,
-        "discoveryOnlyCount": 0,
-        "rejectedIndependence": 0,
-        "claimsChecked": 2,
-        "claimSummary": {
-          "total": 2,
-          "consequential": 2,
-          "VERIFIED_PRIMARY": 0,
-          "VERIFIED_MULTI_SOURCE": 0,
-          "PARTIALLY_VERIFIED": 2,
-          "UNRESOLVED": 0,
-          "CONFLICTING": 0
-        },
-        "claimGate": {
-          "blocksReady": true,
-          "independentCount": 1,
-          "consequentialCount": 2,
-          "agreedCount": 0,
-          "unresolvedCount": 2,
-          "conflictCount": 0,
-          "rationale": "Needs ≥2 independent sources"
-        },
-        "conflictsFound": 0,
-        "uncertaintiesResolved": 0,
-        "uncertaintiesRemaining": 0,
-        "readinessScore": 34,
-        "blocksReady": true,
-        "phase": "3"
-      },
-      "resolvedUncertainties": [],
-      "remainingUncertainties": [],
-      "sourceIndependence": {
-        "independentSourceIds": [
-          "bbc-technology"
-        ],
-        "primarySupport": [],
-        "secondarySupport": [
-          "bbc-technology"
-        ],
-        "rejected": []
-      },
-      "readinessScore": {
-        "score": 34,
-        "blocksReady": true,
-        "notes": [
-          "single eligible source only",
-          "relevance",
-          "editorial fit",
-          "unresolved consequential claims"
-        ],
-        "inputs": {
-          "primaryCount": 0,
-          "independentCount": 1,
-          "verifiedClaims": 0,
-          "unresolvedConsequential": 2,
-          "remainingUncertainties": 0,
-          "conflicts": 0,
           "freshness": "CURRENT",
           "relevance": 2,
           "editorialFitScore": 2
@@ -885,19 +898,33 @@
     }
   },
   "blog": {
-    "slug": "what-nist-launches-centers-for-ai-in-manufacturing-and-critical-infrastructure-means-for-b",
-    "title": "What NIST Launches Centers for AI in Manufacturing and Critical Infrastructure means for businesses and builders",
+    "slug": "what-lion-nebula-roars-in-webb-s-sights-means-for-businesses-and-builders",
+    "title": "What Lion Nebula Roars in Webb’s Sights means for businesses and builders",
     "category": "Artificial Intelligence",
-    "excerpt": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
-    "seoTitle": "What NIST Launches Centers for AI in Manufacturing and Criti",
-    "seoDescription": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence.",
+    "excerpt": "Observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s “mane” is clear and detailed in this image released on Aug. 10, 2026, due to Webb’s high-resolution imaging. See more images of the Lion Nebula from Webb. Image: NASA, ESA, […]",
+    "seoTitle": "What Lion Nebula Roars in Webb’s Sights means for businesses",
+    "seoDescription": "Observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s ",
     "relatedReading": [],
     "relatedNewsIds": [],
     "sources": [
       {
-        "label": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
-        "publisher": "NIST News",
-        "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
+        "label": "Lion Nebula Roars in Webb’s Sights",
+        "publisher": "NASA Press Releases",
+        "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+        "type": "official",
+        "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
+      },
+      {
+        "label": "Lion Nebula roars to life for Webb",
+        "publisher": "ESA Space News",
+        "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+        "type": "official",
+        "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
+      },
+      {
+        "label": "Webb opens a Treasure Chest filled with stars",
+        "publisher": "ESA Space News",
+        "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Webb_opens_a_Treasure_Chest_filled_with_stars",
         "type": "official",
         "note": "Direct official/company announcement; claims remain attributed until Phase 10A fact-check."
       }
@@ -906,35 +933,33 @@
     "classification": "evergreen",
     "evergreenQualification": {
       "qualified": true,
-      "rationale": "Evergreen Blog path C: Authoritative technical standard with explanatory synthesis framing.",
+      "rationale": "Evergreen Blog path A: Authoritative primary plus supporting authoritative documentation.",
       "sourceStandard": {
         "ok": true,
-        "path": "C",
-        "rationale": "Authoritative technical standard with explanatory synthesis framing.",
+        "path": "A",
+        "rationale": "Authoritative primary plus supporting authoritative documentation.",
         "independentSourceIds": [
-          "nist-news"
-        ],
-        "synthesisLabelRequired": true
+          "nasa-press",
+          "esa-news"
+        ]
       },
       "evergreen": true,
-      "topicValue": 2,
+      "topicValue": 0,
       "reviewOnly": false,
       "freshnessRequired": false
     },
-    "editorialNotes": "Evergreen Blog path C: Authoritative technical standard with explanatory synthesis framing.",
+    "editorialNotes": "Evergreen Blog path A: Authoritative primary plus supporting authoritative documentation.",
     "researchBrief": {
-      "primaryKeyword": "ai",
+      "primaryKeyword": "science",
       "secondaryKeywords": [
-        "cybersecurity",
-        "standards",
-        "semiconductors",
-        "science"
+        "space",
+        "technology"
       ],
       "audience": "CinNova readers evaluating technology, policy, and infrastructure",
       "searchIntent": "Informational"
     },
     "heroImageBrief": {
-      "concept": "Editorial illustration grounded in the reported topic: NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+      "concept": "Editorial illustration grounded in the reported topic: Lion Nebula Roars in Webb’s Sights",
       "mood": "Cinematic, credible, restrained",
       "avoid": [
         "fabricated logos",
@@ -943,132 +968,247 @@
     },
     "claimEvidence": [
       {
-        "claimId": "claim-ddd83308ad",
-        "claimText": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
+        "claimId": "claim-ba36110cbb",
+        "claimText": "Lion Nebula Roars in Webb’s Sights",
         "claimType": "EVENT_IDENTITY",
         "consequential": true,
         "supportingSources": [
           {
-            "sourceId": "nist-news",
-            "sourceName": "NIST News",
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
             "sourceTier": "TIER_1_PRIMARY",
-            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
-            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
           }
         ],
         "primarySupport": [
           {
-            "sourceId": "nist-news",
-            "sourceName": "NIST News",
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
             "sourceTier": "TIER_1_PRIMARY",
-            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
-            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
           }
         ],
         "independentSupport": [
           {
-            "sourceId": "nist-news",
-            "sourceName": "NIST News",
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
             "sourceTier": "TIER_1_PRIMARY",
-            "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
-            "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
           }
         ],
-        "status": "PARTIALLY_VERIFIED",
-        "notes": "agreement=partial; readyImpact=REVIEW",
-        "agreement": "partial",
-        "readyImpact": "REVIEW",
+        "status": "VERIFIED_MULTI_SOURCE",
+        "notes": "agreement=agree; readyImpact=supports-READY",
+        "agreement": "agree",
+        "readyImpact": "supports-READY",
+        "conflict": null
+      },
+      {
+        "claimId": "claim-50ad1badb2",
+        "claimText": "Image: This NASA/ESA/CSA James Webb Space Telescope Picture of the Month takes us to a fantastical realm within our home galaxy , where piercing starlight and billowing winds sculpt dust clouds into inventive shapes. This scene is from the Carina Nebula, which lies just 7500 ligh",
+        "claimType": "CONTEXT",
+        "consequential": false,
+        "supportingSources": [
+          {
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
+          }
+        ],
+        "primarySupport": [
+          {
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
+          }
+        ],
+        "independentSupport": [
+          {
+            "sourceId": "nasa-press",
+            "sourceName": "NASA Press Releases",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+            "headline": "Lion Nebula Roars in Webb’s Sights"
+          },
+          {
+            "sourceId": "esa-news",
+            "sourceName": "ESA Space News",
+            "sourceTier": "TIER_1_PRIMARY",
+            "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+            "headline": "Lion Nebula roars to life for Webb"
+          }
+        ],
+        "status": "VERIFIED_MULTI_SOURCE",
+        "notes": "agreement=agree; readyImpact=neutral",
+        "agreement": "agree",
+        "readyImpact": "neutral",
         "conflict": null
       }
     ],
     "claimMatrix": [
       {
-        "claim": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure",
-        "claimId": "claim-ddd83308ad",
+        "claim": "Lion Nebula Roars in Webb’s Sights",
+        "claimId": "claim-ba36110cbb",
         "claimType": "EVENT_IDENTITY",
         "consequential": true,
         "sourceA": {
-          "sourceId": "nist-news",
-          "sourceName": "NIST News",
+          "sourceId": "nasa-press",
+          "sourceName": "NASA Press Releases",
           "sourceTier": "TIER_1_PRIMARY",
-          "url": "https://www.nist.gov/news-events/news/2025/12/nist-launches-centers-ai-manufacturing-and-critical-infrastructure",
-          "headline": "NIST Launches Centers for AI in Manufacturing and Critical Infrastructure"
+          "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+          "headline": "Lion Nebula Roars in Webb’s Sights"
         },
-        "sourceB": null,
+        "sourceB": {
+          "sourceId": "esa-news",
+          "sourceName": "ESA Space News",
+          "sourceTier": "TIER_1_PRIMARY",
+          "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+          "headline": "Lion Nebula roars to life for Webb"
+        },
         "supportingSourceIds": [
-          "nist-news"
+          "nasa-press",
+          "esa-news"
         ],
-        "agreement": "partial",
+        "agreement": "agree",
         "conflict": null,
-        "status": "PARTIALLY_VERIFIED",
-        "readyImpact": "REVIEW"
+        "status": "VERIFIED_MULTI_SOURCE",
+        "readyImpact": "supports-READY"
+      },
+      {
+        "claim": "Image: This NASA/ESA/CSA James Webb Space Telescope Picture of the Month takes us to a fantastical realm within our home galaxy , where piercing starlight and billowing winds sculpt dust clouds into inventive shapes. This scene is from the Carina Nebula, which lies just 7500 ligh",
+        "claimId": "claim-50ad1badb2",
+        "claimType": "CONTEXT",
+        "consequential": false,
+        "sourceA": {
+          "sourceId": "nasa-press",
+          "sourceName": "NASA Press Releases",
+          "sourceTier": "TIER_1_PRIMARY",
+          "url": "https://www.nasa.gov/image-article/lion-nebula-roars-in-webbs-sights/",
+          "headline": "Lion Nebula Roars in Webb’s Sights"
+        },
+        "sourceB": {
+          "sourceId": "esa-news",
+          "sourceName": "ESA Space News",
+          "sourceTier": "TIER_1_PRIMARY",
+          "url": "https://www.esa.int/ESA_Multimedia/Images/2026/08/Lion_Nebula_roars_to_life_for_Webb",
+          "headline": "Lion Nebula roars to life for Webb"
+        },
+        "supportingSourceIds": [
+          "nasa-press",
+          "esa-news"
+        ],
+        "agreement": "agree",
+        "conflict": null,
+        "status": "VERIFIED_MULTI_SOURCE",
+        "readyImpact": "neutral"
       }
     ],
     "corroborationSummary": {
       "attempted": true,
-      "matchCount": 0,
-      "originalSourceCount": 1,
-      "enrichedSourceCount": 1,
-      "independentSourceCount": 1,
-      "primarySourceCount": 1,
+      "matchCount": 1,
+      "originalSourceCount": 2,
+      "enrichedSourceCount": 3,
+      "independentSourceCount": 2,
+      "primarySourceCount": 2,
       "discoveryOnlyCount": 0,
-      "rejectedIndependence": 0,
-      "claimsChecked": 1,
+      "rejectedIndependence": 1,
+      "claimsChecked": 2,
       "claimSummary": {
-        "total": 1,
+        "total": 2,
         "consequential": 1,
         "VERIFIED_PRIMARY": 0,
-        "VERIFIED_MULTI_SOURCE": 0,
-        "PARTIALLY_VERIFIED": 1,
+        "VERIFIED_MULTI_SOURCE": 2,
+        "PARTIALLY_VERIFIED": 0,
         "UNRESOLVED": 0,
         "CONFLICTING": 0
       },
       "claimGate": {
-        "blocksReady": true,
-        "independentCount": 1,
+        "blocksReady": false,
+        "independentCount": 2,
         "consequentialCount": 1,
-        "agreedCount": 0,
-        "unresolvedCount": 1,
+        "agreedCount": 1,
+        "unresolvedCount": 0,
         "conflictCount": 0,
-        "rationale": "Needs ≥2 independent sources"
+        "rationale": "Independent sources agree on principal consequential claims"
       },
       "conflictsFound": 0,
       "uncertaintiesResolved": 0,
       "uncertaintiesRemaining": 0,
-      "readinessScore": 66,
-      "blocksReady": true,
+      "readinessScore": 92,
+      "blocksReady": false,
       "phase": "3"
     },
     "readinessScore": {
-      "score": 66,
-      "blocksReady": true,
+      "score": 92,
+      "blocksReady": false,
       "notes": [
         "primary-source support",
-        "single eligible source only",
+        "independent corroboration",
+        "verified claims present",
         "relevance",
-        "editorial fit",
-        "unresolved consequential claims"
+        "editorial fit"
       ],
       "inputs": {
-        "primaryCount": 1,
-        "independentCount": 1,
-        "verifiedClaims": 0,
-        "unresolvedConsequential": 1,
+        "primaryCount": 2,
+        "independentCount": 2,
+        "verifiedClaims": 2,
+        "unresolvedConsequential": 0,
         "remainingUncertainties": 0,
         "conflicts": 0,
-        "freshness": "BACKGROUND",
-        "relevance": 6,
-        "editorialFitScore": 3
+        "freshness": "BREAKING",
+        "relevance": 2,
+        "editorialFitScore": 2
       }
     },
     "content": [
       {
         "heading": "Overview",
-        "body": "NIST has expanded its collaboration with the nonprofit MITRE Corporation as part of its efforts to ensure U.S. leadership in artificial intelligence. CinNova frames this as an evergreen explainer grounded in the listed authoritative sources. No additional events, quotes, or statistics are invented."
+        "body": "Observing across the starry “plains” of space, NASA’s James Webb Space Telescope has taken new images of NGC 2392, nicknamed the Lion Nebula. The nebula’s “mane” is clear and detailed in this image released on Aug. 10, 2026, due to Webb’s high-resolution imaging. See more images of the Lion Nebula from Webb. Image: NASA, ESA, […] CinNova frames this as an evergreen explainer grounded in the listed authoritative sources. No additional events, quotes, or statistics are invented."
       },
       {
         "heading": "Source-backed context",
-        "body": "Readers should treat NIST News as the factual anchors. Practical takeaways synthesize public guidance without fabricating vendor endorsements."
+        "body": "Readers should treat NASA Press Releases, ESA Space News, ESA Space News as the factual anchors. Practical takeaways synthesize public guidance without fabricating vendor endorsements."
       },
       {
         "heading": "What to verify next",

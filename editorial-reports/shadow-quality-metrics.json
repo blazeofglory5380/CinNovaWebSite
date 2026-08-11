@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "phase4-shadow-metrics",
+  "updatedAt": "2026-08-11T21:24:22.474Z",
+  "runs": [
+    {
+      "dateIso": "2026-08-11",
+      "recordedAt": "2026-08-11T21:24:22.474Z",
+      "readyNews": 0,
+      "reviewNews": 2,
+      "holdNews": 0,
+      "rejectedNews": 534,
+      "blogReady": 1,
+      "blogReview": 0,
+      "rejectionRate": 0.974,
+      "sourceFailures": 0,
+      "duplicateRate": 0,
+      "corroborationSuccess": 1,
+      "factualConflicts": 0,
+      "imageReady": 0,
+      "imageMissing": 3,
+      "translationQueued": 12,
+      "translationMissing": 9,
+      "invented": false
+    }
+  ],
+  "note": "Accumulates real shadow executions only — no invented historical runs."
+}
