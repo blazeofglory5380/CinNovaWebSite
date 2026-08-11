@@ -3,9 +3,21 @@
 Production-grade **preparation** pipeline for CinNova News + Blog.  
 It does **not** auto-publish, auto-merge, auto-deploy, invent events/sources, or store credentials.
 
+## Current activation state
+
+| Capability | Status |
+|---|---|
+| Shadow / dry-run (full pipeline simulation) | **ACTIVE** — schedule + default manual |
+| Draft file writes + Draft PR preparation | **OFF** until explicit `allow_draft_pr` activation |
+| Production auto-publish (`news:publish` / `blog:publish`) | **NEVER** enabled by automation |
+| Social posting / merge / deploy | **NEVER** |
+
+Scheduled cron (`0 13 * * *`) always runs in **shadow mode**: live research feeds, dry-run pipeline, shadow reports under `editorial-reports/YYYY-MM-DD-shadow.{json,md}`, no draft files, no Draft PR.
+
 ## Commands
 
 ```bash
+npm run editorial:shadow   -- --date=YYYY-MM-DD [--fixture|--live] [--from-packet=...] [--skip-discover]
 npm run editorial:research -- --date=YYYY-MM-DD [--from-packet=...] [--dry-run]
 npm run editorial:daily    -- --date=YYYY-MM-DD [--from-packet=...] [--dry-run] [--skip-existing] [--no-social]
 npm run editorial:factcheck -- --date=YYYY-MM-DD [--slug=...]
@@ -13,7 +25,18 @@ npm run editorial:review    -- --date=YYYY-MM-DD
 npm run editorial:prepare-pr -- --date=YYYY-MM-DD [--dry-run]
 ```
 
-Desired sequence:
+Desired sequence (shadow / current):
+
+```
+editorial:shadow
+  → discover + research-live (fixture or live)
+  → editorial:research --dry-run
+  → editorial:daily --dry-run
+  → editorial-reports/YYYY-MM-DD-shadow.{json,md}
+  → no draft files · no Draft PR · no publish
+```
+
+Later activation sequence (explicit only — not current default):
 
 ```
 editorial:research
@@ -22,7 +45,7 @@ editorial:research
   → fact-check + SEO + internal links + heroes + optional social drafts
   → validation + editorial-reports/YYYY-MM-DD.md
   → editorial:review
-  → editorial:prepare-pr   # Draft PR only, never merge
+  → editorial:prepare-pr   # Draft PR only, never merge / never auto-publish
 ```
 
 Preserved: `news:new`, `news:publish`, `blog:new`, `blog:publish`, `validate:news`, `validate:blog`.
@@ -62,6 +85,8 @@ scripts/editorial-daily.mjs  (pipeline core: scripts/lib/editorial-pipeline.mjs)
 | `scripts/lib/editorial-social.mjs` | Social draft prep (no posting) |
 | `scripts/lib/editorial-report.mjs` | Daily markdown report |
 | `scripts/lib/editorial-pipeline.mjs` | Orchestrator |
+| `scripts/lib/editorial-shadow-report.mjs` | Shadow / dry-run report writer |
+| `scripts/editorial/research/scheduleMode.mjs` | Research + execution mode resolver (`autoPublish` always false) |
 
 ## Research method
 
@@ -134,15 +159,20 @@ UTM via `src/utils/socialUtm.js`. Status remains **`draft`**. No API posting.
 
 `.github/workflows/editorial-daily.yml`
 - Schedule: `0 13 * * *` (UTC) + `workflow_dispatch`
-- Runs research → daily → factcheck/review → validate/lint/build
-- If automation output exists: commit **only** editorial paths, push branch `editorial/daily-YYYY-MM-DD`, open/update **Draft PR** titled `Editorial Daily — YYYY-MM-DD`
-- If nothing qualified: **no junk PR**
-- Never merges, never deploys
+- **Schedule is forced into shadow/dry-run** (live research, no draft writes, no Draft PR)
+- Manual defaults: `shadow=true`, `dry_run=true`, `allow_draft_pr=false`
+- Shadow path: research → daily `--dry-run` → `editorial:shadow` report → tests → artifact upload
+- Draft PR path (manual only): requires `allow_draft_pr=true` **and** `dry_run=false` **and** `shadow=false`
+  - Then: factcheck/review → commit editorial paths → Draft PR `Editorial Daily — YYYY-MM-DD`
+- If nothing qualified / shadow mode: **no junk PR**
+- Never merges, never deploys, never auto-publishes catalogs
 
 ## Safety invariants
 
+- Shadow mode never writes news/blog/social drafts or opens PRs
 - Drafts stay out of public catalogs / sitemap / prerender until `*:publish`
 - Preview routes remain DEV-only
 - No credentials in git
 - Unrelated worktree files must not be staged by `editorial:prepare-pr`
 - No ads / no social auto-post
+- Production auto-publishing remains off until a future explicit activation phase

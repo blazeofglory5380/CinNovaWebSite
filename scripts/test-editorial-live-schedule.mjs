@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,12 +19,14 @@ import {
     dailyBranchName,
     dailyRunId,
     describeScheduleWindow,
+    resolveAutomationExecutionMode,
     resolveResearchMode,
 } from "./editorial/research/scheduleMode.mjs";
 import {
     duplicateDailyRunDecision,
     shouldOpenEditorialDraftPr,
 } from "./editorial/research/prGate.mjs";
+import { writeShadowReport } from "./lib/editorial-shadow-report.mjs";
 import { normalizeCandidate } from "./editorial/research/providers/normalize.mjs";
 import { clusterCandidates } from "./editorial/research/clustering.mjs";
 import { runEditorialDailyPipeline } from "./lib/editorial-pipeline.mjs";
@@ -97,6 +99,51 @@ function run() {
     assert.match(schedule.pacificStandard, /05:00 PST/);
     assert.match(schedule.pacificDaylight, /06:00 PDT/);
 
+    // --- Shadow / execution mode (auto-publish never on) ---
+    const scheduleExec = resolveAutomationExecutionMode({ eventName: "schedule" });
+    assert.equal(scheduleExec.shadow, true);
+    assert.equal(scheduleExec.dryRun, true);
+    assert.equal(scheduleExec.openDraftPr, false);
+    assert.equal(scheduleExec.writeDraftFiles, false);
+    assert.equal(scheduleExec.autoPublish, false);
+
+    const defaultManual = resolveAutomationExecutionMode({ eventName: "workflow_dispatch" });
+    assert.equal(defaultManual.shadow, true);
+    assert.equal(defaultManual.dryRun, true);
+    assert.equal(defaultManual.openDraftPr, false);
+    assert.equal(defaultManual.autoPublish, false);
+
+    const dryRunManual = resolveAutomationExecutionMode({
+        eventName: "workflow_dispatch",
+        dryRunInput: "true",
+        allowDraftPrInput: "true",
+    });
+    assert.equal(dryRunManual.shadow, true);
+    assert.equal(dryRunManual.openDraftPr, false);
+
+    const draftPrep = resolveAutomationExecutionMode({
+        eventName: "workflow_dispatch",
+        dryRunInput: "false",
+        shadowInput: "false",
+        allowDraftPrInput: "true",
+    });
+    assert.equal(draftPrep.shadow, false);
+    assert.equal(draftPrep.dryRun, false);
+    assert.equal(draftPrep.openDraftPr, true);
+    assert.equal(draftPrep.writeDraftFiles, true);
+    assert.equal(draftPrep.autoPublish, false);
+
+    // Schedule ignores allow_draft_pr — stays shadow.
+    const scheduleIgnoresActivation = resolveAutomationExecutionMode({
+        eventName: "schedule",
+        allowDraftPrInput: "true",
+        dryRunInput: "false",
+        shadowInput: "false",
+    });
+    assert.equal(scheduleIgnoresActivation.shadow, true);
+    assert.equal(scheduleIgnoresActivation.openDraftPr, false);
+    assert.equal(scheduleIgnoresActivation.autoPublish, false);
+
     assert.match(WORKFLOW, /cron:\s*"0 13 \* \* \*"/);
     assert.match(WORKFLOW, /group:\s*cinnova-editorial-daily/);
     assert.match(WORKFLOW, /cancel-in-progress:\s*false/);
@@ -105,21 +152,39 @@ function run() {
     assert.doesNotMatch(WORKFLOW, /permissions:[\s\S]*(actions|administration|deployments|issues|packages):\s*write/);
     assert.match(WORKFLOW, /default:\s*fixture/);
     assert.match(WORKFLOW, /Scheduled run uses live verified feeds/);
+    assert.match(WORKFLOW, /Scheduled runs stay in shadow\/dry-run mode/);
+    assert.match(WORKFLOW, /allow_draft_pr/);
+    assert.match(WORKFLOW, /editorial:shadow/);
+    assert.match(WORKFLOW, /Shadow\/dry-run: forced ON/);
     assert.match(WORKFLOW, /Duplicate daily-run protection/);
     assert.match(WORKFLOW, /upload-artifact@v4/);
     assert.match(WORKFLOW, /--no-social/);
     assert.match(WORKFLOW, /test:editorial-live-schedule/);
     assert.match(WORKFLOW, /No editorial draft files survived Phase 10A gates/);
+    assert.match(WORKFLOW, /open_draft_pr == 'true'/);
     assert.doesNotMatch(WORKFLOW, /discovery\.md/);
     assert.doesNotMatch(WORKFLOW, /gh pr ready/);
     assert.doesNotMatch(WORKFLOW, /gh pr merge/);
     assert.doesNotMatch(WORKFLOW, /facebook|instagram|tiktok|linkedin|youtube/i);
     assert.match(WORKFLOW, /READY: \*\*/);
 
+    // dry_run / shadow defaults must be true (shadow-first activation).
+    assert.match(WORKFLOW, /dry_run:[\s\S]*?default:\s*true/);
+    assert.match(WORKFLOW, /shadow:[\s\S]*?default:\s*true/);
+    assert.match(WORKFLOW, /allow_draft_pr:[\s\S]*?default:\s*false/);
+
     // Local npm discover defaults stay fixture-safe (requires --live).
     const discoverCli = readFileSync(path.join(ROOT, "scripts/editorial-discover.mjs"), "utf8");
     assert.match(discoverCli, /readFlag\("--live"/);
     assert.match(discoverCli, /"live" : "fixture"/);
+
+    const shadowCli = readFileSync(path.join(ROOT, "scripts/editorial-shadow.mjs"), "utf8");
+    assert.match(shadowCli, /writeShadowReport/);
+    assert.match(shadowCli, /Auto-publish: OFF/);
+    assert.match(shadowCli, /dryRun:\s*true/);
+
+    const pkg = readFileSync(path.join(ROOT, "package.json"), "utf8");
+    assert.match(pkg, /"editorial:shadow"/);
 
     const strongCyber = clusterFrom({
         sourceId: "cisa-advisories",
@@ -337,6 +402,23 @@ function run() {
         blogDraftCount: 1,
     }), true);
 
+    // Shadow / dry-run / autoPublish must never open a Draft PR.
+    assert.equal(shouldOpenEditorialDraftPr({
+        newsDraftCount: 2,
+        blogDraftCount: 1,
+        shadow: true,
+    }), false);
+    assert.equal(shouldOpenEditorialDraftPr({
+        newsDraftCount: 2,
+        blogDraftCount: 1,
+        dryRun: true,
+    }), false);
+    assert.equal(shouldOpenEditorialDraftPr({
+        newsDraftCount: 2,
+        blogDraftCount: 1,
+        autoPublish: true,
+    }), false);
+
     // HOLD / research-selected alone must not open a PR.
     assert.equal(shouldOpenEditorialDraftPr({ newsDraftCount: 0, blogDraftCount: 0 }), false);
 
@@ -444,12 +526,44 @@ function run() {
         prepareSocial: false,
     });
     assert.ok(daily.created.some((item) => item.type === "news"), "READY fixture must generate a news draft in dry-run");
+    const newsPaths = daily.created
+        .filter((item) => item.type === "news")
+        .map((item) => `src/data/news-drafts/${item.slug}.js`);
     assert.equal(shouldOpenEditorialDraftPr({
-        newsDraftPaths: daily.created.filter((item) => item.type === "news").map((item) => `src/data/news-drafts/${item.slug}.js`),
+        newsDraftPaths: newsPaths,
         blogDraftPaths: [],
     }), true);
+    assert.equal(shouldOpenEditorialDraftPr({
+        newsDraftPaths: newsPaths,
+        blogDraftPaths: [],
+        dryRun: true,
+        shadow: true,
+    }), false);
+
+    const shadowOut = writeShadowReport({
+        dateIso: "2026-07-30",
+        executionMode: scheduleExec,
+        researchMode: { mode: "fixture" },
+        pipelineResult: daily,
+        notes: ["fixture test"],
+    });
+    assert.ok(existsSync(shadowOut.jsonPath));
+    assert.ok(existsSync(shadowOut.mdPath));
+    const shadowJson = JSON.parse(readFileSync(shadowOut.jsonPath, "utf8"));
+    assert.equal(shadowJson.mode, "shadow");
+    assert.equal(shadowJson.autoPublish, false);
+    assert.equal(shadowJson.openDraftPr, false);
+    assert.equal(shadowJson.safety.draftPrOpened, false);
+    assert.ok(shadowJson.counts.wouldCreateNews >= 1);
 
     rmSync(tmp, { recursive: true, force: true });
+    // Clean shadow report written into the real editorial-reports dir during the test.
+    try {
+        rmSync(shadowOut.jsonPath, { force: true });
+        rmSync(shadowOut.mdPath, { force: true });
+    } catch {
+        /* ignore */
+    }
 
     console.log("test:editorial-live-schedule passed");
 }

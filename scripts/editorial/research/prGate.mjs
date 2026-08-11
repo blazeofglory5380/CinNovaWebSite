@@ -1,6 +1,7 @@
 /**
  * Phase 10B.2 — Draft PR eligibility helpers.
  * Research selection / HOLD / REVIEW counts alone must not open a PR.
+ * Shadow/dry-run mode never opens a Draft PR.
  */
 
 export function countDraftFiles(paths = []) {
@@ -8,15 +9,23 @@ export function countDraftFiles(paths = []) {
 }
 
 /**
- * Open a Draft PR only when validated editorial draft files exist.
- * Report-only / HOLD-only / zero-draft runs must not open junk PRs.
+ * Open a Draft PR only when validated editorial draft files exist
+ * AND automation is not in shadow/dry-run mode.
+ * Report-only / HOLD-only / zero-draft / shadow runs must not open junk PRs.
  */
 export function shouldOpenEditorialDraftPr({
     newsDraftPaths = [],
     blogDraftPaths = [],
     newsDraftCount = null,
     blogDraftCount = null,
+    shadow = false,
+    dryRun = false,
+    autoPublish = false,
 } = {}) {
+    // Hard stop — production auto-publish is never a PR gate input.
+    if (autoPublish) return false;
+    if (shadow || dryRun) return false;
+
     const news = newsDraftCount == null ? countDraftFiles(newsDraftPaths) : Number(newsDraftCount) || 0;
     const blog = blogDraftCount == null ? countDraftFiles(blogDraftPaths) : Number(blogDraftCount) || 0;
     return news + blog > 0;

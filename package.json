@@ -51,6 +51,7 @@
     "editorial:factcheck": "node scripts/editorial-factcheck.mjs",
     "editorial:review": "node scripts/editorial-review.mjs",
     "editorial:prepare-pr": "node scripts/editorial-prepare-pr.mjs",
+    "editorial:shadow": "node scripts/editorial-shadow.mjs",
     "build": "npm run audit:seo && npm run generate:sitemap && npm run audit:resource-images && npm run setup:product-hero-posters && vite build && npm run generate:route-metadata && npm run audit:seo:dist",
     "lint": "eslint .",
     "preview": "vite preview"

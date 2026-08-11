@@ -1,13 +1,16 @@
 name: Editorial Daily
 
-# Phase 10B.2 — scheduled live research → Phase 10A Draft PR preparation.
+# Shadow / dry-run automation (pre-activation).
+# Runs the complete research → daily pipeline simulation.
+# Never writes draft files on schedule. Never opens Draft PRs on schedule.
 # Never merges, never deploys, never publishes to production catalogs.
 # Never posts socially. Does not store API keys in the repository.
 #
-# Schedule (cron 13:00 UTC): live research
+# Schedule (cron 13:00 UTC): live research + FORCED shadow/dry-run
 #   ≈ 05:00 PST / 06:00 PDT (UTC-fixed cron; Pacific shifts with DST)
-# Manual workflow_dispatch default: fixture
-# Manual live: requires explicit research_mode=live
+# Manual workflow_dispatch default: fixture + shadow/dry-run
+# Manual Draft PR prep: require allow_draft_pr=true AND dry_run=false AND shadow=false
+# Production auto-publish: NOT enabled (any phase)
 
 on:
   schedule:
@@ -23,7 +26,17 @@ on:
         required: false
         default: ""
       dry_run:
-        description: "If true, run pipeline without writing drafts or opening a PR"
+        description: "If true, simulate without writing drafts or opening a PR (default true — shadow mode)"
+        required: false
+        type: boolean
+        default: true
+      shadow:
+        description: "Force shadow mode (no draft files, no Draft PR). Schedule always shadows."
+        required: false
+        type: boolean
+        default: true
+      allow_draft_pr:
+        description: "EXPLICIT activation — allow Draft PR preparation on manual runs only. Still never auto-publishes."
         required: false
         type: boolean
         default: false
@@ -68,7 +81,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Resolve date + research mode
+      - name: Resolve date + research + execution mode
         id: meta
         shell: bash
         run: |
@@ -93,8 +106,30 @@ jobs:
             MODE_REASON="Manual/default run stays fixture-safe."
           fi
 
-          DRY_RUN="${{ github.event.inputs.dry_run }}"
-          if [ "$DRY_RUN" != "true" ]; then DRY_RUN="false"; fi
+          # Execution mode — schedule ALWAYS shadows; production auto-publish never on.
+          DRY_RUN_INPUT="${{ github.event.inputs.dry_run }}"
+          SHADOW_INPUT="${{ github.event.inputs.shadow }}"
+          ALLOW_DRAFT_PR="${{ github.event.inputs.allow_draft_pr }}"
+
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            SHADOW="true"
+            DRY_RUN="true"
+            OPEN_DRAFT_PR="false"
+            WRITE_DRAFTS="false"
+            EXEC_REASON="Scheduled runs stay in shadow/dry-run mode — no draft files, no Draft PR, no auto-publish until activation."
+          elif [ "$SHADOW_INPUT" = "true" ] || [ "$DRY_RUN_INPUT" = "true" ] || [ "$ALLOW_DRAFT_PR" != "true" ]; then
+            SHADOW="true"
+            DRY_RUN="true"
+            OPEN_DRAFT_PR="false"
+            WRITE_DRAFTS="false"
+            EXEC_REASON="Manual/default shadow/dry-run — pipeline simulates output without writing drafts or opening a PR."
+          else
+            SHADOW="false"
+            DRY_RUN="false"
+            OPEN_DRAFT_PR="true"
+            WRITE_DRAFTS="true"
+            EXEC_REASON="Manual run explicitly allowed Draft PR preparation. Auto-publish remains disabled."
+          fi
 
           echo "date=$DATE" >> "$GITHUB_OUTPUT"
           echo "branch=editorial/daily-$DATE" >> "$GITHUB_OUTPUT"
@@ -102,7 +137,13 @@ jobs:
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
           echo "mode_reason=$MODE_REASON" >> "$GITHUB_OUTPUT"
           echo "dry_run=$DRY_RUN" >> "$GITHUB_OUTPUT"
-          echo "Resolved mode=$MODE date=$DATE dry_run=$DRY_RUN ($MODE_REASON)"
+          echo "shadow=$SHADOW" >> "$GITHUB_OUTPUT"
+          echo "open_draft_pr=$OPEN_DRAFT_PR" >> "$GITHUB_OUTPUT"
+          echo "write_drafts=$WRITE_DRAFTS" >> "$GITHUB_OUTPUT"
+          echo "exec_reason=$EXEC_REASON" >> "$GITHUB_OUTPUT"
+          echo "Resolved mode=$MODE date=$DATE shadow=$SHADOW dry_run=$DRY_RUN open_draft_pr=$OPEN_DRAFT_PR"
+          echo "$MODE_REASON"
+          echo "$EXEC_REASON"
 
       - name: Duplicate daily-run protection
         id: existing
@@ -110,6 +151,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
+          if [ "${{ steps.meta.outputs.open_draft_pr }}" != "true" ]; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "skip_pipeline=false" >> "$GITHUB_OUTPUT"
+            echo "Shadow/dry-run — skipping Draft PR duplicate guard; pipeline will simulate only."
+            exit 0
+          fi
+
           BRANCH="${{ steps.meta.outputs.branch }}"
           EXISTING="$(gh pr list --head "$BRANCH" --state open --json number,url,isDraft --jq '.[0] // empty')"
           if [ -n "$EXISTING" ]; then
@@ -224,6 +272,23 @@ jobs:
           fi
           npm run editorial:daily -- --date="${{ steps.meta.outputs.date }}" --skip-existing --no-social "${EXTRA[@]}"
 
+      - name: Write shadow report
+        if: ${{ steps.meta.outputs.shadow == 'true' && steps.existing.outputs.skip_pipeline != 'true' && steps.research_status.outputs.status != 'FAILED' }}
+        shell: bash
+        run: |
+          EXTRA=(--skip-discover --date="${{ steps.meta.outputs.date }}")
+          if [ "${{ steps.meta.outputs.mode }}" = "live" ]; then
+            EXTRA+=(--live)
+          else
+            EXTRA+=(--fixture)
+          fi
+          if [ -n "${{ github.event.inputs.packet_path }}" ]; then
+            EXTRA+=(--from-packet="${{ github.event.inputs.packet_path }}")
+          elif [ -f "editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json" ]; then
+            EXTRA+=(--from-packet="editorial-reports/${{ steps.meta.outputs.date }}-live-packet.json")
+          fi
+          npm run editorial:shadow -- "${EXTRA[@]}"
+
       - name: Fact-check + review
         if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.dry_run != 'true' && steps.research_status.outputs.status != 'FAILED' }}
         run: |
@@ -253,7 +318,7 @@ jobs:
 
       - name: Detect editorial changes
         id: changes
-        if: ${{ steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.dry_run != 'true' }}
+        if: ${{ steps.meta.outputs.open_draft_pr == 'true' && steps.existing.outputs.skip_pipeline != 'true' && steps.meta.outputs.dry_run != 'true' }}
         shell: bash
         run: |
           DATE="${{ steps.meta.outputs.date }}"
@@ -266,7 +331,7 @@ jobs:
           echo "blog_drafts=$BLOG_DRAFTS" >> "$GITHUB_OUTPUT"
 
           # PR gate: only validated draft files open a Draft PR.
-          # Research-qualified / selected / HOLD / report-only days must not create junk PRs.
+          # Research-qualified / selected / HOLD / report-only / shadow days must not create junk PRs.
           if [ "$TOTAL" -eq 0 ]; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             echo "No editorial draft files survived Phase 10A gates — skipping branch/PR (zero-output)."
@@ -292,7 +357,7 @@ jobs:
           fi
 
       - name: Commit automation output
-        if: ${{ steps.changes.outputs.has_changes == 'true' }}
+        if: ${{ steps.changes.outputs.has_changes == 'true' && steps.meta.outputs.open_draft_pr == 'true' }}
         shell: bash
         run: |
           git config user.name "cinnova-editorial-bot"
@@ -302,7 +367,7 @@ jobs:
           git push -u origin "HEAD:${{ steps.meta.outputs.branch }}"
 
       - name: Open Draft PR
-        if: ${{ steps.changes.outputs.has_changes == 'true' }}
+        if: ${{ steps.changes.outputs.has_changes == 'true' && steps.meta.outputs.open_draft_pr == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
@@ -384,6 +449,23 @@ jobs:
             gh pr create --draft --title "$TITLE" --body-file "$BODY_FILE" --head "$BRANCH"
           fi
 
+      - name: Shadow mode summary
+        if: ${{ always() && steps.meta.outputs.shadow == 'true' }}
+        shell: bash
+        run: |
+          echo "## Editorial shadow mode"
+          echo "- Date: ${{ steps.meta.outputs.date }}"
+          echo "- Research: ${{ steps.meta.outputs.mode }}"
+          echo "- Shadow/dry-run: forced ON"
+          echo "- Draft files written: no"
+          echo "- Draft PR opened: no"
+          echo "- Auto-publish: OFF"
+          echo "- ${{ steps.meta.outputs.exec_reason }}"
+          if [ -f "editorial-reports/${{ steps.meta.outputs.date }}-shadow.md" ]; then
+            echo ""
+            sed -n '1,80p' "editorial-reports/${{ steps.meta.outputs.date }}-shadow.md"
+          fi
+
       - name: Upload safe run diagnostics
         if: ${{ always() && steps.existing.outputs.skip_pipeline != 'true' }}
         uses: actions/upload-artifact@v4
@@ -396,3 +478,5 @@ jobs:
             editorial-reports/${{ steps.meta.outputs.date }}-research.md
             editorial-reports/${{ steps.meta.outputs.date }}-review.md
             editorial-reports/${{ steps.meta.outputs.date }}.md
+            editorial-reports/${{ steps.meta.outputs.date }}-shadow.json
+            editorial-reports/${{ steps.meta.outputs.date }}-shadow.md
