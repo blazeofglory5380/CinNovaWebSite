@@ -1,8 +1,65 @@
 # M3 Test Transaction Report
 
-**Phase:** CinNova Monetization — M3 (test-mode revenue integration)  
+**Phase:** CinNova Monetization — M3 / M3.1 (Stripe TEST transaction proof)  
 **Date:** 2026-08-11  
-**Rule:** No secrets. No fabricated charges. No LIVE activation. Editorial scheduler remains SHADOW.
+**Branch tip at M3.1 check:** `6238a29` (PR #71 draft)  
+**Rule:** No secrets. No fabricated charges. No LIVE activation. Editorial scheduler remains SHADOW. M4 not started.
+
+## M3.1 — Stripe TEST credential check (2026-08-11)
+
+Provider-dependent proof **stopped**. No Stripe TEST credentials are configured in this environment.
+
+| Location | `STRIPE_SECRET_KEY` | `STRIPE_WEBHOOK_SECRET` |
+|---|---|---|
+| Process env | missing | missing |
+| User / Machine env | missing | missing |
+| M3 worktree `.env` / `.env.local` | absent files | absent files |
+| `D:/CinNovaWebSite/.env` | missing | missing |
+| `D:/CinNovaWebSite/.env.local` | missing | missing |
+| Repo / commit | none (correct) | none (correct) |
+
+Live / malformed keys were **not** present (nothing to reject). Publishable key also absent (optional for this proof).
+
+### Required server-side TEST values (do not commit)
+
+Configure locally or in a private server env **only**:
+
+1. `STRIPE_SECRET_KEY=sk_test_…` (must start with `sk_test_`, length > 20)
+2. `STRIPE_WEBHOOK_SECRET=whsec_…` (must start with `whsec_`)
+3. `CINNOVA_PAYMENTS_MODE=TEST`
+
+Optional, non-secret / non-LIVE:
+
+- `VITE_STRIPE_PUBLISHABLE_KEY=pk_test_…` (client publishable only; never `sk_` in `VITE_*`)
+- `COMMERCE_EMAIL_DELIVERY=sink`
+- Stripe CLI forward to `/api/commerce/webhook` for signed TEST events
+
+Reject / do not set:
+
+- `sk_live_…` / `pk_live_…`
+- malformed keys
+- `CINNOVA_LIVE_PAYMENTS_APPROVED=true`
+
+### M3.1 provider proof status
+
+| Check | Result |
+|---|---|
+| TEST credentials detected | **No** |
+| Checkout session created (Stripe network) | **NOT RUN** |
+| Provider payment completed | **NOT RUN** |
+| Webhook received from Stripe | **NOT RUN** |
+| Order paid via verified Stripe state | **NOT RUN** |
+| Entitlement granted from provider payment | **NOT RUN** |
+| Secure download after provider payment | **NOT RUN** |
+| Failed payment (Stripe test card/decline) | **NOT RUN** |
+| Cancellation (Stripe Checkout cancel) | **NOT RUN** |
+| Stripe TEST refund | **NOT RUN** |
+| Analytics TEST-only (provider order) | **NOT RUN** |
+| Stripe Tax TEST | **NOT CONFIGURED** → `LIVE_BLOCKED_TAX_CONFIGURATION` |
+
+Architecture regressions (in-process, no Stripe account) remain PASS — see sections below. Those do **not** count as a provider TEST purchase.
+
+**Do not treat this report as CINNOVA M3 TEST TRANSACTION PROVEN.**
 
 ## Stack verification
 
@@ -174,5 +231,6 @@ Provider refund API call: **SKIP** (no credentials).
 ## Verdict (this report)
 
 Architecture TEST flow is proven in-process.  
-**Provider-dependent Stripe TEST purchase: SKIPPED honestly.**  
-**LIVE payment: BLOCKED.**
+**M3.1 provider TEST purchase: BLOCKED — missing `STRIPE_SECRET_KEY=sk_test_…` and `STRIPE_WEBHOOK_SECRET=whsec_…` (plus `CINNOVA_PAYMENTS_MODE=TEST`).**  
+**LIVE payment: BLOCKED.**  
+**M4: not started.**
