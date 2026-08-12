@@ -149,6 +149,150 @@ export {
     isAnyPaymentProviderConfigured,
 } from "./providers.js";
 
+export {
+    createEmptyCart,
+    assertCheckoutAllowed,
+    beginCheckoutArchitecture,
+    completePurchaseArchitecture,
+    applyCouponArchitecture,
+    CHECKOUT_STATES,
+    TAX_ARCHITECTURE,
+} from "./checkoutArchitecture.js";
+
+export {
+    createSignedDownloadGrant,
+    revokeDownloadGrant,
+    listDemoEntitlements,
+    DIGITAL_DELIVERY_RULES,
+} from "./digitalDelivery.js";
+
+export { validateCouponArchitecture } from "./couponArchitecture.js";
+
+export { getRevenueDashboardModel } from "./revenueDashboard.js";
+
+export {
+    PAYMENT_MODES,
+    resolvePaymentMode,
+    canCreateTestCheckoutSession,
+    canCreateLiveCheckoutSession,
+    getPaymentModeReport,
+    RECOMMENDED_PRIMARY_PROVIDER,
+} from "./paymentMode.js";
+
+export {
+    quoteServerCheckout,
+    validateServerCoupon,
+    registerEphemeralTestPrice,
+    clearEphemeralTestPrices,
+    createPaymentSessionFromQuote,
+} from "./serverPricing.js";
+
+export {
+    ORDER_STATES,
+    createOrderRecord,
+    getOrderById,
+    transitionOrder,
+    authorizeOrderLookup,
+    clearOrderStore,
+    canTransitionOrder,
+} from "./orderModel.js";
+
+export {
+    verifyWebhookSignature,
+    handleWebhookEventArchitecture,
+    WEBHOOK_EVENT_ALLOWLIST,
+    browserRedirectAloneMarksPaid,
+    clearWebhookIdempotencyStore,
+} from "./webhookArchitecture.js";
+
+export {
+    grantEntitlementFromPaidOrder,
+    authorizeSecureDownload,
+    revokeEntitlementForRefund,
+    clearEntitlementGrantStore,
+} from "./entitlementGrants.js";
+
+export {
+    createCustomerIdentity,
+    evaluateGuestCheckout,
+    clearCustomerIdentityStore,
+} from "./customerIdentity.js";
+
+export {
+    TAX_PROVIDER_ARCHITECTURE,
+    isTaxConfigured,
+    assertTaxAllowsLiveSales,
+    getTaxReadinessReport,
+} from "./taxArchitecture.js";
+
+export {
+    initiateRefund,
+    applyRefundToEntitlements,
+    REFUND_POLICY_FLAGS,
+} from "./refundLifecycle.js";
+
+export {
+    beginServerCheckout,
+    completeCheckoutFromProvider,
+    createCartState,
+    CHECKOUT_FLOW_STATES,
+} from "./checkoutFlow.js";
+
+export { runTestTransactionHarness } from "./testTransactionHarness.js";
+
+export {
+    classifyStripeSecretKey,
+    resolveStripeTestSecret,
+    verifyStripeWebhookSignature,
+    createStripeCheckoutSession,
+    redactSecret,
+} from "./stripeTestClient.js";
+
+export {
+    persistOrdersToDisk,
+    loadOrdersFromDisk,
+    saveOrderAndPersist,
+    assertNoCardDataInStore,
+} from "./orderPersistence.js";
+
+export {
+    authorizeTestDownload,
+    assertSafeDownloadAsset,
+    isDownloadGrantExpired,
+} from "./secureDownload.js";
+
+export { getStripeTaxTestReadiness } from "./stripeTaxTest.js";
+
+export {
+    queueCommerceEmail,
+    COMMERCE_EMAIL_TYPES,
+    clearCommerceEmailSink,
+} from "./commerceEmail.js";
+
+export {
+    listAdminOrders,
+    assertAdminChannelsNotMixed,
+} from "./adminOrderReview.js";
+
+export {
+    summarizeRevenueByChannel,
+    assertRealExcludesTestAndDemo,
+} from "./revenueLedger.js";
+
+export {
+    assertSafeReturnUrl,
+    assertAffiliateDestinationAllowed,
+    assertNoSecretInLogs,
+    assertNoLiveKeyInClientBundle,
+} from "./securityGuards.js";
+
+export {
+    recordRevenueFunnelEvent,
+    getRevenueChannelSnapshot,
+    REVENUE_DATA_CHANNELS,
+    clearRevenueAnalyticsStores,
+} from "./revenueAnalytics.js";
+
 import { validateCommerceAdminFoundation } from "./adminFoundation.js";
 import { validateProductRelationships } from "./productRelationships.js";
 import { validateNotificationStore } from "./notificationModel.js";

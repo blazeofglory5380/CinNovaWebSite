@@ -7,7 +7,8 @@
  * legacyRouteRedirects.js), the SPA router (App.jsx), sitemap + static-HTML
  * generation, audits, and internal links.
  *
- * Phase 2B migrates all 50 non-home public pages: Checkpoint 1 covered the 16
+ * Phase 2B migrated 50 non-home public pages; Phase M1 adds monetization /
+ * legal / store routes (63 total migrated public page keys). Checkpoint 1 covered the 16
  * core marketing/company/tool/hub pages, Checkpoint 2 the 34 individual guide
  * pages under /guides/. The SEO audit keeps this registry in sync with
  * STATIC_PUBLIC_PAGES and asserts PUBLIC_SITE_URL matches the canonical siteUrl.
@@ -44,6 +45,39 @@ export const PUBLIC_PAGE_ROUTES = [
     { key: "terms", path: "/terms", schemaType: "WebPage",
         title: "Terms of Service | Cin Nova",
         description: "Terms governing use of the Cin Nova website, including informational disclaimers, AI limitations, acceptable use, and limitation of liability." },
+    { key: "affiliate-disclosure", path: "/affiliate-disclosure", schemaType: "WebPage",
+        title: "Affiliate Disclosure | Cin Nova",
+        description: "How Cin Nova discloses affiliate and referral relationships, tracking practices, and editorial independence." },
+    { key: "refund-policy", path: "/refund-policy", schemaType: "WebPage",
+        title: "Refund Policy | Cin Nova",
+        description: "Refund expectations for future Cin Nova hosted digital and physical products." },
+    { key: "digital-product-terms", path: "/digital-product-terms", schemaType: "WebPage",
+        title: "Digital Product Terms | Cin Nova",
+        description: "License and delivery terms for future Cin Nova digital downloads and apps." },
+    { key: "cookie-policy", path: "/cookie-policy", schemaType: "WebPage",
+        title: "Cookie Policy | Cin Nova",
+        description: "How Cin Nova uses cookies and similar technologies on getcinnova.com." },
+    { key: "disclaimer", path: "/disclaimer", schemaType: "WebPage",
+        title: "Disclaimer | Cin Nova",
+        description: "General informational disclaimer for Cin Nova content and products." },
+    { key: "accessibility", path: "/accessibility", schemaType: "WebPage",
+        title: "Accessibility Statement | Cin Nova",
+        description: "Cin Nova accessibility goals for public and monetization surfaces." },
+    { key: "dmca", path: "/dmca", schemaType: "WebPage",
+        title: "Copyright / DMCA | Cin Nova",
+        description: "Copyright notice and DMCA-style takedown contact for Cin Nova content." },
+    { key: "sponsorship-disclosure", path: "/sponsorship-disclosure", schemaType: "WebPage",
+        title: "Sponsorship & Advertising Disclosure | Cin Nova",
+        description: "How Cin Nova labels sponsorships, branded content, and advertising." },
+    { key: "store", path: "/store", schemaType: "WebPage",
+        title: "CinNova Store | Browse Products",
+        description: "Browse Cin Nova products. Hosted checkout remains offline until payments are explicitly activated." },
+    { key: "cart", path: "/cart", schemaType: "WebPage",
+        title: "Cart | Cin Nova",
+        description: "Cin Nova shopping cart. Checkout is disabled until payments are authorized." },
+    { key: "checkout", path: "/checkout", schemaType: "WebPage",
+        title: "Checkout | Cin Nova",
+        description: "Cin Nova checkout. Fails closed when payment providers are disabled." },
 
     // Company & partnership pages → /company/*
     { key: "partners", path: "/company/partners", schemaType: "WebPage",
@@ -67,6 +101,12 @@ export const PUBLIC_PAGE_ROUTES = [
     { key: "sponsor-newsletter", path: "/company/sponsor-newsletter", schemaType: "WebPage",
         title: "Sponsor the Newsletter | Cin Nova",
         description: "Sponsor the Cin Nova newsletter to reach AI professionals, educators, students, real estate professionals, and technology enthusiasts." },
+    { key: "contact-sales", path: "/company/contact-sales", schemaType: "WebPage",
+        title: "Contact Sales | Cin Nova",
+        description: "Contact Cin Nova sales for sponsorships, newsletter sponsorship, display advertising, branded content, app sponsorship, and product partnerships." },
+    { key: "brand-assets", path: "/company/brand-assets", schemaType: "WebPage",
+        title: "Brand Assets | Cin Nova",
+        description: "Cin Nova brand assets for press and partners. Download guidelines and press materials from the media kit." },
 
     // Tools & hubs
     { key: "free-rental-property-calculator", path: "/tools/rental-property-calculator", schemaType: "WebApplication",
@@ -188,6 +228,21 @@ export const MIGRATED_PUBLIC_PAGE_KEYS = new Set(PUBLIC_PAGE_ROUTES.map((route) 
 const KEY_TO_ROUTE = new Map(PUBLIC_PAGE_ROUTES.map((route) => [route.key, route]));
 const PATH_TO_KEY = new Map(PUBLIC_PAGE_ROUTES.map((route) => [route.path, route.key]));
 
+/**
+ * Short path aliases → page keys. Canonical URLs remain the registry `path`.
+ * Example: /advertise → advertise (canonical /company/advertise).
+ */
+export const PUBLIC_PATH_ALIASES = Object.freeze({
+    "/advertise": "advertise",
+    "/media-kit": "media-kit",
+    "/partner-with-us": "partner-with-us",
+    "/sponsor-newsletter": "sponsor-newsletter",
+    "/press": "press-center",
+    "/brand-assets": "brand-assets",
+    "/contact-sales": "contact-sales",
+    "/affiliate-disclosure": "affiliate-disclosure",
+});
+
 function normalizePath(pathname) {
     if (typeof pathname !== "string") return null;
     return pathname.replace(/\/+$/, "") || "/";
@@ -212,7 +267,8 @@ export function getPublicPageRoute(pageKey) {
 /** @returns {string|null} the migrated page key for a clean pathname, else null. */
 export function getPublicPageKeyFromPath(pathname) {
     const clean = normalizePath(pathname);
-    return clean ? PATH_TO_KEY.get(clean) || null : null;
+    if (!clean) return null;
+    return PATH_TO_KEY.get(clean) || PUBLIC_PATH_ALIASES[clean] || null;
 }
 
 /** @returns {boolean} whether a page key has been migrated to a clean route. */

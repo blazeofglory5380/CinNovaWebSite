@@ -14,6 +14,7 @@ import {
     getActiveCommercialDestinations,
 } from "../src/data/commerceCatalog.js";
 import { canShowPurchaseCta } from "../src/data/commerceModels.js";
+import { collectSitemapEntries } from "../src/data/seoConfig.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 let failed = 0;
@@ -314,7 +315,7 @@ try {
 }
 
 try {
-    const sitemap = readFileSync(join(root, "public/sitemap.xml"), "utf8");
+    const sitemapBlob = collectSitemapEntries().map((e) => e.loc).join("\n");
     for (const needle of [
         "ai-foundations-course",
         "prompt-packs",
@@ -323,7 +324,7 @@ try {
         "customer-dashboard",
         "commerce-admin",
     ]) {
-        assert.equal(sitemap.includes(needle), false, needle);
+        assert.equal(sitemapBlob.includes(needle), false, needle);
     }
     const app = readFileSync(join(root, "src/App.jsx"), "utf8");
     assert.equal(/CommerceAdmin|CustomerDashboard/.test(app), false);

@@ -2,6 +2,9 @@
 data/scanner-validation/results/
 data/scanner-validation/exports/
 
+# Local TEST-mode commerce persistence (never commit order PII)
+data/commerce-test/
+
 logs
 *.log
 npm-debug.log*

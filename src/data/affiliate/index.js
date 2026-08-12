@@ -122,6 +122,38 @@ export {
 } from "./verificationReport.js";
 
 export {
+    PARTNER_LIFECYCLE_STATUSES,
+    toPartnerLifecycleStatus,
+} from "./partnerLifecycle.js";
+
+export {
+    buildAffiliateOnboardingTracker,
+    summarizeAffiliateOnboarding,
+    mayRenderMonetizedAffiliateUrl,
+    assertAffiliateIdSafeForPublic,
+} from "./affiliateOnboarding.js";
+
+export {
+    buildAffiliatePriorityList,
+    groupAffiliatePriorities,
+    AFFILIATE_PRIORITY,
+} from "./affiliatePriority.js";
+
+export {
+    buildAffiliateApplicationPack,
+    summarizeApplicationPack,
+    classifyHighPriorityApplications,
+    AFFILIATE_APPLY_CLASS,
+} from "./applicationPack.js";
+
+export {
+    APPLICATION_WORKFLOW_STATES,
+    deriveWorkflowState,
+    assertApprovedRequiresEvidence,
+    assertCanActivateAffiliate,
+} from "./applicationWorkflow.js";
+
+export {
     REVENUE_METRICS_PLACEHOLDER,
     getRevenueOpportunityMetrics,
     formatRevenueMetric,
