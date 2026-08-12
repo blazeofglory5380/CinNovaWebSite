@@ -241,6 +241,52 @@ export {
 export { runTestTransactionHarness } from "./testTransactionHarness.js";
 
 export {
+    classifyStripeSecretKey,
+    resolveStripeTestSecret,
+    verifyStripeWebhookSignature,
+    createStripeCheckoutSession,
+    redactSecret,
+} from "./stripeTestClient.js";
+
+export {
+    persistOrdersToDisk,
+    loadOrdersFromDisk,
+    saveOrderAndPersist,
+    assertNoCardDataInStore,
+} from "./orderPersistence.js";
+
+export {
+    authorizeTestDownload,
+    assertSafeDownloadAsset,
+    isDownloadGrantExpired,
+} from "./secureDownload.js";
+
+export { getStripeTaxTestReadiness } from "./stripeTaxTest.js";
+
+export {
+    queueCommerceEmail,
+    COMMERCE_EMAIL_TYPES,
+    clearCommerceEmailSink,
+} from "./commerceEmail.js";
+
+export {
+    listAdminOrders,
+    assertAdminChannelsNotMixed,
+} from "./adminOrderReview.js";
+
+export {
+    summarizeRevenueByChannel,
+    assertRealExcludesTestAndDemo,
+} from "./revenueLedger.js";
+
+export {
+    assertSafeReturnUrl,
+    assertAffiliateDestinationAllowed,
+    assertNoSecretInLogs,
+    assertNoLiveKeyInClientBundle,
+} from "./securityGuards.js";
+
+export {
     recordRevenueFunnelEvent,
     getRevenueChannelSnapshot,
     REVENUE_DATA_CHANNELS,

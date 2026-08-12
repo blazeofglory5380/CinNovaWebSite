@@ -21,7 +21,6 @@ import {
     clearOrderStore,
     createOrderRecord,
     ORDER_STATES,
-    transitionOrder,
 } from "./orderModel.js";
 import {
     clearWebhookIdempotencyStore,
@@ -31,7 +30,6 @@ import {
 import {
     clearEntitlementGrantStore,
     authorizeSecureDownload,
-    grantEntitlementFromPaidOrder,
     revokeEntitlementForRefund,
 } from "./entitlementGrants.js";
 import { initiateRefund } from "./refundLifecycle.js";

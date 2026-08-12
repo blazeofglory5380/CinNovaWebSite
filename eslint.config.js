@@ -72,4 +72,14 @@ export default defineConfig([
             globals: globals.node,
         },
     },
+    {
+        // Server-authoritative commerce modules (imported by /api, not browser UI).
+        files: [
+            "src/data/commerce/platform/**/*.js",
+            "src/data/sponsorshipInquiryFlow.js",
+        ],
+        languageOptions: {
+            globals: globals.node,
+        },
+    },
 ]);

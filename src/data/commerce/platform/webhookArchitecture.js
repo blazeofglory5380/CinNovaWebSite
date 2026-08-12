@@ -3,7 +3,9 @@
  * No production endpoint activation. Signature verification required.
  */
 
-import { ORDER_STATES, transitionOrder } from "./orderModel.js";
+import { ORDER_STATES, transitionOrder, getOrderById } from "./orderModel.js";
+import { grantEntitlementFromPaidOrder, listGrantedEntitlements } from "./entitlementGrants.js";
+import { verifyStripeWebhookSignature } from "./stripeTestClient.js";
 
 export const WEBHOOK_EVENT_ALLOWLIST = Object.freeze([
     "checkout.session.completed",
@@ -24,15 +26,10 @@ export function verifyWebhookSignature({
     payload = "",
     signatureHeader = "",
     secret = "",
-    // Architecture verifier — production must use provider SDK.
     verifier = null,
+    nowSeconds = Math.floor(Date.now() / 1000),
+    toleranceSeconds = 300,
 } = {}) {
-    if (!secret) {
-        return { ok: false, error: "WEBHOOK_SECRET_MISSING" };
-    }
-    if (!signatureHeader) {
-        return { ok: false, error: "SIGNATURE_MISSING" };
-    }
     if (typeof verifier === "function") {
         try {
             const valid = verifier({ payload, signatureHeader, secret });
@@ -41,8 +38,13 @@ export function verifyWebhookSignature({
             return { ok: false, error: "SIGNATURE_VERIFY_FAILED" };
         }
     }
-    // Without a real verifier, never accept as valid in architecture path.
-    return { ok: false, error: "VERIFIER_REQUIRED" };
+    return verifyStripeWebhookSignature({
+        payload,
+        signatureHeader,
+        secret,
+        nowSeconds,
+        toleranceSeconds,
+    });
 }
 
 export function assertWebhookEventAllowed(eventType) {
@@ -90,17 +92,34 @@ export function handleWebhookEventArchitecture({
     processedEvents.add(eventId);
 
     let transition = null;
+    let entitlements = [];
     if (orderId && (eventType === "checkout.session.completed" || eventType === "payment_intent.succeeded")) {
         transition = transitionOrder(orderId, ORDER_STATES.PAID, { providerVerified: true });
         if (!transition.ok && transition.error === "ILLEGAL_TRANSITION") {
-            // Already paid — treat as idempotent success path.
-            return { ok: true, error: null, duplicate: false, transition };
+            return { ok: true, error: null, duplicate: true, transition, entitlements };
+        }
+        if (transition.ok) {
+            const order = getOrderById(orderId);
+            const existing = listGrantedEntitlements().filter((e) => e.orderId === orderId);
+            if (existing.length === 0 && order) {
+                entitlements = (order.lineItems || []).map((line) =>
+                    grantEntitlementFromPaidOrder({
+                        orderId,
+                        productId: line.productId,
+                        customerId: order.customerId,
+                    }),
+                );
+            }
         }
     }
     if (orderId && eventType === "payment_intent.payment_failed") {
         transition = transitionOrder(orderId, ORDER_STATES.FAILED, { providerVerified: true });
     }
     if (orderId && eventType === "charge.refunded") {
+        const current = getOrderById(orderId);
+        if (current && current.status !== ORDER_STATES.REFUND_PENDING) {
+            transitionOrder(orderId, ORDER_STATES.REFUND_PENDING, { providerVerified: true });
+        }
         transition = transitionOrder(orderId, ORDER_STATES.REFUNDED, { providerVerified: true });
     }
     if (orderId && eventType === "charge.dispute.created") {
@@ -112,6 +131,7 @@ export function handleWebhookEventArchitecture({
         error: null,
         duplicate: false,
         transition,
+        entitlements,
         log: sanitizeWebhookLog({ eventId, eventType, orderId }),
     };
 }

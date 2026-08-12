@@ -23,3 +23,15 @@
 See `paymentMode.js`: `UNCONFIGURED` | `TEST` | `LIVE_DISABLED` | `LIVE`.
 
 Client Vite flags alone cannot enable LIVE.
+
+## Phase M3 canonical modules (no duplicate architecture)
+
+| Concern | Canonical module |
+|---|---|
+| Payment mode / Stripe TEST client | `paymentMode.js`, `stripeTestClient.js` |
+| Checkout quote + session | `serverPricing.js`, `checkoutFlow.js`, `api/commerce/create-checkout-session.js` |
+| Orders + persistence | `orderModel.js`, `orderPersistence.js` (`data/commerce-test/`, gitignored) |
+| Entitlements | `entitlementEngine.js` + `entitlementGrants.js` |
+| Affiliates | `src/data/affiliate/*` (`applicationPack.js`, `applicationWorkflow.js`) |
+| Newsletter | existing subscribe/lead APIs — not a paid entitlement |
+| Sponsorships | `sponsorshipLeads.js`, `sponsorshipInquiryFlow.js` |

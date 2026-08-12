@@ -74,12 +74,17 @@ export function createOrderRecord({
     totalCents = 0,
     currency = "USD",
     paymentProviderRef = null,
+    paymentMode = "TEST",
+    channel = "TEST",
     status = ORDER_STATES.PENDING,
+    createdAt = null,
+    updatedAt = null,
 } = {}) {
     if (!orderId) throw new Error("orderId required");
     if (!ORDER_STATE_LIST.includes(status)) throw new Error("invalid order status");
     if (totalCents < 0) throw new Error("negative total rejected");
 
+    const now = new Date().toISOString();
     const record = Object.freeze({
         orderId,
         customerId,
@@ -91,9 +96,11 @@ export function createOrderRecord({
         totalCents,
         currency,
         paymentProviderRef,
+        paymentMode,
+        channel,
         status,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: createdAt || now,
+        updatedAt: updatedAt || now,
         // Never store card / PAN / CVC.
         paymentMethodSummary: null,
         rawCardDataForbidden: true,

@@ -1,17 +1,20 @@
 /**
- * Phase M2 — fail-closed commerce API stubs.
- * No production activation. No secrets in repo.
- * LIVE charges require server payment mode gate (see paymentMode.js).
+ * Phase M3 — checkout session API with Stripe TEST wiring.
+ * Fail closed without test credentials. No client prices. No secrets in responses.
  */
 
 import {
     resolvePaymentMode,
     PAYMENT_MODES,
-    canCreateTestCheckoutSession,
 } from "../../src/data/commerce/platform/paymentMode.js";
-import { quoteServerCheckout, createPaymentSessionFromQuote } from "../../src/data/commerce/platform/serverPricing.js";
 import { beginServerCheckout, createCartState } from "../../src/data/commerce/platform/checkoutFlow.js";
 import { isTaxConfigured, assertTaxAllowsLiveSales } from "../../src/data/commerce/platform/taxArchitecture.js";
+import {
+    createStripeCheckoutSession,
+    resolveStripeTestSecret,
+} from "../../src/data/commerce/platform/stripeTestClient.js";
+import { queueCommerceEmail, COMMERCE_EMAIL_TYPES } from "../../src/data/commerce/platform/commerceEmail.js";
+import { assertSafeReturnUrl } from "../../src/data/commerce/platform/securityGuards.js";
 
 function json(res, status, body) {
     res.statusCode = status;
@@ -26,8 +29,7 @@ function readJson(req) {
         req.on("data", (c) => chunks.push(c));
         req.on("end", () => {
             try {
-                const raw = Buffer.concat(chunks).toString("utf8") || "{}";
-                resolve(JSON.parse(raw));
+                resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
             } catch (error) {
                 reject(error);
             }
@@ -36,10 +38,6 @@ function readJson(req) {
     });
 }
 
-/**
- * POST /api/commerce/create-checkout-session
- * Body: { items, couponCode, customerId }
- */
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return json(res, 405, { ok: false, error: "METHOD_NOT_ALLOWED" });
@@ -47,18 +45,10 @@ export default async function handler(req, res) {
 
     const mode = resolvePaymentMode(process.env);
     if (mode === PAYMENT_MODES.UNCONFIGURED) {
-        return json(res, 503, {
-            ok: false,
-            error: "PAYMENTS_UNCONFIGURED",
-            message: "Payment provider not configured. Supply test credentials for TEST mode.",
-        });
+        return json(res, 503, { ok: false, error: "PAYMENTS_UNCONFIGURED" });
     }
     if (mode === PAYMENT_MODES.LIVE_DISABLED) {
-        return json(res, 403, {
-            ok: false,
-            error: "LIVE_DISABLED",
-            message: "Live payments are disabled until explicit server approval.",
-        });
+        return json(res, 403, { ok: false, error: "LIVE_DISABLED" });
     }
     if (mode === PAYMENT_MODES.LIVE) {
         const taxOk = assertTaxAllowsLiveSales({
@@ -78,16 +68,23 @@ export default async function handler(req, res) {
         return json(res, 400, { ok: false, error: "INVALID_JSON" });
     }
 
-    // Reject client prices immediately.
     if (body.price != null || body.salePrice != null || body.total != null) {
         return json(res, 400, { ok: false, error: "CLIENT_PRICE_REJECTED" });
     }
 
-    const cart = createCartState(body.items || []);
+    if (body.successUrl) {
+        const safeSuccess = assertSafeReturnUrl(body.successUrl);
+        if (!safeSuccess.ok) return json(res, 400, { ok: false, error: safeSuccess.error });
+    }
+    if (body.cancelUrl) {
+        const safeCancel = assertSafeReturnUrl(body.cancelUrl);
+        if (!safeCancel.ok) return json(res, 400, { ok: false, error: safeCancel.error });
+    }
+
     const taxConfigured = isTaxConfigured({
         stripeTaxEnabled: process.env.STRIPE_TAX_ENABLED === "true",
     });
-
+    const cart = createCartState(body.items || []);
     const result = beginServerCheckout({
         cart,
         customerId: body.customerId || null,
@@ -96,30 +93,53 @@ export default async function handler(req, res) {
         taxConfigured,
         taxCents: taxConfigured ? Number(body.taxCents) || 0 : null,
     });
-
     if (!result.ok) {
-        return json(res, 400, {
-            ok: false,
-            error: result.error,
-            state: result.state,
-        });
+        return json(res, 400, { ok: false, error: result.error, state: result.state });
     }
 
-    // Do not call Stripe SDK here until credentials + activation checklist complete.
-    // Architecture response only.
+    let stripeSession = null;
+    const testSecret = resolveStripeTestSecret(process.env);
+    if (mode === PAYMENT_MODES.TEST && testSecret.ok) {
+        const created = await createStripeCheckoutSession({
+            env: process.env,
+            quote: result.quote,
+            orderId: result.orderId,
+            customerId: body.customerId || null,
+            successUrl: body.successUrl,
+            cancelUrl: body.cancelUrl,
+        });
+        if (!created.ok) {
+            return json(res, 502, {
+                ok: false,
+                error: created.error,
+                orderId: result.orderId,
+                keyPrefix: testSecret.keyPrefix,
+            });
+        }
+        stripeSession = {
+            idPrefix: created.session.idPrefix,
+            url: created.session.url,
+            status: created.session.status,
+        };
+    }
+
+    queueCommerceEmail({
+        type: COMMERCE_EMAIL_TYPES.ORDER_CONFIRMATION,
+        to: body.email || "",
+        orderId: result.orderId,
+    });
+
     return json(res, 200, {
         ok: true,
         mode,
         orderId: result.orderId,
-        session: result.session,
         quote: result.quote,
-        testModeReady: canCreateTestCheckoutSession(mode),
-        message:
-            "Checkout session architecture accepted. Provider SDK charge not invoked in M2 stubs.",
+        stripe: stripeSession,
+        credentials: testSecret.ok ? "test" : "absent",
         fakeSuccessForbidden: true,
+        paid: false,
+        message: stripeSession
+            ? "Stripe TEST Checkout Session created. Order remains unpaid until webhook."
+            : "Architecture checkout ready. Stripe TEST credentials not present — provider session skipped.",
     });
 }
-
-// Silence unused import warnings in some bundlers
-void quoteServerCheckout;
-void createPaymentSessionFromQuote;

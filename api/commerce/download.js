@@ -1,9 +1,9 @@
 /**
- * Phase M2 — authenticated download stub.
- * Never returns permanent raw file URLs.
+ * Phase M3 — authenticated download (token only, no permanent URL).
  */
 
-import { authorizeSecureDownload } from "../../src/data/commerce/platform/entitlementGrants.js";
+import { authorizeTestDownload } from "../../src/data/commerce/platform/secureDownload.js";
+import { authorizeOrderLookup } from "../../src/data/commerce/platform/orderModel.js";
 
 function json(res, status, body) {
     res.statusCode = status;
@@ -26,10 +26,22 @@ export default async function handler(req, res) {
         return json(res, 400, { ok: false, error: "INVALID_JSON" });
     }
 
-    const result = authorizeSecureDownload({
+    if (body.orderId) {
+        const lookup = authorizeOrderLookup({
+            orderId: body.orderId,
+            requesterCustomerId: body.customerId,
+            adminAuthorized: false,
+        });
+        if (!lookup.ok) {
+            return json(res, 403, { ok: false, error: "FORGED_OR_UNAUTHORIZED_ORDER" });
+        }
+    }
+
+    const result = authorizeTestDownload({
         entitlementId: body.entitlementId,
         customerId: body.customerId,
         productId: body.productId,
+        requestedPath: body.path || "",
     });
 
     if (!result.ok) {
@@ -38,10 +50,10 @@ export default async function handler(req, res) {
 
     return json(res, 200, {
         ok: true,
-        // Architecture: token only — never a permanent raw asset URL.
         downloadToken: result.grant?.token || null,
         expiresAt: result.grant?.expiresAt || null,
         url: null,
-        message: "Use authenticated file service with this short-lived token. Raw URLs forbidden.",
+        headers: result.headers,
+        message: "Short-lived grant only. Permanent/raw URLs forbidden.",
     });
 }
